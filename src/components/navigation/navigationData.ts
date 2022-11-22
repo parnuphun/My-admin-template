@@ -13,12 +13,6 @@ export const navigationMenu:NavigationItem[] = [
         link : '/dashBoard'
     },
     {
-        id: 'home' ,
-        title : 'หน้าแรก' ,
-        icon : '' ,
-        link : '/home'
-    },
-    {
         id: 'lsit' ,
         title : 'รายการ' ,
         icon : '' ,
