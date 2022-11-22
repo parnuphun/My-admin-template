@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
+import { navigationMenu  } from '../../components/navigation/navigationData'
 
     const drawer = ref(true)
     const isDark = ref(false)
-    const toggleTheme =ref(true)
+
+    function routes(){
+
+    }
 </script>
 
 <template>
@@ -15,17 +18,24 @@ import { ref } from 'vue';
                 <div class="w-full text-center mt-5">
                     <p class="text-6xl"> Logo </p>
                 </div>
-                <div class="w-full py-3 px-6 -mb-4 text-sm">
+                <div class="w-full py-3 px-6 text-sm">
                     เมนู
                 </div>
 
-                <v-list density="compact" nav>
+                <v-list density="compact" class="px-3" >
+
                     <v-list-item
-                        prepend-icon="mdi-folder"
-                        title="" value="dashboard"
-                        class="text-md">
-                            แดชบอร์ด
+                        v-for="navItem of navigationMenu"
+                        :prepend-icon="'mdi-'+navItem.icon"
+                        title="" :value="navItem.id"
+                        class="text-md my-1">
+                        <RouterLink  :to="navItem.link">
+                            <div class="w-full h-full">
+                                {{ navItem.title }}
+                            </div>
+                        </RouterLink>
                     </v-list-item>
+
                 </v-list>
 
             </VNavigationDrawer>
