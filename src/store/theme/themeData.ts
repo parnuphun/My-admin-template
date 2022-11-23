@@ -1,7 +1,7 @@
 // setting theme
-export type layoutTheme = 'dark' | 'light'
+export type layOutTheme = 'dark' | 'light'
 export interface webSetting {
-    theme : layoutTheme
+    theme : layOutTheme
 }
 
 //viewtify theme mode

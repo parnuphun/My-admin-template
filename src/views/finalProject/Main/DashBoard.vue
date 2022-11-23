@@ -6,7 +6,10 @@ import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vu
 
 <template>
     <AdminNavigationBar>
-        <p> dashboard </p>
+        <p> test dashboard test icon  </p>
+        <v-btn color="primary">
+            <v-icon icon="mdi-vuetify"></v-icon>
+        </v-btn>
     </AdminNavigationBar>
 
 </template>

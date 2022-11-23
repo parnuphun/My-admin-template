@@ -1,8 +1,11 @@
 import { webSetting } from "./theme/themeData"
-import { reactive } from "vue"
+import { reactive, ref } from "vue"
+
 export let setting : webSetting = reactive({
     theme : 'light'
 })
 
-console.log(setting.theme + 'setting Data');
+
+console.log('setting' , setting.theme);
+
 
