@@ -84,7 +84,7 @@ import { useRouter , useRoute} from 'vue-router';
                     <div class="w-auto mt-6">
                         <v-switch
                             v-model="isDark"
-                            :label="isDark ? 'มืด' : 'สว่าง'"
+                            :label="isDark ? 'Dark' : 'Light'"
                             @click="changeTheme">
                         </v-switch>
                     </div>

@@ -18,4 +18,10 @@ export const navigationMenu:NavigationItem[] = [
         icon : '' ,
         link : '/list'
     },
+    {
+        id: 'lsit' ,
+        title : 'รายการ' ,
+        icon : '' ,
+        link : '/list'
+    },
 ]
