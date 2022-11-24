@@ -2,14 +2,13 @@
 import { onMounted, reactive, ref , toRaw } from 'vue';
 import { navigationMenu  } from '../../store/navigation/navigationData'
 import { useRouter , useRoute} from 'vue-router';
-import { webSetting } from '../../store/theme/themeData'
+import { webSetting , layOutTheme } from '../../store/theme/themeData'
 
 
     const drawer = ref(true)
 
-
     // theme
-    const isDark = ref(false)
+    const rentTheme = ref('dark')
     let setting : webSetting = reactive({
         theme : 'light'
     })
@@ -20,22 +19,15 @@ import { webSetting } from '../../store/theme/themeData'
         if(!localStorage.getItem('setting')){
             localStorage.setItem('setting',JSON.stringify(setting))
         }else{
-            // get setting in localStorage
             setting = JSON.parse(String(localStorage.getItem('setting')))
-            if(setting.theme === 'dark'){
-                isDark.value = true
-            }else if(setting.theme === 'light'){
-                isDark.value = false
-            }
+            rentTheme.value = setting.theme
         }
     })
 
-    function changeTheme(){
-        if(isDark.value === true){
-            setting.theme = 'light'
-         }else{
-            setting.theme = 'dark'
-        }
+    function changeTheme(theme:layOutTheme){
+        setting.theme = theme
+        rentTheme.value = setting.theme
+        console.log(setting.theme);
         localStorage.setItem('setting',JSON.stringify(setting))
     }
 
@@ -48,13 +40,15 @@ import { webSetting } from '../../store/theme/themeData'
     }
 
 
+
+
 </script>
 
 <template>
-    <VThemeProvider :theme="isDark ? 'dark' : 'light'">
+    <VThemeProvider :theme="rentTheme">
         <VApp >
             <!-- side bar -->
-            <VNavigationDrawer color="primeOne" v-model="drawer" :elevation="2" >
+            <VNavigationDrawer color="" v-model="drawer" :elevation="2" >
 
                 <div class="w-full text-center mt-5 mb-3">
                     <p class="text-6xl"> Logo </p>
@@ -62,36 +56,58 @@ import { webSetting } from '../../store/theme/themeData'
 
                 <!-- menu list -->
                 <v-list density="compact" class="px-5" >
-                    <v-list-subheader class="">เมนู</v-list-subheader>
-                    <v-list-item
-                        v-for="navItem of navigationMenu"
-                        @click="getCurrentPath(navItem.link)"
-                        :prepend-icon="'mdi-'+navItem.icon"
-                        :value="navItem.id"
-                        :title="navItem.title"
-                        class="text-md my-1"
-                        active-color="primary"
-                        :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
-                        rounded=""
-                        >
-                    </v-list-item>
+                    <v-list-subheader>เมนู</v-list-subheader>
+                    <div class="" v-for="navItem of navigationMenu">
+                        <v-list-item
+                            @click="getCurrentPath(navItem.link)"
+                            density="comfortable"
+                            :value="navItem.id"
+                            class="text-md my-1"
+                            active-color=""
+                            :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
+                            rounded="xl">
+                            <v-icon :icon="'mdi-'+navItem.icon" start></v-icon>{{navItem.title}}
+                        </v-list-item>
+                    </div>
                 </v-list>
+
             </VNavigationDrawer>
 
             <!-- nav bar -->
             <VAppBar :elevation="2" color="">
                 <!-- toggle sidebar -->
-                <v-app-bar-nav-icon  @click.stop="drawer = !drawer"> หุบ </v-app-bar-nav-icon>
+                <v-app-bar-nav-icon  @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
                 <!-- theme mode -->
                 <div class="w-full mr-6 flex flex-row justify-end">
-                    <div class="w-auto mt-6">
+
+                    <!-- theme mode button switch -->
+                    <v-btn-toggle
+                        variant="outlined"
+                        divided>
+                        <v-btn
+                            icon="mdi-brightness-5"
+                            @click="changeTheme('light')"
+                            :active="rentTheme === 'light'">
+                        </v-btn>
+                        <v-btn
+                            icon="mdi-brightness-2"
+                            @click="changeTheme('dark')"
+                            :active="rentTheme === 'dark'">
+                        </v-btn>
+                    </v-btn-toggle>
+
+                    <!-- theme mode toggle switch  -->
+                    <!-- <div class="w-auto mt-6">
                         <v-switch
                             v-model="isDark"
-                            :label="isDark ? 'Dark' : 'Light'"
                             @click="changeTheme">
                         </v-switch>
                     </div>
+                    <div class="ml-3 mt-1 flex justify-center items-center">
+                        <v-icon v-if="isDark" icon='mdi-weather-night'></v-icon>
+                        <v-icon v-if="!isDark" size="large" icon='mdi-weather-sunny'></v-icon>
+                    </div> -->
                 </div>
             </VAppBar>
 

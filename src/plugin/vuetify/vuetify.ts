@@ -9,6 +9,6 @@ export default createVuetify({
   directives,
   ssr: true,
   theme: {
-    themes: vuetifyThemeMode
+    themes : vuetifyThemeMode
   },
 })
