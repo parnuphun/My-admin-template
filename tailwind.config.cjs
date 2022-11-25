@@ -7,15 +7,25 @@ module.exports = {
   darkMode: 'class',
   theme: {
     theme: {
+        // default breakpoint
         screens: {
-            'sm': '640px',
-            'md': '768px',
-            'lg': '1024px',
-            'xl': '1280px',
-            '2xl': '1536px',
+            // 'sm': '640px',
+            // 'md': '768px',
+            // 'lg': '1024px',
+            // 'xl': '1280px',
+            // '2xl': '1536px',
           }
     },
-    extend: {},
+    extend: {
+        // add breakpoint
+        screens: {
+            'MB' : '200px',
+            'TL' : '640px',
+            'LT': '1024px',
+            'DT' : '1536px',
+
+        }
+    },
   },
   plugins: [],
 }
