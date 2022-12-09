@@ -48,7 +48,7 @@ import { webSetting , layOutTheme } from '../../store/theme/themeData'
     <VThemeProvider :theme="rentTheme">
         <VApp >
             <!-- side bar -->
-            <VNavigationDrawer color="" v-model="drawer" :elevation="2" >
+            <VNavigationDrawer color="primary" v-model="drawer" :elevation="2" >
 
                 <div class="w-full text-center mt-5 mb-3">
                     <p class="text-6xl"> Logo </p>

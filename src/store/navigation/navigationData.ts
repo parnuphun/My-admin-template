@@ -85,6 +85,13 @@ export const navigationMenu:NavigationItem[] = [
         link : '/dataTable' ,
         group : false
     },
+    {
+        id: 'food' ,
+        title : 'food 1' ,
+        icon : 'account-child' ,
+        link : '/food' ,
+        group : false
+    },
     // {
     //     id: 'group' ,
     //     title : 'กลุ่ม' ,

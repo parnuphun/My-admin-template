@@ -10,6 +10,7 @@ const router = createRouter({
         { path: '/ASMFormList' , component: () => import('../views/finalProject/Main/ASMFormList.vue')} ,
         { path: '/ASMFormCategory' , component: () => import('../views/finalProject/Main/ASMFormCategory.vue')} ,
         { path: '/recycle' , component: () => import('../views/finalProject/Main/Recycle.vue')} ,
+        { path: '/food' , component: () => import('./../views/finalProject/Main/food.vue')},
 
 
         // test coomponent

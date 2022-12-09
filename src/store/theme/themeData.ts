@@ -22,12 +22,18 @@ const dark = {
     secondary : '#0c0f21',
 }
 
+const test = { 
+    background : '#ffedd5',
+    primary: '#03fc43',
+    secondary : '#03fc43',
+}
+
 
 //viewtify theme mode
 export const vuetifyThemeMode = {
     light: {
         dark : false ,
-        // colors : orangeLight
+        colors : test
     },
     dark : {
         dark : true ,
