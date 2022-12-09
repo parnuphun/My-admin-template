@@ -22,7 +22,7 @@ const dark = {
     secondary : '#0c0f21',
 }
 
-const test = { 
+const test = {
     background : '#ffedd5',
     primary: '#03fc43',
     secondary : '#03fc43',
@@ -33,7 +33,7 @@ const test = {
 export const vuetifyThemeMode = {
     light: {
         dark : false ,
-        colors : test
+        // colors : test
     },
     dark : {
         dark : true ,
