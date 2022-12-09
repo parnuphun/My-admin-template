@@ -30,61 +30,68 @@ export const navigationMenu:NavigationItem[] = [
         group : false
     },
     {
-        id: 'ASMFormList' ,
-        title : 'รายชื่อแบบประเมิน' ,
-        icon : 'list-box' ,
-        link : '/ASMFormList' ,
+        id: 'test' ,
+        title : 'เทส' ,
+        icon : 'poll' ,
+        link : '/test' ,
         group : false
     },
-    {
-        id: '' ,
-        title : 'หมวดหมู่แบบประเมิน' ,
-        icon : 'book' ,
-        link : '/ASMFormCategory' ,
-        group : false
-    },
-    {
-        id: '' ,
-        title : 'เอกสาร' ,
-        icon : 'folder' ,
-        link : '/files' ,
-        group : false
-    },
-    {
-        id: '' ,
-        title : 'พนักงาน' ,
-        icon : 'account-tie' ,
-        link : '/admin' ,
-        group : false
-    },
-    {
-        id: '' ,
-        title : 'ถังขยะ' ,
-        icon : 'trash-can' ,
-        link : '/recycle' ,
-        group : false
-    },
-    {
-        id: '' ,
-        title : 'ตั้งค่า' ,
-        icon : 'cog' ,
-        link : '/setting' ,
-        group : false
-    },
-    {
-        id: 'test_calendar' ,
-        title : 'ทดสอบ_Calendar' ,
-        icon : 'test-tube' ,
-        link : '/calendar' ,
-        group : false
-    },
-    {
-        id: 'test_calendar' ,
-        title : 'ทดสอบ_DataTable' ,
-        icon : 'test-tube' ,
-        link : '/dataTable' ,
-        group : false
-    },
+    // {
+    //     id: 'ASMFormList' ,
+    //     title : 'รายชื่อแบบประเมิน' ,
+    //     icon : 'list-box' ,
+    //     link : '/ASMFormList' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'หมวดหมู่แบบประเมิน' ,
+    //     icon : 'book' ,
+    //     link : '/ASMFormCategory' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'เอกสาร' ,
+    //     icon : 'folder' ,
+    //     link : '/files' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'พนักงาน' ,
+    //     icon : 'account-tie' ,
+    //     link : '/admin' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'ถังขยะ' ,
+    //     icon : 'trash-can' ,
+    //     link : '/recycle' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'ตั้งค่า' ,
+    //     icon : 'cog' ,
+    //     link : '/setting' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'test_calendar' ,
+    //     title : 'ทดสอบ_Calendar' ,
+    //     icon : 'test-tube' ,
+    //     link : '/calendar' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'test_calendar' ,
+    //     title : 'ทดสอบ_DataTable' ,
+    //     icon : 'test-tube' ,
+    //     link : '/dataTable' ,
+    //     group : false
+    // },
     // {
     //     id: 'group' ,
     //     title : 'กลุ่ม' ,
