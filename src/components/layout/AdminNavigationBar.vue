@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref , toRaw } from 'vue';
-import { navigationMenu  } from '../../store/navigation/navigationData'
+import { navigationMenu  } from '../../plugin/navigationData'
 import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
 
@@ -48,7 +48,7 @@ import { webSetting , layOutTheme } from '../../store/theme/themeData'
     <VThemeProvider :theme="rentTheme">
         <VApp >
             <!-- side bar -->
-            <VNavigationDrawer color="primary" v-model="drawer" :elevation="2" >
+            <VNavigationDrawer color="" v-model="drawer" :elevation="2" >
 
                 <div class="w-full text-center mt-5 mb-3">
                     <p class="text-6xl"> Logo </p>
