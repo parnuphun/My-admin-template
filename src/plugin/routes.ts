@@ -12,7 +12,7 @@ const router = createRouter({
 
         // test coomponent
         { path: '/calendar' , component: () => import('../views/test/Calendar.vue')} ,
-        { path: '/test_sweetAlert' , component: () => import('../views/test/sweetAlert2.vue')} ,
+        { path: '/test_sweetAlert' , component: () => import('../views/test/sweetAlert.vue')} ,
 
 
         // page not found 404

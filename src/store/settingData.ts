@@ -6,6 +6,3 @@ export let setting : webSetting = reactive({
 })
 
 
-console.log('setting' , setting.theme);
-
-
