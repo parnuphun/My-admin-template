@@ -8,6 +8,16 @@
 - [tailwind css](https://tailwindcss.com/docs/installation)
 - [storyset (ภาพประกอบเว็บ)](https://storyset.com/online)
 
+## VSCode Extentions
+- [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
+- [Vue Language Features (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+- [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
+- [Color Highlight](https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight)
+- [Auto Rename Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)
+- [Auto Close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)
+- [Auto-Save on Window Change](https://marketplace.visualstudio.com/items?itemName=mcright.auto-save)
+
 ## Files
 - เพิ่ม route (lazyload) => [src/prugin/routes.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/plugin/routes.ts)
 - เพิ่มเมนูที่ Sidebar => [src/prugin/navigationData.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/plugin/navigationData.ts)
