@@ -9,26 +9,13 @@
 - [storyset (ภาพประกอบเว็บ)](https://storyset.com/online)
 
 ## Files 
-- การเพิ่ม route => /prugin/routes.ts (lazyload)
-```ruby
-    routes: [
-        // default redirect
-        { path: '/' , component: () => import('../views/finalProject/Main/DashBoard.vue')} ,
+- การเพิ่ม route (lazyload) => [src/prugin/routes.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/plugin/routes.ts)
+- การเพิ่มเมนูที่ Sidebar => [src/prugin/navigationData.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/plugin/navigationData.ts)
+- เปลี่ยนสี theme => [src/store/theme/themeData.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/store/theme/themeData.ts)
+- เพิ่มฟังก์ชัน SweetAlert => [src/services/msgAlert.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/services/msgAlert.ts)
 
-        { path: '/dashBoard' , component: () => import('../views/finalProject/Main/DashBoard.vue')} ,
-        ],
-```
-- การเพิ่มเมนูที่ Sidebar => /prugin/navigationData.ts
-```ruby
-    {
-        id: 'dashboard' ,
-        title : 'แดชบอร์ด' ,
-        icon : 'monitor-dashboard' ,
-        link : '/dashBoard' ,
-        group : false
-    },
- ```
 ## Tailwind Responsive Breakpoint
+- แก้ที่ไฟล์ [tailwind.config.cjs](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/tailwind.config.cjs)
 ```ruby
     screens: {
         'MB' : '200px',
