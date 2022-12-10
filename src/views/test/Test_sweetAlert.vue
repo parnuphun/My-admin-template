@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
-import { MsgAlert } from '../../services/msgAlert'
+import MsgAlert  from '../../services/msgAlert'
 
 const sw = new MsgAlert()
     // default
