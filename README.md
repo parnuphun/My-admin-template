@@ -7,7 +7,9 @@
 - [vue-echart (กราฟ)](https://echarts.apache.org/examples/en/index.html#chart-type-scatter)
 - [tailwind css](https://tailwindcss.com/docs/installation)
 - [storyset (ภาพประกอบเว็บ)](https://storyset.com/online)
-
+- [axios (ไว้เรียก API)](https://devahoy.com/blog/fetch-api-with-axios)
+- [moment js (ไว้ Format Date มีภาษาไทย)](https://momentjs.com/)
+- 
 ## VSCode Extentions
 - [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
     - ลงตัวนี้เสร็จให้ทำ Take over mode ด้วยจะเป็นการใช้ typescript ของ volar แทน typescript ของ vs code
