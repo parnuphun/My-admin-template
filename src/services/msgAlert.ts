@@ -1,6 +1,7 @@
 import { TitleComponent } from 'echarts/components'
 import Swal from 'sweetalert2'
 
+// test commit
 
 // icon
 // - success
@@ -25,7 +26,7 @@ function convertTime(timer:number){
     return timer*1000
 }
 
-export class MsgAlert {
+export default class MsgAlert {
 
     confirmeBtn:boolean = true
 
