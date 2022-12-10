@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+
+// route
 import routes from './plugin/routes'
 
 // tailwind css
@@ -16,6 +18,10 @@ import 'v-calendar/dist/style.css'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
+// moment js : set thai language globally
+import moment from 'moment'
+import 'moment/dist/locale/th'
+moment.locale('th')
 
 createApp(App)
     .use(VCalendar)
