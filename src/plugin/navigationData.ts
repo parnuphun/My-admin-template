@@ -22,25 +22,25 @@ export const navigationMenu:NavigationItem[] = [
         link : '/dashBoard' ,
         group : false
     },
-    {
-        id: '' ,
-        title : 'ถังขยะ' ,
-        icon : 'trash-can' ,
-        link : '/recycle' ,
-        group : false
-    },
-    {
-        id: '' ,
-        title : 'ตั้งค่า' ,
-        icon : 'cog' ,
-        link : '/setting' ,
-        group : false
-    },
+    // {
+    //     id: '' ,
+    //     title : 'ถังขยะ' ,
+    //     icon : 'trash-can' ,
+    //     link : '/recycle' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'ตั้งค่า' ,
+    //     icon : 'cog' ,
+    //     link : '/setting' ,
+    //     group : false
+    // },
     {
         id: 'test_calendar' ,
         title : 'Test_Calendar' ,
         icon : 'test-tube' ,
-        link : '/calendar' ,
+        link : '/test_calendar' ,
         group : false
     },
     {
@@ -51,10 +51,10 @@ export const navigationMenu:NavigationItem[] = [
         group : false
     },
     {
-        id: 'test_calendar' ,
+        id: 'test_datatable' ,
         title : 'Test_DataTable' ,
         icon : 'test-tube' ,
-        link : '/dataTable' ,
+        link : '/test_datatable' ,
         group : false
     },
     // {

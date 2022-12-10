@@ -10,9 +10,10 @@ const router = createRouter({
         { path: '/recycle' , component: () => import('../views/finalProject/Main/Recycle.vue')} ,
 
 
-        // test coomponent
-        { path: '/calendar' , component: () => import('../views/test/Calendar.vue')} ,
-        { path: '/test_sweetAlert' , component: () => import('../views/test/sweetAlert.vue')} ,
+        // test component
+        { path: '/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
+        { path: '/test_datatable' , component: () => import('../views/test/Test_DataTable.vue')} ,
+        { path: '/test_sweetAlert' , component: () => import('../views/test/Test_sweetAlert.vue')} ,
 
 
         // page not found 404
