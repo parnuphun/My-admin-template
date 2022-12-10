@@ -9,7 +9,7 @@
 - [storyset (ภาพประกอบเว็บ)](https://storyset.com/online)
 - [axios (ไว้เรียก API)](https://devahoy.com/blog/fetch-api-with-axios)
 - [moment js (ไว้ Format Date มีภาษาไทย)](https://momentjs.com/)
-- 
+
 ## VSCode Extentions
 - [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
     - ลงตัวนี้เสร็จให้ทำ Take over mode ด้วยจะเป็นการใช้ typescript ของ volar แทน typescript ของ vs code
@@ -25,6 +25,7 @@
 - [Auto Rename Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)
 - [Auto Close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)
 - [Auto-Save on Window Change](https://marketplace.visualstudio.com/items?itemName=mcright.auto-save)
+- [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme)
 
 ## Files
 - เพิ่ม route (lazyload) => [src/prugin/routes.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/plugin/routes.ts)
