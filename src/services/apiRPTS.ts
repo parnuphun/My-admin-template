@@ -6,5 +6,10 @@ export default class apiRPTS {
     testDataTable(){
         return axios.get('/api/users')
     }
-
+    delete(){
+        return axios.get('https://catfact.ninja/fact')
+    }
+    productdetail(id:number,name:string){
+        return axios.get(`https://catfact.ninja/fact/${id}/${name}`)
+    }
 }
