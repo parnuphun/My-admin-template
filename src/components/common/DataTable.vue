@@ -79,7 +79,7 @@ import { onMounted } from 'vue';
         </div>
         <div class="space-x-2">
             <span>
-                {{ props.perPage * (props.page - 1 ) }} - {{ props.perPage * props.page }} รายการ จาก {{ props.total.toLocaleString() }} รายการ
+                {{ props.perPage * (props.page - 1 ) }} - {{ props.perPage * props.page }} รายการ จาก {{ props.total }} รายการ
             </span>
 
             <select

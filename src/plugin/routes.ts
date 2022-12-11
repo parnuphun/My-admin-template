@@ -12,7 +12,7 @@ const router = createRouter({
 
         // test component
         { path: '/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
-        { path: '/test_datatable' , component: () => import('../views/test/Test_DataTable.vue')} ,
+        { path: '/Test_DataTableManual' , component: () => import('../views/test/Test_DataTableManual.vue')} ,
         { path: '/test_sweetAlert' , component: () => import('../views/test/Test_sweetAlert.vue')} ,
 
 

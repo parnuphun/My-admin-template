@@ -38,23 +38,23 @@ export const navigationMenu:NavigationItem[] = [
     // },
     {
         id: 'test_calendar' ,
-        title : 'Test_Calendar' ,
+        title : 'Test Calendar' ,
         icon : 'test-tube' ,
         link : '/test_calendar' ,
         group : false
     },
     {
         id: 'test_calendar' ,
-        title : 'Test_SweetAlert' ,
+        title : 'Test SweetAlert' ,
         icon : 'test-tube' ,
         link : '/test_sweetAlert' ,
         group : false
     },
     {
         id: 'test_datatable' ,
-        title : 'Test_DataTable' ,
+        title : 'Test DataTable MN' ,
         icon : 'test-tube' ,
-        link : '/test_datatable' ,
+        link : '/Test_DataTableManual' ,
         group : false
     },
     // {
