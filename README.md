@@ -1,4 +1,5 @@
 ## Tools
+### Frameworks / Packages 
 - [vue3 composition api ](https://vuejs.org/guide/introduction.html#what-is-vue)
 - [vuetify3](https://next.vuetifyjs.com/en/getting-started/installation/)
 - [material design icon (ไอคอน)](https://materialdesignicons.com/)
@@ -9,8 +10,7 @@
 - [storyset (ภาพประกอบเว็บ)](https://storyset.com/online)
 - [axios (ไว้เรียก API)](https://devahoy.com/blog/fetch-api-with-axios)
 - [moment js (ไว้ Format Date มีภาษาไทย)](https://momentjs.com/)
-
-## VSCode Extentions
+### VSCode Extentions
 - [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
     - ทำ Take over mode เป็นการใช้ typescript ของ volar แทน typescript ของ vs code
         1. ไปที่ Tab extension vscode
