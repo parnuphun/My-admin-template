@@ -3,9 +3,15 @@ import axios from 'axios'
 const url = 'http://loclhost:4000'
 export default class apiRPTS {
 
-    testDataTable(){
-        return axios.get('/api/users')
+    testDataTable(page:number , perPage:number){
+        return axios.get('/api/users',{
+            params:{
+                page: page,
+                perPage: perPage
+            }
+        })
     }
+
     delete(){
         return axios.get('https://catfact.ninja/fact')
     }
