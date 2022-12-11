@@ -1,4 +1,5 @@
 ## Tools
+### Frameworks / Packages 
 - [vue3 composition api ](https://vuejs.org/guide/introduction.html#what-is-vue)
 - [vuetify3](https://next.vuetifyjs.com/en/getting-started/installation/)
 - [material design icon (ไอคอน)](https://materialdesignicons.com/)
@@ -9,18 +10,15 @@
 - [storyset (ภาพประกอบเว็บ)](https://storyset.com/online)
 - [axios (ไว้เรียก API)](https://devahoy.com/blog/fetch-api-with-axios)
 - [moment js (ไว้ Format Date มีภาษาไทย)](https://momentjs.com/)
-
-## VSCode Extentions
+### VSCode Extentions
 - [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
-    - ลงตัวนี้เสร็จให้ทำ Take over mode ด้วยจะเป็นการใช้ typescript ของ volar แทน typescript ของ vs code
+    - ทำ Take over mode เป็นการใช้ typescript ของ volar แทน typescript ของ vs code
         1. ไปที่ Tab extension vscode
         2. ค้นหา @builtin typescript จะเจอ TypeScript and JavaScript Language Features
-        3. กดที่รูปเฟืองแล้วเลือก Disable(Workspace)
+        3. กดที่รเฟืองแล้วเลือก Disable(Workspace)
 - [Vue Language Features (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
 - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
-    - auto complete ของ tailwind
 - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
-    - ไว้สำหรับไฟล์ .editorconfig ใช่กำหนดพวก tab ระยะห่างต่างๆ
 - [Color Highlight](https://marketplace.visualstudio.com/items?itemName=naumovs.color-highlight)
 - [Auto Rename Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-rename-tag)
 - [Auto Close Tag](https://marketplace.visualstudio.com/items?itemName=formulahendry.auto-close-tag)
@@ -30,14 +28,13 @@
 ## Files
 - เพิ่ม route (lazyload) => [src/prugin/routes.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/plugin/routes.ts)
 - เพิ่มเมนูที่ Sidebar => [src/prugin/navigationData.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/plugin/navigationData.ts)
-- เพิ่ม page (สร้าง folder project แยกในโฟลเดอร์ views ก๋ได่)=> [src/views/finalject/main](https://github.com/parnuphun/ResearchProgressTrackingSystem/tree/master/src/views)
+- เพิ่ม page => [src/views/finalject/main](https://github.com/parnuphun/ResearchProgressTrackingSystem/tree/master/src/views)
 - เพิ่ม component => [src/components/](https://github.com/parnuphun/ResearchProgressTrackingSystem/tree/master/src/components)
 - เปลี่ยนสี theme => [src/store/theme/themeData.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/store/theme/themeData.ts)
 - เพิ่ม service
     - เพิ่มฟังก์ชัน SweetAlert => [src/services/msgAlert.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/services/msgAlert.ts)
-
-## Tailwind Responsive Breakpoint
-- แก้ที่ไฟล์ [tailwind.config.cjs](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/tailwind.config.cjs)
+    - เพิ่ม api => [src/services/apiRPTS.ts](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/src/services/apiRPTS.ts)
+- เพิ่ม Breakpoint tailwind [tailwind.config.cjs](https://github.com/parnuphun/ResearchProgressTrackingSystem/blob/master/tailwind.config.cjs)
 ```ruby
     screens: {
         'MB' : '200px',
@@ -47,33 +44,6 @@
     }
 ```
 
-## Vuetify Standard Color 
-```ruby
-  theme: {
-    themes: {
-      light: {
-        primary: "#14C6FF",
-        secondary: "#424242",
-        accent: "#82B1FF",
-        error: "#FF5252",
-        info: "#2196F3",
-        success: "#4CAF50",
-        warning: "#FFC107",
-        lightblue: "#14c6FF",
-        yellow: "#FFCF00",
-        pink: "#FF1976",
-        orange: "#FF8657",
-        magenta: "#C33AFC",
-        darkblue: "#1E2D56",
-        gray: "#909090",
-        neutralgray: "#9BA6C1",
-        green: "#2ED47A",
-        red: "#FF5c4E",
-        darkblueshade: "#308DC2",
-        lightgray: "#BDBDBD",
-        lightpink: "#FFCFE3",
-        white: "#FFFFFF"
-      }
-    }
-  }
-```
+## Note 
+- [แก้ CORS ด้วย Proxy](https://vitejs.dev/config/server-options.html#server-proxy)
+- [Vuetify Standard Color](https://stackoverflow.com/questions/52258669/how-to-change-the-text-color-of-a-vuetify-button)
