@@ -78,3 +78,6 @@
     }
   }
 ```
+
+## Note 
+- [แก้ CORS ด้วย Proxy](https://vitejs.dev/config/server-options.html#server-proxy)
