@@ -15,7 +15,8 @@ const router = createRouter({
 
 
         // check system
-        { path: '/checkBackend/login' , component:() => import('../views/RPTS_Check_Backend/LoginPage.vue')},
+        { path: '/testBackend/login' , component:() => import('../views/RPTS_Check_Backend/LoginPage.vue')},
+        { path: '/testBackend/register' , component:() => import('../views/RPTS_Check_Backend/Register.vue')},
 
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
@@ -36,11 +37,16 @@ router.beforeEach((to,from)=>{
     if(to.path.startsWith('/test/') && !isLoggedIn.value) {
         _msgAlert.confirm('กรุณาเข้าสู่ระบบก่อน','error').then((isConfirmed)=>{
             if(isConfirmed){
-                router.push('/checkBackend/login')
+                router.push('/testBackend/login')
             }
         })
         return false
     }
+    if(to.path.startsWith('/testBackend/login') && isLoggedIn.value === true){
+        router.push('/')
+        return false
+    }
+
 })
 
 export default router

@@ -11,10 +11,6 @@ export default class apiRPTS {
         })
     }
 
-    testPrismaData(){
-        return axios.get('/api/prisma_user')
-    }
-
     delete(){
         return axios.get('https://catfact.ninja/fact')
     }

@@ -61,7 +61,21 @@ export const navigationMenu:NavigationItem[] = [
         id: 'admin_login' ,
         title : 'Login' ,
         icon : 'login-variant' ,
-        link : '/checkBackend/login' ,
+        link : '/testBackend/login' ,
+        group : false
+    },
+    {
+        id: 'admin_login' ,
+        title : 'Register' ,
+        icon : 'account-plus' ,
+        link : '/testBackend/register' ,
+        group : false
+    },
+    {
+        id: 'admin_login' ,
+        title : 'Logout' ,
+        icon : 'power' ,
+        link : '/testBackend/register' ,
         group : false
     },
     // {
