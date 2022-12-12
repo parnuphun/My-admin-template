@@ -1,5 +1,5 @@
 import { TitleComponent } from 'echarts/components'
-import Swal from 'sweetalert2'
+import Swal , {SweetAlertIcon} from 'sweetalert2'
 
 // test commit
 // test commit 2
@@ -11,7 +11,6 @@ import Swal from 'sweetalert2'
 // - warning : (!)
 // - info  : (!) กลับหัว
 // - question : (?)
-
 
 // position
 // - center
@@ -137,11 +136,11 @@ export default class MsgAlert {
     }
 
     // other alert
-    confirm(msg:string){
+    confirm(msg:string,icon?:SweetAlertIcon){
         return new Promise((resolve , reject)=>{
             Swal.fire({
                 title: msg ,
-                icon: 'warning',
+                icon: icon,
                 showCancelButton: true,
                 showConfirmButton: true,
                 cancelButtonColor: '#d33',
