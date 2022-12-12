@@ -30,7 +30,7 @@ const sw = new MsgAlert()
 
     // other alert
     function confirm(){
-        sw.confirm('คุณต้องการยืนยันใช่ไหม ?').then((isConfirmed)=>{
+        sw.confirm('คุณต้องการยืนยันใช่ไหม ?','warning',false).then((isConfirmed)=>{
             if(isConfirmed){
                 sw.succ(`isConfirmed = ${String(isConfirmed)}`)
             }else{

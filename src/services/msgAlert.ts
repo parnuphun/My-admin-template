@@ -136,16 +136,20 @@ export default class MsgAlert {
     }
 
     // other alert
-    confirm(msg:string,icon?:SweetAlertIcon){
+    confirm(msg:string,icon?:SweetAlertIcon,showCancelButton?:boolean,confirmButtonText?:string){
+        if(!icon){icon = 'warning'}
+        if(showCancelButton === undefined){showCancelButton = true}
+        if(!confirmButtonText){confirmButtonText = 'ยืนยัน'}
         return new Promise((resolve , reject)=>{
             Swal.fire({
                 title: msg ,
                 icon: icon,
-                showCancelButton: true,
+                allowOutsideClick: false,
+                showCancelButton: showCancelButton,
                 showConfirmButton: true,
                 cancelButtonColor: '#d33',
                 cancelButtonText: 'ยกเลิก',
-                confirmButtonText: 'ยืนยัน',
+                confirmButtonText: confirmButtonText,
             }).then((afterClick)=>{
                 if(afterClick.isConfirmed === true){
                     resolve(true)
