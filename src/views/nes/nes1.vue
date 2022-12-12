@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
 import  MsgAlert  from '../../services/msgAlert';
-import apiRPTS from '../../services/apiRPTS';
+import apiRPTS from '../../services/api/apiRPTS';
 import moment from 'moment';
 import { ref } from 'vue';
 

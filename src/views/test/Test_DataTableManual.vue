@@ -3,8 +3,7 @@ import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
 import { onMounted , watch , ref ,toRaw } from 'vue'
 import DataTable , {Column} from '../../components/common/DataTable.vue';
 import moment from 'moment'
-import apiRPTS from '../../services/apiRPTS';
-import { reactive } from 'vue';
+import apiRPTS from '../../services/api/apiRPTS';
 
 const api = new apiRPTS()
 
