@@ -40,21 +40,28 @@ export const navigationMenu:NavigationItem[] = [
         id: 'test_calendar' ,
         title : 'Test Calendar' ,
         icon : 'test-tube' ,
-        link : '/test_calendar' ,
+        link : '/test/test_calendar' ,
         group : false
     },
     {
         id: 'test_calendar' ,
         title : 'Test SweetAlert' ,
         icon : 'test-tube' ,
-        link : '/test_sweetAlert' ,
+        link : '/test/test_sweetAlert' ,
         group : false
     },
     {
         id: 'test_datatable' ,
         title : 'Test DataTable MN' ,
         icon : 'test-tube' ,
-        link : '/Test_DataTableManual' ,
+        link : '/test/Test_DataTableManual' ,
+        group : false
+    },
+    {
+        id: 'admin_login' ,
+        title : 'Login' ,
+        icon : 'login-variant' ,
+        link : '/checkBackend/login' ,
         group : false
     },
     // {
