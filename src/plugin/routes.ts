@@ -13,10 +13,8 @@ const router = createRouter({
         { path: '/dashBoard' , component: () => import('../views/finalProject/Main/DashBoard.vue')} ,
         { path: '/recycle' , component: () => import('../views/finalProject/Main/Recycle.vue')} ,
 
-
-        // check system
+        // check backend
         { path: '/testBackend/login' , component:() => import('../views/RPTS_Check_Backend/LoginPage.vue')},
-        { path: '/testBackend/register' , component:() => import('../views/RPTS_Check_Backend/Register.vue')},
 
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
@@ -43,10 +41,9 @@ router.beforeEach((to,from)=>{
         return false
     }
     if(to.path.startsWith('/testBackend/login') && isLoggedIn.value === true){
-        router.push('/')
+        // router.push('/')
         return false
     }
-
 })
 
 export default router
