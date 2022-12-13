@@ -18,7 +18,7 @@ import 'v-calendar/dist/style.css'
 import VueSweetalert2 from 'vue-sweetalert2'
 import 'sweetalert2/dist/sweetalert2.min.css'
 
-// moment js : set thai language globally
+// moment js : set thai date globally
 import moment from 'moment'
 import 'moment/dist/locale/th'
 moment.locale('th')
