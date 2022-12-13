@@ -91,6 +91,16 @@ const dateOnRange = reactive({
 
 <template>
     <AdminNavigationBar>
+        <v-parallax
+            class="mb-3"
+            height="300"
+            src="https://images.unsplash.com/photo-1461696114087-397271a7aedc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+        >
+        <div class="w-full h-full flex flex-col justify-center items-center">
+            <span class="text-3xl text-white">ระบบติดตามความก้าวหน้างานวิจัย</span>
+            <span class="text-lg text-white">มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน วิทยาเขตขอนแก่น</span>
+        </div>
+        </v-parallax>
         <!-- summary box -->
         <div class="w-full flex justify-center items-center
                     DT:flex-row
@@ -330,7 +340,6 @@ const dateOnRange = reactive({
                 </div>
             </div>
         </div>
-
 
     </AdminNavigationBar>
 </template>
