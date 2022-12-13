@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref , toRaw } from 'vue';
+import { onMounted, reactive, ref , watch } from 'vue';
 import { navigationMenu  } from '../../plugin/navigationData'
 import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
+import { isRail } from '../../store/settingData'
+import { useDisplay } from 'vuetify'
 
-
-    const drawer = ref(true)
-
+    const isDrawer = ref(true)
+    const { mobile } = useDisplay ()
     // theme
     const rentTheme = ref('dark')
     let setting : webSetting = reactive({
@@ -40,49 +41,70 @@ import { webSetting , layOutTheme } from '../../store/theme/themeData'
     }
 
 
-
-
 </script>
 
 <template>
     <VThemeProvider :theme="rentTheme">
         <VApp >
             <!-- side bar -->
-            <VNavigationDrawer color="" v-model="drawer" :elevation="2" >
-
-                <div class="w-full text-center mt-5 mb-3">
-                    <p class="text-6xl"> Logo </p>
+                <v-navigation-drawer
+                color=""
+                :rail="isRail"
+                expand-on-hover
+                :elevation="2"
+                >
+                <div class="w-full h-16 mb-3 flex justify-center items-center text-white text-center bg-orange-500 shadow-lg">
+                    <p class="text-3xl">LOGO</p>
                 </div>
 
                 <!-- menu list -->
-                <v-list density="compact" class="px-5" >
-                    <v-list-subheader>เมนู</v-list-subheader>
-                    <div class="" v-for="navItem of navigationMenu">
+                <v-list class="" nav >
+                    <div nav v-for="navItem of navigationMenu">
                         <v-list-item
+                            :title="navItem.title"
                             @click="getCurrentPath(navItem.link)"
                             density="comfortable"
                             :value="navItem.id"
                             class="text-md my-1"
                             active-color=""
+                            :prepend-icon="'mdi-'+navItem.icon"
                             :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
-                            rounded="xl">
-                            <v-icon :icon="'mdi-'+navItem.icon" start></v-icon>{{navItem.title}}
+                            rounded="">
+                            <!-- <v-icon :icon="'mdi-'+navItem.icon" start></v-icon>{{navItem.title}} -->
                         </v-list-item>
                     </div>
                 </v-list>
+            </v-navigation-drawer>
 
-            </VNavigationDrawer>
+
+
 
             <!-- nav bar -->
             <VAppBar :elevation="2" color="">
                 <!-- toggle sidebar -->
-                <v-app-bar-nav-icon  @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+                <v-app-bar-nav-icon  @click.stop="isRail = !isRail"></v-app-bar-nav-icon>
 
                 <!-- theme mode -->
                 <div class="w-full mr-6 flex flex-row justify-end">
 
+
+
+                    <v-btn icon class="mr-3">
+                        <v-badge content="999" color="error">
+                            <v-icon>mdi-bell-outline</v-icon>
+                        </v-badge>
+                    </v-btn>
+
+                    <v-btn icon>
+                        <v-avatar
+                            color="brown"
+                            size=""
+                            >
+                            <span class="text-h5 p-1">ภน</span>
+                        </v-avatar>
+                    </v-btn>
                     <!-- theme mode button switch -->
-                    <v-btn-toggle
+                    <!-- <v-btn-toggle
                         variant="outlined"
                         divided>
                         <v-btn
@@ -95,19 +117,7 @@ import { webSetting , layOutTheme } from '../../store/theme/themeData'
                             @click="changeTheme('dark')"
                             :active="rentTheme === 'dark'">
                         </v-btn>
-                    </v-btn-toggle>
-
-                    <!-- theme mode toggle switch  -->
-                    <!-- <div class="w-auto mt-6">
-                        <v-switch
-                            v-model="isDark"
-                            @click="changeTheme">
-                        </v-switch>
-                    </div>
-                    <div class="ml-3 mt-1 flex justify-center items-center">
-                        <v-icon v-if="isDark" icon='mdi-weather-night'></v-icon>
-                        <v-icon v-if="!isDark" size="large" icon='mdi-weather-sunny'></v-icon>
-                    </div> -->
+                    </v-btn-toggle> -->
                 </div>
             </VAppBar>
 
