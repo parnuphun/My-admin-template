@@ -4,7 +4,7 @@ const url = 'http://loclhost:4000'
 export default class apiRPTS {
 
     register(){
-        return axios.get('/register')
+        return axios.get('/api/register')
     }
 
     login(username:string , password:string){
@@ -14,4 +14,6 @@ export default class apiRPTS {
         }
         return axios.post('/api/login',data)
     }
+
+
 }

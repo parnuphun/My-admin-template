@@ -49,6 +49,10 @@ function registerSuccess(closeDialog:Boolean){
     isDialogOpen.value = Boolean(closeDialog)
 }
 
+function openDialog(){
+    isDialogOpen.value = !isDialogOpen.value
+}
+
 </script>
 <template>
     <AdminNavigationBar>
@@ -72,10 +76,17 @@ function registerSuccess(closeDialog:Boolean){
                                     <span class="mr-1 text-blue-500 hover:text-blue-600 cursor-pointer"> Register </span>
                                 </div>
                             </div>
-                            <div class="flex justify-center items-end ">
-                                <button type="submit" class="py-2 px-3 text-center text-white w-full bg-blue-500 hover:bg-blue-700 rounded-full cursor-pointer">
+                            <div class="flex justify-center items-end mb-3">
+                                <button type="submit" class="py-2 px-3 text-center text-white w-40 bg-blue-500 hover:bg-blue-700 rounded-full cursor-pointer">
                                     Login
                                 </button>
+                            </div>
+                            <div class="flex justify-center items-end ">
+                                <div
+                                    @click="openDialog"
+                                    class="py-2 px-3 text-center text-white w-40 bg-orange-500 hover:bg-orange-700 rounded-full cursor-pointer">
+                                    Open Dialog
+                                </div>
                             </div>
                         </div>
                     </form>
