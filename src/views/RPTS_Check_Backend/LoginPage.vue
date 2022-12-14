@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { reduce } from 'lodash';
-import { onMounted , ref} from 'vue';
+import { onMounted , watch , ref} from 'vue';
 import { useRouter } from 'vue-router';
 import DialogRegister from '../../components/common/DialogRegister.vue';
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
@@ -17,6 +16,7 @@ const username = ref<string>('')
 const password = ref<string>('')
 
 const isDialogOpen = ref<boolean>(false)
+const oldData = ref<any>('')
 
 function login(){
     _api.login(username.value,password.value).then((res)=>{
@@ -30,7 +30,12 @@ function login(){
             },2000)
         }else if(data.status === true && data.isFirstTime === true){
             _msg.confirm(data.msg,'warning',false,'ไปยังหน้าลงทะเบียน').then((isConfirmed)=>{
+                oldData.value = data.data
+                console.log('assing data in oldData ' , oldData.value);
+
                 isLoggedIn.value = true
+
+                // หน้าสมัครจะขึ้นก็ต่อเมื่อ isDialogOpen === true
                 if(isConfirmed === true){
                     isDialogOpen.value = true
                 }
@@ -41,18 +46,36 @@ function login(){
     })
 }
 
-function registerSuccess(closeDialog:Boolean){
-    _msg.succ('ลงทะเบียนสำเร็จ',2)
-    setTimeout(()=>{
-        router.push('/')
-    },2000)
-    isDialogOpen.value = Boolean(closeDialog)
+function registerSuccess(data:Boolean){
+    isDialogOpen.value = Boolean(data)
+    router.push('/')
 }
+
+// function registerSuccess(registerData:any){
+//     // isDialogOpen.value = Boolean(registerData.isClose)
+//     // console.log('register data returned => ' ,registerData);
+
+//     _msg.confirm('ต้องการบันทึกข้อมูลใช่หรือไม่').then((isConfirmed)=>{
+//         if(isConfirmed){
+//             _api.register(registerData.dataUpdate).then((res)=>{
+//                 const data = res.data
+//                 if(data.status){
+//                     _msg.succ(data.msg)
+
+//                 }
+//             })
+//         }
+//     })
+// }
 
 function openDialog(){
     isDialogOpen.value = !isDialogOpen.value
 }
 
+watch(isDialogOpen,()=>{
+    console.log(isDialogOpen);
+
+})
 </script>
 <template>
     <AdminNavigationBar>
@@ -98,6 +121,7 @@ function openDialog(){
     <DialogRegister
             persistent
             v-model:isDialogOpen="isDialogOpen"
+            v-model:data="oldData"
             @register-success="registerSuccess">
     </DialogRegister>
 

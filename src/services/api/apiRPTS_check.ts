@@ -3,8 +3,9 @@ import axios from 'axios'
 const url = 'http://loclhost:4000'
 export default class apiRPTS {
 
-    register(){
-        return axios.get('/api/register')
+    register(data:any){
+        console.log('check data befor send req',data);
+        return axios.post('/api/register',data)
     }
 
     login(username:string , password:string){
