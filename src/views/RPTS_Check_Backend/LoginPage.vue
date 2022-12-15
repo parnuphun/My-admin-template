@@ -101,7 +101,8 @@ function storeCredentialData(credentialData:any){
 
                             <div class="flex justify-between items-center">
 
-                                <span class="ml-1 text-blue-500 hover:text-blue-600 cursor-pointer"> forgot password ? </span>
+                                <span class="ml-1 text-blue-500 hover:text-blue-600 cursor-pointer"
+                                    @click="router.push('/testBackend/forgotPassword')"> forgot password ? </span>
                                 <span class="mr-1 text-blue-500 hover:text-blue-600 cursor-pointer"> Register </span>
                             </div>
                         </div>

@@ -16,6 +16,7 @@ const router = createRouter({
 
         // check backend
         { path: '/testBackend/login' , component:() => import('../views/RPTS_Check_Backend/LoginPage.vue')},
+        { path: '/testBackend/forgotPassword' , component:() => import('../views/RPTS_Check_Backend/ForgotPassword.vue')},
 
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
@@ -34,10 +35,20 @@ const router = createRouter({
 // route guard
 router.beforeEach((to,from)=>{
     // console.log(_auth.isLoggedIn());
-    if(to.path.startsWith('/testBackend/login') && _auth.isLoggedIn() === true){
+    console.log(from.path);
+    console.log(to.path);
+
+    // ถ้า login แล้วจะกลับมาที่หน้า Login อีกไม่ได้
+    if((to.path.startsWith('/testBackend/login')) && _auth.isLoggedIn() === true){
         router.push('/')
         return false
     }
+
+    if((from.path.startsWith('/testBackend/login') && to.path.startsWith('/testBackend/forgotPassword'))
+        || (from.path.startsWith('/') && to.path.startsWith('/testBackend/forgotPassword'))){
+        return true
+    }
+
     if(!to.path.startsWith('/testBackend/login') && _auth.isLoggedIn() === false) {
         _msgAlert.confirm('กรุณาเข้าสู่ระบบก่อน','error').then((isConfirmed)=>{
             if(isConfirmed){
