@@ -5,7 +5,6 @@ import DialogRegister from '../../components/common/DialogRegister.vue';
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
-import { isLoggedIn } from '../../store/auth'
 
 const _api = new apiRPTS()
 const _msg = new MsgAlert()
@@ -14,109 +13,108 @@ const router = useRouter()
 
 const username = ref<string>('')
 const password = ref<string>('')
+const rememberMe = ref<boolean>(false)
 
 const isDialogOpen = ref<boolean>(false)
 const oldData = ref<any>('')
 
-function login(){
-    _api.login(username.value,password.value).then((res)=>{
-        const data = res.data
 
-        if(data.status === true && data.isFirstTime === false){
-            isLoggedIn.value = true
-            _msg.succ(data.msg,2)
+function login(){
+    _api.login(username.value,password.value,rememberMe.value).then((res)=>{
+        const ResponsData = res.data
+
+        // login success
+        if(ResponsData.status === true && ResponsData.isFirstTime === false){
+
+            const newCredentialData = {
+                userRoles: ResponsData.credentialData.USER_ROLES,
+                userAvatar: ResponsData.credentialData.User_Avatar,
+                userEmail: ResponsData.credentialData.User_Email,
+                userFname: ResponsData.credentialData.User_Fname,
+                userLname: ResponsData.credentialData.User_Lname,
+                userRmutiId: ResponsData.credentialData.User_Rmuti_Id,
+                Authorization : `Bearer ${ResponsData.credentialData.User_Token}`
+            }
+
+            _msg.succ(ResponsData.msg,2)
+
+            storeCredentialData(newCredentialData)
             setTimeout(()=>{
                 router.push('/')
-            },2000)
-        }else if(data.status === true && data.isFirstTime === true){
-            _msg.confirm(data.msg,'warning',false,'ไปยังหน้าลงทะเบียน').then((isConfirmed)=>{
-                oldData.value = data.data
-                console.log('assing data in oldData ' , oldData.value);
-
-                isLoggedIn.value = true
+            },1000)
+        // first login
+        }else if(ResponsData.status === true && ResponsData.isFirstTime === true){
+            _msg.confirm(ResponsData.msg,'warning',false,'ไปยังหน้าลงทะเบียน').then((isConfirmed)=>{
+                oldData.value = ResponsData.data
 
                 // หน้าสมัครจะขึ้นก็ต่อเมื่อ isDialogOpen === true
                 if(isConfirmed === true){
                     isDialogOpen.value = true
                 }
             })
-        }else if(data.status === false && data.isFirstTime === false){
-            _msg.err(data.msg)
+        // login error
+        }else if(ResponsData.status === false && ResponsData.isFirstTime === false){
+            _msg.err(ResponsData.msg)
         }
     })
 }
 
+// After component emit value
 function registerSuccess(data:Boolean){
     isDialogOpen.value = Boolean(data)
-    router.push('/')
+    login()
 }
 
-// function registerSuccess(registerData:any){
-//     // isDialogOpen.value = Boolean(registerData.isClose)
-//     // console.log('register data returned => ' ,registerData);
-
-//     _msg.confirm('ต้องการบันทึกข้อมูลใช่หรือไม่').then((isConfirmed)=>{
-//         if(isConfirmed){
-//             _api.register(registerData.dataUpdate).then((res)=>{
-//                 const data = res.data
-//                 if(data.status){
-//                     _msg.succ(data.msg)
-
-//                 }
-//             })
-//         }
-//     })
-// }
-
-function openDialog(){
-    isDialogOpen.value = !isDialogOpen.value
+function storeCredentialData(credentialData:any){
+    localStorage.setItem('credential',JSON.stringify(credentialData))
 }
 
-watch(isDialogOpen,()=>{
-    console.log(isDialogOpen);
 
-})
 </script>
 <template>
-    <AdminNavigationBar>
-        <div class="w-full h-screen flex items-center justify-center bg-gray-100">
-            <div class="w-96 p-4 bg-gray-200 border-2 border-gray-400 border-solid rounded text-center">
-                <div class="h-full w-full">
-                    <form @submit.prevent="login" class="h-full text-left">
-                        <div class="h-full">
-                            <div class="text-center mb-10">
-                                <span class="text-3xl text-center"> Login </span>
-                            </div>
-                            <div class="mb-3">
-                                <label class="ml-1"> Username </label>
-                                <input v-model="username" type="text" class="w-full p-2 text-md bg-white rounded-md focus:ring  ">
-                            </div>
-                            <div class="mb-10">
-                                <label class="ml-1"> Password </label>
-                                <input v-model="password" type="password" class="w-full mb-2 p-2 text-md bg-white rounded-md focus:ring ">
-                                <div class="flex justify-between items-center">
-                                    <span class="ml-1 text-blue-500 hover:text-blue-600 cursor-pointer"> forgot password ? </span>
-                                    <span class="mr-1 text-blue-500 hover:text-blue-600 cursor-pointer"> Register </span>
-                                </div>
-                            </div>
-                            <div class="flex justify-center items-end mb-3">
-                                <button type="submit" class="py-2 px-3 text-center text-white w-40 bg-blue-500 hover:bg-blue-700 rounded-full cursor-pointer">
-                                    Login
-                                </button>
-                            </div>
-                            <div class="flex justify-center items-end ">
-                                <div
-                                    @click="openDialog"
-                                    class="py-2 px-3 text-center text-white w-40 bg-orange-500 hover:bg-orange-700 rounded-full cursor-pointer">
-                                    Open Dialog
-                                </div>
+    <div class="w-full h-screen flex items-center justify-center bg-gray-100">
+        <div class="w-96 py-10 px-6 bg-white border-2 border-gray-400 border-solid rounded text-center">
+            <div class="h-full w-full">
+                <v-form @submit.prevent="login" class="h-full text-left">
+                    <div class="h-full">
+                        <div class="text-center mb-10">
+                            <span class="text-3xl text-center"> Login </span>
+                        </div>
+                        <div class="">
+                            <v-text-field
+                                prepend-icon="mdi-account"
+                                v-model="username"
+                                label="Username"
+                                required
+                            ></v-text-field>
+
+                        </div>
+                        <div class="mb-10">
+                            <v-text-field
+                                prepend-icon="mdi-lock"
+                                v-model="password"
+                                label="Password"
+                                type="password"
+                                required
+                            ></v-text-field>
+                            <v-checkbox label="remember me" color="blue" class="-mt-6" v-model="rememberMe" ></v-checkbox>
+
+                            <div class="flex justify-between items-center">
+
+                                <span class="ml-1 text-blue-500 hover:text-blue-600 cursor-pointer"> forgot password ? </span>
+                                <span class="mr-1 text-blue-500 hover:text-blue-600 cursor-pointer"> Register </span>
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div class="flex justify-center items-end mb-3">
+                            <button type="submit" class="py-2 px-3 text-center text-white w-40 bg-blue-500 hover:bg-blue-700 rounded-full cursor-pointer">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </v-form>
             </div>
         </div>
-    </AdminNavigationBar>
+    </div>
 
     <DialogRegister
             persistent

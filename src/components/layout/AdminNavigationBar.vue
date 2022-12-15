@@ -4,9 +4,14 @@ import { navigationMenu  } from '../../plugin/navigationData'
 import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/settingData'
+import MsgAlert from '../../services/msgAlert';
+// import { credentialData } from '../../store/settingData';
 
+    const _msg = new MsgAlert()
     const isOpenMenu = ref(false)
     const isDrawer = ref(true)
+    const credentialData = ref()
+
     // theme
     const rentTheme = ref('dark')
     let setting : webSetting = reactive({
@@ -14,7 +19,10 @@ import { isRail } from '../../store/settingData'
     })
 
     onMounted(()=>{
+        credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
+
         // set default setting
+
         if(!localStorage.getItem('setting')){
             localStorage.setItem('setting',JSON.stringify(setting))
         }else{
@@ -26,19 +34,40 @@ import { isRail } from '../../store/settingData'
     function changeTheme(theme:layOutTheme){
         setting.theme = theme
         rentTheme.value = setting.theme
-        console.log(setting.theme);
         localStorage.setItem('setting',JSON.stringify(setting))
     }
 
     //route
-    const routes_useRouter = useRouter()
+    const router = useRouter()
     const currentPath = useRoute()
 
     function getCurrentPath(url:string){
-        routes_useRouter.push(url)
+        router.push(url)
     }
 
+    function logout(){
+        _msg.confirm('คุณต้องการจากระบบใช่ไหม ?','question').then((isConfirmed)=>{
+            if(isConfirmed){
+                _msg.succ('ออกจากระบบแล้ว',1)
+                localStorage.removeItem('credential')
+                setTimeout(() => {
+                    router.push('/testBackend/login')
+                }, 1500);
+            }
+        })
+    }
 
+    const isFullScreen = ref(false)
+    function fullscreen(){
+        const doc = document.documentElement as HTMLHtmlElement;
+        if(isFullScreen.value === false){
+            doc.requestFullscreen();
+            isFullScreen.value = true
+        }else{
+            document.exitFullscreen();
+            isFullScreen.value = false
+        }
+    }
 </script>
 
 <template>
@@ -54,12 +83,17 @@ import { isRail } from '../../store/settingData'
 
                     <v-app-bar-title color=""> ระบบติดตามความก้าวหน้างานวิจัย </v-app-bar-title>
 
+                    <v-btn icon class="" @click="fullscreen">
+                        <v-icon size="x-large" v-if="isFullScreen">mdi-fullscreen-exit</v-icon>
+                        <v-icon size="x-large" v-else="isFullScreen">mdi-fullscreen</v-icon>
+                     </v-btn>
+
                     <!-- message box -->
                     <v-menu :close-on-content-click="false" location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn icon v-bind="props" class="mr-3">
                                 <v-badge content="6" color="red">
-                                    <v-icon>mdi-bell-outline</v-icon>
+                                    <v-icon >mdi-bell-outline</v-icon>
                                 </v-badge>
                             </v-btn>
                         </template>
@@ -153,7 +187,7 @@ import { isRail } from '../../store/settingData'
                     <!-- user profile -->
                     <v-menu :close-on-content-click="false" location="bottom">
                         <template v-slot:activator="{ props }">
-                            <v-btn  v-bind="props" icon >
+                            <v-btn  v-bind="props" icon size="">
                                 <v-avatar
                                     color="brown"
                                     size=""
@@ -164,19 +198,28 @@ import { isRail } from '../../store/settingData'
                         </template>
 
                         <v-card min-width="300">
-                            <v-list>
-                            <v-list-item
-                                prepend-avatar="https://cdn.vuetifyjs.com/images/john.jpg"
-                                title="ภานุพันธ์ นามวงษ์"
-                                subtitle="นักศึกษา , ผู้พัฒนา"
-                            >
-                                <template v-slot:append>
-                                <v-btn
-                                    variant="text"
-                                    icon="mdi-login"
-                                ></v-btn>
-                                </template>
-                            </v-list-item>
+                            <v-list line="three">
+                                <v-list-item
+                                    :title="`${credentialData.userFname} ${credentialData.userLname}`"
+                                    :subtitle="credentialData.userRoles.toString()"
+                                >
+                                    <template v-slot:prepend>
+                                        <v-avatar size="x-large">
+                                            <v-img
+                                                :src="credentialData.userAvatar"
+                                                alt="user avatar"
+                                            ></v-img>
+                                        </v-avatar>
+                                    </template>
+
+                                    <template v-slot:append>
+                                        <v-btn
+                                            @click="logout()"
+                                            variant="text"
+                                            icon="mdi-login"
+                                        ></v-btn>
+                                    </template>
+                                </v-list-item>
                             </v-list>
                             <v-divider></v-divider>
                         </v-card>
@@ -205,7 +248,6 @@ import { isRail } from '../../store/settingData'
             <!-- side bar -->
             <v-navigation-drawer
                 v-model="isRail"
-                color=""
                 :elevation="2"
                 >
                 <!-- <div class="w-full h-16 mb-3 flex justify-center items-center text-white text-center bg-orange-500 shadow-lg">

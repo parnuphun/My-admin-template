@@ -22,48 +22,97 @@ export const navigationMenu:NavigationItem[] = [
         link : '/dashBoard' ,
         group : false
     },
+    {
+        id: 'news' ,
+        title : 'ข่าวสาร' ,
+        icon : 'newspaper' ,
+        link : '/news' ,
+        group : false
+    },
+    {
+        id: 'reseachList' ,
+        title : 'รายชื่อโครงการทั้งหมด' ,
+        icon : 'bookshelf' ,
+        link : '/reseachList' ,
+        group : false
+    },
+    {
+        id: 'myReseachList' ,
+        title : 'โครงการของฉัน' ,
+        icon : 'text-box' ,
+        link : '/myReseachList' ,
+        group : false
+    },
+    {
+        id: 'teachers' ,
+        title : 'อาจารย์' ,
+        icon : 'account-tie-woman' ,
+        link : '/teachers' ,
+        group : false
+    },
+    {
+        id: 'files' ,
+        title : 'เอกสาร' ,
+        icon : 'file-multiple' ,
+        link : '/files' ,
+        group : false
+    },
+    {
+        id: 'assessmentForm' ,
+        title : 'แบบประเมิน' ,
+        icon : 'clipboard-list' ,
+        link : '/assessmentForm' ,
+        group : false
+    },
+    {
+        id: 'usersList' ,
+        title : 'รายชื่อผู้ใช้าน' ,
+        icon : 'account-supervisor' ,
+        link : '/usersList' ,
+        group : false
+    },
+    {
+        id: '' ,
+        title : 'ถังขยะ' ,
+        icon : 'trash-can' ,
+        link : '/recycle' ,
+        group : false
+    },
+    {
+        id: '' ,
+        title : 'ตั้งค่า' ,
+        icon : 'cog' ,
+        link : '/setting' ,
+        group : false
+    },
     // {
-    //     id: '' ,
-    //     title : 'ถังขยะ' ,
-    //     icon : 'trash-can' ,
-    //     link : '/recycle' ,
+    //     id: 'test_calendar' ,
+    //     title : 'Test Calendar' ,
+    //     icon : 'test-tube' ,
+    //     link : '/test/test_calendar' ,
     //     group : false
     // },
     // {
-    //     id: '' ,
-    //     title : 'ตั้งค่า' ,
-    //     icon : 'cog' ,
-    //     link : '/setting' ,
+    //     id: 'test_calendar' ,
+    //     title : 'Test SweetAlert' ,
+    //     icon : 'test-tube' ,
+    //     link : '/test/test_sweetAlert' ,
     //     group : false
     // },
-    {
-        id: 'test_calendar' ,
-        title : 'Test Calendar' ,
-        icon : 'test-tube' ,
-        link : '/test/test_calendar' ,
-        group : false
-    },
-    {
-        id: 'test_calendar' ,
-        title : 'Test SweetAlert' ,
-        icon : 'test-tube' ,
-        link : '/test/test_sweetAlert' ,
-        group : false
-    },
-    {
-        id: 'test_datatable' ,
-        title : 'Test DataTable MN' ,
-        icon : 'test-tube' ,
-        link : '/test/Test_DataTableManual' ,
-        group : false
-    },
-    {
-        id: 'admin_login' ,
-        title : 'Login' ,
-        icon : 'login-variant' ,
-        link : '/testBackend/login' ,
-        group : false
-    },
+    // {
+    //     id: 'test_datatable' ,
+    //     title : 'Test DataTable MN' ,
+    //     icon : 'test-tube' ,
+    //     link : '/test/Test_DataTableManual' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'admin_login' ,
+    //     title : 'Login' ,
+    //     icon : 'login-variant' ,
+    //     link : '/testBackend/login' ,
+    //     group : false
+    // },
     // {
     //     id: 'group' ,
     //     title : 'กลุ่ม' ,

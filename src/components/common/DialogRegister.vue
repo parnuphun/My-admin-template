@@ -14,10 +14,6 @@ const _msg = new MsgAlert()
         (event: 'register-success' ,size:boolean):void
     }>()
 
-    onMounted(()=>{
-        _api.register
-    })
-
     function registerSuccess(){
         _msg.confirm('ต้องการบันทึกข้อมูลใช่หรือไม่').then((isConfirmed)=>{
             if(isConfirmed){
@@ -50,7 +46,7 @@ const _msg = new MsgAlert()
                     <div class="flex flex-wrap w-full h-full">
                         <div class="w-full">
                             <v-text-field
-                                v-model="props.data.OldAccount_Id"
+                                v-model="props.data.OldAccount_Rmuti_Id"
                                 :counter="13"
                                 label="รหัสนักศึกษา"
                                 readonly

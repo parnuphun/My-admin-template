@@ -1,8 +1,9 @@
 import { createRouter , createWebHistory } from 'vue-router'
-import { isLoggedIn } from '../store/auth'
 import MsgAlert from '../services/msgAlert'
+import authService from '../services/auth'
 
 const _msgAlert = new MsgAlert()
+const _auth = new authService()
 
 const router = createRouter({
     history : createWebHistory(),
@@ -32,16 +33,17 @@ const router = createRouter({
 
 // route guard
 router.beforeEach((to,from)=>{
-    if(to.path.startsWith('/test/') && !isLoggedIn.value) {
+    // console.log(_auth.isLoggedIn());
+    if(to.path.startsWith('/testBackend/login') && _auth.isLoggedIn() === true){
+        router.push('/')
+        return false
+    }
+    if(!to.path.startsWith('/testBackend/login') && _auth.isLoggedIn() === false) {
         _msgAlert.confirm('กรุณาเข้าสู่ระบบก่อน','error').then((isConfirmed)=>{
             if(isConfirmed){
                 router.push('/testBackend/login')
             }
         })
-        return false
-    }
-    if(to.path.startsWith('/testBackend/login') && isLoggedIn.value === true){
-        // router.push('/')
         return false
     }
 })
