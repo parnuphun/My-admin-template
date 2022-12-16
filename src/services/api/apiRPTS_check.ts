@@ -21,5 +21,13 @@ export default class apiRPTS {
         return axios.post('/api/login',data)
     }
 
+    forgorPassword(email:string){
+        return axios.post('/api/forgotPassword',{email:email})
+    }
+
+    validateOTP(data:any){
+        return axios.post('/api/validateOTP',data)
+    }
+
 
 }
