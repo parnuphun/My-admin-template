@@ -40,7 +40,14 @@ export const navigationMenu:NavigationItem[] = [
         id: 'myReseachList' ,
         title : 'โครงการของฉัน' ,
         icon : 'text-box' ,
-        link : '/myReseachList' ,
+        link : '/testBackend/MyProjectList' ,
+        group : false
+    },
+    {
+        id: 'MessageBox' ,
+        title : 'กล่องข้อความ' ,
+        icon : 'mailbox-up' ,
+        link : '/testBackend/MessgeBox' ,
         group : false
     },
     {

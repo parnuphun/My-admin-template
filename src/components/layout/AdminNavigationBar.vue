@@ -275,8 +275,10 @@ import MsgAlert from '../../services/msgAlert';
 
             <!-- Content here !!! -->
             <VMain>
+
                 <div class="p-3 w-full h-full">
                     <slot></slot>
+
                 </div>
             </VMain>
         </VApp>

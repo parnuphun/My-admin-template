@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted , watch , ref} from 'vue';
 import { useRouter } from 'vue-router';
-import DialogRegister from '../../components/common/DialogRegister.vue';
+import RegisterDialog from '../../components/common/RegisterDialog.vue';
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
@@ -33,6 +33,7 @@ function login(){
                 userFname: ResponsData.credentialData.User_Fname,
                 userLname: ResponsData.credentialData.User_Lname,
                 userRmutiId: ResponsData.credentialData.User_Rmuti_Id,
+                userId: ResponsData.credentialData.User_Id,
                 Authorization : `Bearer ${ResponsData.credentialData.User_Token}`
             }
 
@@ -117,12 +118,12 @@ function storeCredentialData(credentialData:any){
         </div>
     </div>
 
-    <DialogRegister
+    <RegisterDialog
             persistent
             v-model:isDialogOpen="isDialogOpen"
             v-model:data="oldData"
             @register-success="registerSuccess">
-    </DialogRegister>
+    </RegisterDialog>
 
 
 </template>
