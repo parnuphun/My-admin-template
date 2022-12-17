@@ -29,5 +29,9 @@ export default class apiRPTS {
         return axios.post('/api/validateOTP',data)
     }
 
+    resetPassword(data:any){
+        return axios.post('/api/resetPassword',data)
+    }
+
 
 }
