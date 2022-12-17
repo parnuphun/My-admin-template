@@ -3,6 +3,8 @@ import axios from 'axios'
 const url = 'http://loclhost:4000'
 export default class apiRPTS {
 
+    // users
+
     register(data:any){
         return axios.post('/api/register',data)
     }
@@ -29,9 +31,19 @@ export default class apiRPTS {
         return axios.post('/api/validateOTP',data)
     }
 
-    resetPassword(data:any){
+    resetPassword(data:Object){
         return axios.post('/api/resetPassword',data)
     }
 
+    // project
+    createNewProject(data:Object){
+        return axios.post('/api/createNewProject',data)
+    }
+
+    myProjectList(data:Object){
+        console.log('check data : ',data);
+        return axios.post('/api/myProjectList',data)
+
+    }
 
 }

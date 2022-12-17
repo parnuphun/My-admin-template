@@ -18,6 +18,8 @@ const router = createRouter({
         { path: '/testBackend/login' , component:() => import('../views/RPTS_Check_Backend/LoginPage.vue')},
         { path: '/testBackend/forgotPassword' , component:() => import('../views/RPTS_Check_Backend/ForgotPassword.vue')},
 
+        { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS_Check_Backend/MyProjectList.vue')},
+
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
         { path: '/test/Test_DataTableManual' , component: () => import('../views/test/Test_DataTableManual.vue')} ,
@@ -35,8 +37,8 @@ const router = createRouter({
 // route guard
 router.beforeEach((to,from)=>{
     // console.log(_auth.isLoggedIn());
-    console.log(from.path);
-    console.log(to.path);
+    // console.log(from.path);
+    // console.log(to.path);
 
     // ถ้า login แล้วจะกลับมาที่หน้า Login อีกไม่ได้
     if((to.path.startsWith('/testBackend/login')) && _auth.isLoggedIn() === true){
