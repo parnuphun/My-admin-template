@@ -1,6 +1,7 @@
 import { createRouter , createWebHistory } from 'vue-router'
 import MsgAlert from '../services/msgAlert'
 import authService from '../services/auth'
+import { ref } from 'vue'
 
 const _msgAlert = new MsgAlert()
 const _auth = new authService()
@@ -19,6 +20,7 @@ const router = createRouter({
         { path: '/testBackend/forgotPassword' , component:() => import('../views/RPTS_Check_Backend/ForgotPassword.vue')},
 
         { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS_Check_Backend/MyProjectList.vue')},
+        { path: '/testBackend/ProjectDetail' , component:() => import('../views/RPTS_Check_Backend/ProjectDetail.vue')},
 
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
@@ -36,29 +38,33 @@ const router = createRouter({
 
 // route guard
 router.beforeEach((to,from)=>{
-    // console.log(_auth.isLoggedIn());
-    // console.log(from.path);
-    // console.log(to.path);
 
     // ถ้า login แล้วจะกลับมาที่หน้า Login อีกไม่ได้
-    if((to.path.startsWith('/testBackend/login')) && _auth.isLoggedIn() === true){
-        router.push('/')
-        return false
-    }
+    _auth.isLoggedIn().then((isLoggedIn)=>{
+        if((to.path.startsWith('/testBackend/login')) && isLoggedIn === true){
+            router.push('/')
+            return false
+        }
+    })
 
+    // ยกเว้น path forgot password
     if((from.path.startsWith('/testBackend/login') && to.path.startsWith('/testBackend/forgotPassword'))
         || (from.path.startsWith('/') && to.path.startsWith('/testBackend/forgotPassword'))){
         return true
     }
 
-    if(!to.path.startsWith('/testBackend/login') && _auth.isLoggedIn() === false) {
-        _msgAlert.confirm('กรุณาเข้าสู่ระบบก่อน','error').then((isConfirmed)=>{
-            if(isConfirmed){
-                router.push('/testBackend/login')
-            }
-        })
-        return false
-    }
+    // กรณีไม่ไปหน้าอื่นที่ไม่ใช่หน้า login แล้วยังไม่ได้ล็อคอินให้ login ก่อน
+    _auth.isLoggedIn().then((isLoggedIn)=>{
+        if(!to.path.startsWith('/testBackend/login') && isLoggedIn === false) {
+            _msgAlert.confirm('หมดอายุการใช้งาน','error').then((isConfirmed)=>{
+                if(isConfirmed){
+                    router.push('/testBackend/login')
+                }
+            })
+            return false
+        }
+    })
+
 })
 
 export default router
