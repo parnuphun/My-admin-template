@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref ,onMounted} from 'vue'
+import {ref ,onMounted , watch} from 'vue'
 import { useRouter } from 'vue-router';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
@@ -14,6 +14,9 @@ const OTP = ref()
 const isEmailSend = ref(false)
 const isOTPValid = ref(false)
 const isLoadingProgresBar = ref(false)
+const isButtonDisable = ref(true)
+const matchPasswordMsg:string = 'Password is not match'
+
 const email = ref<string>('')
 
 const newPassword = ref('')
@@ -74,9 +77,32 @@ function confirmNewPassword(){
             }
         })
     }else{
-        _msg.err('Password ที่ป้อนไม่ตรงกัน',0,true)
+        _msg.err('Password ที่ป้อนไม่ตรงกัน')
     }
 }
+
+function validatePassword(){
+    if(newPassword.value === repeatNewPassword.value){
+        isButtonDisable.value = false
+    }else{
+        isButtonDisable.value = true
+    }
+
+}
+
+watch([() => newPassword.value, () => repeatNewPassword.value],([newPasswordValue, repeatNewPasswordValue]) => {
+    if(newPasswordValue === '' || repeatNewPasswordValue === ''){
+        isButtonDisable.value = true;
+    }else{
+        if (newPasswordValue === repeatNewPasswordValue) {
+            isButtonDisable.value = false;
+        } else {
+            isButtonDisable.value = true;
+        }
+    }
+  }
+);
+
 </script>
 
 <template>
@@ -95,6 +121,7 @@ function confirmNewPassword(){
                             <v-text-field
                                 prepend-icon="mdi-email"
                                 v-model="email"
+                                bg-color="#e5e7eb"
                                 label="Enter your Email"
                                 required
                             ></v-text-field>
@@ -152,38 +179,43 @@ function confirmNewPassword(){
                         <div class="text-center mb-10">
                             <span class="text-3xl text-center"> New Password </span>
                         </div>
-
                         <div class="">
                             <v-text-field
-                                prepend-icon="mdi-form-textbox-password"
+                                prepend-inner-icon="mdi-form-textbox-password"
                                 v-model="newPassword"
                                 label="New Password"
+                                bg-color="#e5e7eb"
                                 type="password"
                                 required
                             ></v-text-field>
                         </div>
                         <div class="">
                             <v-text-field
-                                prepend-icon="mdi-"
+                                prepend-inner-icon="mdi-form-textbox-password"
                                 v-model="repeatNewPassword"
-                                label="Repeat New Password"
+                                bg-color="#e5e7eb"
+                                label="Repeat Password"
                                 type="password"
                                 required
                             ></v-text-field>
+                        </div>
+                        <div class="w-full text-left pl-3 -mt-3 mb-5">
+                            <span class="text-center text-red-500" v-if="isButtonDisable && (repeatNewPassword !== '' && newPassword !== '')"> {{matchPasswordMsg}} </span>
                         </div>
 
                         <div class="flex justify-center items-end gap-2 mb-3">
                             <v-btn
                                 class="w-32"
-                                color="success"
-                                @click="confirmNewPassword">
-                                ยืนยัน
-                            </v-btn>
-                            <v-btn
-                                class="w-32"
                                 color="error"
                                 @click="router.push('/testBackend/login')" >
                                 ยกเลิก
+                            </v-btn>
+                            <v-btn
+                                class="w-32"
+                                color="success"
+                                @click="confirmNewPassword"
+                                :disabled="isButtonDisable">
+                                ยืนยัน
                             </v-btn>
                         </div>
                     </div>
@@ -202,6 +234,7 @@ function confirmNewPassword(){
         padding: 5px;
         margin: 0 10px;
         font-size: 20px;
+        background-color: #e5e7eb;
         border-radius: 4px;
         border: 1px solid rgba(0, 0, 0, 0.3);
         text-align: center;
