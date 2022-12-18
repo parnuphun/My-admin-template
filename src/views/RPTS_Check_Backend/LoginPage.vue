@@ -83,16 +83,17 @@ function storeCredentialData(credentialData:any){
                         </div>
                         <div class="">
                             <v-text-field
-                                prepend-icon="mdi-account"
+                                prepend-inner-icon="mdi-account"
                                 v-model="username"
                                 label="Username"
+
                                 required
                             ></v-text-field>
 
                         </div>
                         <div class="mb-10">
                             <v-text-field
-                                prepend-icon="mdi-lock"
+                                prepend-inner-icon="mdi-lock"
                                 v-model="password"
                                 label="Password"
                                 type="password"
@@ -101,16 +102,20 @@ function storeCredentialData(credentialData:any){
                             <v-checkbox label="remember me" color="blue" class="-mt-6" v-model="rememberMe" ></v-checkbox>
 
                             <div class="flex justify-between items-center">
-
-                                <span class="ml-1 text-blue-500 hover:text-blue-600 cursor-pointer"
-                                    @click="router.push('/testBackend/forgotPassword')"> forgot password ? </span>
-                                <span class="mr-1 text-blue-500 hover:text-blue-600 cursor-pointer"> Register </span>
+                                <span
+                                    class="ml-1 text-blue-500 hover:text-blue-600 cursor-pointer"
+                                    @click="router.push('/testBackend/forgotPassword')">
+                                    forgot password ?
+                                </span>
                             </div>
                         </div>
                         <div class="flex justify-center items-end mb-3">
-                            <button type="submit" class="py-2 px-3 text-center text-white w-40 bg-blue-500 hover:bg-blue-700 rounded-full cursor-pointer">
+                            <v-btn
+                                type="submit"
+                                class="w-32"
+                                color="primary">
                                 Login
-                            </button>
+                            </v-btn>
                         </div>
                     </div>
                 </v-form>
