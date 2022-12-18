@@ -10,6 +10,8 @@
 - [storyset (ภาพประกอบเว็บ)](https://storyset.com/online)
 - [axios (ไว้เรียก API)](https://devahoy.com/blog/fetch-api-with-axios)
 - [moment js (ไว้ Format Date มีภาษาไทย)](https://momentjs.com/)
+- [vue3-otp-input](https://www.npmjs.com/package/vue3-otp-input)
+
 ### VSCode Extentions
 - [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin)
     - ทำ Take over mode เป็นการใช้ typescript ของ volar แทน typescript ของ vs code
@@ -47,3 +49,4 @@
 ## Note 
 - [แก้ CORS ด้วย Proxy](https://vitejs.dev/config/server-options.html#server-proxy)
 - [Vuetify Standard Color](https://stackoverflow.com/questions/52258669/how-to-change-the-text-color-of-a-vuetify-button)
+- [Vuetify Transition](https://www.youtube.com/watch?v=z9DxKjnpjnI)
