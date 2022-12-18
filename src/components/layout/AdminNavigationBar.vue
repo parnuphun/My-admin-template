@@ -5,12 +5,18 @@ import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/settingData'
 import MsgAlert from '../../services/msgAlert';
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+
 // import { credentialData } from '../../store/settingData';
+// perfect scroll bar
+
 
     const _msg = new MsgAlert()
     const isOpenMenu = ref(false)
     const isDrawer = ref(true)
     const credentialData = ref()
+
+    const isAlert = ref(false)
 
     // theme
     const rentTheme = ref('dark')
@@ -68,6 +74,14 @@ import MsgAlert from '../../services/msgAlert';
             isFullScreen.value = false
         }
     }
+
+    watch(isAlert,()=>{
+        if(isAlert.value) {
+            setTimeout(() => {
+                isAlert.value = false
+            }, 5000);
+        }
+    })
 </script>
 
 <template>
@@ -80,8 +94,11 @@ import MsgAlert from '../../services/msgAlert';
 
                 <!-- content in nav -->
                 <div class="w-full mr-6 flex flex-row items-center">
-
                     <v-app-bar-title color=""> ระบบติดตามความก้าวหน้างานวิจัย </v-app-bar-title>
+
+                    <v-btn icon class="" @click="isAlert = !isAlert" >
+                        <v-icon size="x-large" >mdi-message</v-icon>
+                     </v-btn>
 
                     <v-btn icon class="" @click="fullscreen">
                         <v-icon size="x-large" v-if="isFullScreen">mdi-fullscreen-exit</v-icon>
@@ -107,7 +124,9 @@ import MsgAlert from '../../services/msgAlert';
                                 </v-list-item>
                                 <v-divider></v-divider>
 
+                                <perfect-scrollbar>
                                 <v-list height="200">
+
                                     <v-list-item
                                         width="400"
                                         title="เสนอโครงการติดตามงานวิจัย"
@@ -180,10 +199,10 @@ import MsgAlert from '../../services/msgAlert';
                                         </template>
                                     </v-list-item>
                                 </v-list>
+                            </perfect-scrollbar>
                             </v-list>
                         </v-card>
                     </v-menu>
-
                     <!-- user profile -->
                     <v-menu :close-on-content-click="false" location="bottom">
                         <template v-slot:activator="{ props }">
@@ -225,8 +244,6 @@ import MsgAlert from '../../services/msgAlert';
                         </v-card>
                     </v-menu>
 
-
-
                     <!-- theme mode button switch -->
                     <!-- <v-btn-toggle
                         variant="outlined"
@@ -249,10 +266,7 @@ import MsgAlert from '../../services/msgAlert';
             <v-navigation-drawer
                 v-model="isRail"
                 :elevation="2"
-                >
-                <!-- <div class="w-full h-16 mb-3 flex justify-center items-center text-white text-center bg-orange-500 shadow-lg">
-                    <p class="text-3xl">LOGO</p>
-                </div> -->
+            >
 
                 <!-- menu list -->
                 <v-list class="" nav >
@@ -275,12 +289,60 @@ import MsgAlert from '../../services/msgAlert';
 
             <!-- Content here !!! -->
             <VMain>
+                <v-container fluid>
+                    <div class="w-full h-full relative"  style="width: 100%;">
+                        <div class="fixed" style="z-index:999; width:100%;">
+                            <div class="w-full relative flex justify-end -ml-72" style="z-index:999;">
+                                <Transition name="toast">
+                                    <v-alert
+                                        v-model="isAlert"
+                                        icon="mdi-message"
+                                        type="success"
+                                        border="start"
+                                        closable
+                                        elevation="6"
+                                        :rounded="true"
+                                        position="absolute"
+                                        class="w-max"
+                                        style="z-index:999;"
+                                    >
+                                        This is My message
+                                    </v-alert>
+                                </Transition>
+                            </div>
+                        </div>
 
-                <div class="p-3 w-full h-full">
-                    <slot></slot>
+                        <slot></slot>
+                    </div>
+                </v-container>
 
-                </div>
             </VMain>
         </VApp>
     </VThemeProvider>
 </template>
+
+<style>
+    .toast-enter-from {
+        opacity: 0 ;
+        transform: translateX(600px)
+    }
+    .toast-enter-to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .toast-enter-active {
+        transition: all 0.5s ease-in-out;
+    }
+    .toast-leave-from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .toast-leave-to {
+        opacity: 0 ;
+        transform: translate(600px)
+
+    }
+    .toast-leave-active {
+        transition: all 0.3s ease-in-out;
+    }
+</style>
