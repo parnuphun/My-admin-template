@@ -5,9 +5,12 @@ import ProjectDetail from '../../components/common/ProjectDetail.vue';
 import { onMounted ,ref ,watch} from 'vue';
 import MsgAlert from '../../services/msgAlert';
 import apiRPTS from '../../services/api/apiRPTS_check';
+import { useRouter } from 'vue-router';
 
 const _msg = new MsgAlert()
 const _api = new apiRPTS()
+
+const router = useRouter()
 
 const isDialogNewProject = ref(false)
 const isDialogProjectDetail = ref(false)
@@ -23,7 +26,7 @@ async function getProjectList(){
     }
     await _api.myProjectList(data).then((res)=>{
         projectList.value = res.data.projectList
-        console.log(projectList.value);
+        // console.log(projectList.value);
     })
 }
 
@@ -56,7 +59,7 @@ watch(isDialogNewProject,()=>{
                     <td class="w-60">
 
                         <div class="flex flex-wrap justify-center">
-                            <v-btn class="mr-1" color="info"  @click="isDialogProjectDetail = true">
+                            <v-btn class="mr-1" color="info"  @click="router.push('/testBackend/projectDetail')">
                                 Detail
                             </v-btn>
                             <v-btn class="ml-1" color="red">

@@ -85,8 +85,9 @@ function storeCredentialData(credentialData:any){
                             <v-text-field
                                 prepend-inner-icon="mdi-account"
                                 v-model="username"
+                                bg-color="#e5e7eb"
                                 label="Username"
-
+                                density="comfortable"
                                 required
                             ></v-text-field>
 
@@ -95,6 +96,8 @@ function storeCredentialData(credentialData:any){
                             <v-text-field
                                 prepend-inner-icon="mdi-lock"
                                 v-model="password"
+                                bg-color="#e5e7eb"
+                                density="comfortable"
                                 label="Password"
                                 type="password"
                                 required

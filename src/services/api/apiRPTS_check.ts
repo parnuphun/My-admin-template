@@ -41,7 +41,6 @@ export default class apiRPTS {
     }
 
     myProjectList(data:Object){
-        console.log('check data : ',data);
         return axios.post('/api/myProjectList',data)
 
     }

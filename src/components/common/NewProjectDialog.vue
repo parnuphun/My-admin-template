@@ -62,7 +62,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <v-dialog v-model="props.isDialogOpen" hidden-overlay width="600">
+    <v-dialog v-model="props.isDialogOpen" hidden-overlay width="500">
         <v-card height="100%">
             <v-card-title class="p-6 bg-blue-500  text-white text-center">
                 <span class="text-2xl"> Create Project  </span>
@@ -74,26 +74,38 @@ const emit = defineEmits<{
                         <v-text-field
                             v-model="projectNameTH"
                             label="Project Name TH"
-                            prepend-icon="mdi-rename-box"
+                            bg-color="#e5e7eb"
+                            prepend-inner-icon="mdi-rename-box"
+                            density="comfortable"
+                            clearable
                             requied>
                         </v-text-field>
                         <v-text-field
                             v-model="projectNameEN"
                             label="Project Name EN"
-                            prepend-icon="mdi-"
+                            bg-color="#e5e7eb"
+                            prepend-inner-icon="mdi-"
+                            density="comfortable"
+                            clearable
                             requied>
                         </v-text-field>
                         <v-textarea
                             v-model="projectDetail"
                             label="Proect Detail"
-                            prepend-icon="mdi-card-text-outline"
+                            bg-color="#e5e7eb"
+                            prepend-inner-icon="mdi-card-text-outline"
+                            density="comfortable"
+                            clearable
+                            counter=""
                             requied>
                         </v-textarea>
                         <v-file-input
                             accept="image/png, image/jpeg, image/bmp"
                             placeholder="Pick an Project Image"
                             prepend-icon="mdi-file-image"
+                            density="comfortable"
                             label="Project Image"
+                            bg-color="#e5e7eb"
                         ></v-file-input>
                     </div>
                     <!-- <div class="mt-3 flex w-full justify-center items-center">
@@ -111,16 +123,14 @@ const emit = defineEmits<{
                     </div> -->
                 </form>
             </v-card-text>
-            <v-card-actions>
-                <div class="flex w-full justify-center items-center">
-                    <v-btn color="error" @click="close" variant="outlined">
+                <div class="flex w-full justify-center mb-4 gap-1 items-center">
+                    <v-btn color="error" @click="close">
                         cancel
                     </v-btn>
-                    <v-btn color="green" @click="createNewProject" variant="outlined">
+                    <v-btn color="green" @click="createNewProject">
                         Create
                     </v-btn>
                 </div>
-            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
