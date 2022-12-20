@@ -23,10 +23,17 @@ export const navigationMenu:NavigationItem[] = [
         group : false
     },
     {
-        id: 'news' ,
-        title : 'ข่าวสาร' ,
-        icon : 'newspaper' ,
-        link : '/news' ,
+        id: 'StudentList' ,
+        title : 'รายชื่อนักศึกษา' ,
+        icon : 'account-school' ,
+        link : '/testBackend/StudentList' ,
+        group : false
+    },
+    {
+        id: 'myReseachList' ,
+        title : 'โครงการของฉัน' ,
+        icon : 'text-box' ,
+        link : '/testBackend/MyProjectList' ,
         group : false
     },
     {
@@ -37,10 +44,10 @@ export const navigationMenu:NavigationItem[] = [
         group : false
     },
     {
-        id: 'myReseachList' ,
-        title : 'โครงการของฉัน' ,
-        icon : 'text-box' ,
-        link : '/testBackend/MyProjectList' ,
+        id: 'news' ,
+        title : 'ข่าวสาร' ,
+        icon : 'newspaper' ,
+        link : '/news' ,
         group : false
     },
     {
@@ -69,13 +76,6 @@ export const navigationMenu:NavigationItem[] = [
         title : 'แบบประเมิน' ,
         icon : 'clipboard-list' ,
         link : '/assessmentForm' ,
-        group : false
-    },
-    {
-        id: 'usersList' ,
-        title : 'รายชื่อผู้ใช้าน' ,
-        icon : 'account-supervisor' ,
-        link : '/usersList' ,
         group : false
     },
     {

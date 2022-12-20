@@ -21,6 +21,7 @@ const router = createRouter({
 
         { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS_Check_Backend/MyProjectList.vue')},
         { path: '/testBackend/ProjectDetail' , component:() => import('../views/RPTS_Check_Backend/ProjectDetail.vue')},
+        { path: '/testBackend/StudentList' , component:() => import('../views/RPTS_Check_Backend/StudentList.vue')},
 
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,

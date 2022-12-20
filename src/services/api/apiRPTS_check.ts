@@ -4,6 +4,9 @@ const url = 'http://loclhost:4000'
 export default class apiRPTS {
 
     // users
+    studentRegister(studentData:Object){
+        return axios.post('/api/studentRegister',studentData)
+    }
 
     register(data:any){
         return axios.post('/api/register',data)
@@ -43,6 +46,12 @@ export default class apiRPTS {
     myProjectList(data:Object){
         return axios.post('/api/myProjectList',data)
 
+    }
+
+    // users
+    // get all student
+    getAllStudent(){
+        return axios.get('/api/getAllStudent')
     }
 
 }
