@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { constant } from 'lodash';
 import { onMounted , watch , ref} from 'vue';
 import { useRouter } from 'vue-router';
 import RegisterDialog from '../../components/common/RegisterDialog.vue';
@@ -16,10 +17,14 @@ const password = ref<string>('')
 const rememberMe = ref<boolean>(false)
 
 const isDialogOpen = ref<boolean>(false)
+const isLoadingProgresBar = ref<boolean>(false)
 const oldData = ref<any>('')
 
 
+
+
 function login(){
+    isLoadingProgresBar.value = true
     _api.login(username.value,password.value,rememberMe.value).then((res)=>{
         const ResponsData = res.data
 
@@ -40,6 +45,7 @@ function login(){
             _msg.succ(ResponsData.msg,2)
 
             storeCredentialData(newCredentialData)
+            isLoadingProgresBar.value = false
             setTimeout(()=>{
                 router.push('/')
             },1000)
@@ -53,9 +59,11 @@ function login(){
                     isDialogOpen.value = true
                 }
             })
+            isLoadingProgresBar.value = false
         // login error
         }else if(ResponsData.status === false && ResponsData.isFirstTime === false){
             _msg.err(ResponsData.msg)
+            isLoadingProgresBar.value = false
         }
     })
 }
@@ -73,6 +81,7 @@ function storeCredentialData(credentialData:any){
 
 </script>
 <template>
+    <v-progress-linear v-if="isLoadingProgresBar" indeterminate></v-progress-linear>
     <div class="w-full h-screen flex items-center justify-center bg-gray-100">
         <div class="w-96 py-10 px-6 bg-white border-2 border-gray-400 border-solid rounded text-center">
             <div class="h-full w-full">

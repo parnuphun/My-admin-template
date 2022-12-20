@@ -14,6 +14,7 @@ const router = useRouter()
 
 const isDialogNewProject = ref(false)
 const isDialogProjectDetail = ref(false)
+const isLoadingProgressBar = ref(false)
 const projectList = ref()
 
 onMounted(()=>{
@@ -26,7 +27,7 @@ async function getProjectList(){
     }
     await _api.myProjectList(data).then((res)=>{
         projectList.value = res.data.projectList
-        // console.log(projectList.value);
+        console.log(projectList.value);
     })
 }
 
@@ -38,9 +39,45 @@ watch(isDialogNewProject,()=>{
 </script>
 
 <template>
-    <AdminNavigationBar>
-        <v-btn color="primary" @click="isDialogNewProject = true"> Create Project</v-btn>
-        <v-table>
+    <AdminNavigationBar :is-loading-progress-bar="isLoadingProgressBar">
+        <div class="flex w-full justify-end">
+            <v-btn color="success" @click="isDialogNewProject = true"> Create Project</v-btn>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="w-1/5 mt-3" v-for="(project , i) of projectList" :key="i">
+                <v-card
+                    class="mx-auto"
+                    max-width="344"
+                >
+                    <v-img
+                        :src="project.Project_Avatar"
+                        height="200px"
+                        cover
+                    ></v-img>
+
+                    <v-card-title>
+                        {{project.Project_Name_EN}}
+                    </v-card-title>
+
+                    <v-card-subtitle>
+                        <v-chip color="primary">
+                            {{project.PROJECT_STATUS_ID.Project_Status_Name}}
+                        </v-chip>
+                    </v-card-subtitle>
+
+                    <div class="w-full flex p-2 gap-2 justify-center">
+                        <v-btn color="info" @click="router.push('/testBackend/projectDetail')"> Detail </v-btn>
+                        <v-btn color="red"> delete </v-btn>
+                    </div>
+
+
+                    <v-spacer></v-spacer>
+
+
+                </v-card>
+            </div>
+        </div>
+        <!-- <v-table>
             <thead>
                 <tr>
                     <th class="text-center">#</th>
@@ -70,7 +107,7 @@ watch(isDialogNewProject,()=>{
 
                 </tr>
             </tbody>
-        </v-table>
+        </v-table> -->
         <ProjectDetail
                 persistent
                 v-model:isDialogOpen="isDialogProjectDetail"

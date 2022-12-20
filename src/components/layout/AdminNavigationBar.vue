@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref , watch } from 'vue';
-import { navigationMenu  } from '../../plugin/navigationData'
+import { navigationMenu  } from '../../plugin/routeData';
 import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/settingData'
 import MsgAlert from '../../services/msgAlert';
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
 
 // import { credentialData } from '../../store/settingData';
 // perfect scroll bar
@@ -82,11 +81,16 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
             }, 5000);
         }
     })
+
+    const props = defineProps<{
+        isLoadingProgressBar?:boolean
+    }>()
 </script>
 
 <template>
     <VThemeProvider :theme="rentTheme">
         <VApp >
+
             <!-- nav bar -->
             <v-app-bar :elevation="2" color="">
                 <!-- toggle sidebar -->
@@ -124,7 +128,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
                                 </v-list-item>
                                 <v-divider></v-divider>
 
-                                <perfect-scrollbar>
                                 <v-list height="200">
 
                                     <v-list-item
@@ -199,7 +202,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
                                         </template>
                                     </v-list-item>
                                 </v-list>
-                            </perfect-scrollbar>
                             </v-list>
                         </v-card>
                     </v-menu>
@@ -261,7 +263,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
                     </v-btn-toggle> -->
                 </div>
             </v-app-bar>
-
             <!-- side bar -->
             <v-navigation-drawer
                 v-model="isRail"
@@ -286,7 +287,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
                     </div>
                 </v-list>
             </v-navigation-drawer>
-
             <!-- Content here !!! -->
             <VMain>
                 <v-container fluid>
@@ -298,7 +298,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
                                         v-model="isAlert"
                                         icon="mdi-message"
                                         type="success"
-                                        border="start"
                                         closable
                                         elevation="6"
                                         :rounded="true"
@@ -311,7 +310,6 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
                                 </Transition>
                             </div>
                         </div>
-
                         <slot></slot>
                     </div>
                 </v-container>
@@ -333,6 +331,7 @@ import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
     .toast-enter-active {
         transition: all 0.5s ease-in-out;
     }
+
     .toast-leave-from {
         opacity: 1;
         transform: translateY(0);
