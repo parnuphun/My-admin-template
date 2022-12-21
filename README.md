@@ -1,5 +1,4 @@
-## Tools
-### Frameworks / Packages 
+## Tools 
 - [vue3 composition api ](https://vuejs.org/guide/introduction.html#what-is-vue)
 - [vuetify3](https://next.vuetifyjs.com/en/getting-started/installation/)
 - [material design icon](https://materialdesignicons.com/)
