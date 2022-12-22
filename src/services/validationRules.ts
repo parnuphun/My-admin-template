@@ -10,3 +10,6 @@ export function isThaiLang(v:string){
     return v === '' || /^[\u0E00-\u0E7F\u0020]+$/.test(v) || 'กรุณากรอกเป็นภาษาไทยเท่านั้น'
 }
 
+export function isRmutiEmail(v:string){
+    return v === '' || /^[a-zA-Z0-9_.+-]+@rmuti\.ac\.th$/.test(v) || 'กรุณากรอกอีเมลให้อยู่ในรูปแบบ username@rmuti.ac.th'
+}
