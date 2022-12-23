@@ -17,8 +17,6 @@ const studentList = ref()
 function getAllStudent(){
     _api.getAllStudent().then((res)=>{
         studentList.value = res.data.studentList
-        console.log(studentList.value);
-
     })
 }
 

@@ -100,9 +100,9 @@ import MsgAlert from '../../services/msgAlert';
                 <div class="w-full mr-6 flex flex-row items-center">
                     <v-app-bar-title color=""> ระบบติดตามความก้าวหน้างานวิจัย </v-app-bar-title>
 
-                    <v-btn icon class="" @click="isAlert = !isAlert" >
+                    <!-- <v-btn icon class="" @click="isAlert = !isAlert" >
                         <v-icon size="x-large" >mdi-message</v-icon>
-                     </v-btn>
+                     </v-btn> -->
 
                     <v-btn icon class="" @click="fullscreen">
                         <v-icon size="x-large" v-if="isFullScreen">mdi-fullscreen-exit</v-icon>

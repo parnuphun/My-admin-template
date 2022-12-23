@@ -27,7 +27,7 @@ async function addStudent(){
 
         _api.studentRegister(data).then((res)=>{
             if(res.data.status){
-                _msg.succToast(res.data.msg)
+                _msg.succToast(res.data.msg,3)
                 closeDialog()
             }else{
                 _msg.err(res.data.msg)

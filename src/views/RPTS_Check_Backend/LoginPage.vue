@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { constant } from 'lodash';
 import { onMounted , watch , ref} from 'vue';
 import { useRouter } from 'vue-router';
-import RegisterDialog from '../../components/common/RegisterDialog.vue';
-import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
+import RegisterFirstTimeLogin from '../../components/common/RegisterFirstTimeLogin.vue';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
 
@@ -19,8 +17,6 @@ const rememberMe = ref<boolean>(false)
 const isDialogOpen = ref<boolean>(false)
 const isLoadingProgresBar = ref<boolean>(false)
 const oldData = ref<any>('')
-
-
 
 
 function login(){
@@ -49,10 +45,12 @@ function login(){
             setTimeout(()=>{
                 router.push('/')
             },1000)
-        // first login
+
+        // first time to login
         }else if(ResponsData.status === true && ResponsData.isFirstTime === true){
             _msg.confirm(ResponsData.msg,'warning',false,'ไปยังหน้าลงทะเบียน').then((isConfirmed)=>{
-                oldData.value = ResponsData.data
+                oldData.value = ResponsData.credentialData
+                console.log(oldData.value);
 
                 // หน้าสมัครจะขึ้นก็ต่อเมื่อ isDialogOpen === true
                 if(isConfirmed === true){
@@ -60,6 +58,7 @@ function login(){
                 }
             })
             isLoadingProgresBar.value = false
+
         // login error
         }else if(ResponsData.status === false && ResponsData.isFirstTime === false){
             _msg.err(ResponsData.msg)
@@ -74,6 +73,7 @@ function registerSuccess(data:Boolean){
     login()
 }
 
+// set credential to localStorage
 function storeCredentialData(credentialData:any){
     localStorage.setItem('credential',JSON.stringify(credentialData))
 }
@@ -135,12 +135,13 @@ function storeCredentialData(credentialData:any){
         </div>
     </div>
 
-    <RegisterDialog
-            persistent
-            v-model:isDialogOpen="isDialogOpen"
-            v-model:data="oldData"
-            @register-success="registerSuccess">
-    </RegisterDialog>
+    <RegisterFirstTimeLogin
+        persistent
+        v-model:data="oldData"
+        v-model:isDialogOpen="isDialogOpen"
+        @register-success="registerSuccess"
+    >
+    </RegisterFirstTimeLogin>
 
 
 </template>
