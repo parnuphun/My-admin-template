@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import {ref ,onMounted , watch} from 'vue'
+import {ref , watch} from 'vue'
 import { useRouter } from 'vue-router';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
 import OTPInput from '../../components/common/OTPInput.vue';
+import ResetPassword from '../../components/common/ResetPassword.vue'
+import { isRmutiEmail } from '../../services/validationRules';
 
 const _api = new apiRPTS()
 const _msg = new MsgAlert()
 
 const router = useRouter()
 
+const emailRule = [(v:string)=>isRmutiEmail(v)]
+
 const isEmailSend = ref(false)
 const isOTPValid = ref(false)
 const isLoadingProgresBar = ref(false)
 const isButtonDisable = ref(true)
-const matchPasswordMsg:string = 'Password is not match'
 
 const email = ref<string>('')
-
-const newPassword = ref('')
-const repeatNewPassword = ref('')
 
 // send email for get otp
 function confirmEmail(){
@@ -41,39 +41,6 @@ function confirmEmail(){
     })
 }
 
-// set new password
-function confirmNewPassword(){
-    if(newPassword.value === repeatNewPassword.value){
-        _msg.confirm('คุณต้องการจะเปลี่ยนรัหสผ่านใช่หรือไม่').then((isConfiremd)=>{
-            if(isConfiremd){
-                _api.resetPassword({newPassword: newPassword.value , email: email.value}).then((res)=>{
-                    if(res.data.status){
-                        _msg.succ('เปลี่ยนรหัสผ่านเรียบร้อย',1.5)
-                        setTimeout(()=>{
-                            router.push('/testBackend/login')
-                        },1500)
-                    }
-                })
-            }
-        })
-    }else{
-        _msg.err('Password ที่ป้อนไม่ตรงกัน')
-    }
-}
-
-watch([() => newPassword.value, () => repeatNewPassword.value],([newPasswordValue, repeatNewPasswordValue]) => {
-    if(newPasswordValue === '' || repeatNewPasswordValue === ''){
-        isButtonDisable.value = true;
-    }else{
-        if (newPasswordValue === repeatNewPasswordValue) {
-            isButtonDisable.value = false;
-        } else {
-            isButtonDisable.value = true;
-        }
-    }
-  }
-);
-
 </script>
 
 <template>
@@ -82,37 +49,43 @@ watch([() => newPassword.value, () => repeatNewPassword.value],([newPasswordValu
         <div    style="width:500px;"
             class="py-10 px-6 bg-white border-2 border-gray-400 border-solid rounded text-center">
             <div class="h-full w-full">
-                <v-form @submit.prevent="" class="h-full text-left" v-if="!isEmailSend">
-                    <div class="h-full">
-                        <div class="text-center mb-10">
-                            <span class="text-3xl text-center"> Forgot Password </span>
-                        </div>
-                        <div class="">
-                            <v-text-field
-                                prepend-icon="mdi-email"
-                                v-model="email"
-                                bg-color="#e5e7eb"
-                                label="Enter your Email"
-                                required
-                            ></v-text-field>
-                        </div>
-                        <div class="flex justify-center items-end gap-2 mb-3">
-                            <v-btn
-                                class="w-32"
-                                color="error"
-                                @click="router.push('/testBackend/login')" >
-                                ยกเลิก
-                            </v-btn>
-                            <v-btn
-                                class="w-32"
-                                color="success"
-                                @click="confirmEmail">
-                                ขอรหัสยืนยัน
-                            </v-btn>
-                        </div>
 
-                    </div>
+                <!-- email -->
+                <div class="h-full text-left" v-if="!isEmailSend">
+                    <v-form @submit.prevent="" class="h-full text-left" >
+                        <div class="h-full">
+                            <div class="text-center mb-10">
+                                <span class="text-3xl text-center"> Forgot Password </span>
+                            </div>
+                            <div class="mb-1">
+                                <v-text-field
+                                    prepend-icon="mdi-email"
+                                    v-model="email"
+                                    bg-color="#e5e7eb"
+                                    label="Enter your Email"
+                                    required
+                                    :rules="emailRule"
+                                ></v-text-field>
+                            </div>
+                            <div class="flex justify-center items-end gap-2 mb-3">
+                                <v-btn
+                                    class="w-32"
+                                    color="error"
+                                    @click="router.push('/testBackend/login')" >
+                                    ยกเลิก
+                                </v-btn>
+                                <v-btn
+                                    class="w-32"
+                                    color="success"
+                                    @click="confirmEmail">
+                                    ขอรหัสยืนยัน
+                                </v-btn>
+                            </div>
+                        </div>
                 </v-form>
+                </div>
+
+                <!-- OTP -->
                 <div class="h-full text-left" v-if="isEmailSend && isOTPValid === false">
                     <OTPInput
                         :email="email"
@@ -120,52 +93,17 @@ watch([() => newPassword.value, () => repeatNewPassword.value],([newPasswordValu
                         @isOTPValid="(OTPValid:boolean)=>{ isOTPValid = OTPValid}">
                     </OTPInput>
                 </div>
-                <v-form @submit.prevent="" class="h-full text-left" v-if="isOTPValid">
-                    <div class="h-full">
-                        <div class="text-center mb-10">
-                            <span class="text-3xl text-center"> New Password </span>
-                        </div>
-                        <div class="">
-                            <v-text-field
-                                prepend-inner-icon="mdi-form-textbox-password"
-                                v-model="newPassword"
-                                label="New Password"
-                                bg-color="#e5e7eb"
-                                type="password"
-                                required
-                            ></v-text-field>
-                        </div>
-                        <div class="">
-                            <v-text-field
-                                prepend-inner-icon="mdi-form-textbox-password"
-                                v-model="repeatNewPassword"
-                                bg-color="#e5e7eb"
-                                label="Repeat Password"
-                                type="password"
-                                required
-                            ></v-text-field>
-                        </div>
-                        <div class="w-full text-left pl-3 -mt-3 mb-5">
-                            <span class="text-center text-red-500" v-if="isButtonDisable && (repeatNewPassword !== '' && newPassword !== '')"> {{matchPasswordMsg}} </span>
-                        </div>
 
-                        <div class="flex justify-center items-end gap-2 mb-3">
-                            <v-btn
-                                class="w-32"
-                                color="error"
-                                @click="router.push('/testBackend/login')" >
-                                ยกเลิก
-                            </v-btn>
-                            <v-btn
-                                class="w-32"
-                                color="success"
-                                @click="confirmNewPassword"
-                                :disabled="isButtonDisable">
-                                ยืนยัน
-                            </v-btn>
-                        </div>
-                    </div>
-                </v-form>
+                <!-- reset password -->
+                <div  v-if="isOTPValid">
+                    <ResetPassword
+                        :email="email"
+                        :density="'default'"
+                        :input-bg-color="'#e5e7eb'"
+                        :text-header="'ตั้งรหัสผ่านใหม่'"
+                        @reset-password-success="(value:boolean)=>{ router.push('/testBackend/login')}">
+                    </ResetPassword>
+                </div>
             </div>
         </div>
     </div>

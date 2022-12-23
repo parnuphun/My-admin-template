@@ -36,62 +36,62 @@ export const navigationMenu:NavigationItem[] = [
         link : '/testBackend/MyProjectList' ,
         group : false
     },
-    {
-        id: 'reseachList' ,
-        title : 'รายชื่อโครงการทั้งหมด' ,
-        icon : 'bookshelf' ,
-        link : '/reseachList' ,
-        group : false
-    },
-    {
-        id: 'news' ,
-        title : 'ข่าวสาร' ,
-        icon : 'newspaper' ,
-        link : '/news' ,
-        group : false
-    },
-    {
-        id: 'MessageBox' ,
-        title : 'กล่องข้อความ' ,
-        icon : 'mailbox-up' ,
-        link : '/testBackend/MessgeBox' ,
-        group : false
-    },
-    {
-        id: 'teachers' ,
-        title : 'อาจารย์' ,
-        icon : 'account-tie-woman' ,
-        link : '/teachers' ,
-        group : false
-    },
-    {
-        id: 'files' ,
-        title : 'เอกสาร' ,
-        icon : 'file-multiple' ,
-        link : '/files' ,
-        group : false
-    },
-    {
-        id: 'assessmentForm' ,
-        title : 'แบบประเมิน' ,
-        icon : 'clipboard-list' ,
-        link : '/assessmentForm' ,
-        group : false
-    },
-    {
-        id: '' ,
-        title : 'ถังขยะ' ,
-        icon : 'trash-can' ,
-        link : '/recycle' ,
-        group : false
-    },
-    {
-        id: '' ,
-        title : 'ตั้งค่า' ,
-        icon : 'cog' ,
-        link : '/setting' ,
-        group : false
-    },
+    // {
+    //     id: 'reseachList' ,
+    //     title : 'รายชื่อโครงการทั้งหมด' ,
+    //     icon : 'bookshelf' ,
+    //     link : '/reseachList' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'news' ,
+    //     title : 'ข่าวสาร' ,
+    //     icon : 'newspaper' ,
+    //     link : '/news' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'MessageBox' ,
+    //     title : 'กล่องข้อความ' ,
+    //     icon : 'mailbox-up' ,
+    //     link : '/testBackend/MessgeBox' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'teachers' ,
+    //     title : 'อาจารย์' ,
+    //     icon : 'account-tie-woman' ,
+    //     link : '/teachers' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'files' ,
+    //     title : 'เอกสาร' ,
+    //     icon : 'file-multiple' ,
+    //     link : '/files' ,
+    //     group : false
+    // },
+    // {
+    //     id: 'assessmentForm' ,
+    //     title : 'แบบประเมิน' ,
+    //     icon : 'clipboard-list' ,
+    //     link : '/assessmentForm' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'ถังขยะ' ,
+    //     icon : 'trash-can' ,
+    //     link : '/recycle' ,
+    //     group : false
+    // },
+    // {
+    //     id: '' ,
+    //     title : 'ตั้งค่า' ,
+    //     icon : 'cog' ,
+    //     link : '/setting' ,
+    //     group : false
+    // },
     // {
     //     id: 'test_calendar' ,
     //     title : 'Test Calendar' ,

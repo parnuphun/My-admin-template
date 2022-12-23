@@ -19,3 +19,7 @@ export function isRmutiEmail(v:string){
 export function isPasswordMatch(newPassword:string,repeatPassword:string){
         return repeatPassword === '' || repeatPassword === newPassword || 'กรุณากรอกรหัสผ่านให้ตรงกัน'
 }
+
+export function isPasswordStrength(v:string){
+    return v === '' || /^^[A-Za-z]{8,}[a-z\d!@#$%^&*()_+-=]*$$/.test(v) || 'กรุณากรอกรหัสผ่านเป็นภาษาอังกฤษและอย่างน้อย 8 ตัวอักษร'
+}
