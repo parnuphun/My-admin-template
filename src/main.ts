@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import axios , {AxiosRequestConfig} from 'axios'
 
 // route
 import routes from './plugin/routes'
@@ -22,6 +23,11 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import moment from 'moment'
 import 'moment/dist/locale/th'
 moment.locale('th')
+
+// interceptor
+import { interceptor } from './services/Interceptor'
+axios.interceptors.request.use(interceptor)
+
 
 createApp(App)
     .use(VCalendar)
