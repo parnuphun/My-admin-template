@@ -1,9 +1,25 @@
 import { TitleComponent } from 'echarts/components'
-import Swal , {SweetAlertIcon} from 'sweetalert2'
+import Swal , {SweetAlertIcon , SweetAlertPosition} from 'sweetalert2'
 
-// test commit
-// test commit 2
+interface msgOption {
+    title: string
+    msg?: string
+    icon?: SweetAlertIcon
+    position?: SweetAlertPosition
+    confirmBtn?: boolean
+    cancelBtn?: boolean
+    closeBtn?: boolean
+    confirmText?: string
+    cancelText?: string
+    timer?: number
+    progressbar?:boolean
+    width?:string
+}
 
+interface lightBoxOption {
+    imageURL: string
+    imageWidth?: string
+}
 
 // icon
 // - success
@@ -23,119 +39,112 @@ import Swal , {SweetAlertIcon} from 'sweetalert2'
 // - bottom-start
 // - buttom-end
 
-function convertTime(timer:number){
+function convertTime(timer:number) : number{
     return timer*1000
 }
 
 export default class MsgAlert {
 
-    confirmeBtn:boolean = true
+    confirmBtn:boolean = true
+    cancelBtn:boolean = true
 
     // default alert
-    succ(msg:string,timer?:number,confirmeBtn?:boolean){
-        if(timer) timer = convertTime(timer)
-        if(confirmeBtn === false) this.confirmeBtn = confirmeBtn
+    default_msg(Option:msgOption){
+        let timer = 3000
+        let icon: SweetAlertIcon = 'success'
+        let position: SweetAlertPosition = 'center'
+        let cancelButtonText: string = 'Close'
+
+        if(Option.confirmBtn === undefined) this.confirmBtn = false
+        if(Option.cancelBtn === undefined) this.cancelBtn = false
+
+        if(Option.icon) icon = Option.icon
+        if(Option.icon === 'error') this.cancelBtn = true
+        if(Option.icon === 'error') timer = 0
+
+        if(Option.confirmBtn === false) this.confirmBtn = Option.confirmBtn
+        if(Option.confirmBtn === true) this.confirmBtn = Option.confirmBtn
+
+        if(Option.timer) timer = convertTime(Option.timer)
+        if(Option.position) position = Option.position
+
+        if(Option.cancelText) this.cancelBtn = true
+        if(Option.cancelText) cancelButtonText = Option.cancelText
+        if(Option.confirmText) this.confirmBtn = true
+
         Swal.fire({
-            position: 'center',
-            icon: 'success',
-            title: msg ,
-            showConfirmButton: !this.confirmeBtn,
+            position: position,
+            icon: icon,
+            title: Option.title,
+            text: Option.msg,
+            showConfirmButton: this.confirmBtn,
+            showCancelButton: this.cancelBtn,
+            confirmButtonText: Option.confirmText,
+            cancelButtonText: cancelButtonText,
             timer: timer,
-        })
-    }
-
-    err(msg:string,timer?:number,confirmeBtn?:boolean){
-        if(timer) timer = convertTime(timer)
-        if(confirmeBtn === false) this.confirmeBtn = confirmeBtn
-        Swal.fire({
-            position: 'center' ,
-            icon: 'error' ,
-            title: msg ,
-            showConfirmButton: this.confirmeBtn ,
-            timer: timer ,
-        })
-    }
-
-    info(msg:string,timer?:number,confirmeBtn?:boolean){
-        if(timer) timer = convertTime(timer)
-        if(confirmeBtn === false) this.confirmeBtn = confirmeBtn
-        Swal.fire({
-            position: 'center' ,
-            icon: 'info' ,
-            title: msg ,
-            showConfirmButton: this.confirmeBtn ,
-            timer: timer ,
-        })
-    }
-
-    warning(msg:string,timer?:number,confirmeBtn?:boolean){
-        if(timer) timer = convertTime(timer)
-        if(confirmeBtn === false) this.confirmeBtn = confirmeBtn
-        Swal.fire({
-            position: 'center' ,
-            icon: 'warning' ,
-            title: msg ,
-            showConfirmButton: this.confirmeBtn ,
-            timer: timer ,
-        })
-    }
-
-    question(msg:string,timer?:number,confirmeBtn?:boolean){
-        if(timer) timer = convertTime(timer)
-        if(confirmeBtn === false) this.confirmeBtn = confirmeBtn
-        Swal.fire({
-            position: 'center' ,
-            icon: 'question' ,
-            title: msg ,
-            showConfirmButton: this.confirmeBtn ,
-            timer: timer ,
+            timerProgressBar:Option.progressbar
         })
     }
 
     // toast alert
-    succToast(msg:string,timer?:number,confirmeBtn?:boolean){
-        if(timer) timer = convertTime(timer)
-        if(confirmeBtn === false) this.confirmeBtn = confirmeBtn
+    toast_msg(Option:msgOption){
+        let timer = 3000
+        let icon: SweetAlertIcon = 'success'
+        let position: SweetAlertPosition = 'bottom-end'
+        let cancelButtonText: string = 'Close'
+        let backgroundColor: string = ''
+        let width = undefined
+
+        if(Option.confirmBtn === undefined) this.confirmBtn = false
+        if(Option.cancelBtn === undefined) this.cancelBtn = false
+
+        if(Option.icon) icon = Option.icon
+        if(Option.icon === 'error') timer = 0
+
+        if(Option.icon === 'success') backgroundColor = '#22c55e'
+        if(Option.icon === 'error') backgroundColor = '#ef4444'
+        if(Option.icon === 'warning') backgroundColor = '#eab308'
+        if(Option.icon === 'info') backgroundColor = '#06b6d4'
+        if(Option.icon === 'question') backgroundColor = '#64748b'
+
+        if(Option.confirmBtn === false) this.confirmBtn = Option.confirmBtn
+        if(Option.confirmBtn === true) this.confirmBtn = Option.confirmBtn
+
+        if(Option.timer) timer = convertTime(Option.timer)
+        if(Option.position) position = Option.position
+
+        if(Option.cancelText) this.cancelBtn = true
+        if(Option.cancelText) cancelButtonText = Option.cancelText
+        if(Option.confirmText) this.confirmBtn = true
+
+        if(Option.width) width = Option.width
 
         Swal.mixin({
             toast: true ,
-            position: 'bottom-end',
+            position: position,
             timer: timer ,
-            timerProgressBar: true ,
-            showCancelButton: false ,
-            showConfirmButton: false ,
+            timerProgressBar: Option.progressbar ,
+            showCancelButton: this.cancelBtn ,
+            showConfirmButton: this.confirmBtn ,
+            background : backgroundColor ,
+            showCloseButton: true,
+            icon:undefined,
+            // iconHtml:'<i class="v-icon mdi mdi-calendar-star-outline"></i>',
+            iconColor: 'white',
+            color:'white',
+            width:width,
             didOpen: (toast) => {
                 toast.addEventListener('mouseenter', Swal.stopTimer)
                 toast.addEventListener('mouseleave', Swal.resumeTimer)
             }
         }).fire({
-            title: msg ,
-            icon: 'success'
+            title: Option.title ,
+            text: Option.msg,
+            icon: Option.icon ,
         })
     }
 
-    errToast(msg:string,timer?:number,confirmeBtn?:boolean){
-        if(timer) timer = convertTime(timer)
-        if(confirmeBtn === false) this.confirmeBtn = confirmeBtn
-
-        Swal.mixin({
-            toast: true,
-            position: 'bottom-end',
-            timer: timer,
-            timerProgressBar: true,
-            showCancelButton: false,
-            showConfirmButton: false,
-            didOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        }).fire({
-            title: msg,
-            icon: 'error'
-        })
-    }
-
-    // other alert
+    // confirm msg
     confirm(msg:string,icon?:SweetAlertIcon,showCancelButton?:boolean,confirmButtonText?:string){
         if(!icon){icon = 'warning'}
         if(showCancelButton === undefined){showCancelButton = true}
@@ -160,6 +169,7 @@ export default class MsgAlert {
         })
     }
 
+    // light box
     lightBox(url:string,width?:string){
         let defaultWidth:string = '600px'
         if(width) defaultWidth = width

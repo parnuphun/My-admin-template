@@ -5,36 +5,34 @@ import MsgAlert  from '../../services/msgAlert'
 const sw = new MsgAlert()
     // default
     function successMsg(){
-        sw.succ('สำเร็จแล้ว',12)
+        sw.default_msg({title:'Success',progressbar:true})
     }
     function errorMsg(){
-        sw.err('มีบางอย่างผิดพลาด')
+        sw.default_msg({title:'Error',icon:'error',cancelText:'i Know ',timer:3,progressbar:true})
     }
     function infoMsg(){
-        sw.info('รายละเอียด')
+        sw.default_msg({title:'Info', icon:'info',progressbar:true})
     }
     function warningMsg(){
-        sw.warning('มีบางอย่างที่คุณควรรู้ก่อน')
+        sw.default_msg({title:'warning', icon:'warning',progressbar:true})
     }
     function questionMsg(){
-        sw.question('มีคำถามใช่ไหม ?')
+        sw.default_msg({title:'question', icon:'question',progressbar:true})
     }
 
     // toast
     function successToastMsg(){
-        sw.succToast('สำเร็จแล้ว',2)
+        sw.toast_msg({title:'success',icon:'success'})
     }
     function errorToastMsg(){
-        sw.errToast('มีบางอย่างผิดพลาด')
+        sw.toast_msg({title:'success',icon:'error'})
     }
 
     // other alert
     function confirm(){
         sw.confirm('คุณต้องการยืนยันใช่ไหม ?','warning',false).then((isConfirmed)=>{
             if(isConfirmed){
-                sw.succ(`isConfirmed = ${String(isConfirmed)}`)
             }else{
-                sw.err(String(isConfirmed))
             }
         })
     }
