@@ -1,20 +1,34 @@
 <script setup lang="ts">
-import {ref , onMounted} from 'vue'
+import {ref , onMounted , watch} from 'vue'
+import router from '../../plugin/routes';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
 import { isThaiLang , isRmutiId , isRmutiEmail } from '../../services/validationRules';
+import OTPInput from './OTPInput.vue';
 
 const _api = new apiRPTS()
 const _msg = new MsgAlert()
-
 // roles
 
 // validator rules
 let rmutiRule = [(v:string) => isRmutiId(v)]
 let thaiRule = [(v:string) => isThaiLang(v)]
 let emailRule = [(v:string) => isRmutiEmail(v)]
-const email = ref('')
 
+const email = ref('')
+const emailValid = ref('')
+
+const isOtpSend = ref(false)
+const isOtpValid = ref(false)
+const isEmailValid = ref(false)
+
+watch(email,()=>{
+    if(email.value.endsWith('@rmuti.ac.th')){
+        isEmailValid.value = true
+    }else{
+        isEmailValid.value = false
+    }
+})
 
 const props = defineProps<{
     isDialogOpen: boolean
@@ -23,31 +37,65 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (event: 'register-success' ,size:boolean):void
+    (event: 'loadingProgressBar',size:boolean):void
 }>()
 
-
-function registerSuccess(){
-    // _msg.confirm('ต้องการบันทึกข้อมูลใช่หรือไม่').then((isConfirmed)=>{
-    //     if(isConfirmed){
-    //         _api.register(props.data).then((res)=>{
-    //             const data = res.data
-    //             if(data.status){
-    //                 _msg.succ(data.msg,2)
-    //                 setTimeout(()=>{
-    //                     emit('register-success',false)
-    //                 },2000)
-    //             }
-    //         })
-    //     }
-    // })
+// send email for get otp
+function confirmEmail(){
+    emit('loadingProgressBar',true)
+    _api.OtpSend({email:email.value,purpose:'EmailConfirm',rmutiId:props.data.User_Rmuti_Id}).then((res)=>{
+        if(res.data.status){
+            _msg.default_msg({title:res.data.msg,timer:1})
+            isOtpSend.value = true
+            emit('loadingProgressBar',false)
+         }else{
+            _msg.default_msg({title:res.data.msg,timer:1})
+         }
+    })
 }
 
+function registerSuccess(){
 
+    _api.registerFirstTime({rmutiId:props.data.User_Rmuti_Id,
+                            username:props.data.User_Usernname,
+                            fName:props.data.User_Fname,
+                            lName:props.data.User_Lname,
+                            email:email.value})
+    .then((res)=>{
+        if(res.status){
+            _msg.default_msg({title:res.data.msg,timer:2})
+            setTimeout(() => {
+                emit('register-success',true)
+            }, 2000);
+        }else{
+            _msg.default_msg({title:res.data.msg})
+        }
+    })
+}
+
+function otpValid(value:boolean){
+    if(value){
+        emailValid.value = email.value
+        isOtpSend.value = false
+        isOtpValid.value = true
+    }else{
+        isOtpSend.value = true
+        isOtpValid.value = false
+    }
+}
+
+watch(email,()=>{
+    if(email.value === emailValid.value && email.value !== ''){
+        isOtpValid.value = true
+    }else{
+        isOtpValid.value = false
+    }
+})
 
 </script>
 
 <template>
-    <v-dialog v-model="props.isDialogOpen" hidden-overlay width="600">
+    <v-dialog v-model="props.isDialogOpen" hidden-overlay width="550">
         <v-card height="100%">
             <v-card-title class="p-6 bg-blue-500  text-white text-center">
                 <span class="text-2xl"> ลงทะเบียนผู้ใช้ใหม่</span>
@@ -69,6 +117,18 @@ function registerSuccess(){
                                 :rules="rmutiRule"
                             ></v-text-field>
                         </div>
+                        <div class="w-full mb-3">
+                            <v-text-field
+                                v-model="props.data.User_Usernname"
+                                :counter="13"
+                                label="ชื่อผู้ใช้งาน"
+a                                required
+                                bg-color="#e5e7eb"
+                                density="comfortable"
+                                maxlength="255"
+                                clearable
+                            ></v-text-field>
+                        </div>
                         <div class="w-1/2 pr-1 mb-3">
                             <v-text-field
                                 v-model="props.data.User_Fname"
@@ -79,6 +139,7 @@ function registerSuccess(){
                                 density="comfortable"
                                 maxlength="255"
                                 :rules="thaiRule"
+                                clearable
                             ></v-text-field>
                         </div>
                         <div class="w-1/2 pl-1 mb-3">
@@ -91,7 +152,9 @@ function registerSuccess(){
                                 bg-color="#e5e7eb"
                                 density="comfortable"
                                 :rules="thaiRule"
-                            ></v-text-field>
+                                clearable
+                            >
+                            </v-text-field>
                         </div>
                         <div class="w-full mb-3">
                             <v-text-field
@@ -103,33 +166,39 @@ function registerSuccess(){
                                 density="comfortable"
                                 maxlength="255"
                                 :rules="emailRule"
-                                ></v-text-field>
+                                >
+                                <template v-slot:append-inner v-if="isOtpValid">
+                                    <v-icon color="success">
+                                        mdi-check-circle
+                                    </v-icon>
+                                </template>
+                            </v-text-field>
                         </div>
-                        <div class="w-3/4 pr-1 mb-3">
-                            <v-text-field
-                                v-model="props.data.User_password"
-                                :counter="255"
-                                label="รหัสผ่าน"
-                                type="password"
-                                disabled
-                                required
-                                bg-color="#e5e7eb"
-                                density="comfortable"
-                                maxlength="255"
-                            ></v-text-field>
-                        </div>
-                        <div class="w-1/4 pl-1">
-                            <div class="w-full h-12 text-white bg-red-500 hover:bg-red-700 cursor-pointer rounded-lg flex justify-center items-center transition duration-300">
-                                <span>ตั้งรหัสผ่านใหม่</span>
-                            </div>
+                        <div class="w-full mb-3" v-if="isOtpSend">
+                            <OTPInput
+                                :purpose="'EmailConfirm'"
+                                :email="data.User_Email"
+                                :compact="true"
+                                @is-o-t-p-valid="(value:boolean)=>{ otpValid(value) }">
+                            </OTPInput>
                         </div>
                     </div>
-                    <div class="mt-3 flex w-full justify-center items-center">
-                        <button
-                            type="submit"
+                    <div class="mt-3 flex w-full justify-center gap-3 items-center">
+                        <v-btn
+                            v-if="!isOtpValid"
+                            color="success"
+                            @click="confirmEmail"
+                            :disabled="!isEmailValid"
+                            class="py-2 px-3 text-center text-white w-40 bg-green-500 hover:bg-green-700 rounded-full cursor-pointer">
+                            ส่งรหัสยืนยัน Email
+                        </v-btn>
+                        <v-btn
+                            color="primary"
+                            @click="registerSuccess"
+                            :disabled="!isOtpValid"
                             class="py-2 px-3 text-center text-white w-40 bg-green-500 hover:bg-green-700 rounded-full cursor-pointer">
                             บันทึกข้อมูล
-                        </button>
+                        </v-btn>
                     </div>
                 </v-form>
             </v-card-text>

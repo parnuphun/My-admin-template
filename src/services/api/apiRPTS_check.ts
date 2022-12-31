@@ -1,6 +1,20 @@
 import axios from 'axios'
 
 const url = 'http://loclhost:4000'
+
+interface OtpOption {
+    email:string
+    rmutiId?:string
+    purpose: 'ForgotPassword' | 'EmailConfirm'
+}
+
+interface registerFirstTimeOption{
+    rmutiId:string,
+    username:string,
+    fName:string,
+    lName:string,
+    email:string
+}
 export default class apiRPTS {
 
     // users
@@ -26,11 +40,16 @@ export default class apiRPTS {
         return axios.post('/api/login',data)
     }
 
-    forgorPassword(email:string){
-        return axios.post('/api/forgotPassword',{email:email})
+
+    registerFirstTime(data:registerFirstTimeOption){
+        return axios.post('/api/registerFirstTime',data)
     }
 
-    validateOTP(data:any){
+    OtpSend(data:OtpOption){
+        return axios.post('/api/OtpSend',data)
+    }
+
+    validateOTP(data:Object){
         return axios.post('/api/validateOTP',data)
     }
 

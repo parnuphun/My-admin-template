@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RFC_2822 } from 'moment';
 import { onMounted , watch , ref} from 'vue';
 import { useRouter } from 'vue-router';
 import RegisterFirstTimeLogin from '../../components/common/RegisterFirstTimeLogin.vue';
@@ -38,7 +39,7 @@ function login(){
                 Authorization : `Bearer ${ResponsData.credentialData.User_Token}`
             }
 
-            _msg.succ(ResponsData.msg,2)
+            _msg.default_msg({title:ResponsData.msg,timer:1,progressbar:true})
 
             storeCredentialData(newCredentialData)
             isLoadingProgresBar.value = false
@@ -61,7 +62,7 @@ function login(){
 
         // login error
         }else if(ResponsData.status === false && ResponsData.isFirstTime === false){
-            _msg.err(ResponsData.msg)
+            _msg.default_msg({title:ResponsData.msg,icon:'error'})
             isLoadingProgresBar.value = false
         }
     })
@@ -78,6 +79,9 @@ function storeCredentialData(credentialData:any){
     localStorage.setItem('credential',JSON.stringify(credentialData))
 }
 
+function loadingChange(value:boolean){
+    isLoadingProgresBar.value = value
+}
 
 </script>
 <template>
@@ -140,6 +144,7 @@ function storeCredentialData(credentialData:any){
         v-model:data="oldData"
         v-model:isDialogOpen="isDialogOpen"
         @register-success="registerSuccess"
+        @loading-progress-bar="(value:boolean)=>{ loadingChange(value)}"
     >
     </RegisterFirstTimeLogin>
 

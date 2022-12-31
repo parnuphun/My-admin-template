@@ -16,17 +16,17 @@ const OTP = ref()
 function validateOTP(){
     const data = {
         email : props.email,
-        OTP:OTP.value
+        purpose : props.purpose,
+        OTP : OTP.value,
     }
     _api.validateOTP(data).then((res)=>{
         if(res.data.status){
-            _msg.succ(res.data.msg,1)
+            _msg.default_msg({title:res.data.msg,timer:1})
             setTimeout(()=>{
                 emit('isOTPValid',true)
             },1000)
-
         }else{
-            _msg.err(res.data.msg,1)
+            _msg.default_msg({title:res.data.msg,icon:'error',timer:3,progressbar:true,cancelBtn:false})
         }
     })
 }
@@ -34,12 +34,12 @@ function validateOTP(){
 // send email for get otp
 function confirmEmail(){
     emit('loading',true)
-    _api.forgorPassword(props.email).then((res)=>{
+    _api.OtpSend({email:props.email,purpose:'ForgotPassword'}).then((res)=>{
         if(res.data.status){
-            _msg.succ(res.data.msg,1)
+            _msg.default_msg({title:res.data.msg,timer:1})
             emit('loading',false)
         }else{
-            _msg.err(res.data.msg,1)
+            _msg.default_msg({title:res.data.msg,timer:1})
             emit('loading',false)
         }
     })
@@ -47,7 +47,9 @@ function confirmEmail(){
 
 const props = defineProps<{
     email:string
+    purpose: 'ForgotPassword' | 'EmailConfirm'
     loading?:boolean
+    compact?:boolean
 }>()
 
 const emit = defineEmits<{
@@ -57,42 +59,69 @@ const emit = defineEmits<{
 </script>
 
 <template>
-    <div class="text-center mb-10">
-        <span class="text-3xl text-center"> Confirm OTP </span>
-    </div>
-    <div class="flex flex-wrap justify-center mb-3">
-            <v-otp-input
-                input-classes="otp-input"
-                separator="-"
-                :num-inputs="6"
-                :should-auto-focus="true"
-                :is-input-num="true"
-                :conditionalClass="['one', 'two', 'three', 'four','five','six']"
-                @on-complete="(completedOTP:string)=>{ OTP = completedOTP}"
-                @on-change="(changedOTP:string)=>{ OTP = changedOTP}"
-            />
+    <div v-if="!compact">
+        <div class="text-center mb-10">
+            <span class="text-3xl text-center"> Confirm OTP </span>
+        </div>
+        <div class="flex flex-wrap justify-center mb-3">
+                <v-otp-input
+                    input-classes="otp-input"
+                    separator="-"
+                    :num-inputs="6"
+                    :should-auto-focus="true"
+                    :is-input-num="true"
+                    :conditionalClass="['one', 'two', 'three', 'four','five','six']"
+                    @on-complete="(completedOTP:string)=>{ OTP = completedOTP}"
+                    @on-change="(changedOTP:string)=>{ OTP = changedOTP}"
+                />
 
-        <div class="w-full flex justify-end mb-3 mt-3 mr-10">
-            <span class="text-blue-500 hover:text-blue-700 cursor-pointer"
-                @click="confirmEmail">
-                ส่งรหัสอีกครั้ง
-            </span>
+            <div class="w-full flex justify-end mb-3 mt-3 mr-10">
+                <span class="text-blue-500 hover:text-blue-700 cursor-pointer"
+                    @click="confirmEmail">
+                    ส่งรหัสอีกครั้ง
+                </span>
+            </div>
+        </div>
+
+        <div class="flex justify-center items-end gap-2 mb-3">
+            <v-btn
+                class="w-32"
+                color="error"
+                @click="router.push('/testBackend/login')" >
+                ยกเลิก
+            </v-btn>
+            <v-btn
+                class="w-32"
+                color="success"
+                @click="validateOTP">
+                ยืนยัน
+            </v-btn>
         </div>
     </div>
+    <div v-else>
+        <div class="flex flex-row justify-center mb-3">
+            <div class="w-10/12 flex justify-start items-center">
+                <v-otp-input
+                    input-classes="otp-input"
+                    separator=""
+                    :num-inputs="6"
+                    :should-auto-focus="true"
+                    :is-input-num="true"
+                    :conditionalClass="['one', 'two', 'three', 'four','five','six']"
+                    @on-complete="(completedOTP:string)=>{ OTP = completedOTP}"
+                    @on-change="(changedOTP:string)=>{ OTP = changedOTP}"
+                />
+            </div>
 
-    <div class="flex justify-center items-end gap-2 mb-3">
-        <v-btn
-            class="w-32"
-            color="error"
-            @click="router.push('/testBackend/login')" >
-            ยกเลิก
-        </v-btn>
-        <v-btn
-            class="w-32"
-            color="success"
-            @click="validateOTP">
-            ยืนยัน
-        </v-btn>
+            <div class="w-full flex items-center px-2">
+                <v-btn
+                    @click="validateOTP()"
+                    color="success"
+                    width="100%">
+                    ยืนยัน
+                </v-btn>
+            </div>
+        </div>
     </div>
 </template>
 
