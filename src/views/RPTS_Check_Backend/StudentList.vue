@@ -14,9 +14,33 @@ const isOpen = ref(false)
 const page = ref(1)
 
 const studentList = ref()
+const newStudentList = ref<any[]>()
+const inputFile = ref<HTMLInputElement | null>(document.querySelector('#insert-studen-list-file'))
+
+// click inpit file
+function inputfile(){
+    if(inputFile.value){
+        inputFile.value.click();
+    }
+}
+
+// read excel file
+function readExcel(event: Event) {
+    const file = (event.target as HTMLInputElement).files![0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        const data = new Uint8Array(e.target.result);
+      };
+      reader.readAsArrayBuffer(file);
+    }
+}
+
+// get all student list
 function getAllStudent(){
     _api.getAllStudent().then((res)=>{
         studentList.value = res.data.studentList
+
     })
 }
 
@@ -30,16 +54,25 @@ onMounted(()=>{
         <div class="flex flex-col">
             <div class="w-full flex gap-2 ">
                 <v-btn
+                    @click="isOpen = true"
                     prepend-icon="mdi-account-plus"
                     color="success"
-                    @click="isOpen = true">
+                    >
                     เพิ่มนักศึกษา
                 </v-btn>
                 <v-btn
+                    @click="inputfile"
                     prepend-icon="mdi-account-multiple-plus"
                     color="success">
                     นำเข้ารายชื่อนักศึกษา
                 </v-btn>
+                <input
+                    ref="inputFile"
+                    @change="readExcel"
+                    id="insert-studen-list-file"
+                    type="file"
+                    class="hidden"
+                >
             </div>
 
             <div class="w-full">
