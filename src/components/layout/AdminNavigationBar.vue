@@ -1,90 +1,94 @@
 <script setup lang="ts">
-import { onMounted, reactive, ref , watch } from 'vue';
-import { navigationMenu  } from '../../plugin/routeData';
+import { onMounted, reactive, ref , watch ,computed } from 'vue';
+import { navigationMenu , NavigationItem  } from '../../plugin/routeData';
 import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/settingData'
 import MsgAlert from '../../services/msgAlert';
+import { checkPermission , Permission } from "../../services/auth"
 
 // import { credentialData } from '../../store/settingData';
-// perfect scroll bar
 
+const _msg = new MsgAlert()
+const isOpenMenu = ref(false)
+const isDrawer = ref(true)
+const credentialData = ref()
+const isAlert = ref(false)
 
-    const _msg = new MsgAlert()
-    const isOpenMenu = ref(false)
-    const isDrawer = ref(true)
-    const credentialData = ref()
+// theme
+const rentTheme = ref('dark')
+let setting : webSetting = reactive({
+    theme : 'light'
+})
 
-    const isAlert = ref(false)
+onMounted(()=>{
+    credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
+    // set default setting
 
-    // theme
-    const rentTheme = ref('dark')
-    let setting : webSetting = reactive({
-        theme : 'light'
-    })
-
-    onMounted(()=>{
-        credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
-
-        // set default setting
-
-        if(!localStorage.getItem('setting')){
-            localStorage.setItem('setting',JSON.stringify(setting))
-        }else{
-            setting = JSON.parse(String(localStorage.getItem('setting')))
-            rentTheme.value = setting.theme
-        }
-    })
-
-    function changeTheme(theme:layOutTheme){
-        setting.theme = theme
-        rentTheme.value = setting.theme
+    if(!localStorage.getItem('setting')){
         localStorage.setItem('setting',JSON.stringify(setting))
+    }else{
+        setting = JSON.parse(String(localStorage.getItem('setting')))
+        rentTheme.value = setting.theme
     }
+})
 
-    //route
-    const router = useRouter()
-    const currentPath = useRoute()
+function changeTheme(theme:layOutTheme){
+    setting.theme = theme
+    rentTheme.value = setting.theme
+    localStorage.setItem('setting',JSON.stringify(setting))
+}
 
-    function getCurrentPath(url:string){
-        router.push(url)
-    }
+//route
+const router = useRouter()
+const currentPath = useRoute()
 
-    function logout(){
-        _msg.confirm('คุณต้องการจากระบบใช่ไหม ?','question').then((isConfirmed)=>{
-            if(isConfirmed){
-                _msg.default_msg({title:'ออกจากระบบแล้ว',timer:1,progressbar:true})
-                localStorage.removeItem('credential')
-                setTimeout(() => {
-                    router.push('/testBackend/login')
-                }, 1500);
-            }
-        })
-    }
+function getCurrentPath(url:string){
+    router.push(url)
+}
 
-    const isFullScreen = ref(false)
-    function fullscreen(){
-        const doc = document.documentElement as HTMLHtmlElement;
-        if(isFullScreen.value === false){
-            doc.requestFullscreen();
-            isFullScreen.value = true
-        }else{
-            document.exitFullscreen();
-            isFullScreen.value = false
-        }
-    }
-
-    watch(isAlert,()=>{
-        if(isAlert.value) {
+function logout(){
+    _msg.confirm('คุณต้องการจากระบบใช่ไหม ?','question').then((isConfirmed)=>{
+        if(isConfirmed){
+            _msg.default_msg({title:'ออกจากระบบแล้ว',timer:1,progressbar:true})
+            localStorage.removeItem('credential')
             setTimeout(() => {
-                isAlert.value = false
-            }, 5000);
+                router.push('/testBackend/login')
+            }, 1500);
         }
     })
+}
 
-    const props = defineProps<{
-        isLoadingProgressBar?:boolean
-    }>()
+const isFullScreen = ref(false)
+function fullscreen(){
+    const doc = document.documentElement as HTMLHtmlElement;
+    if(isFullScreen.value === false){
+        doc.requestFullscreen();
+        isFullScreen.value = true
+    }else{
+        document.exitFullscreen();
+        isFullScreen.value = false
+    }
+}
+
+watch(isAlert,()=>{
+    if(isAlert.value) {
+        setTimeout(() => {
+            isAlert.value = false
+        }, 5000);
+    }
+})
+
+const props = defineProps<{
+    isLoadingProgressBar?:boolean
+}>()
+
+function isAdmin():boolean{
+    const credentialData = JSON.parse(localStorage.getItem('credential')!)
+    const roles:Array<string> = credentialData.userRoles
+
+    return roles.some(role => role === 'ผู้ดูแลระบบ');
+}
 </script>
 
 <template>
@@ -273,7 +277,7 @@ import MsgAlert from '../../services/msgAlert';
                 <v-list class="" nav >
                     <div nav v-for="navItem of navigationMenu">
                         <v-list-item
-                            v-if="navItem.permission"
+                            v-if=" checkPermission(navItem.permission) || isAdmin() "
                             :title="navItem.title"
                             @click="getCurrentPath(navItem.link)"
                             density="comfortable"

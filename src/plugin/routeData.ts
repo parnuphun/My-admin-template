@@ -1,11 +1,11 @@
 import { checkPermission , Permission } from "../services/auth"
-
+import {ref } from 'vue'
 export interface NavigationItem {
     id : string
     title : string
     icon : string
     link : string
-    permission : boolean
+    permission : Permission
     group? : boolean
     childs? : {
         id : string
@@ -26,21 +26,35 @@ export const navigationMenu:NavigationItem[] = [
         title : 'แดชบอร์ด' ,
         icon : 'monitor-dashboard' ,
         link : '/dashBoard' ,
-        permission: checkPermission('ทุกคน') ,
+        permission: 'ทุกคน' ,
     },
     {
         id: 'StudentList' ,
         title : 'รายชื่อนักศึกษา' ,
         icon : 'account-school' ,
         link : '/testBackend/StudentList' ,
-        permission : checkPermission('ผู้ดูแลระบบ'),
+        permission : 'ผู้ดูแลระบบ',
+    },
+    {
+        id: 'TeacherList' ,
+        title : 'รายชื่ออาจารย์' ,
+        icon : 'account-tie' ,
+        link : '/testBackend/TeacherList' ,
+        permission : 'ผู้ดูแลระบบ',
     },
     {
         id: 'myReseachList' ,
         title : 'โครงการของฉัน' ,
         icon : 'text-box' ,
         link : '/testBackend/MyProjectList' ,
-        permission: checkPermission('นักเรียน') ,
+        permission: 'นักเรียน',
+    },
+    {
+        id: 'MessageBox' ,
+        title : 'กล่องข้อความ' ,
+        icon : 'mailbox-up' ,
+        link : '/testBackend/messageBox' ,
+        permission: 'ทุกคน',
     },
     // {
     //     id: 'reseachList' ,
@@ -54,13 +68,6 @@ export const navigationMenu:NavigationItem[] = [
     //     title : 'ข่าวสาร' ,
     //     icon : 'newspaper' ,
     //     link : '/news' ,
-    //     group : false
-    // },
-    // {
-    //     id: 'MessageBox' ,
-    //     title : 'กล่องข้อความ' ,
-    //     icon : 'mailbox-up' ,
-    //     link : '/testBackend/MessgeBox' ,
     //     group : false
     // },
     // {
