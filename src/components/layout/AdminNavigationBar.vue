@@ -53,7 +53,7 @@ import MsgAlert from '../../services/msgAlert';
     function logout(){
         _msg.confirm('คุณต้องการจากระบบใช่ไหม ?','question').then((isConfirmed)=>{
             if(isConfirmed){
-                _msg.succ('ออกจากระบบแล้ว',1)
+                _msg.default_msg({title:'ออกจากระบบแล้ว',timer:1,progressbar:true})
                 localStorage.removeItem('credential')
                 setTimeout(() => {
                     router.push('/testBackend/login')
@@ -273,6 +273,7 @@ import MsgAlert from '../../services/msgAlert';
                 <v-list class="" nav >
                     <div nav v-for="navItem of navigationMenu">
                         <v-list-item
+                            v-if="navItem.permission"
                             :title="navItem.title"
                             @click="getCurrentPath(navItem.link)"
                             density="comfortable"

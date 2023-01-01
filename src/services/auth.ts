@@ -7,7 +7,6 @@ export interface JwtPayload {
   }
 
 export default class authService {
-
     async isLoggedIn(){
         if(localStorage.getItem('credential')){
             const credentialData = JSON.parse(localStorage.getItem('credential')!)
@@ -39,4 +38,22 @@ export default class authService {
     isTokenExpied(token:string){
         return axios.post('/api/isTokenExpied',{token:token})
     }
+}
+
+export type Permission = 'นักเรียน' | 'อาจารย์' | 'ผู้ดูแลระบบ' | 'ทุกคน'
+export function checkPermission(permission:Permission , permissionTwo?:Permission):boolean{
+    const credentialData = JSON.parse(localStorage.getItem('credential')!)
+    const roles:Array<string> = credentialData.userRoles
+
+    const isAdmin = roles.some(role => role === 'ผู้ดูแลระบบ');
+    if(isAdmin){
+        return true
+    }
+
+    if(permission === 'ทุกคน'){
+        return true
+    }else{
+        return roles.some(role => role === permission);
+    }
+
 }

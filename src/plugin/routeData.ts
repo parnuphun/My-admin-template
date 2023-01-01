@@ -1,8 +1,11 @@
+import { checkPermission , Permission } from "../services/auth"
+
 export interface NavigationItem {
     id : string
     title : string
     icon : string
     link : string
+    permission : boolean
     group? : boolean
     childs? : {
         id : string
@@ -12,29 +15,32 @@ export interface NavigationItem {
     }
 }
 
-// icon from material design dont need mid- prefix
 
+
+
+
+// icon from material design dont need mid- prefix
 export const navigationMenu:NavigationItem[] = [
     {
         id: 'dashboard' ,
         title : 'แดชบอร์ด' ,
         icon : 'monitor-dashboard' ,
         link : '/dashBoard' ,
-        group : false
+        permission: checkPermission('ทุกคน') ,
     },
     {
         id: 'StudentList' ,
         title : 'รายชื่อนักศึกษา' ,
         icon : 'account-school' ,
         link : '/testBackend/StudentList' ,
-        group : false
+        permission : checkPermission('ผู้ดูแลระบบ'),
     },
     {
         id: 'myReseachList' ,
         title : 'โครงการของฉัน' ,
         icon : 'text-box' ,
         link : '/testBackend/MyProjectList' ,
-        group : false
+        permission: checkPermission('นักเรียน') ,
     },
     // {
     //     id: 'reseachList' ,
