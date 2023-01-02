@@ -3,8 +3,6 @@ export function isValidEmail(v:string) {
 }
 
 export function isRmutiId(v:string){
-    console.log(v === '' || /\d{11}-\d$/.test(v) || 'กรุณากรอกรหัสนักศึกษาให้อยู่ในรูป 62332110XXX-X');
-
     return v === '' || /\d{11}-\d$/.test(v) || 'กรุณากรอกรหัสนักศึกษาให้อยู่ในรูป 62332110XXX-X'
 }
 
@@ -22,4 +20,8 @@ export function isPasswordMatch(newPassword:string,repeatPassword:string){
 
 export function isPasswordStrength(v:string){
     return v === '' || /^^[A-Za-z]{8,}[a-z\d!@#$%^&*()_+-=]*$$/.test(v) || 'กรุณากรอกรหัสผ่านเป็นภาษาอังกฤษและอย่างน้อย 8 ตัวอักษร'
+}
+
+export function isUsername(v:string){
+    return v === '' || /^[a-zA-Z0-9]{8,}$/.test(v) || 'กรุณากรอกตัวอักษรเป็นภาษาอังกฤษและมีตัวอักษรอย่างน้อย 5 ตัวอักษร'
 }
