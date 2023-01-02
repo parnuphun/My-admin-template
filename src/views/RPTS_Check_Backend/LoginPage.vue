@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router';
 import RegisterFirstTimeLogin from '../../components/common/RegisterFirstTimeLogin.vue';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
-import { userData } from '../../store/GlobalData';
 
 const _api = new apiRPTS()
 const _msg = new MsgAlert()
@@ -28,7 +27,6 @@ function login(){
         // login success
         if(ResponsData.status === true && ResponsData.isFirstTime === false){
             // set data in global variable
-            userData.value = ResponsData.credentialData
 
             const newCredentialData = {
                 userRoles: ResponsData.credentialData.USER_ROLES,

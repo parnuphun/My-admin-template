@@ -7,8 +7,6 @@ import { isRail } from '../../store/GlobalData'
 import MsgAlert from '../../services/msgAlert';
 import { checkPermission , Permission } from "../../services/auth"
 
-// import { credentialData } from '../../store/settingData';
-
 const _msg = new MsgAlert()
 const isOpenMenu = ref(false)
 const isDrawer = ref(true)
