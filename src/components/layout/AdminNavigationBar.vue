@@ -3,7 +3,7 @@ import { onMounted, reactive, ref , watch ,computed } from 'vue';
 import { navigationMenu , NavigationItem  } from '../../plugin/routeData';
 import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
-import { isRail } from '../../store/settingData'
+import { isRail } from '../../store/GlobalData'
 import MsgAlert from '../../services/msgAlert';
 import { checkPermission , Permission } from "../../services/auth"
 
@@ -93,9 +93,11 @@ function isAdmin():boolean{
 
 <template>
     <VThemeProvider :theme="rentTheme">
+
         <VApp >
 
             <!-- nav bar -->
+
             <v-app-bar :elevation="2" color="">
                 <!-- toggle sidebar -->
                 <v-app-bar-nav-icon  @click.stop="isRail = !isRail"></v-app-bar-nav-icon>
@@ -212,14 +214,23 @@ function isAdmin():boolean{
                     <!-- user profile -->
                     <v-menu :close-on-content-click="false" location="bottom">
                         <template v-slot:activator="{ props }">
-                            <v-btn  v-bind="props" icon size="">
-                                <v-avatar
+                            <v-btn  v-bind="props" icon>
+                                <!-- character icon -->
+                                <!-- <v-avatar
                                     color="brown"
                                     size=""
                                     >
                                     <span class="text-h5 p-1">ภน</span>
-                                </v-avatar>
-                            </v-btn>
+                                </v-avatar> -->
+                                <!-- image icon // not work -->
+                                <!-- <v-avatar
+                                :src="'https://st3.depositphotos.com/9998432/13335/v/450/depositphotos_133352156-stock-illustration-default-placeholder-profile-icon.jpg'"
+                                    >
+                                </v-avatar> -->
+                                <!-- icon -->
+                                <v-icon size="large">mdi-account-circle-outline</v-icon>
+
+                             </v-btn>
                         </template>
 
                         <v-card min-width="300">
@@ -267,12 +278,23 @@ function isAdmin():boolean{
                     </v-btn-toggle> -->
                 </div>
             </v-app-bar>
+
+            <v-progress-linear
+                v-if="true"
+                indeterminate
+                color="primary"
+                :class="[props.isLoadingProgressBar === true ? '': 'invisible']"
+                class="absolute top-0"
+                height="5"
+                style="z-index:9999;"
+                >
+            </v-progress-linear>
+
             <!-- side bar -->
             <v-navigation-drawer
                 v-model="isRail"
                 :elevation="2"
             >
-
                 <!-- menu list -->
                 <v-list class="" nav >
                     <div nav v-for="navItem of navigationMenu">
@@ -291,11 +313,12 @@ function isAdmin():boolean{
                         </v-list-item>
                     </div>
                 </v-list>
+
             </v-navigation-drawer>
             <!-- Content here !!! -->
             <VMain>
                 <v-container fluid>
-                    <div class="w-full h-full relative"  style="width: 100%;">
+                    <div class="w-full h-full relative" style="width: 100%;">
                         <div class="fixed" style="z-index:999; width:100%;">
                             <div class="w-full relative flex justify-end -ml-72" style="z-index:999;">
                                 <Transition name="toast">
