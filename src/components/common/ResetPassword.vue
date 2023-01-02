@@ -11,6 +11,7 @@ const props = defineProps<{
     enableHeader?:boolean,
     inputBgColor?:string,
     density?: 'comfortable' | 'compact' | 'default'
+    purpose: 'ForgotPassword' | 'EditProfile'
 }>()
 
 const emit = defineEmits<{
@@ -33,7 +34,7 @@ function confirmNewPassword(){
             if(isConfiremd){
                 _api.resetPassword({newPassword: newPassword.value , email: props.email}).then((res)=>{
                     if(res.data.status){
-                        _msg.succ('เปลี่ยนรหัสผ่านเรียบร้อย',1.5)
+                        _msg.default_msg({title:'เปลี่ยนรหัสผ่านเรียบร้อย',timer:1.5})
                         setTimeout(()=>{
                             emit('resetPasswordSuccess',true)
                         },1500)
@@ -42,7 +43,7 @@ function confirmNewPassword(){
             }
         })
     }else{
-        _msg.err('Password ที่ป้อนไม่ตรงกัน')
+        _msg.default_msg({title:'Password ที่ป้อนไม่ตรงกัน', icon:'error'})
     }
 }
 
@@ -104,8 +105,8 @@ watch(newPassword,()=>{
                 <v-text-field
                     prepend-inner-icon="mdi-form-textbox-password"
                     v-model="newPassword"
-                    label="New Password"
-                    :bg-color="props.inputBgColor"
+                    label="ป้อนรหัสผ่านใหม่"
+                    bg-color="#e5e7eb"
                     type="password"
                     :density="props.density"
                     :rules="isStrength"
@@ -117,7 +118,7 @@ watch(newPassword,()=>{
                     prepend-inner-icon="mdi-form-textbox-password"
                     v-model="repeatNewPassword"
                     bg-color="#e5e7eb"
-                    label="Repeat Password"
+                    label="ป้อนรหัสผ่านใหม่อีกครั้ง"
                     type="password"
                     :density="props.density"
                     :rules="matchRule"
@@ -142,6 +143,7 @@ watch(newPassword,()=>{
 
             <div class="flex justify-center items-end gap-2 mb-3 mt-3">
                 <v-btn
+                    v-if="props.purpose === 'ForgotPassword'"
                     class="w-32"
                     color="error"
                     @click="router.push('/testBackend/login')" >
