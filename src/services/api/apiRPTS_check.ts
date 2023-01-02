@@ -18,8 +18,8 @@ interface registerFirstTimeOption{
 export default class apiRPTS {
 
     // users
-    studentRegister(studentData:Object){
-        return axios.post('/api/studentRegister',studentData)
+    userRegister(userData:Object){
+        return axios.post('/api/userRegister',userData)
     }
 
     register(data:any){
@@ -69,8 +69,27 @@ export default class apiRPTS {
 
     // users
     // get all student
-    getAllStudent(){
-        return axios.get('/api/getAllStudent')
+    getAllUserByRole(data:{role: 1 | 2 | 3 | 'all'}){
+        return axios.post('/api/getAllUserByRole',data)
     }
 
+    // get user data
+    getUserData(data:{userId:number}){
+        return axios.post('/api/getUserData',data)
+    }
+
+    // update user data
+    updateUserData(data:{userId:number,username:string,fname:string,lname:string,abouteMe:string,phone:string}){
+        return axios.post('/api/updateUserData',data)
+    }
+
+    // update email
+    updateEmail(data:{email:string,userId:number}){
+        return axios.post('/api/updateEmail',data)
+    }
+
+    //confirm password
+    confirmPassword(data:{password:string,userId:number}){
+        return axios.post('/api/confirmPassword',data)
+    }
 }

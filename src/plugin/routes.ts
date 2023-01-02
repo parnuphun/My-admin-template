@@ -22,6 +22,11 @@ const router = createRouter({
         { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS_Check_Backend/MyProjectList.vue')},
         { path: '/testBackend/ProjectDetail' , component:() => import('../views/RPTS_Check_Backend/ProjectDetail.vue')},
         { path: '/testBackend/StudentList' , component:() => import('../views/RPTS_Check_Backend/StudentList.vue')},
+        { path: '/testBackend/TeacherList' , component:() => import('../views/RPTS_Check_Backend/TeacherList.vue')},
+        { path: '/testBackend/messageBox' , component:() => import('../views/RPTS_Check_Backend/messageBox.vue')},
+        { path: '/testBackend/setting' , component:() => import('../views/RPTS_Check_Backend/setting.vue')},
+        { path: '/testBackend/Files' , component:() => import('../views/RPTS_Check_Backend/Files.vue')},
+        { path: '/testBackend/News' , component:() => import('../views/RPTS_Check_Backend/News.vue')},
 
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
