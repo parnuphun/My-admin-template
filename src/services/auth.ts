@@ -45,8 +45,7 @@ export function checkPermission(permission:Permission , permissionTwo?:Permissio
     const credentialData = JSON.parse(localStorage.getItem('credential')!)
     const roles:Array<string> = credentialData.userRoles
 
-    const isAdmin = roles.some(role => role === 'ผู้ดูแลระบบ');
-    if(isAdmin){
+    if(isAdmin()){
         return true
     }
 
@@ -56,4 +55,11 @@ export function checkPermission(permission:Permission , permissionTwo?:Permissio
         return roles.some(role => role === permission);
     }
 
+}
+
+ function isAdmin():boolean{
+    const credentialData = JSON.parse(localStorage.getItem('credential')!)
+    const roles:Array<string> = credentialData.userRoles
+
+    return roles.some(role => role === 'ผู้ดูแลระบบ');
 }
