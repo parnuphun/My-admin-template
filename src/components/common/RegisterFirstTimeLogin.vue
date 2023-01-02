@@ -3,7 +3,7 @@ import {ref , onMounted , watch} from 'vue'
 import router from '../../plugin/routes';
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
-import { isThaiLang , isRmutiId , isRmutiEmail } from '../../services/validationRules';
+import { isThaiLang , isRmutiId , isRmutiEmail , isUsername } from '../../services/validationRules';
 import OTPInput from './OTPInput.vue';
 
 const _api = new apiRPTS()
@@ -14,6 +14,7 @@ const _msg = new MsgAlert()
 let rmutiRule = [(v:string) => isRmutiId(v)]
 let thaiRule = [(v:string) => isThaiLang(v)]
 let emailRule = [(v:string) => isRmutiEmail(v)]
+let usernameRule = [(v:string) => isUsername(v)]
 
 const email = ref('')
 const emailValid = ref('')
@@ -122,11 +123,12 @@ watch(email,()=>{
                                 v-model="props.data.User_Usernname"
                                 :counter="13"
                                 label="ชื่อผู้ใช้งาน"
-a                                required
+                                required
                                 bg-color="#e5e7eb"
                                 density="comfortable"
                                 maxlength="255"
                                 clearable
+                                :rules="usernameRule"
                             ></v-text-field>
                         </div>
                         <div class="w-1/2 pr-1 mb-3">
@@ -168,7 +170,9 @@ a                                required
                                 :rules="emailRule"
                                 >
                                 <template v-slot:append-inner v-if="isOtpValid">
-                                    <v-icon color="success">
+                                    <v-icon
+                                        color="success"
+                                    >
                                         mdi-check-circle
                                     </v-icon>
                                 </template>

@@ -38,9 +38,8 @@ function readExcel(event: Event) {
 
 // get all student list
 function getAllStudent(){
-    _api.getAllStudent().then((res)=>{
+    _api.getAllUserByRole({role:1}).then((res)=>{
         studentList.value = res.data.studentList
-
     })
 }
 
@@ -93,7 +92,14 @@ onMounted(()=>{
                             <td class="text-center"> {{i+1}} </td>
                             <td> {{student.User_Rmuti_Id}}</td>
                             <td> {{student.User_Fname}} {{student.User_Lname}}</td>
-                            <td> {{student.User_Email}}</td>
+                            <td>
+                                <span v-if="student.User_Email_Confirm">
+                                    {{student.User_Email}}
+                                </span>
+                                <span v-else>
+                                    ยังไม่ยืนยันอีเมล
+                                </span>
+                            </td>
                             <td class="w-24">
                                 <div class="w-full flex-col justify-center items-center gap-y-2 ">
                                     <v-chip v-for="role of student.User_Roles"
@@ -138,6 +144,7 @@ onMounted(()=>{
 
     <NewUser
         :is-open="isOpen"
+        :purpose="'addStudent'"
         @close-dialog="(event:boolean)=>{ isOpen = event ; getAllStudent()}">
     </NewUser>
 </template>

@@ -24,16 +24,16 @@ const email = ref<string>('')
 // send email for get otp
 function confirmEmail(){
     isLoadingProgresBar.value = true
-    _api.forgorPassword(email.value).then((res)=>{
+    _api.OtpSend({email:email.value,purpose:'ForgotPassword'}).then((res)=>{
         if(res.data.status){
-            _msg.succ(res.data.msg,1)
+            _msg.default_msg({title:res.data.msg,timer:1})
             isLoadingProgresBar.value = false
 
             setTimeout(()=>{
                 isEmailSend.value = true
             },1000)
         }else{
-            _msg.err(res.data.msg,1)
+            _msg.default_msg({title:res.data.msg,timer:1})
             isLoadingProgresBar.value = false
 
             email.value = ''
@@ -89,6 +89,7 @@ function confirmEmail(){
                 <div class="h-full text-left" v-if="isEmailSend && isOTPValid === false">
                     <OTPInput
                         :email="email"
+                        :purpose="'ForgotPassword'"
                         @loading="(isLoading:boolean)=>{ isLoadingProgresBar = isLoading}"
                         @isOTPValid="(OTPValid:boolean)=>{ isOTPValid = OTPValid}">
                     </OTPInput>
@@ -101,6 +102,7 @@ function confirmEmail(){
                         :density="'default'"
                         :input-bg-color="'#e5e7eb'"
                         :text-header="'ตั้งรหัสผ่านใหม่'"
+                        purpose="ForgotPassword"
                         @reset-password-success="(value:boolean)=>{ router.push('/testBackend/login')}">
                     </ResetPassword>
                 </div>

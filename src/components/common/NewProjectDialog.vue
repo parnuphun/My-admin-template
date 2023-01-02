@@ -29,7 +29,7 @@ function createNewProject(){
     })
     _api.createNewProject(data).then((res)=>{
         if(res.data.status){
-            _msg.succ(res.data.msg,1.5)
+            _msg.default_msg({title:res.data.msg,timer:1.5})
             setTimeout(() => {
                 emit('create-success',false)
                 projectNameTH.value = ''
@@ -37,7 +37,7 @@ function createNewProject(){
                 projectDetail.value= ''
             }, 1500);
         }else{
-            _msg.err('someting wrong !')
+            _msg.default_msg({title:'someting wrong !',icon:'error'})
         }
     })
 }

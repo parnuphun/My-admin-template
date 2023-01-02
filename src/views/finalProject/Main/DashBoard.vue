@@ -102,7 +102,7 @@ const dateOnRange = reactive({
             </v-parallax>
 
             <!-- summary box -->
-            <div class="w-full flex justify-center items-center
+            <!-- <div class="w-full flex justify-center items-center
                         DT:flex-row
                         LT:flex-row
                         MB:flex-wrap">
@@ -168,10 +168,10 @@ const dateOnRange = reactive({
                     </v-card>
                 </div>
 
-            </div>
+            </div> -->
 
             <!-- ASMForm ongoing / calendar -->
-            <div class="flex mt-3
+            <!-- <div class="flex mt-3
                         DT:flex-row
                         LT:flex-row
                         TL:flex-row
@@ -207,10 +207,10 @@ const dateOnRange = reactive({
                         </v-card-text>
                     </v-card>
                 </div>
-            </div>
+            </div> -->
 
             <!-- graph -->
-            <div class="flex gap-2 mt-3 w-full
+            <!-- <div class="flex gap-2 mt-3 w-full
                         DT:flex-row
                         LT:flex-row
                         TL:flex-col
@@ -265,10 +265,10 @@ const dateOnRange = reactive({
                         </v-card-text>
                     </v-card>
                 </div>
-            </div>
+            </div> -->
 
             <!-- buttom summary -->
-            <div class="w-full flex flex-col mt-3">
+            <!-- <div class="w-full flex flex-col mt-3">
                 <div class="w-full flex justify-center items-center
                             DT:flex-row
                             LT:flex-row
@@ -339,6 +339,6 @@ const dateOnRange = reactive({
                         </v-card>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </AdminNavigationBar>
 </template>

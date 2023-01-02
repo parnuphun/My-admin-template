@@ -94,7 +94,7 @@ const emit = defineEmits<{
                 class="w-32"
                 color="success"
                 @click="validateOTP">
-                ยืนยัน
+                ยืนยันรหัส
             </v-btn>
         </div>
     </div>
@@ -118,7 +118,7 @@ const emit = defineEmits<{
                     @click="validateOTP()"
                     color="success"
                     width="100%">
-                    ยืนยัน
+                    ยืนยันรหัส
                 </v-btn>
             </div>
         </div>
