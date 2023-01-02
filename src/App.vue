@@ -7,13 +7,15 @@
 </template>
 
 <style>
+    /* sweet alert */
     .swal2-container {
         z-index: 20000 !important;
     }
 
-        /* width */
+    /* scroll bar */
+    /* width */
     ::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
     }
 
     /* Handle */
@@ -26,4 +28,5 @@
     ::-webkit-scrollbar-thumb:hover {
         background: #71717a;
     }
+
 </style>
