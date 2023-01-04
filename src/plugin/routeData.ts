@@ -15,10 +15,6 @@ export interface NavigationItem {
     }
 }
 
-
-
-
-
 // icon from material design dont need mid- prefix
 export const navigationMenu:NavigationItem[] = [
     {
@@ -39,8 +35,15 @@ export const navigationMenu:NavigationItem[] = [
         id: 'myReseachList' ,
         title : 'โครงการของฉัน' ,
         icon : 'text-box' ,
+        link : '/testBackend/MyProject' ,
+        permission: 'นักศึกษา',
+    },
+    {
+        id: 'myReseachList' ,
+        title : 'โครงการที่ดูแล' ,
+        icon : 'folder-account' ,
         link : '/testBackend/MyProjectList' ,
-        permission: 'นักเรียน',
+        permission: 'อาจารย์',
     },
     {
         id: 'StudentList' ,

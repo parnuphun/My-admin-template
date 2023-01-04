@@ -6,8 +6,6 @@ import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
 
 <template>
     <AdminNavigationBar>
-
-
         <div class="w-full flex flex-col">
             <div class="flex flex-row">
                 <div class="w-1/2 pr-1">
@@ -26,27 +24,7 @@ import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
                     ></v-textarea>
                 </div>
                 <div class="w-1/2 pl-1">
-
                 </div>
-            </div>
-
-            <div>
-                <div class="w-full">
-                    <v-text-field
-                        prepend-icon="mdi-card-search-outline"
-                        label="Search"
-                    ></v-text-field>
-                </div>
-                <v-table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th></th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                </v-table>
             </div>
         </div>
     </AdminNavigationBar>

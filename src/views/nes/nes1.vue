@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
 import  MsgAlert  from '../../services/msgAlert';
 import apiRPTS from '../../services/api/apiRPTS';
@@ -45,4 +45,4 @@ function photo(){
      <button class="m-2 bg-red-600 py-2 px-8 rounded text-white hover:bg-red-400"  @click="photo"> รูป </button>
     </AdminNavigationBar>
 
-</template>
+</template> -->

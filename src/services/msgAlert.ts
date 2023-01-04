@@ -50,7 +50,8 @@ export default class MsgAlert {
 
     // default alert
     default_msg(Option:msgOption){
-        let timer = 3000
+        let timer : number | boolean
+        timer = 3000
         let icon: SweetAlertIcon = 'success'
         let position: SweetAlertPosition = 'center'
         let cancelButtonText: string = 'Close'
@@ -66,6 +67,7 @@ export default class MsgAlert {
         if(Option.confirmBtn === true) this.confirmBtn = Option.confirmBtn
 
         if(Option.timer) timer = convertTime(Option.timer)
+        if(Option.timer === 0) timer = NaN
         if(Option.position) position = Option.position
 
         if(Option.cancelText) this.cancelBtn = true

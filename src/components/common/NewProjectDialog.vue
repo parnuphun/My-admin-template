@@ -69,44 +69,41 @@ const emit = defineEmits<{
             </v-card-title>
 
             <v-card-text>
-                <form action="" @submit.prevent="createNewProject">
+                <v-form action="" @submit.prevent="createNewProject">
                     <div class="flex flex-col w-full h-full">
                         <v-text-field
                             v-model="projectNameTH"
-                            label="Project Name TH"
+                            label="ชื่อภาษาไทย"
                             bg-color="#e5e7eb"
-                            prepend-inner-icon="mdi-rename-box"
                             density="comfortable"
                             clearable
                             requied>
                         </v-text-field>
                         <v-text-field
                             v-model="projectNameEN"
-                            label="Project Name EN"
+                            label="ชื่อภาษาอังกฤษ"
                             bg-color="#e5e7eb"
-                            prepend-inner-icon="mdi-"
                             density="comfortable"
                             clearable
                             requied>
                         </v-text-field>
                         <v-textarea
                             v-model="projectDetail"
-                            label="Proect Detail"
+                            label="รายละเอียดโครงการ"
                             bg-color="#e5e7eb"
-                            prepend-inner-icon="mdi-card-text-outline"
                             density="comfortable"
                             clearable
                             counter=""
                             requied>
                         </v-textarea>
-                        <v-file-input
+                        <!-- <v-file-input
                             accept="image/png, image/jpeg, image/bmp"
                             placeholder="Pick an Project Image"
                             prepend-icon="mdi-file-image"
                             density="comfortable"
                             label="Project Image"
                             bg-color="#e5e7eb"
-                        ></v-file-input>
+                        ></v-file-input> -->
                     </div>
                     <!-- <div class="mt-3 flex w-full justify-center items-center">
                         <button
@@ -121,14 +118,14 @@ const emit = defineEmits<{
                             Create
                         </button>
                     </div> -->
-                </form>
+                </v-form>
             </v-card-text>
-                <div class="flex w-full justify-center mb-4 gap-1 items-center">
+                <div class="flex w-full justify-center mb-4 gap-4 items-center">
                     <v-btn color="error" @click="close">
-                        cancel
+                        ยกเลิก
                     </v-btn>
                     <v-btn color="green" @click="createNewProject">
-                        Create
+                        สร้าง
                     </v-btn>
                 </div>
         </v-card>

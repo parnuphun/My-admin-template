@@ -57,15 +57,6 @@ export default class apiRPTS {
         return axios.post('/api/resetPassword',data)
     }
 
-    // project
-    createNewProject(data:Object){
-        return axios.post('/api/createNewProject',data)
-    }
-
-    myProjectList(data:Object){
-        return axios.post('/api/myProjectList',data)
-
-    }
 
     // users
     // get all student
@@ -91,5 +82,42 @@ export default class apiRPTS {
     //confirm password
     confirmPassword(data:{password:string,userId:number}){
         return axios.post('/api/confirmPassword',data)
+    }
+
+
+    // project
+    // new project
+    createNewProject(data:Object){
+        return axios.post('/api/createNewProject',data)
+    }
+
+    // check user project
+    checkUserProject(data:{userId:number}){
+        return axios.post('/api/checkUserProject',data)
+    }
+
+    // invite advisor
+    inviteAdvisor(data:FormData){
+        return axios.post('/api/inviteAdvisor',data)
+    }
+    // // invite advisor
+    // inviteAdvisor(data:{inviterId:number,acceptorId:number,projectId:number,detail:string}){
+    //     return axios.post('/api/inviteAdvisor',data)
+    // }
+
+    // INVITE ADVISOR LIST
+    inviteAdvisorlist(data:{acceptorId:number}){
+        return axios.post('/api/inviteAdvisorList',data)
+    }
+
+    // REPLY INVITE ADVISOR
+    replyInviteAdvisor(data:{replyMsg:string,replyStatus:1 | 2,inviteAdvisorId:number,projectId:number,advisorId:number}){
+        return axios.post('/api/replyInviteAdvisor',data)
+    }
+
+    // DOWNLOAD
+    // DOWNLOAD PROPOSAL
+    downloadProposal(data:{fileName:string}){
+        return axios.post('/api/downloadProposal',data)
     }
 }

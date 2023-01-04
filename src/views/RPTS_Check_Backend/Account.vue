@@ -11,11 +11,13 @@ const _api = new apiRPTS()
 const _msg = new MsgAlert()
 
 const tab = ref(null)
+
 const isOtpSend = ref(false)
 
 const password = ref()
 const isPasswordChanged = ref(false)
 const isCurrentPassworRight = ref(false)
+const isBtnPass = ref(false)
 
 const isFormValid = ref(false)
 const isFormEmailValid = ref(false)
@@ -153,6 +155,20 @@ const emit = defineEmits<{
     (event:'loadingProgressBar',size:boolean):void
 }>()
 
+watch(password,()=>{
+    if(password.value !== ''){
+        isBtnPass.value = true
+    }else{
+        isBtnPass.value = false
+    }
+})
+
+function afterPassChenged(){
+    password.value = ''
+    isBtnPass.value = false
+    isCurrentPassworRight.value = false
+    isPasswordChanged.value = false
+}
 </script>
 
 <template>
@@ -216,7 +232,7 @@ const emit = defineEmits<{
                 <v-card height="100%">
                     <v-tabs
                     v-model="tab"
-                    bg-color=""
+                    bg-color="primary"
                     >
                         <v-tab value="info">ข้อมูลเบื้องต้น</v-tab>
                         <v-tab value="security">ความปลอดภัย</v-tab>
@@ -399,7 +415,7 @@ const emit = defineEmits<{
                                         bg-color="#e5e7eb"
                                     ></v-text-field>
                                 </div>
-                                <div class="w-full flex justify-center" v-if="isCurrentPassworRight === false">
+                                <div class="w-full flex justify-center" v-if="isBtnPass && !isCurrentPassworRight">
                                     <v-btn color="primary" @click="confirmPassword">
                                         ยืนยันรหัสผ่าน
                                     </v-btn>
@@ -409,7 +425,7 @@ const emit = defineEmits<{
                                         :email="email!"
                                         purpose="EditProfile"
                                         density="comfortable"
-                                        @reset-password-success="()=>{ isPasswordChanged = true ; password = ''}"
+                                        @reset-password-success="()=>{ afterPassChenged }"
                                     >
                                     </ResetPassword>
                                 </div>

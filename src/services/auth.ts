@@ -40,7 +40,7 @@ export default class authService {
     }
 }
 
-export type Permission = 'นักเรียน' | 'อาจารย์' | 'ผู้ดูแลระบบ' | 'ทุกคน'
+export type Permission = 'นักศึกษา' | 'อาจารย์' | 'ผู้ดูแลระบบ' | 'ทุกคน'
 export function checkPermission(permission:Permission , permissionTwo?:Permission):boolean{
     const credentialData = JSON.parse(localStorage.getItem('credential')!)
     const roles:Array<string> = credentialData.userRoles

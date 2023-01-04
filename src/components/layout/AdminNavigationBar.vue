@@ -91,8 +91,7 @@ function isAdmin():boolean{
 
 <template>
     <VThemeProvider :theme="rentTheme">
-
-        <VApp >
+        <VApp>
 
             <!-- nav bar -->
 

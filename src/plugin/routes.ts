@@ -19,6 +19,7 @@ const router = createRouter({
         { path: '/testBackend/login' , component:() => import('../views/RPTS_Check_Backend/LoginPage.vue')},
         { path: '/testBackend/forgotPassword' , component:() => import('../views/RPTS_Check_Backend/ForgotPassword.vue')},
 
+        { path: '/testBackend/MyProject' , component:() => import('../views/RPTS_Check_Backend/MyProject.vue')},
         { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS_Check_Backend/MyProjectList.vue')},
         { path: '/testBackend/ProjectDetail' , component:() => import('../views/RPTS_Check_Backend/ProjectDetail.vue')},
         { path: '/testBackend/StudentList' , component:() => import('../views/RPTS_Check_Backend/StudentList.vue')},

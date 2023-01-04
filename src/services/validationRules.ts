@@ -15,7 +15,7 @@ export function isRmutiEmail(v:string){
 }
 
 export function isPasswordMatch(newPassword:string,repeatPassword:string){
-        return repeatPassword === '' || repeatPassword === newPassword || 'กรุณากรอกรหัสผ่านให้ตรงกัน'
+    return repeatPassword === '' || repeatPassword === newPassword || 'กรุณากรอกรหัสผ่านให้ตรงกัน'
 }
 
 export function isPasswordStrength(v:string){
@@ -23,5 +23,5 @@ export function isPasswordStrength(v:string){
 }
 
 export function isUsername(v:string){
-    return v === '' || /^[a-zA-Z0-9]{8,}$/.test(v) || 'กรุณากรอกตัวอักษรเป็นภาษาอังกฤษและมีตัวอักษรอย่างน้อย 5 ตัวอักษร'
+    return v === '' || /^[a-zA-Z0-9]{5,}$/.test(v) || 'กรุณากรอกตัวอักษรเป็นภาษาอังกฤษและมีตัวอักษรอย่างน้อย 5 ตัวอักษร'
 }

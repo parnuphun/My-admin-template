@@ -1,3 +1,16 @@
+type userRoles = 'อาจารย์' | 'นักศึกษา' | 'ผู้ดูแลระบบ'
+
+export interface CredentialDataFromLocal {
+    Authorization: string
+    userAvatar: string
+    userEmail: string
+    userFname: string
+    userLname: string
+    userId: number
+    userRmutiId: string
+    userRoles: userRoles[]
+}
+
 export interface userDataRes {
     User_Id: number
     User_Avatar: string
@@ -15,3 +28,16 @@ export interface userDataRes {
     User_Banned: boolean
     USER_ROLES: string[]
 }
+
+export interface ProjectDataRes {
+    Project_Id: number
+    Project_Name_TH: string
+    Project_Name_EN: string
+    Project_Detail: string
+    Project_Avatar: string
+    Project_Status: { Project_Status_Id: number, Project_Status_Name: string }
+    Project_Created_By: number // user
+    Project_Created_Date: Date
+    Project_Deleted: boolean
+}
+
