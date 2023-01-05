@@ -65,7 +65,7 @@ const emit = defineEmits<{
     <v-dialog v-model="props.isDialogOpen" hidden-overlay width="500">
         <v-card height="100%">
             <v-card-title class="p-6 bg-blue-500  text-white text-center">
-                <span class="text-2xl"> Create Project  </span>
+                <span class="text-2xl"> สร้างโครงการ  </span>
             </v-card-title>
 
             <v-card-text>
@@ -121,8 +121,8 @@ const emit = defineEmits<{
                 </v-form>
             </v-card-text>
                 <div class="flex w-full justify-center mb-4 gap-4 items-center">
-                    <v-btn color="error" @click="close">
-                        ยกเลิก
+                    <v-btn color="grey" @click="close">
+                        ปิดหน้าต่าง
                     </v-btn>
                     <v-btn color="green" @click="createNewProject">
                         สร้าง

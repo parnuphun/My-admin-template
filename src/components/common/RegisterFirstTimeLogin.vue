@@ -63,13 +63,13 @@ function registerSuccess(){
                             lName:props.data.User_Lname,
                             email:email.value})
     .then((res)=>{
-        if(res.status){
+        if(res.data.status){
             _msg.default_msg({title:res.data.msg,timer:2})
             setTimeout(() => {
                 emit('register-success',true)
             }, 2000);
         }else{
-            _msg.default_msg({title:res.data.msg})
+            _msg.default_msg({title:res.data.msg,icon:'warning'})
         }
     })
 }

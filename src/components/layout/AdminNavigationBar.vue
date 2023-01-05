@@ -21,14 +21,14 @@ let setting : webSetting = reactive({
 
 onMounted(()=>{
     credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
-    // set default setting
 
-    if(!localStorage.getItem('setting')){
-        localStorage.setItem('setting',JSON.stringify(setting))
-    }else{
-        setting = JSON.parse(String(localStorage.getItem('setting')))
-        rentTheme.value = setting.theme
-    }
+    // set default setting
+    // if(!localStorage.getItem('setting')){
+    //     localStorage.setItem('setting',JSON.stringify(setting))
+    // }else{
+    //     setting = JSON.parse(String(localStorage.getItem('setting')))
+    //     rentTheme.value = setting.theme
+    // }
 })
 
 function changeTheme(theme:layOutTheme){
@@ -90,7 +90,7 @@ function isAdmin():boolean{
 </script>
 
 <template>
-    <VThemeProvider :theme="rentTheme">
+    <VThemeProvider>
         <VApp>
 
             <!-- nav bar -->
