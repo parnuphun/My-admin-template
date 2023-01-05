@@ -23,5 +23,5 @@ export function isPasswordStrength(v:string){
 }
 
 export function isUsername(v:string){
-    return v === '' || /^[a-zA-Z0-9]{5,}$/.test(v) || 'กรุณากรอกตัวอักษรเป็นภาษาอังกฤษและมีตัวอักษรอย่างน้อย 5 ตัวอักษร'
+    return v === '' || /^[a-zA-Z0-9]{5,}\s*$/.test(v) || 'กรุณากรอกตัวอักษรเป็นภาษาอังกฤษและมีตัวอักษรอย่างน้อย 5 ตัวอักษร'
 }

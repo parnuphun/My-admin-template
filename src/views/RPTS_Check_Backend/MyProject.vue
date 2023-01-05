@@ -332,8 +332,7 @@ function dialogClosed(){
             </div>
 
             <div v-if="!isProject" class="w-full h-full flex justify-center items-center">
-                <img src="../../assets/iamges/illustrations/Add tasks-bro.svg" alt=""
-                class="w-1/2">
+                <img src="/public/iamges/illustrations/Add tasks-bro.svg" alt="" class="w-1/2">
             </div>
         </v-container>
     </AdminNavigationBar>

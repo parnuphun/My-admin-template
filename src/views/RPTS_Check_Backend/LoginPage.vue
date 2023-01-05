@@ -69,8 +69,9 @@ function login(){
 }
 
 // After component emit value
-function registerSuccess(data:Boolean){
-    isDialogOpen.value = Boolean(data)
+function registerSuccess(newUsername:string){
+    username.value = newUsername
+    isDialogOpen.value = false
     login()
 }
 
@@ -143,7 +144,7 @@ function loadingChange(value:boolean){
         persistent
         v-model:data="oldData"
         v-model:isDialogOpen="isDialogOpen"
-        @register-success="registerSuccess"
+        @register-success="(newUsername:string) => {registerSuccess(newUsername)}"
         @loading-progress-bar="(value:boolean)=>{ loadingChange(value)}"
     >
     </RegisterFirstTimeLogin>

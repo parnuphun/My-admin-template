@@ -23,6 +23,8 @@ const isOtpSend = ref(false)
 const isOtpValid = ref(false)
 const isEmailValid = ref(false)
 
+const newUsername = ref('')
+
 watch(email,()=>{
     if(email.value.endsWith('@rmuti.ac.th')){
         isEmailValid.value = true
@@ -37,7 +39,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-    (event: 'register-success' ,size:boolean):void
+    (event: 'register-success' ,size:string):void
     (event: 'loadingProgressBar',size:boolean):void
 }>()
 
@@ -56,22 +58,25 @@ function confirmEmail(){
 }
 
 function registerSuccess(){
-
-    _api.registerFirstTime({rmutiId:props.data.User_Rmuti_Id,
-                            username:props.data.User_Usernname,
-                            fName:props.data.User_Fname,
-                            lName:props.data.User_Lname,
-                            email:email.value})
-    .then((res)=>{
-        if(res.data.status){
-            _msg.default_msg({title:res.data.msg,timer:2})
-            setTimeout(() => {
-                emit('register-success',true)
-            }, 2000);
-        }else{
-            _msg.default_msg({title:res.data.msg,icon:'warning'})
-        }
-    })
+    if(newUsername.value.trim() === ''){
+        _msg.default_msg({title:'กรุณากรอกชื่อผู้ใช้งาน',icon:'warning'})
+    }else{
+        _api.registerFirstTime({rmutiId:props.data.User_Rmuti_Id,
+                                username:newUsername.value,
+                                fName:props.data.User_Fname,
+                                lName:props.data.User_Lname,
+                                email:email.value})
+        .then((res)=>{
+            if(res.data.status){
+                _msg.default_msg({title:res.data.msg,timer:2})
+                setTimeout(() => {
+                    emit('register-success',newUsername.value)
+                }, 2000);
+            }else{
+                _msg.default_msg({title:res.data.msg,icon:'warning'})
+            }
+        })
+    }
 }
 
 function otpValid(value:boolean){
@@ -120,7 +125,7 @@ watch(email,()=>{
                         </div>
                         <div class="w-full mb-3">
                             <v-text-field
-                                v-model="props.data.User_Usernname"
+                                v-model="newUsername"
                                 :counter="13"
                                 label="ชื่อผู้ใช้งาน"
                                 required
