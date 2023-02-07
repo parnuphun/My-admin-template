@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref , watch ,computed } from 'vue';
-import { navigationMenu , NavigationItem  } from '../../plugin/routeData';
+import { navigationMenu , NavigationItem , SubNavigationItem } from '../../plugin/routeData';
 import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/GlobalData'
@@ -12,7 +12,7 @@ const isOpenMenu = ref(false)
 const isDrawer = ref(true)
 const credentialData = ref()
 const isAlert = ref(false)
-
+const listOpend =ref<Array<string>>([''])
 // theme
 const rentTheme = ref('dark')
 let setting : webSetting = reactive({
@@ -20,6 +20,7 @@ let setting : webSetting = reactive({
 })
 
 onMounted(()=>{
+    isGroupOpen()
     // credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
 })
 
@@ -82,6 +83,21 @@ function isAdmin():boolean{
 
     return roles.some(role => role === 'ผู้ดูแลระบบ');
 }
+
+function isGroupOpen() {
+    for(let i = 0 ; i <= navigationMenu.length ; i++){
+        if(navigationMenu[i] && navigationMenu[i].childs){
+            let listGroup:any = navigationMenu[i].childs
+            for(let j = 0 ; j < navigationMenu[i].childs!.length ; j++ ){
+                if(currentPath.path === listGroup[j].link){
+                    listOpend.value.length = 0
+                    listOpend.value.push(String(navigationMenu[i].id))
+                }
+            }
+        }
+    }
+}
+
 </script>
 
 <template>
@@ -288,24 +304,56 @@ function isAdmin():boolean{
                 :elevation="2"
             >
                 <!-- menu list -->
-                <v-list class="" nav >
-                    <div nav v-for="navItem of navigationMenu">
+                <v-list class="" nav :opened="listOpend" >
+                    <div v-for="navItem of navigationMenu">
                         <!-- v-if=" checkPermission(navItem.permission) || isAdmin() " -->
                         <v-list-item
+                            v-if="!navItem.childs"
                             :title="navItem.title"
                             :subtitle="navItem.subtitle"
-                            @click="getCurrentPath(navItem.link)"
+                            @click="getCurrentPath(navItem.link!)"
                             density="comfortable"
                             :value="navItem.id"
                             class="text-md my-1"
                             active-color=""
-                            :prepend-icon="'mdi-'+navItem.icon"
+                            :prepend-icon="navItem.icon"
                             :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
                             rounded="">
-                            <!-- <v-icon :icon="'mdi-'+navItem.icon" start></v-icon>{{navItem.title}} -->
+                            <!-- <v-icon :icon="navItem.icon" start></v-icon>{{navItem.title}} -->
                         </v-list-item>
+                        <v-list-group v-else :value="navItem.id">
+                            <template v-slot:activator="{props}">
+                                <v-list-item
+                                    v-bind="props"
+                                    :title="navItem.title"
+                                    :subtitle="navItem.subtitle"
+                                    @click=""
+                                    density="comfortable"
+                                    :value="navItem.id"
+                                    class="text-md my-1"
+                                    active-color=""
+                                    :prepend-icon="navItem.icon"
+                                ></v-list-item>
+                            </template>
+                            <div v-for="SubNavItem of navItem.childs">
+                                <v-list-item
+                                    :title="SubNavItem.title"
+                                    :subtitle="SubNavItem.subtitle"
+                                    @click="getCurrentPath(SubNavItem.link!)"
+                                    density="comfortable"
+                                    :value="SubNavItem.id"
+                                    class="text-md my-1"
+                                    active-color=""
+                                    :prepend-icon="SubNavItem.icon"
+                                    :active="currentPath.path === SubNavItem.link || (SubNavItem.link === '/dashBoard' && currentPath.path === '/')"
+                                    rounded="">
+                                </v-list-item>
+                            </div>
+                        </v-list-group>
                     </div>
                 </v-list>
+
+                <!-- test child -->
 
             </v-navigation-drawer>
             <!-- Content here !!! -->

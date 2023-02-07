@@ -1,19 +1,20 @@
-import { checkPermission , Permission } from "../services/auth"
+// import { checkPermission , Permission } from "../services/auth"
+type Permission = 'นักศึกษา' | 'อาจารย์' | 'ผู้ดูแลระบบ' | 'ทุกคน'
+
 import {ref } from 'vue'
 export interface NavigationItem {
     id : string
     title : string
     subtitle? : string
-    icon : string
-    link : string
+    icon? : string
+    link? : string
     permission : Permission
     group? : boolean
-    childs? : {
-        id : string
-        title : string
-        icon : string
-        link : string
-    }
+    childs? : Array<SubNavigationItem>
+}
+
+export interface SubNavigationItem extends NavigationItem {
+
 }
 
 // icon from material design dont need mid- prefix
@@ -21,36 +22,74 @@ export const navigationMenu:NavigationItem[] = [
     {
         id: 'dashboard' ,
         title : 'หน้าหลัก' ,
-        icon : 'monitor-dashboard' ,
+        icon : 'mdi-monitor-dashboard' ,
         link : '/dashBoard' ,
-        permission: 'ทุกคน' ,
+        permission : 'ทุกคน' ,
+        childs: []
     },
     {
-        id: 'miniproject_iot' ,
-        title : 'แลป 9' ,
-        subtitle : 'งานวิชา IOT' ,
-        icon : 'text-box-multiple-outline' ,
-        link : '/miniproject_iot' ,
-        permission: 'ทุกคน' ,
+        id: 'iot' ,
+        title : 'งาน' ,
+        icon : 'mdi-text-box-multiple-outline' ,
+        permission : 'ทุกคน' ,
+        childs : [
+            {
+                id: 'miniproject_iot' ,
+                title : 'แลป 9' ,
+                subtitle : 'งานวิชา IOT' ,
+                link : '/miniproject_iot' ,
+                permission : 'ทุกคน' ,
+            },
+        ]
     },
-    {
-        id: 'typingTest' ,
-        title : 'ทดสอบการพิมพ์' ,
-        subtitle : 'WorkShop' ,
-        icon : 'content-save' ,
-        link : '/typingTest' ,
-        permission: 'ทุกคน' ,
 
-    },
     {
-        id: 'SteamScrapingReview' ,
-        title : 'ดูดรีวิวจากสตรีม' ,
-        subtitle : 'WorkShop' ,
-        icon : 'content-save' ,
-        link : '/SteamScrapingReview' ,
-        permission: 'ทุกคน' ,
-
+        id: 'test_Component' ,
+        title : 'ทดสอบ' ,
+        subtitle : 'Test Component' ,
+        icon : 'mdi-test-tube' ,
+        permission : 'ทุกคน' ,
+        childs : [
+            {
+                id: 'test_calendar' ,
+                title : 'V Calendar' ,
+                link : '/test/test_calendar' ,
+                permission : 'ทุกคน'
+            },
+            {
+                id: 'test_calendar' ,
+                title : 'SweetAlert2' ,
+                link : '/test/test_sweetAlert' ,
+                permission : 'ทุกคน'
+            },
+            {
+                id: 'test_datatable' ,
+                title : 'Data Table Manual' ,
+                link : '/test/Test_DataTableManual' ,
+                permission : 'ทุกคน'
+            },
+        ]
     },
+
+    // {
+    //     id: 'typingTest' ,
+    //     title : 'ทดสอบการพิมพ์' ,
+    //     subtitle : 'WorkShop' ,
+    //     icon : 'content-save' ,
+    //     link : '/typingTest' ,
+    //     permission: 'ทุกคน' ,
+
+    // },
+    // {
+    //     id: 'SteamScrapingReview' ,
+    //     title : 'ดูดรีวิวจากสตรีม' ,
+    //     subtitle : 'WorkShop' ,
+    //     icon : 'content-save' ,
+    //     link : '/SteamScrapingReview' ,
+    //     permission: 'ทุกคน' ,
+
+    // },
+
     // {
     //     id: 'News' ,
     //     title : 'ข่าวสาร' ,
@@ -111,33 +150,33 @@ export const navigationMenu:NavigationItem[] = [
     /////////////////////////////////////////////////////////////////////////////////////////////////
     // Test Component
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    {
-        id: 'test_calendar' ,
-        title : 'V Calendar' ,
-        subtitle : 'Test Component',
-        icon : 'test-tube' ,
-        link : '/test/test_calendar' ,
-        group : false,
-        permission : 'ทุกคน'
-    },
-    {
-        id: 'test_calendar' ,
-        title : 'SweetAlert2' ,
-        subtitle : 'Test Component',
-        icon : 'test-tube' ,
-        link : '/test/test_sweetAlert' ,
-        group : false,
-        permission : 'ทุกคน'
-    },
-    {
-        id: 'test_datatable' ,
-        title : 'Data Table Manual' ,
-        subtitle : 'Test Component',
-        icon : 'test-tube' ,
-        link : '/test/Test_DataTableManual' ,
-        group : false,
-        permission : 'ทุกคน'
-    },
+    // {
+    //     id: 'test_calendar' ,
+    //     title : 'V Calendar' ,
+    //     subtitle : 'Test Component',
+    //     icon : 'test-tube' ,
+    //     link : '/test/test_calendar' ,
+    //     group : false,
+    //     permission : 'ทุกคน'
+    // },
+    // {
+    //     id: 'test_calendar' ,
+    //     title : 'SweetAlert2' ,
+    //     subtitle : 'Test Component',
+    //     icon : 'test-tube' ,
+    //     link : '/test/test_sweetAlert' ,
+    //     group : false,
+    //     permission : 'ทุกคน'
+    // },
+    // {
+    //     id: 'test_datatable' ,
+    //     title : 'Data Table Manual' ,
+    //     subtitle : 'Test Component',
+    //     icon : 'test-tube' ,
+    //     link : '/test/Test_DataTableManual' ,
+    //     group : false,
+    //     permission : 'ทุกคน'
+    // },
     // {
     //     id: 'admin_login' ,
     //     title : 'Login' ,
