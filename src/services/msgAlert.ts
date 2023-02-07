@@ -143,6 +143,7 @@ export default class MsgAlert {
             title: Option.title ,
             text: Option.msg,
             icon: Option.icon ,
+            timerProgressBar: Option.progressbar
         })
     }
 

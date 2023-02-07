@@ -40,10 +40,12 @@ module.exports.updateLedStatus = async (req:Request , res:Response) => {
 
         if(ledStatus === 1 ){
             res.send({
+                status: true ,
                 msg : 'turn on success !!'
             })
         }else{
             res.send({
+                status: true ,
                 msg : 'turn off success !!'
             })
         }
@@ -99,7 +101,6 @@ module.exports.getTempAndHumidityData = async (req:Request , res:Response) => {
                 return result
             })
         })
-
         // LED Status
         ledStatus = await prisma.iot_Lab_LED.findUnique({
             where:{
@@ -108,7 +109,6 @@ module.exports.getTempAndHumidityData = async (req:Request , res:Response) => {
         }).then(async (result)=>{
             return +result!.Iot_Lab_LED_Status
         })
-
         res.send({
             status : true ,
             msg: 'get dht data success !!' ,

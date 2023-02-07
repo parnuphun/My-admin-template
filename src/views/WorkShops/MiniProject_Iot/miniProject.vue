@@ -48,7 +48,14 @@ async function getTempAndHumidityData(){
     }).catch(()=>{
         isLoading.value = false
         isErr.value = true
-        _msg.toast_msg({title:'เซิร์ฟเวอร์ไม่ตอบสนอง',icon:'error',msg:'กรุณาตรวจสอบการเชื่อมต่อกับเซิร์ฟเวอร์'})
+        _msg.toast_msg({
+            title:'เซิร์ฟเวอร์ไม่ตอบสนอง',
+            icon:'error',
+            msg:'กรุณาตรวจสอบการเชื่อมต่อกับเซิร์ฟเวอร์',
+            timer:5,
+            width:'auto',
+            progressbar: true
+        })
     })
 }
 
@@ -120,8 +127,9 @@ function toggleBtn(value:boolean){
 
     _api_iot.updateLedStatus(status).then((res)=>{
         if(res.data.status){
-            getTempAndHumidityData()
-            _msg.toast_msg({title:(status === 1)?'เปิดแล้ว':'ปิดแล้ว',icon:'success'})
+            // getTempAndHumidityData()
+            ledStatus.value = status
+            _msg.toast_msg({title:(status === 1)?'On !':'Off !',icon:'success'})
         }else{
             _msg.default_msg({title:'มีบางอย่างผิดพลาด',icon:'error'})
         }
@@ -132,7 +140,7 @@ function toggleBtn(value:boolean){
 
 <template>
     <AdminNavigationBar>
-        <div v-if="isLoading" class="w-full pt-72">
+        <div v-if="isLoading" class="w-full pt-64">
             <PageLoading></PageLoading>
         </div>
         <div v-else-if="(isLoading===false && isErr === true)" class="w-full">
@@ -213,7 +221,7 @@ function toggleBtn(value:boolean){
                     color="">
                     <template v-slot:title>
                         <div class="text-center font-bold text-2xl my-3">
-                            ตารางการแสดงอุณหภูมิและความชื้น
+                            กราฟแสดงอุณหภูมิและความชื้น
                         </div>
                     </template>
                     <v-card-text>
