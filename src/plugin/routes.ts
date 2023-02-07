@@ -9,33 +9,52 @@ const _auth = new authService()
 const router = createRouter({
     history : createWebHistory(),
     routes: [
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // default
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         // default redirect
-        { path: '/' , component: () => import('../views/finalProject/Main/DashBoard.vue')} ,
+        { path: '/' , component: () => import('../views/Common/Main/DashBoard.vue')} ,
 
-        { path: '/dashBoard' , component: () => import('../views/finalProject/Main/DashBoard.vue')} ,
-        { path: '/recycle' , component: () => import('../views/finalProject/Main/Recycle.vue')} ,
-
-        // check backend
-        { path: '/testBackend/login' , component:() => import('../views/RPTS_Check_Backend/LoginPage.vue')},
-        { path: '/testBackend/forgotPassword' , component:() => import('../views/RPTS_Check_Backend/ForgotPassword.vue')},
-
-        { path: '/testBackend/MyProject' , component:() => import('../views/RPTS_Check_Backend/MyProject.vue')},
-        { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS_Check_Backend/MyProjectList.vue')},
-        { path: '/testBackend/ProjectDetail' , component:() => import('../views/RPTS_Check_Backend/ProjectDetail.vue')},
-        { path: '/testBackend/StudentList' , component:() => import('../views/RPTS_Check_Backend/StudentList.vue')},
-        { path: '/testBackend/TeacherList' , component:() => import('../views/RPTS_Check_Backend/TeacherList.vue')},
-        { path: '/testBackend/messageBox' , component:() => import('../views/RPTS_Check_Backend/messageBox.vue')},
-        { path: '/testBackend/setting' , component:() => import('../views/RPTS_Check_Backend/setting.vue')},
-        { path: '/testBackend/Files' , component:() => import('../views/RPTS_Check_Backend/Files.vue')},
-        { path: '/testBackend/News' , component:() => import('../views/RPTS_Check_Backend/News.vue')},
+        // page not found 404
+        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
 
         // test component
         { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
         { path: '/test/Test_DataTableManual' , component: () => import('../views/test/Test_DataTableManual.vue')} ,
         { path: '/test/test_sweetAlert' , component: () => import('../views/test/Test_sweetAlert.vue')} ,
 
-        // page not found 404
-        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/finalProject/ErrorPage/PageNotFound404.vue')} ,
+
+        { path: '/dashBoard' , component: () => import('../views/Common/Main/DashBoard.vue')} ,
+        { path: '/recycle' , component: () => import('../views/Common/Main/Recycle.vue')} ,
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // workshop
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        /// iot
+        { path: '/miniproject_iot', component: ()=> import('../views/WorkShops/MiniProject_Iot/miniProject.vue')},
+
+        /// typing test
+        { path: '/typingTest', component: ()=> import('../views/WorkShops/TypingTest/PageHome.vue')},
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // RPTS
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // check backend
+        { path: '/testBackend/login' , component:() => import('../views/RPTS/LoginPage.vue')},
+        { path: '/testBackend/forgotPassword' , component:() => import('../views/RPTS/ForgotPassword.vue')},
+
+        { path: '/testBackend/MyProject' , component:() => import('../views/RPTS/MyProject.vue')},
+        { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS/MyProjectList.vue')},
+        { path: '/testBackend/ProjectDetail' , component:() => import('../views/RPTS/ProjectDetail.vue')},
+        { path: '/testBackend/StudentList' , component:() => import('../views/RPTS/StudentList.vue')},
+        { path: '/testBackend/TeacherList' , component:() => import('../views/RPTS/TeacherList.vue')},
+        { path: '/testBackend/messageBox' , component:() => import('../views/RPTS/messageBox.vue')},
+        { path: '/testBackend/setting' , component:() => import('../views/RPTS/setting.vue')},
+        { path: '/testBackend/Files' , component:() => import('../views/RPTS/Files.vue')},
+        { path: '/testBackend/News' , component:() => import('../views/RPTS/News.vue')},
+
+
+
     ],
     scrollBehavior(to, from, savedPosition) {
         // always scroll to top

@@ -90,7 +90,8 @@ const dateOnRange = reactive({
 
 <template>
         <AdminNavigationBar>
-            <v-parallax
+            <!-- Parallax -->
+            <!-- <v-parallax
                 class="mb-3"
                 height="300"
                 src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
@@ -99,7 +100,7 @@ const dateOnRange = reactive({
                 <span class="text-3xl text-white">ระบบติดตามความก้าวหน้างานวิจัย</span>
                 <span class="text-lg text-white">มหาวิทยาลัยเทคโนโลยีราชมงคลอีสาน วิทยาเขตขอนแก่น</span>
             </div>
-            </v-parallax>
+            </v-parallax> -->
 
             <!-- summary box -->
             <!-- <div class="w-full flex justify-center items-center

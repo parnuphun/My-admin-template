@@ -21,14 +21,6 @@ let setting : webSetting = reactive({
 
 onMounted(()=>{
     credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
-
-    // set default setting
-    // if(!localStorage.getItem('setting')){
-    //     localStorage.setItem('setting',JSON.stringify(setting))
-    // }else{
-    //     setting = JSON.parse(String(localStorage.getItem('setting')))
-    //     rentTheme.value = setting.theme
-    // }
 })
 
 function changeTheme(theme:layOutTheme){
@@ -101,7 +93,7 @@ function isAdmin():boolean{
 
                 <!-- content in nav -->
                 <div class="w-full mr-6 flex flex-row items-center">
-                    <v-app-bar-title color=""> ระบบติดตามความก้าวหน้างานวิจัย </v-app-bar-title>
+                    <v-app-bar-title color=""> Phanuphun.na </v-app-bar-title>
 
                     <!-- <v-btn icon class="" @click="isAlert = !isAlert" >
                         <v-icon size="x-large" >mdi-message</v-icon>
@@ -298,6 +290,7 @@ function isAdmin():boolean{
                         <v-list-item
                             v-if=" checkPermission(navItem.permission) || isAdmin() "
                             :title="navItem.title"
+                            :subtitle="navItem.subtitle"
                             @click="getCurrentPath(navItem.link)"
                             density="comfortable"
                             :value="navItem.id"

@@ -9,5 +9,6 @@ import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vu
         <div class="w-full h-full flex justify-center items-center">
             <img src="/public/iamges/illustrations/404 Error-cuate.svg" alt="" class="w-1/2">
          </div>
+
     </AdminNavigationBar>
 </template>
