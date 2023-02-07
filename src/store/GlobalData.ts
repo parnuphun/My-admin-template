@@ -9,5 +9,5 @@ export let setting :webSetting = reactive({
 
 export let userData = ref()
 
-export const credentialData = reactive(JSON.parse(localStorage.getItem('credential')||''))
+// export const credentialData = reactive(JSON.parse(localStorage.getItem('credential')||''))
 

@@ -5,7 +5,7 @@ import { useRouter , useRoute} from 'vue-router';
 import { webSetting , layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/GlobalData'
 import MsgAlert from '../../services/msgAlert';
-import { checkPermission , Permission } from "../../services/auth"
+// import { checkPermission , Permission } from "../../services/auth"
 
 const _msg = new MsgAlert()
 const isOpenMenu = ref(false)
@@ -20,7 +20,7 @@ let setting : webSetting = reactive({
 })
 
 onMounted(()=>{
-    credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
+    // credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
 })
 
 function changeTheme(theme:layOutTheme){
@@ -74,8 +74,11 @@ const props = defineProps<{
 }>()
 
 function isAdmin():boolean{
+    console.log('isAdmin fucntion ');
+
     const credentialData = JSON.parse(localStorage.getItem('credential')!)
     const roles:Array<string> = credentialData.userRoles
+    console.log('before return isAdmin fucntion ');
 
     return roles.some(role => role === 'ผู้ดูแลระบบ');
 }
@@ -287,8 +290,8 @@ function isAdmin():boolean{
                 <!-- menu list -->
                 <v-list class="" nav >
                     <div nav v-for="navItem of navigationMenu">
+                        <!-- v-if=" checkPermission(navItem.permission) || isAdmin() " -->
                         <v-list-item
-                            v-if=" checkPermission(navItem.permission) || isAdmin() "
                             :title="navItem.title"
                             :subtitle="navItem.subtitle"
                             @click="getCurrentPath(navItem.link)"
