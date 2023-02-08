@@ -6,7 +6,7 @@ export interface NavigationItem {
     id : string
     title : string
     subtitle? : string
-    icon? : string
+    icon : string
     link? : string
     permission : Permission
     group? : boolean
@@ -25,18 +25,19 @@ export const navigationMenu:NavigationItem[] = [
         icon : 'mdi-monitor-dashboard' ,
         link : '/dashBoard' ,
         permission : 'ทุกคน' ,
-        childs: []
     },
     {
         id: 'iot' ,
         title : 'งาน' ,
+        subtitle: 'งานรายวิชา',
         icon : 'mdi-text-box-multiple-outline' ,
         permission : 'ทุกคน' ,
         childs : [
             {
                 id: 'miniproject_iot' ,
-                title : 'แลป 9' ,
+                title : 'การทดลองที่ 9' ,
                 subtitle : 'งานวิชา IOT' ,
+                icon: 'mdi-text-box-outline' ,
                 link : '/miniproject_iot' ,
                 permission : 'ทุกคน' ,
             },
@@ -53,42 +54,62 @@ export const navigationMenu:NavigationItem[] = [
             {
                 id: 'test_calendar' ,
                 title : 'V Calendar' ,
+                icon : 'mdi-test-tube-empty' ,
                 link : '/test/test_calendar' ,
                 permission : 'ทุกคน'
             },
             {
                 id: 'test_calendar' ,
                 title : 'SweetAlert2' ,
+                icon: 'mdi-test-tube-empty',
                 link : '/test/test_sweetAlert' ,
                 permission : 'ทุกคน'
             },
             {
                 id: 'test_datatable' ,
                 title : 'Data Table Manual' ,
+                icon: 'mdi-test-tube-empty',
                 link : '/test/Test_DataTableManual' ,
                 permission : 'ทุกคน'
             },
         ]
     },
+    {
+        id: 'workShop' ,
+        title : 'ลอง' ,
+        subtitle : 'workshops' ,
+        icon : 'mdi-cog' ,
+        permission : 'ทุกคน' ,
+        childs : [
+            {
+                id: 'EventReminder' ,
+                title : 'เว็บแจ้งเตือนความจำ' ,
+                subtitle : 'MiniProject' ,
+                icon : 'mdi-calendar' ,
+                link : '/EventReminder' ,
+                permission: 'ทุกคน' ,
 
-    // {
-    //     id: 'typingTest' ,
-    //     title : 'ทดสอบการพิมพ์' ,
-    //     subtitle : 'WorkShop' ,
-    //     icon : 'content-save' ,
-    //     link : '/typingTest' ,
-    //     permission: 'ทุกคน' ,
+            },
+            {
+                id: 'typingTest' ,
+                title : 'ทดสอบการพิมพ์' ,
+                subtitle : 'Game' ,
+                icon : 'mdi-gamepad' ,
+                link : '/typingTest' ,
+                permission: 'ทุกคน' ,
 
-    // },
-    // {
-    //     id: 'SteamScrapingReview' ,
-    //     title : 'ดูดรีวิวจากสตรีม' ,
-    //     subtitle : 'WorkShop' ,
-    //     icon : 'content-save' ,
-    //     link : '/SteamScrapingReview' ,
-    //     permission: 'ทุกคน' ,
+            },
+            {
+                id: 'SteamScrapingReview' ,
+                title : 'ดึงข้อมูลรีวิวจากสตีม' ,
+                icon : 'mdi-steam' ,
+                subtitle : 'Web Scrapping' ,
+                link : '/SteamScrapingReview' ,
+                permission: 'ทุกคน' ,
+            },
+        ]
+    },
 
-    // },
 
     // {
     //     id: 'News' ,

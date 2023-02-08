@@ -344,9 +344,11 @@ function isGroupOpen() {
                                     :value="SubNavItem.id"
                                     class="text-md my-1"
                                     active-color=""
-                                    :prepend-icon="SubNavItem.icon"
                                     :active="currentPath.path === SubNavItem.link || (SubNavItem.link === '/dashBoard' && currentPath.path === '/')"
                                     rounded="">
+                                    <template v-slot:prepend v-if="SubNavItem.icon">
+                                        <v-icon :icon="String(SubNavItem.icon)" class="-ml-11"></v-icon>
+                                    </template>
                                 </v-list-item>
                             </div>
                         </v-list-group>
