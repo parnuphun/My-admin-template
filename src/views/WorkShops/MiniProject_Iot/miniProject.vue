@@ -184,7 +184,7 @@ function toggleBtn(value:boolean){
                 <div class="
                         MB:flex-1">
                     <Card_Topic_Simple
-                        icon="mdi-temperature-celsius"
+                        icon="mdi-thermometer"
                         :value="topTemp"
                         icon_color="orange"
                         title="อุณหภูมิห้อง (° C)">
