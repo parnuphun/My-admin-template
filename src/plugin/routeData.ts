@@ -27,6 +27,14 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
+        id: 'randomMovie' ,
+        title : 'สุ่มหนัง' ,
+        subtitle: 'ไม่รู้จะดูอะไรดี',
+        icon : 'mdi-movie' ,
+        link : '/randomMovie' ,
+        permission : 'ทุกคน' ,
+    },
+    {
         id: 'iot' ,
         title : 'งาน' ,
         subtitle: 'งานรายวิชา',
@@ -100,11 +108,11 @@ export const navigationMenu:NavigationItem[] = [
 
             },
             {
-                id: 'SteamScrapingReview' ,
+                id: 'steamReviewScrapping' ,
                 title : 'ดึงข้อมูลรีวิวจากสตีม' ,
                 icon : 'mdi-steam' ,
                 subtitle : 'Web Scrapping' ,
-                link : '/SteamScrapingReview' ,
+                link : '/steamReviewScrapping' ,
                 permission: 'ทุกคน' ,
             },
         ]

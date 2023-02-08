@@ -179,8 +179,8 @@ export default class MsgAlert {
 
         Swal.fire({
             width:defaultWidth,
-            imageWidth: '100%',
-            imageHeight: '100%',
+            // imageWidth: '100%',
+            // imageHeight: '100%',
             imageUrl: url,
             showConfirmButton:false,
             background:'rgba(0, 0, 0, 0)',

@@ -7,9 +7,7 @@ import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vu
 <template>
     <AdminNavigationBar>
         <div class="w-full">
-            <v-card color="primary">
-                Typing test
-            </v-card>
+
         </div>
     </AdminNavigationBar>
 </template>
