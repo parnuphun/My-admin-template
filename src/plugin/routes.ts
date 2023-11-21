@@ -13,7 +13,7 @@ const router = createRouter({
         // default
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // default redirect
-        { path: '/' , component: () => import('../views/Common/Main/DashBoard.vue')} ,
+        { path: '/' , component: () => import('../views/School/FrontEnd/SchoolMain.vue')} ,
 
         // page not found 404
         { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
@@ -23,43 +23,8 @@ const router = createRouter({
         { path: '/test/Test_DataTableManual' , component: () => import('../views/test/Test_DataTableManual.vue')} ,
         { path: '/test/test_sweetAlert' , component: () => import('../views/test/Test_sweetAlert.vue')} ,
 
-
-        { path: '/dashBoard' , component: () => import('../views/Common/Main/DashBoard.vue')} ,
+        { path: '/admin' , component: () => import('../views/Common/Main/DashBoard.vue')} ,
         { path: '/recycle' , component: () => import('../views/Common/Main/Recycle.vue')} ,
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // i dont know
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        { path: '/randomMovie' , component: () => import('../views/MyNeed/RandomMovie.vue')} ,
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // workshop
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        /// iot
-        { path: '/miniproject_iot', component: ()=> import('../views/WorkShops/MiniProject_Iot/miniProject.vue')},
-
-        /// typing test
-        { path: '/typingTest', component: ()=> import('../views/WorkShops/TypingTest/PageHome.vue')},
-
-        { path: '/steamReviewScrapping' , component: ()=> import('../views/WorkShops/SteamReviewScraping/steamReviewScrapping.vue')},
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // RPTS
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // check backend
-        { path: '/testBackend/login' , component:() => import('../views/RPTS/LoginPage.vue')},
-        { path: '/testBackend/forgotPassword' , component:() => import('../views/RPTS/ForgotPassword.vue')},
-
-        { path: '/testBackend/MyProject' , component:() => import('../views/RPTS/MyProject.vue')},
-        { path: '/testBackend/MyProjectList' , component:() => import('../views/RPTS/MyProjectList.vue')},
-        { path: '/testBackend/ProjectDetail' , component:() => import('../views/RPTS/ProjectDetail.vue')},
-        { path: '/testBackend/StudentList' , component:() => import('../views/RPTS/StudentList.vue')},
-        { path: '/testBackend/TeacherList' , component:() => import('../views/RPTS/TeacherList.vue')},
-        { path: '/testBackend/messageBox' , component:() => import('../views/RPTS/messageBox.vue')},
-        { path: '/testBackend/setting' , component:() => import('../views/RPTS/setting.vue')},
-        { path: '/testBackend/Files' , component:() => import('../views/RPTS/Files.vue')},
-        { path: '/testBackend/News' , component:() => import('../views/RPTS/News.vue')},
-
 
 
     ],
