@@ -1,6 +1,6 @@
 ## install
-- `npm i` for install dependecncy
-- `npm run dev` for starting project
+- `npm i` install dependecncies
+- `npm run dev`  start project
 
 ## notes
 - Responsive Breakpoint base on tailwind css , not vuetify .
