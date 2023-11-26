@@ -12,8 +12,10 @@ const router = createRouter({
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // default
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        // default redirect
-        { path: '/' , component: () => import('../views/School/FrontEnd/SchoolMain.vue')} ,
+        { path: '/' , component: () => import('../views/School/User/SchoolMain.vue')} ,
+        { path: '/about' , component: () => import('../views/School/User/SchoolAbout.vue')} ,
+        { path: '/news' , component: () => import('../views/School/User/SchoolNews.vue')} ,
+        { path: '/persons' , component: () => import('../views/School/User/SchoolPerson.vue')},
 
         // page not found 404
         { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,

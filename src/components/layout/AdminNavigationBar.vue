@@ -97,15 +97,12 @@ function isGroupOpen() {
         }
     }
 }
-
 </script>
 
 <template>
     <VThemeProvider>
         <VApp>
-
             <!-- nav bar -->
-
             <v-app-bar :elevation="2" color="">
                 <!-- toggle sidebar -->
                 <v-app-bar-nav-icon  @click.stop="isRail = !isRail"></v-app-bar-nav-icon>
