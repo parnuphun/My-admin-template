@@ -9,6 +9,8 @@
     const router = useRouter()
     const currentPath = useRoute()
 
+    const dialog = ref<boolean>(false)
+
     function getCurrentPath(url:string){
         router.push(url)
     }
@@ -166,7 +168,12 @@
 
 <template>
 
-    <div class="flex flex-col w-full">
+    <div class="flex flex-col w-full relative">
+        <div @click="dialog = !dialog"
+        class="mb-8 mr-8 fixed h-20 w-20 rounded-full bg-pink-50 bottom-0 right-0 bg border-4 border-pink-500
+         hover:bg-pink-500 text-3xl cursor-pointer flex justify-center items-center duration-500">
+            📢
+        </div>
         <NampongNavBar></NampongNavBar>
 
         <!-- Banner -->
@@ -214,64 +221,7 @@
             </v-parallax>
         </div>
 
-        <div class="w-full h-auto flex justify-center items-center mt-4 md:px-8">
-            <div class="md:w-full xl:w-[1200px] 
-                        h-auto flex flex-wrap">
-                <div class="w-2/3 h-full flex flex-col pr-8 bg-white">
-                    <div class="py-3 text-2xl text-pink-600">~ ประกาศจากทางโรงเรียนล่าสุด ~</div>
-                    <div>
-                        <div class="w-full h-auto  flex flex-col justify-center items-center bg-white">
-                            <div class="w-full h-auto flex flex-col justify-start items-center">
-                                <div class="w-full h-auto bg-gradient-to-tr relative flex justify-center items-start z-10" >
-                                    <v-carousel 
-                                        height="" 
-                                        cycle 
-                                        show-arrows="hover" 
-                                        class="rounded-lg" 
-                                        color="white"
-                                        delimiter-icon="mdi-square"
-                                    >
-                                    <template v-slot:prev="{ props }">
-                                        <div class="text-pink-500 hover:text-pink-500 text-7xl h-full w-40
-                                                    flex items-center justify-start cursor-pointer -ml-9 opacity-0 hover:opacity-100
-                                                    transition duration-700 ease-in-out"
-                                                    @click="props.onClick">
-                                            <v-icon class="" end icon="mdi-chevron-left"></v-icon>
-                                        </div>
-                                    </template>
-                                    <template v-slot:next="{ props }">
-                                        <div class="text-pink-500 hover:text-pink-500 text-7xl h-full w-40
-                                                    flex items-center justify-end cursor-pointer -mr-9 opacity-0 hover:opacity-100
-                                                    md:bg-none transition duration-700 ease-in-out"
-                                                    @click="props.onClick">
-                                            <v-icon class="" end icon="mdi-chevron-right"></v-icon>
-                                        </div>
-                                    </template>
-                                        <v-carousel-item v-for="pin of bannerPin" color="white" >
-                                            <div class="w-full h-full bg-pink-300 flex justify-center item-center cursor-pointer" >
-                                                <img class="object-cover "
-                                                    :src="(pin as any).url" alt="">
-                                            </div>
-                                        </v-carousel-item>
-                                    </v-carousel>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="w-1/3 h-full flex flex-col bg-white">
-                    <div class="py-3 text-2xl text-pink-600">~ ข่าวประชาสัมพันธ์ ~</div>
-                    <div class=" flex flex-col justify-start h-[384px] overflow-y-scroll border-1 border-gray-400">
-                        <div class="w-full p-2 cursor-pointer group" v-for="news of newRelase">
-                            <p class="line-clamp-1 group-hover:text-blue-500"> {{ (news as any).title }}</p>
-                            <v-divider size="2"></v-divider>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <!-- main meny -->
         <div class="w-full h-auto p-10 flex justify-center">
             <div class="w-[1200px] h-auto flex flex-col bg-white">
                 <div class="flex flex-wrap justify-center items-center">
@@ -476,4 +426,26 @@
 
     <!-- footer -->
     <nampong-footer></nampong-footer>
+
+    <v-row justify="center">
+        <v-dialog
+            v-model="dialog"
+            width="1000"
+        >
+            <v-card>
+                <div class="w-full h-auto">
+                    <div class="w-full text-center py-10 text-2xl bg-pink-500 text-white flex justify-center items-center">
+                        <div class="text-4xl">
+                            ประกาศจากทางโรงเรียน
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col">
+                        <div class="w-full" v-for="banner of bannerPin">
+                            <img :src="(banner as any).url" alt="" class="mt-2 px-2 rounded-lg">
+                        </div>
+                    </div>
+                </div>
+            </v-card>
+            </v-dialog>
+        </v-row>
 </template>
