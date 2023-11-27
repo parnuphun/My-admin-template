@@ -1,3 +1,10 @@
+export interface imageGalleryType {
+    text:string
+    url:string
+}
+
+// old
+
 type userRoles = 'อาจารย์' | 'นักศึกษา' | 'ผู้ดูแลระบบ'
 
 export interface CredentialDataFromLocal {

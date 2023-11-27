@@ -2,5 +2,4 @@
 </scritp>
 
 <template>
-
 </template>

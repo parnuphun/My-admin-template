@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@100;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    font-family: 'Kanit', sans-serif;
+}
+
+@layer components {
+    .hover-scale-up {
+        @apply cursor-pointer scale-100 hover:scale-[1.05] hover:z-50 transition delay-75 duration-500 ease-in-out ;
+    }
+
+    .list-main-menu {
+        @apply bg-pink-600 hover:bg-pink-700 px-3 
+                flex h-full justify-center items-center 
+                LT:w-44 TL:w-auto MB:w-auto 
+                LT:rounded-md TL:rounded-none MB:rounded-none;
+    }
+}

@@ -97,22 +97,19 @@ function isGroupOpen() {
         }
     }
 }
-
 </script>
 
 <template>
     <VThemeProvider>
         <VApp>
-
             <!-- nav bar -->
-
             <v-app-bar :elevation="2" color="">
                 <!-- toggle sidebar -->
                 <v-app-bar-nav-icon  @click.stop="isRail = !isRail"></v-app-bar-nav-icon>
 
                 <!-- content in nav -->
                 <div class="w-full mr-6 flex flex-row items-center">
-                    <v-app-bar-title color=""> Phanuphun.na </v-app-bar-title>
+                    <v-app-bar-title color=""> ระบบหลังบ้านโรงเรียน... </v-app-bar-title>
 
                     <!-- <v-btn icon class="" @click="isAlert = !isAlert" >
                         <v-icon size="x-large" >mdi-message</v-icon>
