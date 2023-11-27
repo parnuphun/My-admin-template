@@ -9,7 +9,7 @@
     const router = useRouter()
     const currentPath = useRoute()
 
-    const dialog = ref<boolean>(true)
+    const dialog = ref<boolean>(false)
     const readit = ref<boolean>(false)
 
     function getCurrentPath(url:string){
@@ -184,7 +184,7 @@
                     <div class="text-pink-500 border-l-8 border-pink-500 text-2xl py-4 pl-4">
                         ข่าวประชาสัมพันธ์
                     </div>
-                    <div class="text-pink-500 text-lg hover:text-pink-300 cursor-pointer">
+                    <div class="text-pink-500 text-lg hover:text-pink-300 cursor-pointer" @click="getCurrentPath('/news')">
                         อ่านข่าวทั้งหมด
                     </div>
                 </div>

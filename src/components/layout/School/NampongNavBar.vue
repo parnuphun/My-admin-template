@@ -80,12 +80,12 @@ function menu(e:Event){
                     บุคลากร
                 </div>
             </li>
-            <li class="w-full md:w-fit text-xl cursor-pointer text-pink-100 md:hover:text-pink-300 md:hover:bg-white md:text-pink-400
+            <!-- <li class="w-full md:w-fit text-xl cursor-pointer text-pink-100 md:hover:text-pink-300 md:hover:bg-white md:text-pink-400
                         duration-500 md:truncate hover:text-pink-500 bg-pink-400 md:bg-white hover:bg-pink-100 ">
                 <div class="p-5" @click="getCurrentPath('/files')">
                     เอกสาร
                 </div>
-            </li>
+            </li> -->
             <li class="w-full md:w-fit text-xl cursor-pointer text-pink-100 md:hover:text-pink-300 md:hover:bg-white md:text-pink-400
                         duration-500 md:truncate hover:text-pink-500 bg-pink-400 md:bg-white hover:bg-pink-100 ">
                 <div class="p-5" @click="getCurrentPath('/about')" >

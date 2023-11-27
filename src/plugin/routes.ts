@@ -10,15 +10,25 @@ const router = createRouter({
     history : createWebHistory(),
     routes: [
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        // default
+        // สำหรับหน้าบ้าน 
         /////////////////////////////////////////////////////////////////////////////////////////////////
+        // default redirect
         { path: '/' , component: () => import('../views/School/User/SchoolMain.vue')} ,
         { path: '/about' , component: () => import('../views/School/User/SchoolAbout.vue')} ,
         { path: '/news' , component: () => import('../views/School/User/SchoolNews.vue')} ,
         { path: '/persons' , component: () => import('../views/School/User/SchoolPerson.vue')},
-        { path: '/login' , component: () => import('../views/Login/logintest.vue')},
+        { path: '/contact' , component: () => import('../views/School/User/SchoolContact.vue')},
  
-        { path: '/admin/test' , component: () => import('../views/School/Admin/dashboard.vue')},
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // สำหรับหลังบ้าน admin 
+        // ตัวอย่าง /admin/ชือpath 
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        { path: '/login' , component: () => import('../views/School/Admin/logintest.vue')},
+        { path: '/admin/dashboad' , component: () => import('../views/School/Admin/dashboard.vue')},
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // default page
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         // page not found 404
         { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
 

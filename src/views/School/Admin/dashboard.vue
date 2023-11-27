@@ -8,6 +8,6 @@ const itemsPerPage = ref(5)
 
 <template>
     <AdminNavigationBar>
-        
+        Dashboard
     </AdminNavigationBar>
 </template>
