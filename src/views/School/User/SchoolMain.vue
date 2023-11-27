@@ -9,7 +9,8 @@
     const router = useRouter()
     const currentPath = useRoute()
 
-    const dialog = ref<boolean>(false)
+    const dialog = ref<boolean>(true)
+    const readit = ref<boolean>(false)
 
     function getCurrentPath(url:string){
         router.push(url)
@@ -72,13 +73,16 @@
             url:'https://scontent.fbkk13-2.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFemNuw4tHnZVcMdMTzvV33K_M69buS9akr8zr1u5L1qSKPLpyeC5z5r5t6785lSGfoBv21ql6fcv8jX5nsiZgU&_nc_ohc=vjLhdMVptO0AX9DTtqY&_nc_ht=scontent.fbkk13-2.fna&oh=00_AfCRsTOKsxeZ9pQn7CjzanI9eSOcxnvxmQlrhGfNCbl8Zg&oe=6564FD9F',
         },
         {
-            url:'https://scontent.fbkk13-2.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFemNuw4tHnZVcMdMTzvV33K_M69buS9akr8zr1u5L1qSKPLpyeC5z5r5t6785lSGfoBv21ql6fcv8jX5nsiZgU&_nc_ohc=vjLhdMVptO0AX9DTtqY&_nc_ht=scontent.fbkk13-2.fna&oh=00_AfCRsTOKsxeZ9pQn7CjzanI9eSOcxnvxmQlrhGfNCbl8Zg&oe=6564FD9F',
+            url:'https://scontent.fbkk12-3.fna.fbcdn.net/v/t39.30808-6/315482159_614748597109744_3843689068979621714_n.jpg?stp=dst-jpg_p843x403&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE69TFOAHzZIjd9xvlvSZmmoJBzKbdkrEugkHMpt2SsS9TGac6PH_vNs3BbZlLKqp62Z0BQuNERde45IVH3RMfE&_nc_ohc=VIcriPRcaEUAX9-yCyz&_nc_ht=scontent.fbkk12-3.fna&oh=00_AfB2aWc-ebnVk1z42i8ROVPnQU7WZg8lwXXC8Duf3JEI1A&oe=65683227',
         },
         {
-            url:'https://scontent.fbkk13-2.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFemNuw4tHnZVcMdMTzvV33K_M69buS9akr8zr1u5L1qSKPLpyeC5z5r5t6785lSGfoBv21ql6fcv8jX5nsiZgU&_nc_ohc=vjLhdMVptO0AX9DTtqY&_nc_ht=scontent.fbkk13-2.fna&oh=00_AfCRsTOKsxeZ9pQn7CjzanI9eSOcxnvxmQlrhGfNCbl8Zg&oe=6564FD9F',
+            url:'https://scontent.fbkk13-3.fna.fbcdn.net/v/t39.30808-6/397895158_828144389103496_8407568675394802648_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGytcZnZEaG-Zfph2-fdjEYKXjb7Ipxro4peNvsinGujp7RWXblvutW0NHY5UAnMrHMn4PLt1Tf4rZuUXoFyIic&_nc_ohc=qNGuTQInAVwAX-P8hJE&_nc_ht=scontent.fbkk13-3.fna&oh=00_AfCbN0e0dqMcjrqNJ5qcvxmtm7kw8NrFWar3bWzVuEHn4g&oe=6568D71B',
         },
         {
-            url:'https://scontent.fbkk13-2.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFemNuw4tHnZVcMdMTzvV33K_M69buS9akr8zr1u5L1qSKPLpyeC5z5r5t6785lSGfoBv21ql6fcv8jX5nsiZgU&_nc_ohc=vjLhdMVptO0AX9DTtqY&_nc_ht=scontent.fbkk13-2.fna&oh=00_AfCRsTOKsxeZ9pQn7CjzanI9eSOcxnvxmQlrhGfNCbl8Zg&oe=6564FD9F',
+            url:'https://scontent.fbkk12-2.fna.fbcdn.net/v/t39.30808-6/352374140_594014139502038_8143965182541750114_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEAPWqtr-cN8YhjlboNGPm635d12Aw2ZkDfl3XYDDZmQC5rZWCo5Yb5oCkxdmC6Lu0w0t56rw8uP1EbnddWx0fj&_nc_ohc=eafwembqX2EAX-NLi_u&_nc_ht=scontent.fbkk12-2.fna&oh=00_AfAvvpPWKlzDyhvmWnTXNYdBOyxiZQ5Lt06BgGd-FjwjrQ&oe=65699FC4',
+        },
+        {
+            url:'https://scontent.fbkk12-2.fna.fbcdn.net/v/t39.30808-6/353469276_750474806870455_2353039975033874361_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGEsgLZABnvGhdHkf8uIlYfFamWwC6nA_QVqZbALqcD9HMd1KD80kXKDq2H29-aZmw3vub6n5YuDmiF3JGpbbzA&_nc_ohc=V5JsJL23dVQAX9pBQGj&_nc_ht=scontent.fbkk12-2.fna&oh=00_AfAOGlGtHLsFVgq85x9L0uqiHPYFNDiS-20v1E0DHdzx4A&oe=6568C4CB',
         },
     ])
 
@@ -101,7 +105,7 @@
         {
             title:'ประกาศเปิดเทอมภาคเรียนที่ 2 ',
             date:'26 พฤศจิกายน 2566',
-            description:``,
+            description:` ประกาศเปิดเทอมภาคเรียนที่ 2 26 พฤศจิกายน 2566 26 พฤศจิกายน 256626 พฤศจิกายน 256626 พฤศจิกายน 256626 พฤศจิกายน 256626 พฤศจิกายน 2566 `,
             src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/397895158_828144389103496_8407568675394802648_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGytcZnZEaG-Zfph2-fdjEYKXjb7Ipxro4peNvsinGujp7RWXblvutW0NHY5UAnMrHMn4PLt1Tf4rZuUXoFyIic&_nc_ohc=jMNpx-3t6XAAX_k3oP6&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUCrKRqKdgDu_4V5b2HjKuN5ypZSMZj7Tn2qJYAQgY7g&oe=6566DCDB'
         },
         {
@@ -113,66 +117,18 @@
 #สังกัดเทศบาลตำบลน้ำพอง`,
             src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/386512026_814531057131496_4379709893718073259_n.jpg?stp=dst-jpg_p600x600&_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeGv5fSTIQ54eHWDi37U7tqyOMTBeYEG1Es4xMF5gQbUS0Xp7C3p1qXTtUy87sJ-2nlzjK4y9NRO_391faZCxdPv&_nc_ohc=egrJejoJ0ocAX-m-Dtv&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDHRIsY3YDIyjXAAEMKM7_bfUqWDhWrKjXu-LmbDSpacA&oe=65676CB7'
         },
-        {
-            title:'กิจกรรมประชุมผู้ปกครองประจำภาคเรียนที่ ๑ ปีการศึกษา ๒๕๖๖  ',
-            date:'26 พฤศจิกายน 2566',
-            description:`โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เรียนเชิญผู้ปกครองนักเรียนร่วมกิจกรรมประชุมผู้ปกครองประจำภาคเรียนที่ ๑ ปีการศึกษา ๒๕๖๖ ในวันที่ ๒๕ มิถุนายน ๒๕๖๖ ณโรงเรียนเทศบาลน้ำพองภูริพัฒน์  เวลา ๐๙.๐๐ น. - ๑๒.๐๐ น.
-ขอความกรุณาผู้ปกครองนำใบเสร็จรับเงินมารับค่าเครื่องแบบนักเรียน และค่าอุปกรณ์การเรียนดังนี้
-🌟ระดับอนุบาล
-           ✳️ค่าเครื่องแบบนักเรียน 325 บาท
-           ✳️ค่าอุปกรณ์การเรียน 145 บาท
-🌟ระดับประถมศึกษา 
-           ✳️ค่าเครื่องแบบนักเรียน 400 บาท
-           ✳️ค่าอุปกรณ์การเรียน    220 บาท
-และนำสำเนาบัตรประจำตัวประชาชนของผู้ปกครองและของนักเรียนมาด้วยนะครับ`,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/356219678_757258679525401_7384937705460787692_n.jpg?stp=dst-jpg_p843x403&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFkVrVYM4dgRCQ8u2sjZASuPYY8TsyazCQ9hjxOzJrMJHmcQK1Qx45CsromLr0bLxOZKWSJ28vItZQh9r2jlCXV&_nc_ohc=oHrVx3P4CCgAX8akGy6&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCVk6oVjDeS6Wpu4-yLE3HKccTSDUB82Yp4y5Jodb6ttQ&oe=65672E53'
-        },
-        {
-            title:'ขอเชิญร่วมเข้าแข่งขันเดิน-วิ่งหนองหวายมินิมาราธอน สมัครได้แล้ววันนี้',
-            date:'26 พฤศจิกายน 2566',
-            description:``,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/315482159_614748597109744_3843689068979621714_n.jpg?stp=dst-jpg_p843x403&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE69TFOAHzZIjd9xvlvSZmmoJBzKbdkrEugkHMpt2SsS9TGac6PH_vNs3BbZlLKqp62Z0BQuNERde45IVH3RMfE&_nc_ohc=fzCtgOlUHloAX8NntBp&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAJsCTyY1S9NmVYlFXjaHnork8GMEGOB2Vjp0CHfnw1_w&oe=656637E7'
-        },
-        {
-            title:'ขอเชิญร่วมเข้าแข่งขันเดิน-วิ่งหนองหวายมินิมาราธอน สมัครได้แล้ววันนี้',
-            date:'26 พฤศจิกายน 2566',
-            description:``,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/315482159_614748597109744_3843689068979621714_n.jpg?stp=dst-jpg_p843x403&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE69TFOAHzZIjd9xvlvSZmmoJBzKbdkrEugkHMpt2SsS9TGac6PH_vNs3BbZlLKqp62Z0BQuNERde45IVH3RMfE&_nc_ohc=fzCtgOlUHloAX8NntBp&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAJsCTyY1S9NmVYlFXjaHnork8GMEGOB2Vjp0CHfnw1_w&oe=656637E7'
-        },
-        {
-            title:'ขอเชิญร่วมเข้าแข่งขันเดิน-วิ่งหนองหวายมินิมาราธอน สมัครได้แล้ววันนี้',
-            date:'26 พฤศจิกายน 2566',
-            description:``,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/315482159_614748597109744_3843689068979621714_n.jpg?stp=dst-jpg_p843x403&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE69TFOAHzZIjd9xvlvSZmmoJBzKbdkrEugkHMpt2SsS9TGac6PH_vNs3BbZlLKqp62Z0BQuNERde45IVH3RMfE&_nc_ohc=fzCtgOlUHloAX8NntBp&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAJsCTyY1S9NmVYlFXjaHnork8GMEGOB2Vjp0CHfnw1_w&oe=656637E7'
-        },
-        {
-            title:'ขอเชิญร่วมเข้าแข่งขันเดิน-วิ่งหนองหวายมินิมาราธอน สมัครได้แล้ววันนี้',
-            date:'26 พฤศจิกายน 2566',
-            description:``,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/315482159_614748597109744_3843689068979621714_n.jpg?stp=dst-jpg_p843x403&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE69TFOAHzZIjd9xvlvSZmmoJBzKbdkrEugkHMpt2SsS9TGac6PH_vNs3BbZlLKqp62Z0BQuNERde45IVH3RMfE&_nc_ohc=fzCtgOlUHloAX8NntBp&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAJsCTyY1S9NmVYlFXjaHnork8GMEGOB2Vjp0CHfnw1_w&oe=656637E7'
-        },
-        {
-            title:'ขอเชิญร่วมเข้าแข่งขันเดิน-วิ่งหนองหวายมินิมาราธอน สมัครได้แล้ววันนี้',
-            date:'26 พฤศจิกายน 2566',
-            description:``,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/315482159_614748597109744_3843689068979621714_n.jpg?stp=dst-jpg_p843x403&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE69TFOAHzZIjd9xvlvSZmmoJBzKbdkrEugkHMpt2SsS9TGac6PH_vNs3BbZlLKqp62Z0BQuNERde45IVH3RMfE&_nc_ohc=fzCtgOlUHloAX8NntBp&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAJsCTyY1S9NmVYlFXjaHnork8GMEGOB2Vjp0CHfnw1_w&oe=656637E7'
-        },
-        {
-            title:'ขอเชิญร่วมเข้าแข่งขันเดิน-วิ่งหนองหวายมินิมาราธอน สมัครได้แล้ววันนี้',
-            date:'26 พฤศจิกายน 2566',
-            description:``,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/315482159_614748597109744_3843689068979621714_n.jpg?stp=dst-jpg_p843x403&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeE69TFOAHzZIjd9xvlvSZmmoJBzKbdkrEugkHMpt2SsS9TGac6PH_vNs3BbZlLKqp62Z0BQuNERde45IVH3RMfE&_nc_ohc=fzCtgOlUHloAX8NntBp&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAJsCTyY1S9NmVYlFXjaHnork8GMEGOB2Vjp0CHfnw1_w&oe=656637E7'
-        },
     ])
 </script>
 
 <template>
 
     <div class="flex flex-col w-full relative">
-        <div @click="dialog = !dialog"
+        <div @click="dialog = !dialog ; readit = true"
         class="mb-8 mr-8 fixed h-20 w-20 rounded-full bg-pink-50 bottom-0 right-0 bg border-4 border-pink-500
-         hover:bg-pink-500 text-3xl cursor-pointer flex justify-center items-center duration-500">
+         hover:bg-pink-500 text-3xl cursor-pointer flex justify-center items-center duration-500 z-20">
             📢
+            <span v-if="readit === false" 
+             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75"></span>
         </div>
         <NampongNavBar></NampongNavBar>
 
@@ -212,7 +168,7 @@
             </v-carousel> -->
             <v-parallax height="500" 
                 src="https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=VpfoULMTWzoAX_A2xle&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCSxxy_Dj17Q5h9eOy_VX82fqAjkLFGsvYBeGShQq1edg&oe=65651641">
-                    <div class="relative w-full h-full flex justify-center items-center bg-black opacity-30"></div>
+                    <div class="relative w-full h-full flex justify-center items-center bg-black opacity-40"></div>
                     <div class="absolute w-full h-full flex justify-center items-center top-0">
                         <p class="text-3xl md:text-5xl lg:text-6xl text-white font-bold">
                             “ คนดี มีวินัย ใฝ่คุณธรรม เลิศล้ำวิชาการ ”
@@ -221,38 +177,76 @@
             </v-parallax>
         </div>
 
-        <!-- main meny -->
+        <!-- news relese -->
+        <div class="w-full h-auto p-10 flex justify-center items-center">
+            <div class="w-[1200px] h-auto flex flex-col">
+                <div class="p-4 flex flex-row justify-between items-center">
+                    <div class="text-pink-500 border-l-8 border-pink-500 text-2xl py-4 pl-4">
+                        ข่าวประชาสัมพันธ์
+                    </div>
+                    <div class="text-pink-500 text-lg hover:text-pink-300 cursor-pointer">
+                        อ่านข่าวทั้งหมด
+                    </div>
+                </div>
+                <div class="w-full h-auto flex flex-wrap justify-start items-start">
+                    <div class="w-1/4  h-auto p-4 flex flex-col group cursor-pointer" v-for="news of newRelase">
+                        <div class="w-full h-[250px] flex flex-col">
+                            <img class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
+                            :src="(news as any).src" alt=""> 
+                            
+                        </div>
+                        <p class="px-2 text-xl line-clamp-1 mt-3 group-hover:text-pink-500 duration-500">
+                            {{ (news as any).title }}
+                        </p>
+    
+                        <p class="px-2 text-sm line-clamp-3 mt-3 group-hover:text-pink-500 duration-500">
+                            {{ (news as any).description }}
+                        </p>
+                        <div class="px-2 w-full text-white bg-pink-400 hover:bg-pink-500 p-3 text-center mt-3 cursor-pointer duration-500">
+                            อ่านเพิ่มเติม
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- main menu -->
         <div class="w-full h-auto p-10 flex justify-center">
             <div class="w-[1200px] h-auto flex flex-col bg-white">
                 <div class="flex flex-wrap justify-center items-center">
                     <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
                     text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-xl"> 
+                    items-center cursor-pointer px-3 shadow-md"> 
                         <v-icon icon="mdi-newspaper" class="mr-3"></v-icon> ข่าวประชาสัมพันธ์
                     </div>
                     <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
                     text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-xl"> 
+                    items-center cursor-pointer px-3 shadow-md"> 
                         <v-icon icon="mdi-account" class="mr-3"></v-icon> บุคลากรของเรา
                     </div>
                     <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
                     text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-xl"> 
+                    items-center cursor-pointer px-3 shadow-md"> 
+                        <v-icon icon="mdi-book" class="mr-3"></v-icon> หลักสูตร
+                    </div>
+                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
+                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
+                    items-center cursor-pointer px-3 shadow-md"> 
                         <v-icon icon="mdi-file" class="mr-3"></v-icon> เอกสาร
                     </div>
                     <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
                     text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-xl"> 
+                    items-center cursor-pointer px-3 shadow-md"> 
                         <v-icon icon="mdi-image" class="mr-3"></v-icon> ภาพกิจกรรม
                     </div>
                     <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
                     text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-xl"> 
+                    items-center cursor-pointer px-3 shadow-md"> 
                         <v-icon icon="mdi-information" class="mr-3"></v-icon> เกี่ยวกับเรา
                     </div>
                     <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
                     text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-xl"> 
+                    items-center cursor-pointer px-3 shadow-md"> 
                         <v-icon icon="mdi-phone" class="mr-3"></v-icon> ติดต่อเรา
                     </div>
                 </div>
@@ -331,48 +325,6 @@
  
             </div>
         </div> -->
-
-        <!-- news  -->
-        <!-- <div class="w-full h-auto flex flex-col items-center bg-pink-100 ">
-            <div class="w-full h-auto pt-6 pb-4 bg-pink-500 text-2xl text-center text-white">
-                <v-icon end icon="mdi-newspaper"></v-icon> ข่าวประชาสัมพันธ์
-            </div>
-            <div class=" 
-                    lg:w-auto xl:w-[1000px] 
-                    h-auto flex justify-center items-center">
-                <div class="w-full h-auto flex flex-wrap gap-8 justify-center items-center pt-4" >
-                     <div v-for="item of newRelase"
-                        class="w-[300px] h-[380px] bg-white rounded-md flex flex-col shadow-xl
-                        scale-100 hover:scale-[1.01] duration-500 group cursor-pointer">
-                        <div class="w-full h-[200px] group-hover:brightness-[0.5] duration-500" >
-                            <img
-                            class="object-cover w-full h-full rounded-t-md" 
-                            :src="(item as any).src" alt="image">
-                        </div>
-                        <div class="w-full p-3">
-                            <p class="line-clamp-1 text-lg">{{ (item as any).title }}</p>
-                        </div>
-                        <div class="w-full px-2">
-                            <p class="text-sm text-gray-400">{{ (item as any).date }}</p>
-                        </div>
-                        <div class="w-full h-full p-3">
-                            <p class="line-clamp-3" v-if="(item as any).description !== ''">
-                                {{ (item as any).description }}
-                            </p>
-                            <p class="line-clamp-3 text-gray-400" v-else>
-                                -- ไม่มีคำอธิบายเพิ่มเติม --
-                            </p>
-                        </div>
-                     </div>
-                </div>
-            </div>
-            <div class="w-full flex justify-center items-center py-4 ">
-                <div @click="getCurrentPath('/news')" 
-                class="bg-pink-500 hover:bg-pink-400 duration-500 p-3 rounded-full text-white text-xl cursor-pointer px-6">
-                    ข่าวทั้งหมด
-                </div>
-            </div>
-        </div> -->
  
         <!-- statistic -->
         <!-- <div class="w-full h-auto bg-pink-300">
@@ -430,18 +382,32 @@
     <v-row justify="center">
         <v-dialog
             v-model="dialog"
-            width="1000"
+            width="800"
+            transition="dialog-bottom-transition"
         >
-            <v-card>
-                <div class="w-full h-auto">
-                    <div class="w-full text-center py-10 text-2xl bg-pink-500 text-white flex justify-center items-center">
-                        <div class="text-4xl">
-                            ประกาศจากทางโรงเรียน
+            <v-card class="pb-2">
+                <div class="relative w-full h-auto">
+                    <div class="sticky w-full h-full top-0 right-0 z-20 bg-white">
+                        <div class="relative w-full text-center py-6 text-2xl text-pink-500 flex justify-center items-center">
+                            <div class="md:text-3xl xl:text-4xl">
+                                📢 ประกาศจากทางโรงเรียน
+                            </div>
+                            <div class="absolute top-0 right-0 h-20 w-20 text-pink-500 text-3xl flex 
+                            justify-center items-center cursor-pointer hover:text-pink-300"
+                            @click="dialog = !dialog ; readit = true">
+                                <v-icon icon="mdi-close"></v-icon>
+                            </div>
                         </div>
+
+                        <v-divider></v-divider>
                     </div>
-                    <div class="w-full flex flex-col">
-                        <div class="w-full" v-for="banner of bannerPin">
-                            <img :src="(banner as any).url" alt="" class="mt-2 px-2 rounded-lg">
+                    <div class="w-full flex flex-col px-2">
+                        <div class="w-full border-x-0 border-b-4 border-pink-500 " v-for="banner of bannerPin">
+                            <div class=" w-full h-full">
+                                <img :src="(banner as any).url" alt="" 
+                                class="my-2 px-2 rounded-lg cursor-pointer w-full scale-100 hover:scale-[1.01] duration-500">
+
+                            </div>
                         </div>
                     </div>
                 </div>
