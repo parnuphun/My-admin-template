@@ -16,7 +16,8 @@ const router = createRouter({
         { path: '/about' , component: () => import('../views/School/User/SchoolAbout.vue')} ,
         { path: '/news' , component: () => import('../views/School/User/SchoolNews.vue')} ,
         { path: '/persons' , component: () => import('../views/School/User/SchoolPerson.vue')},
-
+        { path: '/login' , component: () => import('../views/Login/logintest.vue')},
+ 
         { path: '/admin/test' , component: () => import('../views/School/Admin/dashboard.vue')},
         // page not found 404
         { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
