@@ -56,7 +56,7 @@ import { useRouter } from 'vue-router' ;
 const router_s = useRouter();
 
 const login  = '';
-const password = ''
+const password = 'sss'
 const username = ''
 
 function nextPage(path:string) {
