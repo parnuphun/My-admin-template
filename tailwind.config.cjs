@@ -19,6 +19,7 @@ module.exports = {
     extend: {
         // add breakpoint
         screens: {
+            'less' : '100px',
             'MB' : '200px',
             'TL' : '640px',
             'LT': '1024px',
