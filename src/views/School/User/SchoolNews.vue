@@ -106,65 +106,72 @@ const newRelase = ref<Array<Object>>([
 </script>
 
 <template>
-        <NampongNavBar class="shadow-xl"></NampongNavBar>
-    <v-divider></v-divider>
-    <div class="flex flex-col w-full h-full bg-pink-900 justify-center items-center">
-        <div class="w-full h-full">
-            <div class="w-full h-full flex justify-center items-center  bg-white text-xl">
-                <div class="w-[1000px] h-full ">
-                    <p class="text-xl">  
-                        <v-breadcrumbs :items="breadcrumb">
-                            <template v-slot:title="{ item }">
-                                <div v-if="item.disabled === true">
-                                    <p class="text-gray-500">
-                                        {{ item.title }}
+    <div class="flex flex-col w-full relative">        
+        <NampongNavBar></NampongNavBar>
+        <v-divider></v-divider>
+        <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
+            <div class="w-full h-full">
+                <div class="w-full h-full flex justify-center items-center  text-xl">
+                    <div class="w-[1000px] h-full bg-white">
+                        <p class="text-xl py-4 border-l-8 border-pink-500 ">  
+                            <v-breadcrumbs :items="breadcrumb">
+                                <template v-slot:title="{ item }">
+                                    <div v-if="item.disabled === true">
+                                        <p class="text-gray-500">
+                                            {{ item.title }}
+                                        </p>
+                                    </div>
+                                    <div v-else>
+                                        <p class="">
+                                            {{ item.title }}
+                                        </p>
+                                    </div>
+                                </template>
+                            </v-breadcrumbs>
+                        </p>
+                        <v-divider></v-divider>
+                        <div class="w-full h-auto flex flex-wrap justify-start items-start">
+                            <div class="xl:w-1/3 lg:w-1/3 md:w-1/2 sm:w-1/2 less:w-full h-auto p-4 flex flex-col group cursor-pointer" v-for="news of newRelase">
+                                <div class="w-full h-[200px] flex flex-col  ">
+                                    <img class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
+                                    :src="(news as any).src" alt=""> 
+                                </div>
+                                <div class="w-full h-full flex flex-col justify-start items-start">
+                                    <p class="px-2 text-xl line-clamp-1 mt-3 group-hover:text-pink-500 duration-500">
+                                        {{ (news as any).title }}
                                     </p>
                                 </div>
-                                <div v-else>
-                                    <p class="">
-                                        {{ item.title }}
+                                <div class="w-full h-full flex justify-start">
+                                    <p class="px-2 text-sm line-clamp-1 text-gray-400  group-hover:text-pink-500 duration-500">
+                                        {{ (news as any).date }}
                                     </p>
                                 </div>
-                            </template>
-                        </v-breadcrumbs>
-                    </p>
-                    <v-divider></v-divider>
-                    
-                    <div class="w-full h-auto flex flex-wrap gap-8 justify-center items-center pt-4" >
-                        <div v-for="item of newRelase"
-                            class="w-[300px] h-[380px] bg-white rounded-md flex flex-col shadow-xl
-                            scale-100 hover:scale-[1.01] duration-500 group cursor-pointer">
-                            <div class="w-full h-[200px] group-hover:brightness-[0.5] duration-500" >
-                                <img
-                                class="object-cover w-full h-full rounded-t-md" 
-                                :src="(item as any).src" alt="image">
-                            </div>
-                            <div class="w-full p-3">
-                                <p class="line-clamp-1 text-lg">{{ (item as any).title }}</p>
-                            </div>
-                            <div class="w-full px-2">
-                                <p class="text-sm text-gray-400">{{ (item as any).date }}</p>
-                            </div>
-                            <div class="w-full h-full p-3">
-                                <p class="text-sm line-clamp-3 " v-if="(item as any).description !== ''">
-                                    {{ (item as any).description }}
-                                </p>
-                                <p class="text-sm line-clamp-3 text-gray-400" v-else>
-                                    -- ไม่มีคำอธิบายเพิ่มเติม --
-                                </p>
+                                <div class="w-full h-[80px]">
+                                    <p v-if="(news as any).description != ''" 
+                                    class="px-2 text-sm line-clamp-3 mt-3 group-hover:text-pink-500 duration-500">
+                                        {{ (news as any).description }}
+                                    </p>
+                                    <p v-else
+                                    class="px-2 text-sm text-gray-400 line-clamp-3 mt-3 group-hover:text-pink-500 duration-500">
+                                        ไม่มีคำอธิบาย
+                                    </p>
+                                </div>
+                                <div class="px-2 w-full text-white bg-pink-400 hover:bg-pink-500 p-3 text-center mt-3 cursor-pointer duration-500">
+                                    อ่านเพิ่มเติม
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="mt-2 mb-4 w-full py-3">
-                        <v-pagination
-                            :length="4"
-                            rounded="circle"
-                        ></v-pagination>
+                        <div class="mt-2 mb-4 w-full py-3">
+                            <v-pagination
+                                :length="4"
+                                rounded="circle"
+                            ></v-pagination>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+         
+        <NampongFooter></NampongFooter>
     </div>
-    <NampongFooter></NampongFooter>
 </template>

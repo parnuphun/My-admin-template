@@ -18,6 +18,7 @@ const router = createRouter({
         { path: '/news' , component: () => import('../views/School/User/SchoolNews.vue')} ,
         { path: '/persons' , component: () => import('../views/School/User/SchoolPerson.vue')},
         { path: '/contact' , component: () => import('../views/School/User/SchoolContact.vue')},
+        { path: '/gallery' , component: () => import('../views/School/User/SchoolGallery.vue')},
  
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // สำหรับหลังบ้าน admin 

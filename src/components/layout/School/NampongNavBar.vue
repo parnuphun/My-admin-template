@@ -33,7 +33,7 @@ function menu(e:Event){
 </script>
 
 <template>
-    <nav class=" bg-pink-500 md:bg-white shadow-2xl md:flex md:items-center md:justify-between z-20" >
+    <nav class=" bg-pink-500 md:bg-white md:flex md:items-center md:justify-between z-20" >
         <div class="flex justify-between items-center h-[90px] bg-pink-500 md:bg-white">
             <div class="flex flex-row items-center justify-center  px-6">
                 <div class="w-[80px] h-[80px] flex-none md:block hidden cursor-pointer" @click="getCurrentPath('/')">
@@ -41,7 +41,7 @@ function menu(e:Event){
                 </div>
                 <div class="w-full h-full flex flex-col justify-start items-center md:px-7 cursor-pointer" @click="getCurrentPath('/')">
                     <div class="w-full h-full flex md:justify-start md:items-end justify-center">
-                        <p class="text-2xl text-pink-100 md:text-3xl md:text-black line-clamp-1"> โรงเรียนเทศบาลน้ำพองภูริพัฒน์ </p>
+                        <p class="less:text-xl md:text-3xl xl:text-3xl text-pink-100  md:text-black line-clamp-1"> โรงเรียนเทศบาลน้ำพองภูริพัฒน์ </p>
                     </div>
                     <div class="w-full h-full md:flex md:justify-start md:items-start md:visible hidden">
                         <p class="text-xl text-pink-600 line-clamp-1"> อำเภอน้ำพอง จังหวัดขอนแก่น</p>
