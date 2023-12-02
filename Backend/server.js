@@ -5,7 +5,7 @@ const path = require('path');
 const route = require('./route/route');
 const port = 3000;
 
-app.use(cors);
+app.use(cors());
 app.use(express.json({ extended:false}));
 app.use(express.urlencoded({ extended:true}));
 
