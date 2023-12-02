@@ -170,13 +170,13 @@ const imageGallery = ref<Array<imageGalleryType>>([
                         </p>
                         <v-divider></v-divider>
                         <div class="flex flex-wrap">
-                            <div class="w-full h-full flex flex-wrap justify-start items-center pb-4">
-                                <div v-for="item of imageGallery" class="relative group 
-                                lg:w-1/4 md:w-1/3 sm:w-1/3 less:w-1/2 xl:w-1/4 
-                                lg:h-[250px] md:h-[200px] less:h-[200px] xl:h-[250px] 
-                                cursur-pointer px-1 mt-2">
-                                    <img class="object-cover w-full h-full scale-100 group-hover:scale-[1.01] duration-500
-                                                group-hover:brightness-50 cursor-pointer rounded-lg" 
+                            <div class="w-full h-full flex flex-wrap justify-start items-center p-4">
+                                <div v-for="item of imageGallery" class="relative group p-1
+                                xl:w-1/2 lg:w-1/2 md:w-1/2 sm:w-full less:w-full 
+                                xl:h-[300px] lg:h-[250px] md:h-[250px] less:h-[250px] 
+                                cursur-pointer">
+                                    <img class="object-cover w-full h-full duration-500
+                                                group-hover:brightness-50 cursor-pointer" 
                                     :src="item.url" alt="">
                                     <div class="absolute w-full h-full p-3 text-white  top-0 flex justify-start items-end cursor-pointer
                                                 scale-100 group-hover:scale-[1.01] duration-500 opacity-0 group-hover:opacity-100">
@@ -186,6 +186,13 @@ const imageGallery = ref<Array<imageGalleryType>>([
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- grid masonry -->
+                            <!-- <div class="p-5 md:p-10">
+                                <div class="columns-1 gap-5 lg:gap-8 sm:columns-2 lg:columns-3 xl:columns-4 [&>img:not(:first-child)]:mt-5 lg:[&>img:not(:first-child)]:mt-8">
+                                    <img v-for="item of imageGallery" :src="item.url" alt="" />
+                                </div>
+                            </div> -->
                         </div>
                         <v-divider></v-divider>
                         <div class="mt-2 mb-4 w-full py-3">

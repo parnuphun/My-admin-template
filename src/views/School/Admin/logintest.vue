@@ -1,8 +1,7 @@
 <!-- Login.vue -->
 <template>
-    <div class="bg-image-container">
+    <div class="bg-image-container bg-gray-900">
         <div class="min-h-screen  flex justify-center items-center">
-
             <div class="max-w-screen-lg m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
                 <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
 
@@ -26,7 +25,7 @@
                                         placeholder="Password" v-model="password" type="password" id="password"
                                         name="password" required>
 
-                                    <button @click="nextPage('/Register')"
+                                    <button @click="nextPage('/')"
                                         class="mt-5 tracking-wide font-semibold bg-pink-600 text-gray-100 w-full py-4 rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                                         <span class="ml-3">
                                             Login
@@ -38,9 +37,9 @@
                     </div>
                 </div>
 
-            <div class="flex-1 bg-[#f36bbc] text-center hidden lg:flex">
+            <div class="flex-1 bg-[#f36bbc] text-center hidden lg:flex rounded-r-lg ">
                 <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat "
-                    style="background-image: url('src/views/Login/school.png');">
+                    style="background-image: url('../../../../public/iamges/logo/logo_โรงเรียนเทศบาลน้ำพองภูริพัฒน์-removebg-preview.png');">
                 </div>
                 </div>
             </div>
@@ -62,30 +61,6 @@ const username = ''
 function nextPage(path:string) {
     router_s.push(path)
 }
-// export default {
-//     data() {
-//         return {
-//             username: '',
-//             password: ''
-//         };
-//     },
-//     methods: {
-//         login() {
-//             axios.post('http://localhost:3000/login', {
-//                 username: this.username,
-//                 password: this.password
-//             })
-//                 .then(response => {
-//                     console.log(response.data);
-//                     // ทำสิ่งที่คุณต้องการหลังจาก login สำเร็จ
-//                 })
-//                 .catch(error => {
-//                     console.error(error.response.data);
-//                     // ทำสิ่งที่คุณต้องการเมื่อ login ไม่สำเร็จ
-//                 });
-//         }
-//     }
-// };
 </script>
 
 

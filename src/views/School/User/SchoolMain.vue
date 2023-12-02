@@ -92,7 +92,6 @@
          
     ])
 
-
     const newRelase = ref<Array<Object>>([        
         {
             title:'งานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง ',
@@ -123,6 +122,51 @@
             src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
         },
     ])
+
+    const bannerimg = ref<String>('https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981')
+
+    const menu = ref<Array<Object>>([
+        {
+            title:'ข่าวประชาสัมพันธ์',
+            path:'/news',
+            icon:'mdi-newspaper'
+        },
+        {
+            title:'ตารางเรียน',
+            path:'/schedules',
+            icon:'mdi-table'
+        },
+        {
+            title:'ภาพกิจกรรม',
+            path:'/gallery',
+            icon:'mdi-image'
+        },
+        {
+            title:'บุคลากร',
+            path:'/persons',
+            icon:'mdi-account'
+        },
+        {
+            title:'หลักสูตร',
+            path:'/course',
+            icon:'mdi-book'
+        },
+        {
+            title:'เอกสาร',
+            path:'/files',
+            icon:'mdi-file'
+        },
+        {
+            title:'เกี่ยวกับเรา',
+            path:'/about',
+            icon:'mdi-information'
+        },
+        {
+            title:'ติดต่อ',
+            path:'/contact',
+            icon:'mdi-phone'
+        },
+    ])
 </script>
 
 <template>
@@ -135,23 +179,23 @@
             <span v-if="readit === false" 
              class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75"></span>
         </div>
-        <NampongNavBar></NampongNavBar>
+        <NampongNavBar class=""></NampongNavBar>
 
         <!-- Banner -->
         <div class="w-full h-[auto] max-h-[600px] bg-gradient-to-tr flex justify-center items-start z-10" >
             <v-parallax class="less:h-[200px] xl:h-[500px]"
-                src="https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981">
+                :src="bannerimg">
                     <div class="relative w-full h-full flex justify-center items-center bg-black opacity-40"></div>
                     <div class="absolute w-full h-full flex justify-center items-center top-0">
-                        <p class=" less:text-md md:text-5xl lg:text-6xl text-white font-bold">
-                            “ คนดี มีวินัย ใฝ่คุณธรรม เลิศล้ำวิชาการ ”
+                        <p class=" less:text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white">
+                            คนดี มีวินัย ใฝ่คุณธรรม เลิศล้ำวิชาการ
                         </p>
                     </div>
             </v-parallax>
         </div>
 
         <!-- news relese -->
-        <div class="w-full h-auto p-10 flex justify-center items-center">
+        <div class="w-full h-auto px-10 pt-10 flex justify-center items-center">
             <div class="w-[1200px] h-auto flex flex-col">
                 <div class="xl:p-4 less:p-2 flex flex-row justify-between items-center">
                     <div class="text-pink-500 border-l-8 border-pink-500 less:text-xl xl:text-2xl py-4 pl-4">
@@ -165,7 +209,7 @@
                     <div class="xl:w-1/4 lg:w-1/4 md:w-1/4 sm:w-1/2 less:w-1/2 h-auto xl:p-4 flex flex-col 
                     group  cursor-pointer less:px-2 mt-2" 
                     v-for="news of newRelase">
-                        <div class="w-full h-[200px] flex flex-col  ">
+                        <div class="w-full less:w-full xl:h-[200px] flex flex-col  ">
                             <img class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
                             :src="(news as any).src" alt=""> 
                         </div>
@@ -198,53 +242,18 @@
         </div>
 
         <!-- main menu -->
-        <div class="w-full h-auto flex justify-center">
+        <div class="w-full h-auto flex justify-center py-10">
             <div class="w-[1200px] h-auto flex flex-col bg-white">
                 <div class="flex flex-wrap justify-center items-center">
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-newspaper" class="mr-3"></v-icon> ข่าวประชาสัมพันธ์
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-account" class="mr-3"></v-icon> บุคลากรของเรา
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-book" class="mr-3"></v-icon> หลักสูตร
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-file" class="mr-3"></v-icon> เอกสาร
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-account-school" class="mr-3"></v-icon> ข้อมูลนักเรียน
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-table" class="mr-3"></v-icon> ตารางเรียน
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md" @click="getCurrentPath('/gallery')"> 
-                        <v-icon icon="mdi-image" class="mr-3"></v-icon> ภาพกิจกรรม
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-information" class="mr-3"></v-icon> เกี่ยวกับเรา
-                    </div>
-                    <div class="w-1/3 min-w-[300px] h-[100px] hover:bg-pink-500 duration-500
-                    text-pink-500 hover:text-white text-2xl hover:text-3xl flex justify-center 
-                    items-center cursor-pointer px-3 shadow-md"> 
-                        <v-icon icon="mdi-phone" class="mr-3"></v-icon> ติดต่อเรา
+
+                    <div v-for="item of menu"
+                    class="w-1/3 min-w-[300px] h-[100px] bg-white group p-2" 
+                    @click="getCurrentPath((item as any).path)">
+                        <div class="w-full h-full text-pink-500 flex md:justify-center items-center text-2xl
+                        less:justify-start less:pl-10 md:pl-0  border-2 border-pink-200 rounded-md
+                        group-hover:bg-gray-100 duration-500 cursor-pointer">
+                            <v-icon :icon="(item as any).icon" class="mr-3"></v-icon> {{ (item as any).title}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -253,16 +262,18 @@
         <!-- image gallery -->
         <div class="w-full h-auto bg-white pb-4 flex justify-center">
             <div class="w-[1200px] h-auto flex flex-col justify-center items-center ">
-                <div class="w-max bg-white h-auto pt-6 pb-4 mb-4 less:text-xl xl:text-3xl text-center text-pink-500">
+                <div class="w-max bg-white h-auto pt-6 pb-4 mb-4 less:text-2xl 
+                xl:text-3xl text-center text-pink-500">
                     <div class="text-center text-pink-500 w-max h-full">
                         <!-- <v-icon end icon="mdi-image"></v-icon> ภาพกิจกรรม -->
-                        ~ ภาพกิจกรรมบางส่วนจากทางโรงเรียน ~
+                        ภาพกิจกรรมของทางโรงเรียน
                     </div>
                 </div>
 
                 <div class="w-full">
                     <div class="w-full h-auto flex flex-wrap justify-between items-center">
-                        <div class="w-full h-full flex flex-wrap justify-center items-center pb-4">
+                        <div class="w-full h-full flex flex-wrap justify-center items-center pb-4 
+                        xl:flex md:flex less:hidden">
                             <div v-for="item of imageGallery" class="relative group 
                             lg:w-1/4 md:w-1/3 sm:w-1/3 less:w-1/2 xl:w-1/4 
                             lg:h-[250px] md:h-[200px] less:h-[200px] xl:h-[250px] 
@@ -277,6 +288,19 @@
                                     </p>
                                 </div>
                             </div>
+                        </div>
+                        <div class="w-full h-auto flex flex-wrap justify-center items-center pb-4 
+                        xl:hidden md:hidden less:flex px-6">
+                            <v-carousel 
+                                cycle 
+                                height="300"
+                                color="pink">
+                                <v-carousel-item
+                                    v-for="item of imageGallery" 
+                                    :src="item.url"
+                                    cover
+                                ></v-carousel-item>
+                            </v-carousel>
                         </div>
                     </div>
                 </div>
