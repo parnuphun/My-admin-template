@@ -25,23 +25,22 @@ const router = createRouter({
         // สำหรับหลังบ้าน admin 
         // ตัวอย่าง /admin/ชือpath 
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        { path: '/login' , component: () => import('../views/School/Admin/logintest.vue')},
-        { path: '/admin/dashboad' , component: () => import('../views/School/Admin/dashboard.vue')},
+        { path: '/login' , component: () => import('../views/School/Admin/login.vue')},
+        { path: '/admin/dashboard' , component: () => import('../views/School/Admin/dashboard.vue')},
+        { path: '/admin/personalDirectory' , component: () => import('../views/School/Admin/personalDirectory.vue')},
+
+
+
+
+
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // default page
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        // page not found 404
-        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
-
-        // test component
-        { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
-        { path: '/test/Test_DataTableManual' , component: () => import('../views/test/Test_DataTableManual.vue')} ,
-        { path: '/test/test_sweetAlert' , component: () => import('../views/test/Test_sweetAlert.vue')} ,
-
-        { path: '/admin' , component: () => import('../views/Common/Main/DashBoard.vue')} ,
-        { path: '/recycle' , component: () => import('../views/Common/Main/Recycle.vue')} ,
-
+        // page not found 404 for client
+        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageServerErr500.vue')} ,
+        // page not found 404 for admin 
+        { path: '/admin/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
 
     ],
     scrollBehavior(to, from, savedPosition) {
@@ -52,7 +51,6 @@ const router = createRouter({
 
 // route guard
 router.beforeEach((to,from)=>{
-
     // // ถ้า login แล้วจะกลับมาที่หน้า Login อีกไม่ได้
     // _auth.isLoggedIn().then((isLoggedIn)=>{
     //     if((to.path.startsWith('/testBackend/login')) && isLoggedIn === true){
@@ -78,7 +76,6 @@ router.beforeEach((to,from)=>{
     //         return false
     //     }
     // })
-
 })
 
 export default router

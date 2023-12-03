@@ -1,5 +1,22 @@
 const db = require('../config/database');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+
+function createToken(data,rememberMe){
+    return new Promise((resolve,reject)=>{
+
+        let loginOption = {
+            algorithm:'HS256',
+            expiresIn:'8h'
+        }
+
+        if(rememberMe){
+            loginOption.expiresIn = '1d'
+        }
+
+        resolve(jwt.sign(data,String(process.env.JWT_PRIVATE_KEY),loginOption))
+    })
+}
 
 module.exports.adminRegister = async (req,res) => {
     const username = req.body.username 
@@ -27,13 +44,14 @@ module.exports.adminRegister = async (req,res) => {
                         INSERT INTO user (
                             user_username, 
                             user_password, 
+                            user_image,
                             user_firstname, 
                             user_lastname,
                             user_email,
                             user_phone,
                             user_address
                             )
-                        VALUES (?, ?, ?, ?,'','','')` 
+                        VALUES (?, ?, '', ?, ?,'','','')` 
                         , 
                         [
                             username,
@@ -62,6 +80,7 @@ module.exports.adminRegister = async (req,res) => {
 }
 
 module.exports.login = async (req,res) => {
+    console.log(req.body);
     const username = req.body.username
     const password = req.body.password
     try{
@@ -70,17 +89,31 @@ module.exports.login = async (req,res) => {
             if(err) return 'database error ';
 
             if(result.length === 0 ){
-                return res.status(401).json({ msg: `กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง ` });
+                return res.json({ 
+                    status: false ,
+                    status_code: 401,
+                    msg: 'กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง' ,
+                });
             }
 
             const user = result[0]
             // check password 
-            bcrypt.compare(password, user.user_password, function(err, result) {
+            bcrypt.compare(password, user.user_password, async function(err, result) {
                 if(err) return 'bcrypt password err'
                 if(result === true){
-                    res.status(200).json({ msg: 'เข้าสู่ระบบสำเร็จ', user: user});
+                    user.user_token = await createToken(user,false);
+                    res.json({ 
+                        status: true ,
+                        status_code: 401,
+                        msg: 'เข้าสู่ระบบสำเร็จ', 
+                        user: user 
+                    });
                 }else{
-                    return res.status(401).json({ msg:  `กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง ` });
+                    return res.json({ 
+                        status: false ,
+                        status_code: 401,
+                        msg:  `กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง ` 
+                    });
                 }
             });
         })

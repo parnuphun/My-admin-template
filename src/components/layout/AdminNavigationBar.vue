@@ -121,7 +121,7 @@ function isGroupOpen() {
                      </v-btn>
 
                     <!-- message box -->
-                    <v-menu :close-on-content-click="false" location="bottom">
+                    <!-- <v-menu :close-on-content-click="false" location="bottom">
                         <template v-slot:activator="{ props }">
                             <v-btn icon v-bind="props" class="mr-3">
                                 <v-badge content="6" color="red">
@@ -215,7 +215,7 @@ function isGroupOpen() {
                                 </v-list>
                             </v-list>
                         </v-card>
-                    </v-menu>
+                    </v-menu> -->
                     <!-- user profile -->
                     <v-menu :close-on-content-click="false" location="bottom">
                         <template v-slot:activator="{ props }">
@@ -234,7 +234,6 @@ function isGroupOpen() {
                                 </v-avatar> -->
                                 <!-- icon -->
                                 <v-icon size="large">mdi-account-circle-outline</v-icon>
-
                              </v-btn>
                         </template>
 

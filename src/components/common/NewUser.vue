@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
 import {ref , onMounted} from 'vue';
@@ -230,4 +230,4 @@ function closeDialog(){
 
         </v-card>
     </v-dialog>
-</template>
+</template> -->

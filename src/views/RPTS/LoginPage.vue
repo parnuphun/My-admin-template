@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { onMounted , watch , ref} from 'vue';
 import { useRouter } from 'vue-router';
 import RegisterFirstTimeLogin from '../../components/common/RegisterFirstTimeLogin.vue';
@@ -150,4 +150,4 @@ function loadingChange(value:boolean){
     </RegisterFirstTimeLogin>
 
 
-</template>
+</template> -->

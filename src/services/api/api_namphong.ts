@@ -1,0 +1,30 @@
+import axios from 'axios'
+
+const url = 'http://localhost:3000'
+
+export default class apiRPTS {
+
+    login(data:{username:string,password:string}){        
+        return axios.post(url+'/login',data)
+    }
+
+    // position 
+    addPosition(data:{position_name:string}){        
+        return axios.post(url+'/addPosition',data)
+    }
+    deletePosition(data:{position_id:number}){        
+        return axios.post(url+'/deletePosition',data)
+    }
+
+    allPosition(){
+        return axios.get(url+'/allPosition')
+    }
+
+    getPersonalOne(){
+        return axios.get(url+'/getPersonalOne')
+    }
+
+    RenamePosition(data:{position_id:number , position_name:string}){
+        return axios.post(url+'/RenamePosition',data)
+    }
+}

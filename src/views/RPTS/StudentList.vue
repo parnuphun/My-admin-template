@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
 import NewUser from '../../components/common/NewUser.vue';
 import {ref, onMounted} from 'vue'
@@ -151,4 +151,4 @@ onMounted(()=>{
 
 <style scoped>
 
-</style>
+</style> -->

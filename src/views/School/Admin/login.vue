@@ -1,8 +1,47 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router' ;
+import apiNamphong from '../../../services/api/api_namphong';
+import MsgAlert from '../../../services/msgAlert';
+import {ref} from 'vue';
+
+const router_s = useRouter();
+
+const _api = new apiNamphong()
+const _msg = new MsgAlert()
+
+function nextPage(path:string) {
+    router_s.push(path)
+}
+
+const username = ref()
+const password = ref()
+
+function login(){
+    _api.login({username:username.value,password:password.value})
+        .then((res) => {            
+            if(res.data.status){                
+                _msg.default_msg({title:res.data.msg,timer:2,progressbar:true,icon:'success'})                
+                localStorage.setItem('Credential',JSON.stringify(res.data.user))
+                setTimeout(()=>{
+                    nextPage('/admin/dashboard')
+                },2000)
+            }else{
+                _msg.default_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
+                password.value = ''
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            _msg.default_msg({title:'something wrong ...',timer:3,progressbar:true,icon:'error'})
+        });
+}
+
+</script>
+
 <!-- Login.vue -->
 <template>
-    <div class="bg-image-container">
+    <div class="bg-image-container bg-gray-900">
         <div class="min-h-screen  flex justify-center items-center">
-
             <div class="max-w-screen-lg m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
                 <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
 
@@ -13,7 +52,7 @@
                         <div class="w-full flex-1 mt-8">
                             <div class="mx-auto max-w-xs">
 
-                                <form>
+                                <form @submit.prevent="login">
                                     <label class="mb-4" for="username">Username:</label>
                                     <input
                                         class="w-full px-8 mb-4 mt-2 py-4 rounded-lg font-medium bg-gray-100 border border-gray-100 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white "
@@ -26,7 +65,7 @@
                                         placeholder="Password" v-model="password" type="password" id="password"
                                         name="password" required>
 
-                                    <button @click="nextPage('/Register')"
+                                    <button type="submit"
                                         class="mt-5 tracking-wide font-semibold bg-pink-600 text-gray-100 w-full py-4 rounded-lg hover:bg-blue-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                                         <span class="ml-3">
                                             Login
@@ -38,9 +77,9 @@
                     </div>
                 </div>
 
-            <div class="flex-1 bg-[#f36bbc] text-center hidden lg:flex">
+            <div class="flex-1 bg-[#f36bbc] text-center hidden lg:flex rounded-r-lg ">
                 <div class="m-12 xl:m-16 w-full bg-contain bg-center bg-no-repeat "
-                    style="background-image: url('src/views/Login/school.png');">
+                    style="background-image: url('iamges/logo/logo_โรงเรียนเทศบาลน้ำพองภูริพัฒน์-removebg-preview.png');">
                 </div>
                 </div>
             </div>
@@ -49,51 +88,5 @@
     </div>
 </template>
 
-<script setup lang="ts">
-import axios from 'axios';
-import { useRouter } from 'vue-router' ;
 
-const router_s = useRouter();
-
-const login  = '';
-const password = 'sss'
-const username = ''
-
-function nextPage(path:string) {
-    router_s.push(path)
-}
-// export default {
-//     data() {
-//         return {
-//             username: '',
-//             password: ''
-//         };
-//     },
-//     methods: {
-//         login() {
-//             axios.post('http://localhost:3000/login', {
-//                 username: this.username,
-//                 password: this.password
-//             })
-//                 .then(response => {
-//                     console.log(response.data);
-//                     // ทำสิ่งที่คุณต้องการหลังจาก login สำเร็จ
-//                 })
-//                 .catch(error => {
-//                     console.error(error.response.data);
-//                     // ทำสิ่งที่คุณต้องการเมื่อ login ไม่สำเร็จ
-//                 });
-//         }
-//     }
-// };
-</script>
-
-
-<style >
-.bg-image-container {
-    height: 100vh;
-    /* ความสูงเต็มหน้าจอ */
-    background-image: url('src/views/Testnes/background.png');
-
-}
-</style>
+ 

@@ -7,7 +7,9 @@ const conn = mysql.createPool({
     database:'namphong_school',
     waitForConnections: true,
     connectionLimit: 10,
-    queueLimit: 0
+    queueLimit: 0,
+    multipleStatements: true,
+
 })
 
 conn.getConnection((err)=>{
