@@ -28,6 +28,9 @@ const router = createRouter({
         { path: '/login' , component: () => import('../views/School/Admin/login.vue')},
         { path: '/admin/dashboard' , component: () => import('../views/School/Admin/dashboard.vue')},
         { path: '/admin/personalDirectory' , component: () => import('../views/School/Admin/personalDirectory.vue')},
+        
+        // test admin ui 
+        { path: '/testui' , component: () => import('../views/test/nomphong_ui_test.vue')},
 
 
 

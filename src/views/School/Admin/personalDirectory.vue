@@ -11,9 +11,8 @@ const _msg = new MsgAlert()
 const positionDialogAdd = ref(false)
 const positionDialogEdit = ref(false)
 
-const positionName = ref<string>('')
-const positionid = ref<number>()
-
+const positionName = ref<string>('') // for add new position and rename 
+const positionid = ref<number>() // for rename 
 const positionList = ref<Array<Object>>()
 
     
@@ -22,12 +21,14 @@ onMounted(()=>{
     getPersonalOne()
 })
 
+// get position list
 function getAllPositionList(){
     _api.allPosition().then((res)=>{
         positionList.value = res.data.positionData
     })
 }
 
+// add new position
 function addPosition(){    
     if(positionName.value.trim() == ''){
         _msg.toast_msg({title:'กรุณากรอกข้อมูลให้ถูกต้อง',timer:5,icon:'error',progressbar:true})
@@ -46,6 +47,7 @@ function addPosition(){
     }
 }
 
+// delete position
 function deletePosition(position_id:number , position_name:string){
     _msg.confirm(`คุณต้องการลบ ${position_name} ใช่หรือไม่ ?`).then((isConfirmed)=>{
         if(isConfirmed){
@@ -62,6 +64,7 @@ function deletePosition(position_id:number , position_name:string){
     })
 }
 
+// rename position 
 function RenamePosition(){
     _msg.confirm(`คุณต้องการเปลี่ยนชื่อใช่ไหม?`).then((isConfirmed)=>{
         if(isConfirmed){
@@ -78,6 +81,7 @@ function RenamePosition(){
     })
 }
 
+// get person from position 
 interface ApiResponse {
   personsData: object[];
 }
@@ -97,8 +101,8 @@ function getPersonalOne(){
 <template>
     <AdminNavigationBar>
         <div class="w-full min-h-screen flex flex-row justify-start items-start gap-1">
+            <!-- preview diagram -->
             <div class="w-8/12 h-full bg-gray-500">
-
                 <div class="w-full h-full bg-white pt-2 border-b-4 border-pink-300">
                     <div class=" h-auto w-full flex flex-col justify-center items-center" v-for="position in persons_position">
                             <div class="w-full text-center text-2xl border-4 border-pink-300 py-4 bg-pink-100">
@@ -120,6 +124,7 @@ function getPersonalOne(){
                 </div>
             </div>
 
+            <!-- management side -->
             <div class="w-4/12 h-full ">
                 <div class="w-full p-2">
                     <div class="w-full h-full px-20 text-white bg-blue-500 rounded-lg flex justify-start py-4 cursor-pointer
