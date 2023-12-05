@@ -30,21 +30,21 @@ export const navigationMenu:NavigationItem[] = [
         id: 'annoucement_important' ,
         title : 'ประกาศประชาสัมพันธ์' ,
         icon : 'mdi-information' ,
-        link : '/admin/annoucement_important' ,
+        link : '/admin/annoucement' ,
         permission : 'ทุกคน' ,
     },
     {
         id: 'news_blog' ,
         title : 'ข่าวสาร' ,
         icon : 'mdi-newspaper' ,
-        link : '/admin/news_blog' ,
+        link : '/admin/news' ,
         permission : 'ทุกคน' ,
     },
     {
         id: 'student_schedule' ,
         title : 'ตารางเรียน' ,
         icon : 'mdi-table' ,
-        link : '/admin/student_schedule' ,
+        link : '/admin/studentSchedule' ,
         permission : 'ทุกคน' ,
     },
     {
@@ -72,7 +72,7 @@ export const navigationMenu:NavigationItem[] = [
         id: 'person_management' ,
         title : 'ผู้ดูแลระบบ' ,
         icon : 'mdi-account' ,
-        link : '/admin/persons_management' ,
+        link : '/admin/adminManagement' ,
         permission : 'ทุกคน' ,
     },
 

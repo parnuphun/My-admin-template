@@ -10,7 +10,7 @@ const router = createRouter({
     history : createWebHistory(),
     routes: [
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        // สำหรับหน้าบ้าน 
+        // สำหรับหน้าบ้าน client
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // default redirect
         { path: '/' , component: () => import('../views/School/User/SchoolMain.vue')} ,
@@ -27,7 +27,13 @@ const router = createRouter({
         /////////////////////////////////////////////////////////////////////////////////////////////////
         { path: '/login' , component: () => import('../views/School/Admin/login.vue')},
         { path: '/admin/dashboard' , component: () => import('../views/School/Admin/dashboard.vue')},
+        { path: '/admin/annoucement' , component: () => import('../views/School/Admin/annoucement.vue')},
+        { path: '/admin/news' , component: () => import('../views/School/Admin/news.vue')},
+        { path: '/admin/studentSchedule' , component: () => import('../views/School/Admin/studentSchedule.vue')},
         { path: '/admin/personalDirectory' , component: () => import('../views/School/Admin/personalDirectory.vue')},
+        { path: '/admin/gallery' , component: () => import('../views/School/Admin/gallery.vue')},
+        { path: '/admin/files' , component: () => import('../views/School/Admin/files.vue')},
+        { path: '/admin/adminManagement' , component: () => import('../views/School/Admin/adminManagement.vue')},
         
         // test admin ui 
         { path: '/testui' , component: () => import('../views/test/nomphong_ui_test.vue')},
