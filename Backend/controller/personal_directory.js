@@ -1,5 +1,6 @@
 const db = require('../config/database');
 
+// send all position 
 module.exports.allPosition = async (req,res)=> {
     try{
         db.query("SELECT * FROM personal_directory_position",(err,result)=>{
@@ -21,8 +22,10 @@ module.exports.allPosition = async (req,res)=> {
     }
 }
 
+// add new position 
 module.exports.addPosition = async (req,res) => {
     const position_name = req.body.position_name
+    const position_category = req.body.position_category
     try{
         // check order first
         db.query('SELECT * FROM personal_directory_position',(err,result)=>{
@@ -30,8 +33,8 @@ module.exports.addPosition = async (req,res) => {
             if(result.length === 0){
                 // if no one position add first ordered
                 try{
-                    db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order)
-                        VALUES(?,1)`,[position_name], async (err, result) =>{ 
+                    db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order,pd_category_id)
+                        VALUES(?,1,?)`,[position_name,position_category], async (err, result) =>{ 
                         if(err) return 'db err'
                         res.json({
                             status:true,
@@ -184,15 +187,36 @@ module.exports.RenamePosition = async (req,res) => {
 
 }
 
-
+// add new person 
 module.exports.addPersonDirec =async (req,res)=>{
-    const name = req.body.name
-    const image = req.body.image
-    const description = req.body.description
-    const position_id = req.body.position
+    const name = req.body.person_name
+    const image = req.body.person_image
+    const desc = req.body.person_desc
+    const position = req.body.person_position_id
+    const category = req.body.person_category_id
 
     try{
-        db.query()
+        db.query(`INSERT INTO personal_directory_persons(
+            pd_person_image,
+            pd_person_name,
+            pd_person_descript,
+            pd_position_id,
+            pd_category_id,)
+            VALUES(?,?,?,?,?)`,
+            [
+                image,
+                name,
+                desc,
+                position,
+                category
+            ],(err,result)=>{
+                 if(err) throw err
+                 res.send({
+                    status_code:200,
+                    status:true,
+                    msg:'เพิ่มบุคลากรสำเร็จ'
+                 })
+            })
 
     }catch(err){
         console.error('something err');

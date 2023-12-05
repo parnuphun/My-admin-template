@@ -9,7 +9,7 @@ export default class apiRPTS {
     }
 
     // position 
-    addPosition(data:{position_name:string}){        
+    addPosition(data:{position_name:string , position_category:number}){        
         return axios.post(url+'/addPosition',data)
     }
     deletePosition(data:{position_id:number}){        

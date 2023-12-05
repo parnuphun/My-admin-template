@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import {ref , watch} from 'vue'
 import { useRouter } from 'vue-router';
 import apiRPTS from '../../services/api/apiRPTS_check';
@@ -139,4 +139,4 @@ function confirmEmail(){
         text-align: center;
         font-weight: 600;
     }
-</style>
+</style> -->

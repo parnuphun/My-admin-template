@@ -25,3 +25,7 @@ export function isPasswordStrength(v:string){
 export function isUsername(v:string){
     return v === '' || /^[a-zA-Z0-9]{5,}\s*$/.test(v) || 'กรุณากรอกตัวอักษรเป็นภาษาอังกฤษและมีตัวอักษรอย่างน้อย 5 ตัวอักษร'
 }
+
+export function imageValidate(v:any){
+    return !v || !v.length || v[0].size < 2000000 || 'Avatar size should be less than 2 MB!'
+}

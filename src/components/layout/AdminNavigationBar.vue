@@ -102,7 +102,7 @@ function isGroupOpen() {
 <template>
     <VThemeProvider>
         <VApp >
-            <div class="h-screen">
+            <div class="h-screen bg-gray-100">
                 <!-- nav bar -->
                 <v-app-bar :elevation="2" class="h-[65px] max-h-[65px] min-h-[65px]">
                     <!-- toggle sidebar -->
@@ -229,7 +229,7 @@ function isGroupOpen() {
                 <!-- Content here !!! -->
                 <VMain class="h-full">
                     <v-container fluid class="h-full">
-                        <div class="w-full h-full overflow-auto">
+                        <div class="w-full h-full overflow-auto ">
                             <slot ></slot>
                         </div>
                     </v-container>

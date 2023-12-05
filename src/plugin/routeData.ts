@@ -75,6 +75,13 @@ export const navigationMenu:NavigationItem[] = [
         link : '/admin/adminManagement' ,
         permission : 'ทุกคน' ,
     },
+    {
+        id: 'person_management' ,
+        title : 'test ui' ,
+        icon : 'mdi-account' ,
+        link : '/testui' ,
+        permission : 'ทุกคน' ,
+    },
 
     // {
     //     id: 'test_Component' ,

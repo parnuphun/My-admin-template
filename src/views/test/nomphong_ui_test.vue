@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
-import {ref} from 'vue'
+import {ref , watch} from 'vue'
 
 const tab = ref()
+
+watch(tab , ()=>{
+    if(tab.value === 'two'){
+
+    }
+    else if(tab.value === 'three'){
+
+    }
+})
 
 // ส่งมาเป็น arr_obj
 const persons_position = ref<Array<object>>([
@@ -155,57 +164,7 @@ const persons_position = ref<Array<object>>([
     },
 ])
 
-const position = ref([
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
+const position = ref([    
           {
             name: 'Frozen Yogurt',
             url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
@@ -246,25 +205,28 @@ const position = ref([
 
 <template>
     <AdminNavigationBar>
-        <div class="flex flex-col w-full h-auto overflow-scroll">
+        <div class="flex flex-col w-full h-full ">
             <div class="w-full h-full flex flex-wrap ">
-                <div class="w-1/2 h-full">
-                    <v-card>
+
+                <!-- Manage -->
+                <div class="w-1/2 h-full overflow-auto border-2 border-gray-300">
+                    <v-card class="h-full" color="">
                         <v-tabs
-                        v-model="tab"
-                        fixed-tabs
-                        bg-color="">                                
+                            v-model="tab"
+                            fixed-tabs
+                            bg-color=""
+                        >                                
                             <v-tab value="one">บุคลากรโรงเรียน</v-tab>
                             <v-tab value="two">คณะกรรมการศึกษาขั้นพื้นฐาน</v-tab>
                             <v-tab value="three">คณะกรรมการนักเรียน</v-tab>
                         </v-tabs>
 
-                        <v-card-text>
-                            <v-window v-model="tab">
-                                <!-- บุคลากรโรงเรียน -->
-                                <v-window-item value="one">
-                                    <v-card>
-                                        <div class="w-full h-auto p-2 flex flex-row justify-between">
+                        <v-card-text class="h-full" >
+                            <v-window v-model="tab" class="h-[96%]">
+                                <v-window-item value="one" class="h-full" color="primary" >
+                                    <div class="h-full w-full flex flex-col ">
+                                        <!-- menu -->
+                                        <div class="w-full h-auto flex flex-row justify-between">
                                             <div class="w-full px-2 flex flex-row gap-2" >
                                                 <div class="w-full">
                                                     <v-select
@@ -273,70 +235,83 @@ const position = ref([
                                                         :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
                                                     ></v-select>
                                                 </div>
-                                                <div class="w-fit">
-                                                    <v-btn  color="green">
-                                                        <v-icon icon="mdi-plus"> </v-icon> เพิ่มตำแหน่ง
+                                                <div class="w-fit flex flex-row gap-1">
+                                                    <v-btn class="w-fit" color="blue">
+                                                        <v-icon icon="mdi-pencil"> </v-icon> 
+                                                    </v-btn>
+                                                    <v-btn class="w-fit" color="green">
+                                                        <v-icon icon="mdi-plus"> </v-icon> 
+                                                    </v-btn>
+                                                    <v-btn class="w-fit" color="red">
+                                                        <v-icon icon="mdi-delete"> </v-icon> 
                                                     </v-btn>
                                                 </div>
                                             </div>
-                                            <div class="w-auto">
+                                            <div class="w-fit">
                                                 <div class="w-full flex justify-end">
                                                     <v-btn  color="green">
-                                                        <v-icon icon="mdi-account"> </v-icon> เพิ่ม
+                                                        <v-icon icon="mdi-account"> </v-icon> เพิ่มบุคลากร
                                                     </v-btn>
                                                 </div>
                                             </div>
                                         </div>
-                                    </v-card>
-                                    <v-table>
-                                        <thead>
-                                            <tr>
-                                                <th class="text-left">
-                                                ภาพ 
-                                                </th>
-                                                <th class="text-left">
-                                                ชื่อ
-                                                </th>
-                                                <th class="text-left">
-                                                ตำแหน่ง
-                                                </th>
-                                                <th class="text-center">
-                                                จัดการ
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr
-                                                v-for="item in position"
-                                                :key="item.name"
+                                        <!-- table -->
+                                        <div class="w-full h-full overflow-hidden">
+                                            <v-table 
+                                                fixed-header
+                                                class="h-full overflow-auto"
                                             >
-                                                <td>
-                                                    <img class="w-10 h-10 object-cover" 
-                                                    :src="item.url" alt="">    
-                                                </td>
-                                                <td>{{ item.name }}</td>
-                                                <td>{{ item. position}}</td>
-                                                <td>
-                                                    <div class="w-full flex flex-row gap-2 justify-center">
-                                                        <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
-                                                            <v-icon icon="mdi-pencil"></v-icon>
-                                                        </div>
-                                                        <div class="text-red-500 hover:text-red-600 cursor-pointer">
-                                                            <v-icon icon="mdi-delete"></v-icon>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </v-table>
+                                                <thead >
+                                                    <tr>
+                                                        <th class="text-left">
+                                                        ภาพ 
+                                                        </th>
+                                                        <th class="text-left">
+                                                        ชื่อ
+                                                        </th>
+                                                        <th class="text-left">
+                                                        ตำแหน่ง
+                                                        </th>
+                                                        <th class="text-center">
+                                                        จัดการ
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr
+                                                        v-for="(item , i) in position"
+                                                        :key="item.name"
+                                                    >
+                                                        <td>
+                                                            <img class="w-10 h-10 object-cover" 
+                                                            :src="item.url" alt="">    
+                                                        </td>
+                                                        <td>{{ i+1 }}. {{ item.name }}</td>
+                                                        <td>{{ item. position}}</td>
+                                                        <td>
+                                                            <div class="w-full flex flex-row gap-2 justify-center">
+                                                                <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
+                                                                    <v-icon icon="mdi-pencil"></v-icon>
+                                                                </div>
+                                                                <div class="text-green-500 hover:text-green-600 cursor-pointer">
+                                                                    <v-icon icon="mdi-folder-move-outline"></v-icon>
+                                                                </div>
+                                                                <div class="text-red-500 hover:text-red-600 cursor-pointer">
+                                                                    <v-icon icon="mdi-delete"></v-icon>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </v-table>
+                                        </div>
+                                    </div>
                                 </v-window-item>
-
-                                <!-- คณะกรรมการศึกษาขั้นพื้นฐาน -->
+                                
                                 <v-window-item value="two">
                                     คณะกรรมการศึกษาขั้นพื้นฐาน
                                 </v-window-item>
 
-                                <!-- คณะกรรมการนักเรียน -->
                                 <v-window-item value="three">
                                     คณะกรรมการนักเรียน
                                 </v-window-item>
@@ -344,29 +319,42 @@ const position = ref([
                         </v-card-text>
                     </v-card>
                 </div>
-                <div class="w-1/2 h-full ">
-                    <v-card>
-                        <v-card>
-                            <div class="w-full text-md py-5 flex justify-center">
-                                    <v-icon icon="mdi-eye" class="mr-3"> </v-icon> ตัวอย่าง
+
+                <!-- Preview -->
+                <div class="w-1/2 h-full bg-red-100 overflow-auto border-l-0 border-2 border-gray-300">
+                    <div class="w-full bg-white h-full">
+                        <v-card class="w-full h-full" color="">
+                            <div class="w-full text-md h-[47px] flex justify-center items-center shadow-xl">
+                                <v-icon icon="mdi-eye" class="mr-3"> </v-icon> ตัวอย่าง
                             </div>
-                        </v-card>
-                        <v-card class="h-full overflow-scroll">
-                            <div class="flex flex-col h-full w-full">
-                                <div class="w-full">
-                                    <div class=" h-full w-full flex flex-col justify-center items-center" v-for="position of persons_position">
-                                        <div class="w-full text-center text-md border-4 border-pink-300 py-4 bg-pink-100">
-                                            {{(position as any).title_position}}
-                                        </div>
-                
-                                        <div class="w-full h-full flex flex-wrap justify-center items-center gap-10
-                                            border-x-4 border-pink-300 pb-10">                        
-                                            <div class="w-[200px] h-[250px] flex flex-wrap justify-center mt-2" v-for="person of (position as any).persons">
-                                                <img class="object-cover rounded-lg w-[150px] h-[200px]" 
-                                                src="https://as2.ftcdn.net/v2/jpg/02/48/78/23/1000_F_248782375_WjBW5Bh0PSRQH9qflJ5wzsBJKVfX2OAP.jpg" alt="">
-                                                <div class="w-full text-center text-md mt-2">
-                                                    <p>{{ person.name }}</p>
-                                                    <p class="text-lg">{{ person.discript }}</p>
+                            <div class="w-full h-full p-4 bg-gray-50 overflow-auto">
+                                <div class="w-full h-full">
+                                    <div class="w-full ">
+                                        <div class="h-full w-full flex flex-col justify-center items-center" 
+                                        v-for="position of persons_position">
+                                            <div class="w-full text-center text-lg py-4 flex flex-row justify-center">
+                                                <p class="underline">
+                                                    {{(position as any).title_position}} 
+                                                </p>
+                                            </div>
+                    
+                                            <div class="w-full h-full flex flex-wrap justify-center items-center gap-10 pb-10">                        
+                                                <div class="relative w-[150px] h-[200px] flex flex-wrap justify-center mt-2" v-for="person of (position as any).persons">
+                                                    <img class="object-cover rounded-lg w-[100px] h-[150px]" 
+                                                    src="https://as2.ftcdn.net/v2/jpg/02/48/78/23/1000_F_248782375_WjBW5Bh0PSRQH9qflJ5wzsBJKVfX2OAP.jpg" alt="">
+                                                    
+                                                    <div class="absolute top-0 right-0 flex flex-col">
+                                                        <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
+                                                            <v-icon icon="mdi-pencil"></v-icon>
+                                                        </div>
+                                                        <div class="text-red-500 hover:text-red-600 cursor-pointer">
+                                                            <v-icon icon="mdi-delete"></v-icon>
+                                                        </div>
+                                                    </div>
+                                                    <div class="w-full text-center text-sm mt-2">
+                                                        <p>{{ person.name }}</p>
+                                                        <p class="text-sm">{{ person.discript }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -374,7 +362,7 @@ const position = ref([
                                 </div>
                             </div>
                         </v-card>
-                    </v-card>
+                    </div>
                 </div>
             </div>
         </div>

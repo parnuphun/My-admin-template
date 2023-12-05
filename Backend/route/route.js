@@ -13,5 +13,6 @@ route.post('/addPosition',persons_pd_c.addPosition)
 route.post('/deletePosition',persons_pd_c.deletePosition)
 route.get('/getPersonalOne',persons_pd_c.getPersonalOne)
 route.post('/RenamePosition',persons_pd_c.RenamePosition)
+route.post('/addNewPersonDirectory',persons_pd_c,persons_pd_c.addNewPersonDirectory)
 
 module.exports = route;
