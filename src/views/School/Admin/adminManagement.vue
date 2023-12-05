@@ -23,7 +23,7 @@ const dialog = ref(false)
             <!-- content -->
             <div class="flex flex-col w-full ">
                 <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
-                    dialog example
+                    dialog exampleeee
                     <div @click="dialog = !dialog"
                     class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
                         <v-icon icon="mdi-close"></v-icon>
@@ -32,7 +32,7 @@ const dialog = ref(false)
                 <div class="w-full px-6">
                     <div class="flex flex-row gap-2 w-full">
                         <v-text-field
-                                
+
                             label="somthing"
                         ></v-text-field>
                         <div  class="้px-3 w-[100px] ">
