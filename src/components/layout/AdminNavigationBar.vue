@@ -101,140 +101,140 @@ function isGroupOpen() {
 
 <template>
     <VThemeProvider>
-        <VApp class="">
-            <!-- nav bar -->
-            <v-app-bar :elevation="2" color="">
-                <!-- toggle sidebar -->
-                <v-app-bar-nav-icon  @click.stop="isRail = !isRail"></v-app-bar-nav-icon>
+        <VApp >
+            <div class="h-screen">
+                <!-- nav bar -->
+                <v-app-bar :elevation="2" class="h-[65px] max-h-[65px] min-h-[65px]">
+                    <!-- toggle sidebar -->
+                    <v-app-bar-nav-icon  @click.stop="isRail = !isRail"></v-app-bar-nav-icon>
 
-                <!-- content in nav -->
-                <div class="w-full mr-6 flex flex-row items-center">
-                    <v-app-bar-title color=""> ระบบหลังบ้านโรงเรียนเทศบาลน้ำพองภูริพัฒน์ </v-app-bar-title>
+                    <!-- content in nav -->
+                    <div class="w-full mr-6 flex flex-row items-center">
+                        <v-app-bar-title color=""> ระบบหลังบ้านโรงเรียนเทศบาลน้ำพองภูริพัฒน์ </v-app-bar-title>
 
-                    <v-btn icon class="" @click="fullscreen">
-                        <v-icon size="x-large" v-if="isFullScreen">mdi-fullscreen-exit</v-icon>
-                        <v-icon size="x-large" v-else="isFullScreen">mdi-fullscreen</v-icon>
-                     </v-btn>
+                        <v-btn icon class="" @click="fullscreen">
+                            <v-icon size="x-large" v-if="isFullScreen">mdi-fullscreen-exit</v-icon>
+                            <v-icon size="x-large" v-else="isFullScreen">mdi-fullscreen</v-icon>
+                        </v-btn>
 
-                    <!-- user profile -->
-                    <v-menu :close-on-content-click="false" location="bottom">
-                        <template v-slot:activator="{ props }">
-                            <v-btn  v-bind="props" icon>
-                                <!-- icon -->
-                                <v-icon size="large">mdi-account-circle-outline</v-icon>
-                             </v-btn>
-                        </template>
-
-                        <v-card min-width="300">
-                            <v-list line="three">
-                                <v-list-item
-                                    :title="`${credentialData.userFname} ${credentialData.userLname}`"
-                                    :subtitle="credentialData.userRoles.toString()"
-                                >
-                                    <template v-slot:prepend>
-                                        <v-avatar size="x-large">
-                                            <v-img
-                                                :src="credentialData.userAvatar"
-                                                alt="user avatar"
-                                            ></v-img>
-                                        </v-avatar>
-                                    </template>
-
-                                    <template v-slot:append>
-                                        <v-btn
-                                            @click="logout()"
-                                            variant="text"
-                                            icon="mdi-login"
-                                        ></v-btn>
-                                    </template>
-                                </v-list-item>
-                            </v-list>
-                            <v-divider></v-divider>
-                        </v-card>
-                    </v-menu>
-                </div>
-            </v-app-bar>
-
-            <!-- <v-progress-linear
-                v-if="true"
-                indeterminate
-                color="primary"
-                :class="[props.isLoadingProgressBar === true ? '': 'invisible']"
-                class="absolute top-0"
-                height="5"
-                style="z-index:9999;"
-                >
-            </v-progress-linear> -->
-
-            <!-- side bar -->
-            <v-navigation-drawer
-                v-model="isRail"
-                :elevation="2"
-            >
-                <!-- menu list -->
-                <v-list class="" nav :opened="listOpend" >
-                    <div v-for="navItem of navigationMenu">
-                        <!-- v-if=" checkPermission(navItem.permission) || isAdmin() " -->
-                        <v-list-item
-                            v-if="!navItem.childs"
-                            :title="navItem.title"
-                            :subtitle="navItem.subtitle"
-                            @click="getCurrentPath(navItem.link!)"
-                            density="comfortable"
-                            :value="navItem.id"
-                            class="text-md my-1"
-                            active-color=""
-                            :prepend-icon="navItem.icon"
-                            :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
-                            rounded="">
-                            <!-- <v-icon :icon="navItem.icon" start></v-icon>{{navItem.title}} -->
-                        </v-list-item>
-                        <v-list-group v-else :value="navItem.id">
-                            <template v-slot:activator="{props}">
-                                <v-list-item
-                                    v-bind="props"
-                                    :title="navItem.title"
-                                    :subtitle="navItem.subtitle"
-                                    @click=""
-                                    density="comfortable"
-                                    :value="navItem.id"
-                                    class="text-md my-1"
-                                    active-color=""
-                                    :prepend-icon="navItem.icon"
-                                ></v-list-item>
+                        <!-- user profile -->
+                        <v-menu :close-on-content-click="false" location="bottom">
+                            <template v-slot:activator="{ props }">
+                                <v-btn  v-bind="props" icon>
+                                    <!-- icon -->
+                                    <v-icon size="large">mdi-account-circle-outline</v-icon>
+                                </v-btn>
                             </template>
-                            <div v-for="SubNavItem of navItem.childs">
-                                <v-list-item
-                                    :title="SubNavItem.title"
-                                    :subtitle="SubNavItem.subtitle"
-                                    @click="getCurrentPath(SubNavItem.link!)"
-                                    density="comfortable"
-                                    :value="SubNavItem.id"
-                                    class="text-md my-1"
-                                    active-color=""
-                                    :active="currentPath.path === SubNavItem.link || (SubNavItem.link === '/dashBoard' && currentPath.path === '/')"
-                                    rounded="">
-                                    <template v-slot:prepend v-if="SubNavItem.icon">
-                                        <v-icon :icon="String(SubNavItem.icon)" class="-ml-11"></v-icon>
-                                    </template>
-                                </v-list-item>
-                            </div>
-                        </v-list-group>
+
+                            <v-card min-width="300">
+                                <v-list line="three">
+                                    <v-list-item
+                                        :title="`${credentialData.userFname} ${credentialData.userLname}`"
+                                        :subtitle="credentialData.userRoles.toString()"
+                                    >
+                                        <template v-slot:prepend>
+                                            <v-avatar size="x-large">
+                                                <v-img
+                                                    :src="credentialData.userAvatar"
+                                                    alt="user avatar"
+                                                ></v-img>
+                                            </v-avatar>
+                                        </template>
+
+                                        <template v-slot:append>
+                                            <v-btn
+                                                @click="logout()"
+                                                variant="text"
+                                                icon="mdi-login"
+                                            ></v-btn>
+                                        </template>
+                                    </v-list-item>
+                                </v-list>
+                                <v-divider></v-divider>
+                            </v-card>
+                        </v-menu>
                     </div>
-                </v-list>
-            </v-navigation-drawer>
+                </v-app-bar>
 
+                <!-- <v-progress-linear
+                    v-if="true"
+                    indeterminate
+                    color="primary"
+                    :class="[props.isLoadingProgressBar === true ? '': 'invisible']"
+                    class="absolute top-0"
+                    height="5"
+                    style="z-index:9999;"
+                    >
+                </v-progress-linear> -->
 
-            <!-- Content here !!! -->
-            <VMain>
-                <v-container fluid class="">
-                    <div class="w-full h-full relative">
-                        <div class="h-full">
-                            <slot></slot>
+                <!-- side bar -->
+                <v-navigation-drawer
+                    v-model="isRail"
+                    :elevation="2"
+                >
+                    <!-- menu list -->
+                    <v-list class="" nav :opened="listOpend" >
+                        <div v-for="navItem of navigationMenu">
+                            <!-- v-if=" checkPermission(navItem.permission) || isAdmin() " -->
+                            <v-list-item
+                                v-if="!navItem.childs"
+                                :title="navItem.title"
+                                :subtitle="navItem.subtitle"
+                                @click="getCurrentPath(navItem.link!)"
+                                density="comfortable"
+                                :value="navItem.id"
+                                class="text-md my-1"
+                                active-color=""
+                                :prepend-icon="navItem.icon"
+                                :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
+                                rounded="">
+                                <!-- <v-icon :icon="navItem.icon" start></v-icon>{{navItem.title}} -->
+                            </v-list-item>
+                            <v-list-group v-else :value="navItem.id">
+                                <template v-slot:activator="{props}">
+                                    <v-list-item
+                                        v-bind="props"
+                                        :title="navItem.title"
+                                        :subtitle="navItem.subtitle"
+                                        @click=""
+                                        density="comfortable"
+                                        :value="navItem.id"
+                                        class="text-md my-1"
+                                        active-color=""
+                                        :prepend-icon="navItem.icon"
+                                    ></v-list-item>
+                                </template>
+                                <div v-for="SubNavItem of navItem.childs">
+                                    <v-list-item
+                                        :title="SubNavItem.title"
+                                        :subtitle="SubNavItem.subtitle"
+                                        @click="getCurrentPath(SubNavItem.link!)"
+                                        density="comfortable"
+                                        :value="SubNavItem.id"
+                                        class="text-md my-1"
+                                        active-color=""
+                                        :active="currentPath.path === SubNavItem.link || (SubNavItem.link === '/dashBoard' && currentPath.path === '/')"
+                                        rounded="">
+                                        <template v-slot:prepend v-if="SubNavItem.icon">
+                                            <v-icon :icon="String(SubNavItem.icon)" class="-ml-11"></v-icon>
+                                        </template>
+                                    </v-list-item>
+                                </div>
+                            </v-list-group>
                         </div>
-                    </div>
-                </v-container>
-            </VMain>
+                    </v-list>
+                </v-navigation-drawer>
+
+                
+                <!-- Content here !!! -->
+                <VMain class="h-full">
+                    <v-container fluid class="h-full">
+                        <div class="w-full h-full overflow-auto">
+                            <slot ></slot>
+                        </div>
+                    </v-container>
+                </VMain>
+            </div>
         </VApp>
     </VThemeProvider>
 </template>
