@@ -1,5 +1,5 @@
 #backend
-backend/public/persons_image/.gitkeep
+!backend/public/persons_image/.gitkeep
 
 # Logs
 logs
