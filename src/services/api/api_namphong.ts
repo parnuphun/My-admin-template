@@ -18,9 +18,6 @@ export default class apiRPTS {
     allPosition(){
         return axios.get(url+'/allPosition')
     }
-    getPersonalOne(){
-        return axios.get(url+'/getPersonalOne')
-    }
     RenamePosition(data:{position_id:number , position_name:string}){
         return axios.post(url+'/RenamePosition',data)
     }

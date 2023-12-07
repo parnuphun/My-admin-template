@@ -1,5 +1,7 @@
 const db = require('../config/database');
 const upload_person_directory = require('../services/upload_person_directory')
+require('dotenv').config();
+
 // send all position 
 module.exports.allPosition = async (req,res)=> {
     try{
@@ -83,39 +85,6 @@ module.exports.addPosition = async (req,res) => {
     }
 }
 
-module.exports.getPersonalOne = async (req ,res) => {
-    db.query('SELECT * FROM personal_directory_position',(err,result)=>{
-        if(err) return 'db err'
-        let position_no = result.length
-        let position_detail = result
-        let data = []
-
-        if(result.length === 0){
-            res.json({
-                personsData : data
-            })
-        }
-        
-        for(let i = 0 ; i < position_no ; i++){
-            data[i] = {};
-
-            data[i].position_id = position_detail[i].pd_position_id
-            data[i].position_name = position_detail[i].pd_position_name
-            db.query('SELECT * FROM personal_directory_persons WHERE pd_position_id = ? ',
-            [position_detail[i].pd_position_id],(err,result)=>{
-                if(err)  throw err
-                data[i].persons = result
-                
-                if(i >= position_no -1){
-                    res.json({
-                        personsData : data
-                    })
-                }
-            })
-        }
-    })
-}
-
 module.exports.deletePosition = async (req,res) =>{
     const position_id = req.body.position_id
     try{
@@ -159,6 +128,7 @@ module.exports.deletePosition = async (req,res) =>{
     }
 }
 
+
 module.exports.RenamePosition = async (req,res) => {
     const position_name = req.body.position_name 
     const position_id = req.body.position_id
@@ -189,14 +159,12 @@ module.exports.RenamePosition = async (req,res) => {
 
 // add new person 
 module.exports.addPerson = async (req,res)=>{
-    // console.log(req.body);
-    // console.log(req.file);
     const image = await upload_person_directory(req , `${req.body.person_name}`)
     const name = req.body.person_name
-    const desc = req.body.person_desc
+    const desc = req.body.person_desc  
     const position = req.body.person_position_id
     const category = req.body.person_category_id
-
+ 
     try{
         db.query(`
                 INSERT INTO personal_directory_persons(
@@ -214,7 +182,6 @@ module.exports.addPerson = async (req,res)=>{
                 category
             ],(err,result)=>{
                  if(err) throw err
-                 console.log('เพิ่มบุคลากรสำเร็จ');
                  res.send({
                     status_code:200,
                     status:true,
@@ -231,24 +198,88 @@ module.exports.addPerson = async (req,res)=>{
     }
 }
 
-// รายชื่อบุคลากร
-module.exports.getPersonDirectoryOne = async (req,res) =>{
+// รายชื่อบุคลากร ****
+module.exports.getPersonDirectoryOne = async (req ,res) => {
+    let position_no 
+    let position_detail  
+    let data = []
+    let dataTable = []
+
     const category_id = req.body.category_id
-    try{
-        db.query(`SELECT * FROM personal_directory_persons WHERE pd_category_id = ?` , [category_id] ,(err,result)=>{
-            if(err) throw err
+    console.log('category => ',category_id);
+    db.query('SELECT * FROM personal_directory_position WHERE pd_category_id = ?',[category_id], async (err,result)=>{
+        if(err) return 'db err'
+        position_no = result.length
+        position_detail = result
+  
+        if(result.length === 0){
             res.json({
-                status_code:200,
-                status:true,
-                msg:'รายชื่อบุคลากร',
-                person_data:result
+                personsData : data,
+                personsDataTable : dataTable,
+                personsBaseImageURL: process.env.PERSONS_DIARECTORY_IMAGE,
+                msg:'no data' 
             })
-        })
-    }catch(err){
-        console.error('something err');
-        res.json({
-            status:false,
-            msg:'err'
-        })
-    }
+        }
+ 
+        
+        for(let i = 0 ; i < position_no ; i++){
+            data[i] = {};
+            data[i].position_id = position_detail[i].pd_position_id
+            data[i].position_name = position_detail[i].pd_position_name
+
+            try{
+                const result = await executeQuery(position_detail[i].pd_position_id);
+                data[i].persons = result;
+                for (let j = 0; j < result.length; j++) {
+                    dataTable.push(result[j]);
+                };
+
+                if(i >= position_no -1){
+                    // console.log('in =>' , data);
+                    res.json({
+                        personsData : data,
+                        personsDataTable : dataTable,
+                        personsBaseImageURL: process.env.PERSONS_DIARECTORY_IMAGE
+                    })
+                }
+            }catch(err){
+                console.log('err execute query');
+            }
+        }
+    })
+
+     // Function to execute a database query and return a promise
+    const executeQuery = async (positionId) => {
+        return new Promise((resolve, reject) => {
+        db.query('SELECT * FROM personal_directory_persons WHERE pd_position_id = ? ', [positionId], (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+        });
+    };
+
 }
+
+// module.exports.getPersonDirectoryOne = async (req,res) =>{
+//     const category_id = req.body.category_id
+//     try{
+//         db.query(`SELECT * FROM personal_directory_persons WHERE pd_category_id = ?` , [category_id] ,(err,result)=>{
+//             if(err) throw err
+//             res.json({
+//                 status_code:200,
+//                 status:true,
+//                 msg:'รายชื่อบุคลากร',
+//                 person_data:result
+//             })
+//         })
+//     }catch(err){
+//         console.error('something err');
+//         res.json({
+//             status:false,
+//             msg:'err'
+//         })
+//     }
+// }

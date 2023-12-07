@@ -12,7 +12,7 @@ route.post('/adminRegister',login_c.adminRegister)
 route.get('/allPosition',persons_pd_c.allPosition)
 route.post('/addPosition',persons_pd_c.addPosition)
 route.post('/deletePosition',persons_pd_c.deletePosition)
-route.get('/getPersonalOne',persons_pd_c.getPersonalOne)
+// route.get('/getPersonalOne',persons_pd_c.getPersonalOne)
 route.post('/RenamePosition',persons_pd_c.RenamePosition)
 
 const upload = require('../services/upload')
