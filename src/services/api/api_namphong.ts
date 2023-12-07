@@ -15,16 +15,19 @@ export default class apiRPTS {
     deletePosition(data:{position_id:number}){        
         return axios.post(url+'/deletePosition',data)
     }
-
     allPosition(){
         return axios.get(url+'/allPosition')
     }
-
     getPersonalOne(){
         return axios.get(url+'/getPersonalOne')
     }
-
     RenamePosition(data:{position_id:number , position_name:string}){
         return axios.post(url+'/RenamePosition',data)
+    }
+    addPerson(data:FormData){
+        return axios.post(url+'/addPerson',data)
+    }
+    getPersonDirectoryOne(data:{category_id:number}){
+        return axios.post(url+'/getPersonDirectoryOne',data)
     }
 }

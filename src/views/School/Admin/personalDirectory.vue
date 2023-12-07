@@ -15,6 +15,8 @@ const positionDialogEdit = ref(false)
 const personDialogAdd = ref(false)
 const personDialogEdit = ref(false)
 const selectedPosition = ref()
+type managementState = 'nothing' | 'deleteposition' | 'editposition' | 'addposition'
+const managementStatus = ref<managementState>('nothing')
 
 const positionName = ref<string>('') // for add new position and rename 
 const positionid = ref<number>() // for rename 
@@ -28,47 +30,56 @@ const positionList = ref<Array<positionData>>() // all position list
 
 onMounted(()=>{
     getAllPositionList()
-    getPersonalOne()
+    getPersonalOne() // บุคลากรทั่วไป
 })
  
+// check tab values
 watch(tab , ()=>{
-    // console.log('position selected value is ' + selectedPosition.value);
-    console.log('category of position is ' + tab.value )
-    if(tab.value === 'one'){
-        categoryNo.value = 1
-    }else if(tab.value === 'two'){
-        categoryNo.value = 2
-    }else if(tab.value === 'three'){
-        categoryNo.value = 3
-    }
+    if(tab.value === 'one') categoryNo.value = 1
+    else if(tab.value === 'two') categoryNo.value = 2
+    else if(tab.value === 'three') categoryNo.value = 3
+    console.log('category of position is ' + tab.value + categoryNo.value)
+
+})
+
+watch(positionName,()=>{
+    console.log(positionName.value);
 })
 
 // get position list
 function getAllPositionList(){
     _api.allPosition().then((res)=>{
         positionList.value = res.data.positionData
-        selectedPosition.value = positionList.value![0]?.pd_position_id
+        if(managementStatus.value === 'nothing') selectedPosition.value = positionList.value![0].pd_position_id
+        else if(managementStatus.value === 'editposition') return
+        else selectedPosition.value = positionList.value![positionList.value!.length-1]?.pd_position_id
+
+        // positionName.value = positionList.value![0].pd_position_name
     })
 }
 
 // add new position
-function addPosition(){    
-    if(positionName.value.trim() == ''){
-        _msg.toast_msg({title:'กรุณากรอกข้อมูลให้ถูกต้อง',timer:5,icon:'error',progressbar:true})
-    }else{
-        _api.addPosition({position_name:positionName.value,position_category:categoryNo.value}).then((res)=>{
-            if(res.data.status){
-                _msg.toast_msg({title:res.data.msg,timer:5,icon:'success',progressbar:true})
-                getAllPositionList()
-                getPersonalOne()
-                
-                positionName.value='';
-            }else{
-                _msg.default_msg({title:res.data.msg,timer:2,icon:'error'})
-            }
-        })
-    }
+function addPosition(){
+    if(positionName.value.trim() == '') return _msg.toast_msg({title:'กรุณากรอกข้อมูลให้ถูกต้อง',timer:5,icon:'error',progressbar:true})
+
+    _api.addPosition({position_name:positionName.value,position_category:categoryNo.value}).then(async (res)=>{
+        if(res.data.status){
+            _msg.toast_msg({title:res.data.msg,timer:5,icon:'success',progressbar:true})
+            getAllPositionList()
+            getPersonalOne()
+            positionName.value='';
+            managementStatus.value = 'addposition'
+
+        }else{
+            _msg.default_msg({title:res.data.msg,timer:2,icon:'error'})
+        }
+    })
 }
+
+watch(selectedPosition,()=>{
+    console.log(selectedPosition.value);
+    
+})
 
 // delete position
 function deletePosition(position_id:number , position_name:string){
@@ -78,7 +89,8 @@ function deletePosition(position_id:number , position_name:string){
                 if(res.data.status){
                     _msg.toast_msg({title:res.data.msg,timer:5,icon:'success',progressbar:true})
                     getAllPositionList()
-                    getPersonalOne()                    
+                    getPersonalOne()   
+                    managementStatus.value = 'deleteposition'                 
                 }else{
                     _msg.toast_msg({title:res.data.msg,timer:5,icon:'error',progressbar:true})
                 }
@@ -87,10 +99,22 @@ function deletePosition(position_id:number , position_name:string){
     })
 }
 
+
 // rename position 
+// set positionname before rename 
+watch(positionDialogEdit,()=>{ 
+    let nameinarr = positionList.value?.
+    filter((item)=>item.pd_position_id === selectedPosition.value).
+    map((item)=> item.pd_position_name)
+    positionName.value = nameinarr![0] as string
+    managementStatus.value = 'editposition'
+    if(positionDialogEdit.value === false) positionName.value = '' // set positionName to default prevent add new name useage
+})
 function RenamePosition(){
     _msg.confirm(`คุณต้องการเปลี่ยนชื่อใช่ไหม?`).then((isConfirmed)=>{
         if(isConfirmed){            
+            if(positionName.value.trim() == '') return _msg.toast_msg({title:'กรุณากรอกข้อมูลให้ถูกต้อง',timer:5,icon:'error',progressbar:true})
+            
             _api.RenamePosition({position_id:(selectedPosition.value as number) , position_name:positionName.value}).then((res)=>{
                 if(res.data.status){
                     _msg.toast_msg({title:res.data.msg,timer:5,icon:'success',progressbar:true})
@@ -119,14 +143,95 @@ function getPersonalOne(){
 const _imgValid = [(v:any)=>imageValidate(v)]
 const personName =ref()
 const personDescript =ref()
+const personImage = ref()
 
 // add new person
 function addNewPerson(){
+    const formData = new FormData()
+    formData.append('person_name',personName.value)
+    formData.append('person_desc',personDescript.value)
+    formData.append('person_image',personImage.value[0])
+    formData.append('person_category_id',categoryNo.value)
+    formData.append('person_position_id',selectedPosition.value)
 
+    _api.addPerson(formData ).then((res)=>{
+        if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:3,icon:'success'})
+        else _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+    })
 }
 
 // mockup data table
 const position = ref([    
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
+          {
+            name: 'Frozen Yogurt',
+            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
+            position: 'ผู้อำนวยการ'
+          },
           {
             name: 'Frozen Yogurt',
             url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
@@ -190,7 +295,8 @@ const position = ref([
                                         <!-- menu -->
                                         
                                         <div class="w-full h-auto flex flex-row justify-between">
-                                            <div class="w-full px-2 flex flex-row gap-2" >
+                                            <div class="w-full px-2 flex flex-col gap-2" >
+                                                <!-- Select Position -->
                                                 <div class="w-full">
                                                     <v-select
                                                         label="เลือกตำแหน่ง"
@@ -202,34 +308,44 @@ const position = ref([
                                                     >
                                                     </v-select>
                                                 </div>
-                                                <div class="w-fit flex flex-row gap-1">
-                                                    <!-- rename position -->
-                                                    <v-btn class="w-fit" color="blue"
-                                                    @click="positionDialogEdit = !positionDialogEdit">
-                                                        <v-icon icon="mdi-pencil"> </v-icon> 
-                                                    </v-btn>
-                                                    <!-- add new position -->
-                                                    <v-btn class="w-fit" color="green"
-                                                    @click="positionDialogAdd = !positionDialogAdd">
-                                                        <v-icon icon="mdi-plus"> </v-icon> 
-                                                    </v-btn>
-                                                    <!-- delete position -->
-                                                    <v-btn class="w-fit" color="red" 
-                                                    @click="deletePosition(selectedPosition,positionName)">
-                                                        <v-icon icon="mdi-delete"> </v-icon> 
+                                                <div class="w-full flex flex-row -mt-4 justify-between">
+                                                    <div class="w-full flex flex-row justify-start  gap-2">
+                                                        <!-- rename position -->
+                                                        <v-btn class="w-auto" color="blue"
+                                                        @click="positionDialogEdit = !positionDialogEdit">
+                                                            <v-icon icon="mdi-pencil"> </v-icon> เปลี่ยนชื่อ
+                                                        </v-btn>
+                                                        <!-- add new position -->
+                                                        <v-btn class="w-auto" color="green"
+                                                        @click="positionDialogAdd = !positionDialogAdd">
+                                                            <v-icon icon="mdi-plus"> </v-icon> เพิ่มตำแหน่ง
+                                                        </v-btn>
+                                                        <!-- delete position -->
+                                                        <v-btn class="w-fit" color="red" 
+                                                        @click="deletePosition(selectedPosition,positionName)">
+                                                            <v-icon icon="mdi-delete"> </v-icon> ลบ
+                                                        </v-btn>
+                                                    </div>
+                                                    <!-- add new person -->
+                                                    <v-btn class="w-fit" color="green" 
+                                                    @click="personDialogAdd = !personDialogAdd">
+                                                        <v-icon icon="mdi-account-plus" class="mr-2"> </v-icon> เพิ่มบุคลากร
                                                     </v-btn>
                                                 </div>
                                             </div>
                                         </div>
-                                        <v-divider></v-divider>
+                                        <v-divider class=" mt-2"></v-divider>
                                         <!-- table -->
                                         <div class="w-full h-full overflow-hidden">
                                             <v-table 
                                                 fixed-header
                                                 class="h-full overflow-auto"
                                             >
-                                                <thead >
+                                                <thead>
                                                     <tr>
+                                                        <th class="text-left">
+                                                        # 
+                                                        </th>
                                                         <th class="text-left">
                                                         ภาพ 
                                                         </th>
@@ -240,34 +356,31 @@ const position = ref([
                                                         เกี่ยวกับ
                                                         </th>
                                                         <th class="text-center w-fit">
-                                                            <!-- add new person -->
-                                                            <v-btn class="w-fit" color="green" 
-                                                            @click="personDialogAdd = !personDialogAdd">
-                                                                <v-icon icon="mdi-account"> </v-icon> เพิ่มบุคลากร
-                                                            </v-btn>
+                                                        จัดการ
                                                         </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr
+                                                    <tr class="hover:bg-gray-200"
                                                         v-for="(item , i) in position"
                                                         :key="item.name"
                                                     >
-                                                        <td>
-                                                            <img class="w-10 h-10 object-cover" 
+                                                        <td>{{ i+1 }}</td>
+                                                        <td class="max-w-min">
+                                                            <img class="w-14 h-14 object-cover" 
                                                             :src="item.url" alt="">    
                                                         </td>
-                                                        <td>{{ i+1 }}. {{ item.name }}</td>
+                                                        <td>{{ item.name }}</td>
                                                         <td>{{ item. position}}</td>
                                                         <td>
                                                             <div class="w-full flex flex-row gap-2 justify-center">
-                                                                <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
-                                                                    <v-icon icon="mdi-pencil"></v-icon>
+                                                                <div class="scale-100 hover:scale-[1.5] duration-300 hover:text-blue-600 cursor-pointer">
+                                                                    <v-icon icon="mdi-account-edit"></v-icon>
                                                                 </div>
-                                                                <div class="text-green-500 hover:text-green-600 cursor-pointer">
+                                                                <div class="scale-100 hover:scale-[1.5] duration-300 hover:text-green-600 cursor-pointer">
                                                                     <v-icon icon="mdi-folder-move-outline"></v-icon>
                                                                 </div>
-                                                                <div class="text-red-500 hover:text-red-600 cursor-pointer">
+                                                                <div class="scale-100 hover:scale-[1.5] duration-300 hover:text-red-600 cursor-pointer">
                                                                     <v-icon icon="mdi-delete"></v-icon>
                                                                 </div>
                                                             </div>
@@ -313,7 +426,6 @@ const position = ref([
                                                 <div class="relative w-[150px] h-[200px] flex flex-wrap justify-center mt-2" v-for="person of (position as any).persons">
                                                     <img class="object-cover rounded-lg w-[100px] h-[150px]" 
                                                     src="https://as2.ftcdn.net/v2/jpg/02/48/78/23/1000_F_248782375_WjBW5Bh0PSRQH9qflJ5wzsBJKVfX2OAP.jpg" alt="">
-                                                    
                                                     <div class="absolute top-0 right-0 flex flex-col">
                                                         <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
                                                             <v-icon icon="mdi-pencil"></v-icon>
@@ -415,41 +527,58 @@ const position = ref([
     <v-dialog
         persistent
         v-model="personDialogAdd"
-        width="600"
+        width="550"
         transition="dialog-bottom-transition"
     >
         <v-card class="pb-2">
             <div class="flex flex-col w-full ">
                 <div class="w-full py-3 flex justify-center text-xl mt-3 relative">
-                    เพิ่มบุคลากร
+                     เพิ่มบุคลากรในทำเนียบ
                 </div>
                 <div class="w-full px-6">
                     <div class="flex flex-col gap-2 w-full">
-                        <v-file-input
-                            :rules="_imgValid"
-                            accept="image/png, image/jpeg, image/bmp"
-                            placeholder="Pick an avatar"
-                            label="ภาพประจำตัว"
-                        ></v-file-input>
-                        <v-text-field
-                            v-model="personName"
-                            label="ชื่อเต็ม"
-                            hide-details
-                            required
-                        ></v-text-field>
-                        <v-text-field
-                            v-model="personDescript"
-                            label="เพิ่มเติม"
-                            hide-details
-                            required
-                        ></v-text-field>
-                    </div>
-
-                    <div class="w-full mt-2 flex justify-center items-center gap-2">
-                        <v-btn color="red">
-                            ยกเลิก
-                        </v-btn>
-                        <v-btn color="green" @click="personDialogAdd = !personDialogAdd"> ตกลง </v-btn>
+                        <v-form @submit.prevent="addNewPerson">
+                            <v-file-input
+                                :rules="_imgValid"
+                                accept="image/png , image/jpeg"
+                                placeholder="เลือกภาพประจำตัว"
+                                label="ภาพประจำตัว"
+                                v-model="personImage"
+                                class="mt-6 bg-gray-200"
+                                name="person_image"
+                                hide-details
+                            ></v-file-input>
+                            <v-text-field
+                                v-model="personName"
+                                label="ชื่อเต็ม"
+                                class="mt-2 bg-gray-200"
+                                hide-details
+                                bg-color=""
+                                required
+                            ></v-text-field>
+                            <v-text-field
+                                v-model="personDescript"
+                                label="เพิ่มเติม"
+                                class="mt-2 bg-gray-200"
+                                hide-details
+                            ></v-text-field>
+                            <v-select
+                                label="เลือกตำแหน่ง"
+                                :items="positionList"
+                                class="mt-2 bg-gray-200"
+                                item-title="pd_position_name"
+                                item-value="pd_position_id"
+                                v-model="selectedPosition"
+                                hide-details
+                            >
+                            </v-select>
+                            <div class="w-full mt-6 flex justify-center items-center gap-2">
+                                <v-btn color="red" @click="personDialogAdd = !personDialogAdd">
+                                    ยกเลิก
+                                </v-btn>
+                                <v-btn color="green" type="submit"> ตกลง </v-btn>
+                            </div>  
+                        </v-form>
                     </div>
                 </div>
             </div>

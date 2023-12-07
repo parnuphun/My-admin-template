@@ -6,8 +6,8 @@ const route = require('./route/route');
 const port = 3000;
 
 app.use(cors());
-app.use(express.json({ extended:false}));
-app.use(express.urlencoded({ extended:true}));
+app.use(express.json());
+app.use(express.urlencoded({ extended:true})); // req.body
 
 // static folder
 app.use(express.static(path.join(__dirname, "/public"))); 

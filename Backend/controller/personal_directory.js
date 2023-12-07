@@ -1,5 +1,5 @@
 const db = require('../config/database');
-
+const upload_person_directory = require('../services/upload_person_directory')
 // send all position 
 module.exports.allPosition = async (req,res)=> {
     try{
@@ -53,15 +53,15 @@ module.exports.addPosition = async (req,res) => {
                 // not first 
                 let order = result.length+1 
                 try{
-                    db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order)
-                        VALUES(?,?)`,[position_name,order], async (err, result) =>{ 
-                        if(err) return 'db err'
-                        res.json({
-                            status:true,
-                            status_code:200,
-                            msg:`เพิ่มตำแหน่ง ${position_name} สำเร็จ!`
-                        })
+                    db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order,pd_category_id)
+                    VALUES(?,?,?)`,[position_name,order,position_category], async (err, result) =>{ 
+                    if(err) throw err
+                    res.json({
+                        status:true,
+                        status_code:200,
+                        msg:`เพิ่มตำแหน่ง ${position_name} สำเร็จ!`
                     })
+                })
                 }catch(err){
                     console.error('something err');
                     res.json({
@@ -188,21 +188,24 @@ module.exports.RenamePosition = async (req,res) => {
 }
 
 // add new person 
-module.exports.addPersonDirec =async (req,res)=>{
+module.exports.addPerson = async (req,res)=>{
+    // console.log(req.body);
+    // console.log(req.file);
+    const image = await upload_person_directory(req , `${req.body.person_name}`)
     const name = req.body.person_name
-    const image = req.body.person_image
     const desc = req.body.person_desc
     const position = req.body.person_position_id
     const category = req.body.person_category_id
 
     try{
-        db.query(`INSERT INTO personal_directory_persons(
-            pd_person_image,
-            pd_person_name,
-            pd_person_descript,
-            pd_position_id,
-            pd_category_id,)
-            VALUES(?,?,?,?,?)`,
+        db.query(`
+                INSERT INTO personal_directory_persons(
+                    pd_person_image,
+                    pd_person_name,
+                    pd_person_descript,
+                    pd_position_id,
+                    pd_category_id)
+                VALUES(?,?,?,?,?)`,
             [
                 image,
                 name,
@@ -211,6 +214,7 @@ module.exports.addPersonDirec =async (req,res)=>{
                 category
             ],(err,result)=>{
                  if(err) throw err
+                 console.log('เพิ่มบุคลากรสำเร็จ');
                  res.send({
                     status_code:200,
                     status:true,
@@ -218,6 +222,28 @@ module.exports.addPersonDirec =async (req,res)=>{
                  })
             })
 
+    }catch(err){
+        console.error('something err');
+        res.json({
+            status:false,
+            msg:'err'
+        })
+    }
+}
+
+// รายชื่อบุคลากร
+module.exports.getPersonDirectoryOne = async (req,res) =>{
+    const category_id = req.body.category_id
+    try{
+        db.query(`SELECT * FROM personal_directory_persons WHERE pd_category_id = ?` , [category_id] ,(err,result)=>{
+            if(err) throw err
+            res.json({
+                status_code:200,
+                status:true,
+                msg:'รายชื่อบุคลากร',
+                person_data:result
+            })
+        })
     }catch(err){
         console.error('something err');
         res.json({

@@ -3,6 +3,7 @@ const route = express.Router()
 const login_c = require('../controller/login')
 const persons_pd_c = require('../controller/personal_directory')
 
+
 // login
 route.post('/login',login_c.login)
 route.post('/adminRegister',login_c.adminRegister)
@@ -13,6 +14,9 @@ route.post('/addPosition',persons_pd_c.addPosition)
 route.post('/deletePosition',persons_pd_c.deletePosition)
 route.get('/getPersonalOne',persons_pd_c.getPersonalOne)
 route.post('/RenamePosition',persons_pd_c.RenamePosition)
-route.post('/addNewPersonDirectory',persons_pd_c,persons_pd_c.addNewPersonDirectory)
+
+const upload = require('../services/upload')
+route.post('/addPerson',upload.single('person_image'),persons_pd_c.addPerson)
+route.post('/getPersonDirectoryOne',persons_pd_c.getPersonDirectoryOne)
 
 module.exports = route;
