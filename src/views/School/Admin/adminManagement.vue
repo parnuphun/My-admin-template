@@ -124,13 +124,13 @@ const desserts = ref<Array<any>>([
             <!-- content -->
             <div class="flex flex-col w-full ">
                 <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
-                    dialog example
+                    เพิ่มบุคลากร
                     <div @click="adminDialogAdd = !adminDialogAdd"
                         class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
                         <v-icon icon="mdi-close"></v-icon>
                     </div>
                 </div>
-                <div class="w-full px-6">
+                <div class="w-full px-6 pb-4">
                     <div class="flex flex-row gap-2 w-full">
                         <tb> <v-text-field label="ภาพ"></v-text-field>
                             <v-text-field label="ชื่อผู้ใช้"></v-text-field>
@@ -139,14 +139,13 @@ const desserts = ref<Array<any>>([
                             <v-text-field label="อีเมลล์"></v-text-field>
                             <v-text-field label="เบอร์โทร"></v-text-field>
                         </tb>
-
-                        <div class="้px-3 w-[100px] ">
+                    </div>
+                    <div class="้px-3 w-[100px] ">
                             <div class="w-full h-[55px] rounded-lg text-xl
                             bg-blue-500 hover:bg-blue-600 text-white flex justify-center items-center cursor-pointer">
                                 ok
                             </div>
                         </div>
-                    </div>
                 </div>
             </div>
         </v-card>
