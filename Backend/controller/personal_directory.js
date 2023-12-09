@@ -1,11 +1,13 @@
 const db = require('../config/database');
 const upload_person_directory = require('../services/upload_person_directory')
+const delete_image = require('../services/delete_image')
 require('dotenv').config();
 
 // send all position 
-module.exports.allPosition = async (req,res)=> {
+module.exports.getAllPositionList = async (req,res)=> {
+    const category_id = req.body.category_id
     try{
-        db.query("SELECT * FROM personal_directory_position",(err,result)=>{
+        db.query("SELECT * FROM personal_directory_position WHERE pd_category_id = ?",[category_id],(err,result)=>{
             if(err) return 'db err'
             res.json({
                 status:true,
@@ -85,6 +87,7 @@ module.exports.addPosition = async (req,res) => {
     }
 }
 
+// delete position
 module.exports.deletePosition = async (req,res) =>{
     const position_id = req.body.position_id
     try{
@@ -128,7 +131,7 @@ module.exports.deletePosition = async (req,res) =>{
     }
 }
 
-
+// rename position 
 module.exports.RenamePosition = async (req,res) => {
     const position_name = req.body.position_name 
     const position_id = req.body.position_id
@@ -198,7 +201,37 @@ module.exports.addPerson = async (req,res)=>{
     }
 }
 
-// รายชื่อบุคลากร ****
+// delete person
+module.exports.deletePerson = async (req,res) =>{
+    const person_id = req.body.person_id
+    const person_image = req.body.person_image
+
+    db.query(`DELETE FROM personal_directory_persons WHERE pd_person_id = ?` ,
+    [person_id], async(err,result)=>{
+        let delete_status = await delete_image(person_image,'persons_image')
+        if(delete_status.status === true){
+            res.json({
+                status_code:200,
+                status:true,
+                msg: delete_status.msg
+            })
+        }else if(delete_status.status === false){
+            res.json({
+                status_code:500,
+                status:true,
+                msg: delete_status.msg
+            })
+        }else{
+            res.json({
+                status_code:500,
+                status:false,
+                msg:'null'
+            })
+        }
+    })
+}
+
+// get all persons รายชื่อบุคลากร ****
 module.exports.getPersonDirectoryOne = async (req ,res) => {
     let position_no 
     let position_detail  
@@ -206,7 +239,7 @@ module.exports.getPersonDirectoryOne = async (req ,res) => {
     let dataTable = []
 
     const category_id = req.body.category_id
-    console.log('category => ',category_id);
+    console.log('get all person by category ',category_id);
     db.query('SELECT * FROM personal_directory_position WHERE pd_category_id = ?',[category_id], async (err,result)=>{
         if(err) return 'db err'
         position_no = result.length
@@ -263,23 +296,60 @@ module.exports.getPersonDirectoryOne = async (req ,res) => {
 
 }
 
-// module.exports.getPersonDirectoryOne = async (req,res) =>{
-//     const category_id = req.body.category_id
-//     try{
-//         db.query(`SELECT * FROM personal_directory_persons WHERE pd_category_id = ?` , [category_id] ,(err,result)=>{
-//             if(err) throw err
-//             res.json({
-//                 status_code:200,
-//                 status:true,
-//                 msg:'รายชื่อบุคลากร',
-//                 person_data:result
-//             })
-//         })
-//     }catch(err){
-//         console.error('something err');
-//         res.json({
-//             status:false,
-//             msg:'err'
-//         })
-//     }
-// }
+// edit person
+module.exports.editPerson = async (req,res) => {
+    
+    const person_name = req.body.person_name
+    const person_desc = req.body.person_desc  
+    const person_position_id = req.body.person_position_id
+    const person_id = req.body.person_id
+    const person_old_image = req.body.person_old_image
+
+    let person_new_image
+    if(req.body.person_image === 'no_image_update'){
+        person_new_image = person_old_image
+    }else{
+        person_new_image =  await upload_person_directory(req , `${req.body.person_name}`)
+    }
+
+    console.log('EDIT PERSONS HERE !');
+    console.log(req.body);
+    console.log('new image ',person_new_image);
+    try{
+        db.query(`
+                UPDATE personal_directory_persons
+                SET 
+                    pd_person_image = ? ,
+                    pd_person_name = ? ,
+                    pd_person_descript = ? ,
+                    pd_position_id = ?
+                WHERE pd_person_id = ?
+                `,
+            [
+                person_new_image,
+                person_name,
+                person_desc,
+                person_position_id,
+                person_id
+            ],async (err,result)=>{
+                 if(err) throw err
+                 if(req.body.person_image !== 'no_image_update') {  
+                    console.log(req.body.person_image !== 'no_image_upload' , 'delete');
+                    await delete_image(person_old_image , 'persons_image')
+                 }
+                 res.send({
+                    status_code:200,
+                    status:true,
+                    image:process.env.PERSONS_DIARECTORY_IMAGE+person_new_image,
+                    msg:'อัพเดตสำเร็จ'
+                 })
+            })
+
+    }catch(err){
+        console.error('something err');
+        res.json({
+            status:false,
+            msg:'err'
+        })
+    }
+}
