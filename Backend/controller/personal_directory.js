@@ -210,18 +210,14 @@ module.exports.deletePerson = async (req,res) =>{
     [person_id], async(err,result)=>{
         let delete_status = await delete_image(person_image,'persons_image')
         if(delete_status.status === true){
+            console.log('DELETE IMAGE MESSAGE : '+ delete_status.msg);
             res.json({
                 status_code:200,
                 status:true,
-                msg: delete_status.msg
-            })
-        }else if(delete_status.status === false){
-            res.json({
-                status_code:500,
-                status:true,
-                msg: delete_status.msg
+                msg: 'ลบสำเร็จ'
             })
         }else{
+            console.log('DELETE IMAGE MESSAGE : '+ delete_status.msg);
             res.json({
                 status_code:500,
                 status:false,
