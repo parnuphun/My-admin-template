@@ -564,7 +564,7 @@ function updatePersonData(){
                                         <div class="h-full w-full flex flex-col justify-center items-center" 
                                             v-for="position in personsList">
                                             <div class="w-full text-center text-lg py-4 flex flex-row justify-center 
-                                            border-[1px] border-black mb-3">
+                                            border-[1px] border-gray-400 mb-3">
                                                 <p class=" " >
                                                     {{(position as any).position_name}} 
                                                 </p>
