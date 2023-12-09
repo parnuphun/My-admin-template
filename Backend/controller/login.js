@@ -1,6 +1,8 @@
 const db = require('../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
 
 function createToken(data,rememberMe){
     return new Promise((resolve,reject)=>{

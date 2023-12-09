@@ -6,17 +6,18 @@ const route = require('./route/route');
 const port = 3000;
 
 app.use(cors());
-app.use(express.json());
 app.use(express.urlencoded({ extended:true})); // req.body
+app.use(express.json());
+app.use(route);
 
 // static folder
 app.use(express.static(path.join(__dirname, "/public"))); 
 
-app.use(route);
 
 app.get('/' ,(req,res)=>{
     res.send('welcome to namphon school api !!');
 })
+
 
 app.listen(port , ()=>{
     console.log(`Server is runnig at port${port}`);

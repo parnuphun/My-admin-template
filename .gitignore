@@ -1,3 +1,7 @@
+#backend
+backend/public/persons_image/*
+!backend/public/persons_image/.gitkeep
+
 # Logs
 logs
 *.log
