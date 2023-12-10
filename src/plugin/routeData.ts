@@ -19,39 +19,25 @@ export interface SubNavigationItem extends NavigationItem {
 
 // icon from material design dont need mid- prefix
 export const navigationMenu:NavigationItem[] = [
-    {
-        id: 'dashboard' ,
-        title : 'หน้าหลัก' ,
-        icon : 'mdi-monitor-dashboard' ,
-        link : '/admin/dashBoard' ,
-        permission : 'ทุกคน' ,
-    },
-    {
-        id: 'annoucement_important' ,
-        title : 'ประกาศประชาสัมพันธ์' ,
-        icon : 'mdi-information' ,
-        link : '/admin/annoucement' ,
-        permission : 'ทุกคน' ,
-    },
+    // {
+    //     id: 'dashboard' ,
+    //     title : 'หน้าหลัก' ,
+    //     icon : 'mdi-monitor-dashboard' ,
+    //     link : '/admin/dashBoard' ,
+    //     permission : 'ทุกคน' ,
+    // },
+    // {
+    //     id: 'annoucement_important' ,
+    //     title : 'ประกาศประชาสัมพันธ์' ,
+    //     icon : 'mdi-information' ,
+    //     link : '/admin/annoucement' ,
+    //     permission : 'ทุกคน' ,
+    // },
     {
         id: 'news_blog' ,
         title : 'ข่าวสาร' ,
         icon : 'mdi-newspaper' ,
         link : '/admin/news' ,
-        permission : 'ทุกคน' ,
-    },
-    {
-        id: 'student_schedule' ,
-        title : 'ตารางเรียน' ,
-        icon : 'mdi-table' ,
-        link : '/admin/studentSchedule' ,
-        permission : 'ทุกคน' ,
-    },
-    {
-        id: 'person_position' ,
-        title : 'ทำเนียบบุคลากร' ,
-        icon : 'mdi-account-box-multiple-outline' ,
-        link : '/admin/personalDirectory' ,
         permission : 'ทุกคน' ,
     },
     {
@@ -62,10 +48,24 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
+        id: 'person_position' ,
+        title : 'ทำเนียบบุคลากร' ,
+        icon : 'mdi-account-box-multiple-outline' ,
+        link : '/admin/personalDirectory' ,
+        permission : 'ทุกคน' ,
+    },
+    {
         id: 'files' ,
         title : 'เอกสาร' ,
         icon : 'mdi-file' ,
         link : '/admin/files' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'student_schedule' ,
+        title : 'ตารางเรียน' ,
+        icon : 'mdi-table' ,
+        link : '/admin/studentSchedule' ,
         permission : 'ทุกคน' ,
     },
     {
@@ -75,13 +75,13 @@ export const navigationMenu:NavigationItem[] = [
         link : '/admin/adminManagement' ,
         permission : 'ทุกคน' ,
     },
-    {
-        id: 'person_management' ,
-        title : 'test ui' ,
-        icon : 'mdi-account' ,
-        link : '/testui' ,
-        permission : 'ทุกคน' ,
-    },
+    // {
+    //     id: 'person_management' ,
+    //     title : 'test ui' ,
+    //     icon : 'mdi-account' ,
+    //     link : '/testui' ,
+    //     permission : 'ทุกคน' ,
+    // },
 
     // {
     //     id: 'test_Component' ,
