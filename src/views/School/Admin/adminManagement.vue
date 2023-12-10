@@ -206,6 +206,7 @@ const desserts = ref<Array<any>>([
                 </div>
                 <div class="w-full px-6 pb-4">
                     <div class="flex flex-col gap-2 w-full mt-4">
+
                         <v-file-input
                                 :rules="_imgValid"
                                 accept="image/*"
@@ -218,6 +219,13 @@ const desserts = ref<Array<any>>([
                                 variant="outlined"
                                 prepend-icon=""
                             ></v-file-input>
+
+                        <v-text-field class="relative">
+                            <label class="absolute top-0 left-0 mt-2 ml-2">
+                                <img src="" alt="ภาพ" class="w-4 h-4">
+                            </label>
+                        </v-text-field>
+
                         <v-text-field label="ชื่อผู้ใช้" width="150"></v-text-field>
                         <v-text-field label="รหัส" width="100"></v-text-field>
                         <v-text-field label="ชื่อ-นามสกุล" width="250"></v-text-field>

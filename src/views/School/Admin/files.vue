@@ -191,7 +191,7 @@ const files = ref<Array<filesResponse>>([
     <AdminNavigationBar>
         <div class="flex flex-col w-full h-full border-gray-300 border-2 ">
             <div class="w-full h-full flex flex-col overflow-hidden">
-                <div class="w-full h-[75x] min-[75px]: border-b-2 border-gray-300 bg-white
+                <div class="w-full h-[75px] min-[75px]: border-b-2 border-gray-300 bg-white
                  flex justify-between items-center px-2 py-3">
 
                  <div class="w-full h-full flex flex-row justify-start items-center gap-2">

@@ -4,7 +4,14 @@ import NampongFooter from '../../../components/layout/School/NampongFooter.vue';
 
 import { ref } from 'vue';
 
-const breadcrumb = ref<Array<object>>([
+
+interface BreadcrumbItem {
+    title: string;
+    disabled: boolean;
+    href: string;
+}
+
+const breadcrumb = ref<BreadcrumbItem[]>([
     {
         title: 'หน้าแรก',
         disabled: false,
