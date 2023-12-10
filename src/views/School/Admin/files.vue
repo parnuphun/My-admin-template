@@ -193,7 +193,7 @@ const files = ref<Array<filesResponse>>([
             <div class="w-full h-full flex flex-col overflow-hidden">
                 <div class="w-full h-[75x] min-[75px]: border-b-2 border-gray-300 bg-white
                  flex justify-between items-center px-2 py-3">
-                    
+
                  <div class="w-full h-full flex flex-row justify-start items-center gap-2">
                         <div class="w-2/3 ">
                             <v-text-field
@@ -250,7 +250,7 @@ const files = ref<Array<filesResponse>>([
                                 :key="item.file_name"
                             >
                                 <td> {{ i+1 }} </td>
-                                <td> 
+                                <td>
                                     <p class="line-clamp-1">
                                         {{ item.file_name }}
                                     </p>
@@ -259,11 +259,11 @@ const files = ref<Array<filesResponse>>([
                                 <td class="text-center"> {{ item.file_date }} </td>
                                 <td class="flex justify-center">
                                     <div class="w-fit flex justify-center items-center gap-1">
-                                        <v-switch  
+                                        <v-switch
                                             v-model="item.file_pin"
-                                            density="compact" 
-                                            inset 
-                                            hide-details 
+                                            density="compact"
+                                            inset
+                                            hide-details
                                             color="green">
                                         </v-switch>
                                     </div>
@@ -296,8 +296,8 @@ const files = ref<Array<filesResponse>>([
                         </tbody>
                     </v-table>
                  </div>
-                 
-            </div>    
+
+            </div>
         </div>
     </AdminNavigationBar>
 
@@ -338,13 +338,13 @@ const files = ref<Array<filesResponse>>([
                                 required
                             ></v-text-field>
                             <div class="w-full mt-6 flex justify-center items-center gap-2">
-                                <v-btn color="red" 
+                                <v-btn color="red"
                                     @click="fileUploadDialog = !fileUploadDialog" >
                                     ยกเลิก
                                 </v-btn>
-                                <v-btn color="green" type="submit"  
+                                <v-btn color="green" type="submit"
                                 > เพิ่ม </v-btn>
-                            </div>  
+                            </div>
                         </v-form>
                     </div>
                 </div>

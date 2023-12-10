@@ -48,7 +48,7 @@ const photoGallery = ref<Array<any>>([
     {
         gallery_name: 'user01',
         gallery_date: 10 / 12 / 2566,
-        gallery_link: 'ww',
+        gallery_link: 'wwwww',
     },
 
 ],)

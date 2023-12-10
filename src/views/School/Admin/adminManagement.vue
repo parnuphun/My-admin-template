@@ -38,7 +38,7 @@ const desserts = ref<Array<any>>([
         password: 356,
     },
     {
-        user: 'Jelly bean',
+        user: 'Jelly beann',
         password: 375,
     },
     {
