@@ -22,73 +22,64 @@
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity01.jpg'
         },
         {
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity02.jpg'
         },
         {
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity03.jpg'
         },
         {
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity04.jpg'
         },
         {
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity05.jpg'
         },
         {
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity06.jpg'
         },
         {
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity07.jpg'
         },
         {
             text:`วันที่ ๒๓ พฤศจิกายน ๒๕๖๖
 นายเทพนคร   นามวงษ์  ผู้อำนวยการสถานศึกษา โรงเรียนเทศบาลน้ำพองภูริพัฒน์ เป็นประธานพิธีวางพวงมาลาถวายราชสดุดี และถวายบังคมพระราชานุสาวรีย์ พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว เนื่องในวันสมเด็จพระมหาธีรราชเจ้า หรือวันคล้ายวันสวรรคตของพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว ซึ่งตรงกับวันที่ ๒๕ พฤศจิกายน ของทุกปี 
 การจัดกิจกรรมในครั้งนี้มีผู้กำกับลูกเสือ และลูกเสือเนตรนารีโรงเรียนเทศบาลน้ำพองภูริพัฒน์เข้าร่วมพิธี ณ ลานพระบรมราชานุสาวรีย์พระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว โรงเรียนเทศบาลน้ำพองภูริพัฒน์`,
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981'
+            url:'/images/namphon_mockup/activity/activity08.jpg'
         },
-         
     ]
     )
 
     const bannerPin = ref<Array<Object>>([
         {
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
+            url:'/images/namphon_mockup/news/ann02.jpg',
         },
         {
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
+            url:'/images/namphon_mockup/news/ann01.jpg',
         },
         {
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
+            url:'/images/namphon_mockup/news/ann03.jpg',
         },
-        {
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
-        },
-        {
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
-        },
-        {
-            url:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
-        },
+        
          
     ])
 
@@ -98,32 +89,33 @@
             date:'26 พฤศจิกายน 2566',
             description:`โรงเรียนเทศบาลน้ำพองภูริพัฒน์ 
 #ขอเชิญชม การแสดงวงโปงลางอีสานภูริพัฒน์ศิลป์ โรงเรียนเทศบาลน้ำพองภูริพัฒน์ ในงานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง  ณ  ท่าเทียบเรือหนองหวาย ในวันที่ 27 พฤศจิกายน 2566`,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
+            src:'/images/namphon_mockup/news/news01.jpg',
         },
         {
             title:'งานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง ',
             date:'26 พฤศจิกายน 2566',
             description:`โรงเรียนเทศบาลน้ำพองภูริพัฒน์ 
 #ขอเชิญชม การแสดงวงโปงลางอีสานภูริพัฒน์ศิลป์ โรงเรียนเทศบาลน้ำพองภูริพัฒน์ ในงานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง  ณ  ท่าเทียบเรือหนองหวาย ในวันที่ 27 พฤศจิกายน 2566`,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
+            src:'/images/namphon_mockup/news/news04.jpg',
         },
         {
             title:'งานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง ',
             date:'26 พฤศจิกายน 2566',
             description:`โรงเรียนเทศบาลน้ำพองภูริพัฒน์ 
 #ขอเชิญชม การแสดงวงโปงลางอีสานภูริพัฒน์ศิลป์ โรงเรียนเทศบาลน้ำพองภูริพัฒน์ ในงานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง  ณ  ท่าเทียบเรือหนองหวาย ในวันที่ 27 พฤศจิกายน 2566`,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
+            src:'/images/namphon_mockup/news/news02.jpg',
         },
         {
             title:'งานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง ',
             date:'26 พฤศจิกายน 2566',
             description:`โรงเรียนเทศบาลน้ำพองภูริพัฒน์ 
 #ขอเชิญชม การแสดงวงโปงลางอีสานภูริพัฒน์ศิลป์ โรงเรียนเทศบาลน้ำพองภูริพัฒน์ ในงานเทศกาลลอยกระทงเทศบาลตำบลน้ำพอง  ณ  ท่าเทียบเรือหนองหวาย ในวันที่ 27 พฤศจิกายน 2566`,
-            src:'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981',
+            src:'/images/namphon_mockup/news/news03.jpg',
         },
+        
     ])
 
-    const bannerimg = ref<String>('https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/359126743_767479011836701_6209240523584219004_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFuk1W62vTaSwE9MlblRf4IUJW-gXoWk8lQlb6BehaTyZRlxeJcruJAp9KhQby6dJlFaM_pBWKKR4jlwYfgOMqx&_nc_ohc=5e2Uc0Wvzi0AX--NPmB&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDOj9yMWi6MYaTo7kNniHp8s0NLgnz3N39SxfEQ2noMfw&oe=656EF981')
+    const bannerimg = '/images/namphon_mockup/banner01.jpg'
 
     const menu = ref<Array<Object>>([
         {

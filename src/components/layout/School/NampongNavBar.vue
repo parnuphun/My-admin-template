@@ -37,7 +37,7 @@ function menu(e:Event){
         <div class="flex justify-between items-center h-[90px] bg-pink-500 md:bg-white">
             <div class="flex flex-row items-center justify-center  px-6">
                 <div class="w-[80px] h-[80px] flex-none md:block hidden cursor-pointer" @click="getCurrentPath('/')">
-                    <img class="w-[80px] h-[80px] object-contain" src="/iamges/logo/logo_โรงเรียนเทศบาลน้ำพองภูริพัฒน์-removebg-preview.png" alt="">
+                    <img class="w-[80px] h-[80px] object-contain" src="/images/logo/logo_โรงเรียนเทศบาลน้ำพองภูริพัฒน์-removebg-preview.png" alt="">
                 </div>
                 <div class="w-full h-full flex flex-col justify-start items-center md:px-7 cursor-pointer" @click="getCurrentPath('/')">
                     <div class="w-full h-full flex md:justify-start md:items-end justify-center">

@@ -208,8 +208,8 @@ const files = ref<Array<filesResponse>>([
                             ></v-text-field>
                         </div>
                         <div class="flex h-full items-start justify-center ">
-                            <v-btn class="h-full" color="" size="large" @click="fileUploadDialog = !fileUploadDialog">
-                                <p class="text-green-500 text-md" >
+                            <v-btn class="h-full" color="pink" size="large" @click="fileUploadDialog = !fileUploadDialog">
+                                <p class="text-md" >
                                     <v-icon  icon="mdi-file"></v-icon>     เพิ่มไฟล์
                                 </p>
                             </v-btn>

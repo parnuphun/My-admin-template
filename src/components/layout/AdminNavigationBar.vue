@@ -168,7 +168,7 @@ function isGroupOpen() {
                                 @click="getCurrentPath(navItem.link!)" density="comfortable" :value="navItem.id"
                                 class="text-md my-1" active-color="" :prepend-icon="navItem.icon"
                                 :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
-                                rounded="">
+                                rounded="" color="pink">
                                 <!-- <v-icon :icon="navItem.icon" start></v-icon>{{navItem.title}} -->
                             </v-list-item>
                             <v-list-group v-else :value="navItem.id">

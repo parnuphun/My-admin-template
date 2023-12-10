@@ -10,143 +10,193 @@ const dialog = ref(false)
 const adminDialogAdd = ref(false)
 const adminEdit = ref(false)
 const adminMoveoutline = ref(false)
-const adminDelete = ref(false)
 const _imgValid = [(v:any)=>imageValidate(v)]
 const personImage = ref()
-const desserts = ref<Array<any>>([
-    {
-        user: 'user01',
-        password: 12345678910,
-        fullname: 'sahassawat meekaew',
-        email: 'sahassawatneszz@gmail.com',
-        phonenumber: '0000000',
-    },
-    {
-        user: 'Ice cream sandwich',
-        password: 237,
-    },
-    {
-        user: 'Eclair',
-        password: 262,
-    },
-    {
-        user: 'Cupcake',
-        password: 305,
-    },
-    {
-        user: 'Gingerbread',
-        password: 356,
-    },
-    {
-        user: 'Jelly beann',
-        password: 375,
-    },
-    {
-        user: 'Lollipop',
-        password: 392,
-    },
-    {
-        user: 'Jelly bean',
-        password: 375,
-    },
-    {
-        user: 'Jelly bean',
-        password: 375,
-    },
-    {
-        user: 'Jelly bean',
-        password: 375,
-    },
-    {
-        user: 'Jelly bean',
-        password: 375,
-    },
 
+interface adminsType {
+    admin_id:number,
+    admin_image:string,
+    admin_username:string,
+    admin_fullname:string,
+    admin_email:string,
+    admin_phone:string
+}
 
-
+const admins = ref<Array<adminsType>>([
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
+    {
+        admin_id: 1,
+        admin_image: '/images/avartars/avartar fuse template/male-04.jpg',
+        admin_username: 'admin0998',
+        admin_fullname: 'asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas asdasddasdasdas ',
+        admin_email: 'asdasddasdasdas@rmuti.ac.th',
+        admin_phone: '098-106-5122',
+    },
 ],)
 </script>
 
 <template>
     <AdminNavigationBar>
+        <div class="flex flex-col w-full h-full border-gray-300 border-2 ">
+            <div class="w-full h-full flex flex-col overflow-hidden">
+                <div class="w-full h-[75px] min-[75px]: border-b-2 border-gray-300 bg-white
+                 flex justify-between items-center px-2 py-3 ">
 
-
-        <div class="flex justify-between mb-4 ml-4 mr-4">
-            <div class="text-2xl">
-                ผู้ดูแลระบบ
-            </div>
-
-            <v-btn @click="adminDialogAdd = !adminDialogAdd" color="pink">
-                <v-icon icon="mdi-account"> </v-icon> เพิ่มบุคลากร
-            </v-btn>
-        </div>
-
-        <div class="w-full h-96 overflow-auto border-2 border-gray-300">
-            <div>
-
-                <v-table>
-                    <thead>
-                        <tr>
-                            <td class="text-left font-bold text-xl">
-                                ภาพ
-                            </td>
-                            <td class="text-left font-bold text-xl">
-                                ชื่อผู้ใช้
-                            </td>
-                            <td class="text-left font-bold text-xl">
-                                รหัสผ่าน
-                            </td>
-                            <td class="text-left font-bold text-xl">
-                                ชื่อ-นามสกุล
-                            </td>
-                            <td class="text-left font-bold text-xl">
-                                อีเมลล์
-                            </td>
-                            <td class="text-left font-bold text-xl">
-                                เบอร์โทร
-                            </td>
-                            <td class="text-center w-fit">
-
-                            </td>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr v-for="(item, i) in desserts" :key="item.name">
-                            <td>
-                                <img class="w-10 h-10 object-cover" :src="item.url" alt="">
-                            </td>
-                            <td>{{ item.user }}</td>
-                            <td>{{ item.password }}</td>
-                            <td>{{ item.fullname }}</td>
-                            <td>{{ item.email }}</td>
-                            <td>{{ item.phonenumber }}</td>
-                            <td>
-                                <div class="w-full flex flex-row gap-2 justify-center">
-                                    <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
-                                        <v-btn @click="adminEdit = !adminEdit">
-                                            <v-icon
-                                                class="fill-current text-blue-500 hover:text-blue-600">mdi-pencil</v-icon>
+                 <div class="w-full h-full flex flex-row justify-start items-center gap-2 ">
+                        <div class="w-2/3 ">
+                            <v-text-field
+                                label="ค้นหา"
+                                class=""
+                                hide-details
+                                variant="outlined"
+                                prepend-inner-icon="mdi-magnify"
+                                bg-color=""
+                                density="comfortable"
+                                required
+                            ></v-text-field>
+                        </div>
+                        <div class="flex h-full items-start justify-center ">
+                            <v-btn class="h-full" color="pink" size="large" >
+                                <p class="text-md" >
+                                    <v-icon  icon="mdi-account-plus"></v-icon> เพิ่มผู้ใช้งาน
+                                </p>
+                            </v-btn>
+                        </div>
+                    </div>
+                    <div class="w-fit">
+                        <v-pagination density="comfortable" :length="4"></v-pagination>
+                    </div>
+                </div>
+                <!-- table -->
+                <div class="bg-white w-full h-full pb-4 border-b-2  ">
+                    <v-table class="h-[88%] overflow-x-hidden" fixed-header>
+                        <thead>
+                            <tr>
+                                <th class="text-left w-10">
+                                    #
+                                </th>
+                                <th class="text-center w-[100px]">
+                                    รูปภาพ
+                                </th>
+                                <th class="text-left w-auto">
+                                    ชื่อ
+                                </th>
+                                <th class="text-left w-80 ">
+                                    อีเมล
+                                </th>
+                                <th class="text-center w-40 ">
+                                    เบอร์โทร
+                                </th>
+                                <th class="text-center w-44">
+                                    จัดการ
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-300" v-for="(item, i) in admins"
+                                :key="item.admin_id">
+                                <td> {{ i + 1 }} </td>
+                                <td class="py-1">
+                                    <div class="flex w-full h-full justify-center">
+                                        <img :src="item.admin_image"
+                                            class="object-cover h-[70px] w-[70px] rounded-full" alt="">
+                                    </div>
+                                </td>
+                                <td>
+                                    <p class="line-clamp-1">
+                                        {{ item.admin_fullname }}
+                                    </p>
+                                </td>
+                                <td class="text-left">
+                                    <p class="line-clamp-1">
+                                        {{ item.admin_email }} 
+                                    </p>
+                                </td>
+                                <td class="text-center"> {{ item.admin_phone }} </td>
+                                <td>
+                                    <div class="w-fit flex flex-row justify-end items-center gap-1">
+                                        <v-btn>
+                                            <p class="text-blue-500">
+                                                <v-icon icon="mdi-pencil"></v-icon>
+                                            </p>
+                                        </v-btn>
+                                        <v-btn>
+                                            <p class="text-red-500">
+                                                <v-icon icon="mdi-delete"></v-icon>
+                                            </p>
                                         </v-btn>
                                     </div>
-
-                                    <div class="text-red-500 hover:text-red-600 cursor-pointer">
-                                        <v-btn @click="adminDelete = !adminDelete">
-                                            <v-icon class="fill-current text-red-500 hover:text-red-600">mdi-delete</v-icon>
-                                        </v-btn>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-
-                    </tbody>
-
-                </v-table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </v-table>
+                 </div>
 
             </div>
         </div>
-
-        <v-pagination :length="4"></v-pagination>
     </AdminNavigationBar>
 
     <!-- Add -->
@@ -243,30 +293,5 @@ const desserts = ref<Array<any>>([
             </div>
         </v-card>
     </v-dialog>
-
-
-
-    <!-- delete -->
-    <v-dialog class="mx-auto" v-model="adminDelete" width="800" transition="dialog-bottom-transition">
-        <v-card class=" pb-15">
-            <!-- content -->
-            <div class=" flex flex-col w-full ">
-                <div class="w-full py-6 flex justify-center text-2xl mt-4 mb-2 relative">
-                    ต้องการลบ
-                    <div @click="adminDelete = !adminDelete"
-                        class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
-                        <v-icon icon="mdi-close"></v-icon>
-                    </div>
-                </div>
-                <div class="mx-auto   w-[100px] ">
-
-                    <div
-                        class=" flex items-center justify-center px-3 w-[100px] h-[55px] rounded-lg text-xl bg-blue-500 hover:bg-blue-600 text-white cursor-pointer">
-                        ลบ
-                    </div>
-                </div>
-            </div>
-
-        </v-card>
-    </v-dialog>
+ 
 </template>

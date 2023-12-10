@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router' ;
+
+function nextPage(path:string) {
+    router_s.push(path)
+}
+
+const router_s = useRouter();
 </script>
 
 <template>
@@ -17,7 +24,8 @@
                 <p class="w-1/2 text-center cursor-pointer hover:text-gray-300">ตารางเรียน</p>
                 <p class="w-1/2 text-center cursor-pointer hover:text-gray-300">เกี่ยวกับ</p>
                 <p class="w-1/2 text-center cursor-pointer hover:text-gray-300">ติดต่อ</p>
-                <p class="w-1/2 text-center cursor-pointer hover:text-gray-300"> ผู้ดูแลระบบ </p>
+                <p class="w-1/2 text-center cursor-pointer hover:text-gray-300"
+                @click="nextPage('/login')"> ผู้ดูแลระบบ </p>
             </div>
         </div>
         <div class="less:w-full sm:w-1/3 xl:w-1/3 flex flex-col items-start pt-6 px-2 gap-2">

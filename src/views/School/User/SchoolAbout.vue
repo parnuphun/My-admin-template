@@ -47,7 +47,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                         </p>
                         <v-divider></v-divider>
                         <div class="md:px-16 lg:px-20 sm:px-10 less:px-2 xl:px-20 mt-6 mb-4">
-                            <img class="w-full h-[350px] rounded-xl object-cover" src="https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/305080963_598372432080694_4418128457966245529_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=9534ce&_nc_eui2=AeFlOlKISoxHGEtEixh8iTsL2guWTnFxDrraC5ZOcXEOuqMwwrQM3XDAmLl7JQb4DyifrYDNnDqKHA_-RkhnYVW5&_nc_ohc=DR01omil4wYAX9ACQku&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfDt0VLhEKWVk8YnEJflp0iVe2j9WnlvJxpWVLZDe_W9Ig&oe=65705D7D" alt="">
+                            <img class="w-full h-[350px] rounded-xl object-cover" src="/images/namphon_mockup/about01.jpg" alt="">
                             <p class="mt-2">
                                 โรงเรียนเทศบาลน้ำพองภูริพัฒน์ 
                                 สังกัดฝ่ายบริหารการศึกษา สำนักปลัดเทศบาล  เทศบาลตำบลน้ำพอง

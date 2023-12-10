@@ -66,7 +66,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                             <v-divider></v-divider>
                             <div class="text-2xl text-center flex justify-center items-center w-full h-auto p-6">
                                 <div class="flex flex-col justify-center items-center w-full">
-                                    <img src="../../../../public/iamges/namphon images/namphong_school_map.png" alt="" class="rounded-sm">
+                                    <img src="/images/namphon_mockup/namphong_school_map.png" alt="" class="rounded-sm">
                                 </div>
                             </div>
                         </div>

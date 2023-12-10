@@ -17,114 +17,124 @@ interface newsType {
 const news_topic = ref<Array<newsType>>([
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
     {
         news_id: 1,
-        news_image: `https://storage.googleapis.com/classcraft-1188.appspot.com/uploads/2019/10/2019-10-wrap-up-activities-for-students_Google-Edu-blog-list-image.png`,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
         news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
         news_date: '1 ตุลาคม 2656',
     },
-    
-    
+    {
+        news_id: 1,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
+        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
+        news_date: '1 ตุลาคม 2656',
+    },
+    {
+        news_id: 1,
+        news_image: `/images/namphon_mockup/news/news03.jpg`,
+        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
+        news_date: '1 ตุลาคม 2656',
+    },
 ])
 
 interface newsAnnoce {
@@ -136,56 +146,122 @@ interface newsAnnoce {
 const news_annoce = ref<Array<newsAnnoce>>([
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
     {
         news_ann_id: 1,
-        news_ann_name: 'ฟหกกหกหกหกหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหหห',
-        news_ann_image: 'https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/333400689_1243700996222458_7424500479593884419_n.jpg?stp=dst-jpg_p960x960&_nc_cat=111&ccb=1-7&_nc_sid=3635dc&_nc_ohc=kJHl6Jwbov8AX8SxUe2&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfCUTI_ioPSIFueUCT6tto_LdHr1L6nKF0sa5JRMJOYvQQ&oe=657ABE5F',
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
+        news_ann_date: '3 ธันวาคม 1454',
+    },
+    {
+        news_ann_id: 1,
+        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
+        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
         news_ann_date: '3 ธันวาคม 1454',
     },
 ])
@@ -258,7 +334,7 @@ function lightBox(image:string){
                                                             <td> {{ i + 1 }} </td>
                                                             <td class="py-1 ">
                                                                 <img :src="item.news_image"
-                                                                    class="object-fill h-[100px] w-[200px]" alt="">
+                                                                    class="object-cover h-[100px] w-[200px]" alt="">
                                                             </td>
                                                             <td>
                                                                 <p class="line-clamp-3">
