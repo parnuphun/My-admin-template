@@ -33,7 +33,6 @@ import Vue3Marquee from 'vue3-marquee'
 
 
 createApp(App)
-    .use(VCalendar)
     .use(vuetify)
     .use(routes)
     .use(VueSweetalert2)
