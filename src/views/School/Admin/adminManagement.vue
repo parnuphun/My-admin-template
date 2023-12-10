@@ -199,7 +199,7 @@ const desserts = ref<Array<any>>([
                     <div class="flex flex-col gap-2 w-full mt-4">
                         <v-text-field class="relative">
                             <label class="absolute top-0 left-0 mt-2 ml-2">
-                                <img src="your_image_url" alt="ภาพ" class="w-4 h-4">
+                                <img src="" alt="ภาพ" class="w-4 h-4">
                             </label>
                         </v-text-field>
                         <v-text-field label="ชื่อผู้ใช้" width="150"></v-text-field>
