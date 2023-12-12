@@ -4,6 +4,7 @@ const login_c = require('../controller/login')
 const persons_pd_c = require('../controller/personal_directory')
 const {upload_person_image  } = require('../services/upload')
 const delete_image = require('../services/delete_image')
+const file_c = require('../controller/files')
 
 // login
 route.post('/login',login_c.login)
@@ -13,12 +14,18 @@ route.post('/adminRegister',login_c.adminRegister)
 route.post('/getAllPositionList',persons_pd_c.getAllPositionList)
 route.post('/addPosition',persons_pd_c.addPosition)
 route.post('/deletePosition',persons_pd_c.deletePosition)
-// route.get('/getPersonalOne',persons_pd_c.getPersonalOne)
 route.post('/RenamePosition',persons_pd_c.RenamePosition)
 route.post('/getPersonDirectoryOne',persons_pd_c.getPersonDirectoryOne)
 route.post('/addPerson',upload_person_image,persons_pd_c.addPerson)
 route.post('/editPerson',upload_person_image,persons_pd_c.editPerson)
 route.post('/deletePerson',persons_pd_c.deletePerson)
+
+// files
+route.post('/addFileCategory',file_c.addFileCategory)
+route.post('/renameFileCategory',file_c.renameFileCategory)
+route.post('/deleteFileCategory',file_c.deleteFileCategory)
+
+
 
 
 route.post('/test_delete_image',(req,res)=>{
