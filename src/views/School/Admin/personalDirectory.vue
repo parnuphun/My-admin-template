@@ -755,7 +755,7 @@ function updatePersonData(){
                                 <v-btn color="red" @click="personDialogAdd = !personDialogAdd , personImage = null">
                                     ยกเลิก
                                 </v-btn>
-                                <v-btn color="green" type="submit" :disabled=" !!!personImage  || !!!personName.trim() " > ตกลง </v-btn>
+                                <v-btn color="green" type="submit" :disabled=" !!!personImage  || !!!personName " > ตกลง </v-btn>
                             </div>  
                         </v-form>
                     </div>
@@ -828,7 +828,7 @@ function updatePersonData(){
                                     @click="personDialogEdit = false , personName = '' , personDescript = '' , personImage = null">
                                     ยกเลิก
                                 </v-btn>
-                                <v-btn color="blue" type="submit" :disabled="personName.trim() === ''"
+                                <v-btn color="blue" type="submit" :disabled="!!!personName"
                                 > บันทึก </v-btn>
                             </div>  
                         </v-form>
