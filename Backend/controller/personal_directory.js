@@ -1,6 +1,6 @@
 const db = require('../config/database');
 const upload_person_directory = require('../services/upload_person_directory')
-const delete_image = require('../services/delete_image')
+const delete_image = require('../services/delete_file')
 require('dotenv').config();
 
 // send all position 

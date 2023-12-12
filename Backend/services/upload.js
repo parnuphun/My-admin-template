@@ -27,7 +27,7 @@ const storage_file = multer.diskStorage({
         next(null,path.join(__dirname,'../public/file'))
     },
     filename(req,file,next){
-        next(null,`${Math.round(Math.random()*100000)}_${Date.now()}.pdf`)
+        next(null,`${Math.round(Math.random()*100000)}_${Date.now()}_${file.originalname}`)
     }
 })
 
@@ -36,7 +36,7 @@ const storage_file = multer.diskStorage({
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const upload_file = multer({
     storage : storage_file
-}).single('file')
+}).single('file_upload')
 
 const upload_person_image = multer({
     storage : storage_person_image
