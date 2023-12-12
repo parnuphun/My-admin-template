@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const url = 'http://localhost:3000'
+const url = 'http://45.154.25.137:3001'
 
 export default class apiRPTS {
     // log in addmin

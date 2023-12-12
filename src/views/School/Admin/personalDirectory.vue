@@ -755,7 +755,7 @@ function updatePersonData(){
                                 <v-btn color="red" @click="personDialogAdd = !personDialogAdd , personImage = null">
                                     ยกเลิก
                                 </v-btn>
-                                <v-btn color="green" type="submit" :disabled="personImage === undefined || personImage === null || personName.trim() === '' " > ตกลง </v-btn>
+                                <v-btn color="green" type="submit" :disabled=" !!!personImage  || !!!personName.trim() " > ตกลง </v-btn>
                             </div>  
                         </v-form>
                     </div>

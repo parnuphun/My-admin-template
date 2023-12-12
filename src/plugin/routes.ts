@@ -1,8 +1,6 @@
 import { createRouter , createWebHistory } from 'vue-router'
 import MsgAlert from '../services/msgAlert'
 // import authService from '../services/auth'
-import { ref } from 'vue'
-
 const _msgAlert = new MsgAlert()
 // const _auth = new authService()
 
@@ -28,7 +26,7 @@ const router = createRouter({
         { path: '/login' , component: () => import('../views/School/Admin/login.vue')},
         { path: '/admin/dashboard' , component: () => import('../views/School/Admin/dashboard.vue')},
         { path: '/admin/annoucement' , component: () => import('../views/School/Admin/annoucement.vue')},
-        { path: '/admin/news' , component: () => import('../views/School/Admin/news.vue')},
+        { path: '/admin/news' , component: () => import('../views/School/Admin/news.vue') },
         { path: '/admin/studentSchedule' , component: () => import('../views/School/Admin/studentSchedule.vue')},
         { path: '/admin/personalDirectory' , component: () => import('../views/School/Admin/personalDirectory.vue')},
         { path: '/admin/gallery' , component: () => import('../views/School/Admin/gallery.vue')},
@@ -37,11 +35,6 @@ const router = createRouter({
         
         // test admin ui 
         { path: '/testui' , component: () => import('../views/test/nomphong_ui_test.vue')},
-
-
-
-
-
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // default page
