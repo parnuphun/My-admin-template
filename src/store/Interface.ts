@@ -1,3 +1,23 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// file
+////////////////////////////////////////////////////////////////////////////////////////////////////
+type file_type =  'xlsx' | 'docx' | 'pdf'
+
+export interface fileCategoryRespone {
+    file_category_id:number,
+    file_category_name:string
+}
+
+export interface filesResponse {
+    file_id:number,
+    file_name_upload:string,
+    file_name:string,
+    file_pin:boolean,
+    file_type:file_type
+    file_date:string,
+    file_category_id:string
+}
+
 export interface imageGalleryType {
     text:string
     url:string

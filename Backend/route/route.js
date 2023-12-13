@@ -33,9 +33,12 @@ route.post('/renameFileCategory',file_c.renameFileCategory)
 route.post('/deleteFileCategory',file_c.deleteFileCategory)
 route.post('/getAllCategoryFile',file_c.getAllCategoryFile)
 route.post('/addNewFile',upload_file,file_c.addNewFile)
-
-
-
+route.post('/editFile',upload_file,file_c.editFile)
+route.post('/getAllFiles',file_c.getAllFiles)
+route.post('/deleteFile',file_c.deleteFile)
+route.post('/fileSwitchPin',file_c.fileSwitchPin)
+route.post('/downloadFile',file_c.downloadFile)
+route.post('/previewFile',file_c.previewFile)
 
 route.post('/test_delete_image',(req,res)=>{
     let dl_state = delete_image(req.body.image_name , 'persons_image')
@@ -49,4 +52,6 @@ route.post('/test_delete_image',(req,res)=>{
         })
     }
 })
+
+
 module.exports = route;

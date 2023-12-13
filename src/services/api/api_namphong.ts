@@ -1,10 +1,14 @@
 import axios from 'axios'
 
-const url = 'http://45.154.25.137:3001'
+// const url = process.env.API_NAMPHONG_SCHOOL
+// const url = 'http://45.154.25.137:3001'
+const url = 'http://localhost:3001'
 
 export default class apiRPTS {
     // log in addmin
-    login(data:{username:string,password:string}){        
+    login(data:{username:string,password:string}){   
+        console.log(url+'/login',data);
+             
         return axios.post(url+'/login',data)
     }
 
@@ -40,5 +44,45 @@ export default class apiRPTS {
     // delete person
     deletePerson(data:{person_id:number,person_image:string}){
         return axios.post(url+'/deletePerson',data)
+    }
+
+    // get all file catefory
+    getAllCategoryFile(){
+        return axios.post(url+'/getAllCategoryFile')
+    }
+
+    // add new file 
+    addNewFile(data:FormData){
+        return axios.post(url+'/addNewFile',data)
+    }
+
+    // edit file 
+    editFile(data:FormData){
+        return axios.post(url+'/editFile',data)
+    }
+
+    // get all files 
+    getAllFiles(data:{selected_category:number}){
+        return axios.post(url+'/getAllFiles',data)
+    }
+
+    //  delete file
+    deleteFile(data:{file_id:number,file_name_upload:string}){
+        return axios.post(url+'/deleteFile',data)
+    }
+
+    // switch pin status
+    fileSwitchPin(data:{file_id:number,file_pin_status:boolean}){
+        return axios.post(url+'/fileSwitchPin',data)
+    }
+
+    // download file 
+    downloadFile(data:{file_id:number,file_name_upload:string}){
+        return axios.post(url+'/downloadFile',data)
+    }
+
+    // preview file 
+    previewFile(data:{file_id:number,file_name_upload:string}){
+        return axios.post(url+'/previewFile',data)
     }
 }
