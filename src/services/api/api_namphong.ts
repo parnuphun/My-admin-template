@@ -46,6 +46,9 @@ export default class apiRPTS {
         return axios.post(url+'/deletePerson',data)
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // file 
+    ///////////////////////////////////////////////////////////////////////////////
     // get all file catefory
     getAllCategoryFile(){
         return axios.post(url+'/getAllCategoryFile')
@@ -84,5 +87,28 @@ export default class apiRPTS {
     // preview file 
     previewFile(data:{file_id:number,file_name_upload:string}){
         return axios.post(url+'/previewFile',data)
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // admin 
+    ///////////////////////////////////////////////////////////////////////////////
+    // add new admin
+    addNewAdmin(data:FormData){
+        return axios.post(url+'/addNewAdmin',data)
+    }
+
+    // get all admins
+    getAllAdmin(){
+        return axios.post(url+'/getAllAdmin')
+    }
+
+    // delete admin 
+    deleteAdmin(data:{image_name:string,user_id:number}){
+        return axios.post(url+'/deleteAdmin',data)
+    }
+
+    // update admin 
+    updateAdmin(data:FormData){
+        return axios.post(url+'/updateAdmin',data)
     }
 }

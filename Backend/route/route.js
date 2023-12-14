@@ -1,16 +1,26 @@
 const express = require('express')
 const route = express.Router()
+
+const {upload_person_image, upload_file , upload_admin_image} = require('../services/upload')
+const delete_image = require('../services/delete_file')
+
 const login_c = require('../controller/login')
 const persons_pd_c = require('../controller/personal_directory')
-const {upload_person_image, upload_file  } = require('../services/upload')
-const delete_image = require('../services/delete_file')
 const file_c = require('../controller/files')
+const admin_c = require('../controller/admin')
+////////////////////////////////////////////////////////////////////////////
+// login
+////////////////////////////////////////////////////////////////////////////
+route.post('/login',login_c.login)
+route.post('/adminRegister',login_c.adminRegister)
+
 ////////////////////////////////////////////////////////////////////////////
 // admin
 ////////////////////////////////////////////////////////////////////////////
-// login
-route.post('/login',login_c.login)
-route.post('/adminRegister',login_c.adminRegister)
+route.post('/addNewAdmin',upload_admin_image,admin_c.addNewAdmin)
+route.post('/updateAdmin',upload_admin_image,admin_c.updateAdmin)
+route.post('/getAllAdmin',admin_c.getAllAdmin)
+route.post('/deleteAdmin',admin_c.deleteAdmin)
 
 ////////////////////////////////////////////////////////////////////////////
 // person directory
