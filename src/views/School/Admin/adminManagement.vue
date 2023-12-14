@@ -237,9 +237,6 @@ function resetFormAdmin(){
                                     <p class="line-clamp-1">
                                         {{ item.user_username }}
                                     </p>
-                                    <p class="line-clamp-1">
-                                        {{ item.user_address }} 
-                                    </p> 
                                 </td>
                                 <td>
                                     <p class="line-clamp-1">
