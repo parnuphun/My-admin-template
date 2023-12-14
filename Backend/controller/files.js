@@ -2,9 +2,9 @@ const db = require('../config/database');
 const upload_person_directory = require('../services/upload_person_directory')
 const delete_file = require('../services/delete_file')
 const date_convert = require('../services/date_convert');
+const rename_file = require('../services/rename_file')
 const fs = require('fs') 
 const path = require('path')
-
 require('dotenv').config();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,13 +142,14 @@ module.exports.getAllCategoryFile = async (req,res)=> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // add new file 
 module.exports.addNewFile = async (req,res)=> {
-    console.log(req.file.size);
+    // console.log('file size => ',req.file.size);
     const file_name = req.body.file_name
     const file_category_id = req.body.file_category_id
-    const file_name_upload = req.file.filename
     const file_type = req.body.file_type
     const file_date = new Date() 
-
+    const file_name_upload = `${file_name}_${Date.now()}.${file_type}`
+    
+    await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
     try{
         db.query(`
             INSERT INTO file (
@@ -300,14 +301,15 @@ module.exports.editFile = async(req,res) => {
     const file_id = req.body.file_id
     const file_name = req.body.file_name 
     let file_name_upload
-    if(req.body.file_upload === 'no_file_upload'){
-        file_name_upload = req.file_name_upload
-    }else{
-        file_name_upload = req.file.filename
-    }
     const file_type = req.body.file_type
     const file_category_id = req.body.file_category_id
-    console.log(req.body);
+    if(req.body.file_upload === 'no_file_upload'){ // case no file upload 
+        file_name_upload = req.file_name_upload // use old name 
+    }else{
+        file_name_upload = `${file_name}_${Date.now()}.${file_type}`// use new name file uploaded
+        await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
+    }
+
     try{
         // get old file name first after add new file name 
         db.query('SELECT * FROM file WHERE file_id = ? ',[file_id],(err,result)=>{
