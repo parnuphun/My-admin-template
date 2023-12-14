@@ -226,7 +226,7 @@ function editFile(){
                 </div>
                 <!-- table -->
                 <div class="bg-white w-full h-full pb-4 border-b-2 ">
-                    <v-table class="h-[90%] overflow-y-scroll" fixed-header>
+                    <v-table class="h-[91%] overflow-y-scroll" fixed-header>
                         <thead>
                             <tr>
                                 <th class="text-left w-10">
