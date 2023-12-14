@@ -1,4 +1,6 @@
 #backend
+backend/public/admin_image/*
+!backend/public/admin_image/.gitkeep
 backend/public/file/*
 !backend/public/file.gitkeep
 backend/public/persons_image/*
