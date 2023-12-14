@@ -26,14 +26,13 @@ moment.locale('th')
 
 // interceptor
 import { interceptor } from './services/Interceptor'
-axios.interceptors.request.use(interceptor)
+// axios.interceptors.request.use(interceptor)
 
 // marquee slide
 import Vue3Marquee from 'vue3-marquee'
 
 
 createApp(App)
-    .use(VCalendar)
     .use(vuetify)
     .use(routes)
     .use(VueSweetalert2)

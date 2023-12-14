@@ -1,3 +1,12 @@
+#backend
+backend/.env
+backend/public/admin_image/*
+!backend/public/admin_image/.gitkeep
+backend/public/file/*
+!backend/public/file.gitkeep
+backend/public/persons_image/*
+!backend/public/persons_image/.gitkeep
+
 # Logs
 logs
 *.log
@@ -22,3 +31,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+Backend/.env

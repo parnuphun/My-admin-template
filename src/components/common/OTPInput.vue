@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import {ref , onMounted} from 'vue'
 import apiRPTS from '../../services/api/apiRPTS_check';
 import MsgAlert from '../../services/msgAlert';
@@ -151,4 +151,4 @@ const emit = defineEmits<{
         text-align: center;
         font-weight: 600;
     }
-</style>
+</style> -->

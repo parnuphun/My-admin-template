@@ -20,13 +20,14 @@
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
-        background: #a1a1aa;
+        background: #94a3b8;
         border-radius: 5px;
     }
 
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
-        background: #71717a;
+        background: #64748b;
     }
 
+     
 </style>

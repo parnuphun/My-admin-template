@@ -1,8 +1,6 @@
 import { createRouter , createWebHistory } from 'vue-router'
 import MsgAlert from '../services/msgAlert'
 // import authService from '../services/auth'
-import { ref } from 'vue'
-
 const _msgAlert = new MsgAlert()
 // const _auth = new authService()
 
@@ -10,25 +8,41 @@ const router = createRouter({
     history : createWebHistory(),
     routes: [
         /////////////////////////////////////////////////////////////////////////////////////////////////
-        // default
+        // สำหรับหน้าบ้าน client
         /////////////////////////////////////////////////////////////////////////////////////////////////
+        // default redirect
         { path: '/' , component: () => import('../views/School/User/SchoolMain.vue')} ,
         { path: '/about' , component: () => import('../views/School/User/SchoolAbout.vue')} ,
         { path: '/news' , component: () => import('../views/School/User/SchoolNews.vue')} ,
         { path: '/persons' , component: () => import('../views/School/User/SchoolPerson.vue')},
+        { path: '/contact' , component: () => import('../views/School/User/SchoolContact.vue')},
+        { path: '/gallery' , component: () => import('../views/School/User/SchoolGallery.vue')},
+        { path: '/files' , component: () => import('../views/School/User/SchoolFiles.vue')},
+ 
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // สำหรับหลังบ้าน admin 
+        // ตัวอย่าง /admin/ชือpath 
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        { path: '/login' , component: () => import('../views/School/Admin/login.vue')},
+        { path: '/admin/dashboard' , component: () => import('../views/School/Admin/dashboard.vue')},
+        { path: '/admin/annoucement' , component: () => import('../views/School/Admin/annoucement.vue')},
+        { path: '/admin/news' , component: () => import('../views/School/Admin/news.vue') },
+        { path: '/admin/studentSchedule' , component: () => import('../views/School/Admin/studentSchedule.vue')},
+        { path: '/admin/personalDirectory' , component: () => import('../views/School/Admin/personalDirectory.vue')},
+        { path: '/admin/gallery' , component: () => import('../views/School/Admin/gallery.vue')},
+        { path: '/admin/files' , component: () => import('../views/School/Admin/files.vue')},
+        { path: '/admin/adminManagement' , component: () => import('../views/School/Admin/adminManagement.vue')},
+        
+        // test admin ui 
+        { path: '/testui' , component: () => import('../views/test/nomphong_ui_test.vue')},
 
-        { path: '/admin/test' , component: () => import('../views/School/Admin/dashboard.vue')},
-        // page not found 404
-        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
-
-        // test component
-        { path: '/test/test_calendar' , component: () => import('../views/test/Test_Calendar.vue')} ,
-        { path: '/test/Test_DataTableManual' , component: () => import('../views/test/Test_DataTableManual.vue')} ,
-        { path: '/test/test_sweetAlert' , component: () => import('../views/test/Test_sweetAlert.vue')} ,
-
-        { path: '/admin' , component: () => import('../views/Common/Main/DashBoard.vue')} ,
-        { path: '/recycle' , component: () => import('../views/Common/Main/Recycle.vue')} ,
-
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // default page
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // page not found 404 for client
+        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageServerErr500.vue')} ,
+        // page not found 404 for admin 
+        { path: '/admin/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
 
     ],
     scrollBehavior(to, from, savedPosition) {
@@ -39,7 +53,6 @@ const router = createRouter({
 
 // route guard
 router.beforeEach((to,from)=>{
-
     // // ถ้า login แล้วจะกลับมาที่หน้า Login อีกไม่ได้
     // _auth.isLoggedIn().then((isLoggedIn)=>{
     //     if((to.path.startsWith('/testBackend/login')) && isLoggedIn === true){
@@ -65,7 +78,6 @@ router.beforeEach((to,from)=>{
     //         return false
     //     }
     // })
-
 })
 
 export default router
