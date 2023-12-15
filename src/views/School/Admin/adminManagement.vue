@@ -74,7 +74,7 @@ function addNewAdmin(){
 
     })
 }
-//edit admin dialog set value 
+
 const editAdminDialog = ref(false)
 const adminImageDetail = ref()
 const editAdminid = ref()
@@ -82,6 +82,9 @@ const editAdminOldusername = ref()
 const editAdminIndex = ref()
 function editAdminDialogF(user_index:number){
     if(users.value){
+        console.log('===>',users.value[user_index]);
+        
+        // send value to edit dialog 
         editAdminIndex.value = user_index
         username.value = users.value[user_index].user_username
         editAdminOldusername.value = users.value[user_index].user_username
@@ -118,12 +121,12 @@ function updateAdmin(){
     formData.append('email',email.value)
     formData.append('phone',phone.value)
     formData.append('address',address.value)
-  
-    _api.updateAdmin(formData).then((res)=>{
+    
+    _api.updateAdmin(formData).then(async(res)=>{
         if(res.data.status){
             _msg.toast_msg({title:res.data.msg,timer:3,icon:'success'})
-            getAllAdmin()
-            //set new data
+            adminImageDetail.value = res.data.new_image_name
+            getAllAdmin()          
             adminImage.value = null
         }
         else {
