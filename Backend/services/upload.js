@@ -43,6 +43,17 @@ const storage_admin_image = multer.diskStorage({
     }
 })
 
+// activity image
+const storage_activity_image = multer.diskStorage({
+    destination(req,file,next){
+        console.log('test two');
+        next(null,path.join(__dirname,'../public/activity_image'))
+    },
+    filename(req,file,next){
+        next(null,`activity_image_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
+    }
+})
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // upload method
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -58,10 +69,15 @@ const upload_admin_image = multer({
     storage : storage_admin_image
 }).single('admin_image')
  
+const upload_activity_image = multer({
+    storage : storage_activity_image
+}).single('activity_image_cover')
+
 module.exports = { 
     upload_person_image ,
     upload_file,
     upload_admin_image,
+    upload_activity_image,
 };
 
  

@@ -4,7 +4,7 @@ import axios from 'axios'
 // const url = 'http://45.154.25.137:3001'
 const url = 'http://localhost:3001'
 
-export default class apiRPTS {
+export default class namphong_api {
     // log in addmin
     login(data:{username:string,password:string}){   
         console.log(url+'/login',data);
@@ -110,5 +110,23 @@ export default class apiRPTS {
     // update admin 
     updateAdmin(data:FormData){
         return axios.post(url+'/updateAdmin',data)
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // activity image 
+    ///////////////////////////////////////////////////////////////////////////////
+    // add new activity image
+    addNewActivityImage(data:FormData){
+        return axios.post(url+'/addNewActivityImage',data)
+    }
+
+    //get activity image
+    getActivityImage(){
+        return axios.post(url+'/getActivityImage')
+    }
+
+    //delete activity image
+    deleteActivityImage(data:{activity_image_id:number,activity_image_cover_delete:string}){
+        return axios.post(url+'/deleteActivityImage',data)
     }
 }
