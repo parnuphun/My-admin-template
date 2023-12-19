@@ -1,370 +1,596 @@
 <script setup lang="ts">
+import {ref ,onMounted ,watch} from 'vue'
+import {fileCategoryRespone , filesResponse , dataStatus} from '../../store/Interface' 
 import AdminNavigationBar from '../../components/layout/AdminNavigationBar.vue';
-import {ref , watch} from 'vue'
+import apiNamphong from '../../services/api/api_namphong';
+import MsgAlert from '../../services/msgAlert';
+ 
+const _api = new apiNamphong()
+const _msg = new MsgAlert()
+ 
+const dataStatus = ref<dataStatus>()
 
-const tab = ref()
+const selectedCategory = ref(1) // selected file category 
+const allCategoryFile = ref<Array<fileCategoryRespone>>()
 
-watch(tab , ()=>{
-    if(tab.value === 'two'){
+const buttonLoading = ref(false)
+// working at first  
+onMounted(()=>{
+    getAllCategoryFile()
+    getAllFile()
+})
 
+// detect cetegory fetch data
+watch(selectedCategory , ()=>{    
+    getAllFile()
+    drawer.value = false
+})
+  
+ // get all category file
+function getAllCategoryFile(){
+    _api.getAllCategoryFile().then((res)=>{        
+        // console.log('data ====>',res.data.file_catefory_data);
+        allCategoryFile.value = res.data.file_catefory_data as Array<fileCategoryRespone>
+    })
+}
+
+const files = ref<Array<filesResponse>>()
+// get all file 
+function getAllFile(){
+    dataStatus.value = 'loading_data'
+    _api.getAllFiles({selected_category:selectedCategory.value}).then((res)=>{
+        files.value = res.data.fileData as Array<filesResponse>
+        if(files.value.length === 0){
+            dataStatus.value = 'no_data'
+        }else if(files.value.length >= 1){
+            dataStatus.value = 'load_data_succ'
+        }
+    })
+}
+
+// check file type
+function checkFileType(){
+    if(fileUpload.value[0].type === 'application/pdf'){
+        return 'pdf'
+    }else if(fileUpload.value[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'){
+        return 'docx'
+    }else if(fileUpload.value[0].type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
+        return 'xlsx'
     }
-    else if(tab.value === 'three'){
+}
 
+
+const fileUploadDialog = ref(false) 
+const fileName = ref<string>() // file name for update and addnew form 
+const fileUpload = ref<any>() // file 
+const fileType = ref<string>() // 'file format ex. pdf doc sxl'
+// add new file 
+function addNewFile(){
+    buttonLoading.value = true
+
+    const formData = new FormData()    
+    fileType.value = checkFileType()
+
+    formData.append('file_name',fileName.value!)
+    formData.append('file_upload',fileUpload.value[0])
+    formData.append('file_type', fileType.value!)
+    formData.append('file_category_id', String(selectedCategory.value))
+
+    _api.addNewFile(formData).then((res)=>{
+        if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+        else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
+
+        buttonLoading.value = false
+        fileName.value = ''
+        fileUpload.value = null
+        fileType.value = ''
+        getAllFile()
+    }).catch(()=>{
+        buttonLoading.value = false
+    })
+}
+// set auto file name 
+watch(fileUpload,()=>{
+    if(fileUpload.value !== null && fileUpload.value !== undefined ){
+        // if file name is unvariable and add file first just set filename = file.filename 
+        if(fileName.value === '' || fileName.value === undefined || fileName.value === null ){            
+            fileName.value = fileUpload.value[0]!.name.replace(/\.[^/.]+$/, "") // remove file extention
+        }
     }
 })
 
-// ส่งมาเป็น arr_obj
-const persons_position = ref<Array<object>>([
-    {
-        id_position:'',
-        title_position:'ผู้อำนวยการสถานศึกษา',
-        persons:[{
-            image:'',
-            name:'นายเทพนคร นามวงษ์',
-            discript:'09-6072-8034'
-        }]
-    },
-    {
-        id_position:'',
-        title_position:'ครู วิทยฐานะชำนาญการพิเศษ',
-        persons:[
-            {
-                image:'',
-                name:'นางสุชาดา ลือเรื่อง',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นางสาวอรอุมา เสติ',
-                discript:'',
-            },
-        ]
-    },
-    {
-        id_position:'',
-        title_position:'ครู วิทยฐานะชำนาญการ',
-        persons:[
-            {
-                image:'',
-                name:'นางนารถยา นาหนองตูม',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นางสาวเปียทิพย์ อุทัยอัน',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นางสาวธนภรณ์ นาอุดม',
-                discript:'',
-            },
-        ]
-    },
-    {
-        id_position:'',
-        title_position:'ครู',
-        persons:[
-            {
-                image:'',
-                name:'นางสาวปณิตา พุทไธสง',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นายนัฐนนท์ เสาระโส',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นายจรูญโรจน์ แก้วมาตย์',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นายนิธิพันธ์ สิริเขมมะนันท์',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นางสาวสุพัตรา ชินไธสงค์',
-                discript:'',
-            },
-        ]
-    },
-    {
-        id_position:'',
-        title_position:'ผู้ช่วยเจ้าพนักงานการเงินและบัญชี',
-        persons:[
-            {
-                image:'',
-                name:'นางสาวเสาวลักษณ์ พลกุลภักดี',
-                discript:'000-963-5252',
-            },
-        ]
-    },
-    {
-        id_position:'',
-        title_position:'ครูจ้างเหมาบริการ',
-        persons:[
-            {
-                image:'',
-                name:'นายอรรถพงษ์ ทะวิลา',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นางสาวธัญญรัตน์ พรหมจารีย์',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นางสาวไอยรา ศาลสกล',
-                discript:'',
-            },
-        ]
-    },
-    {
-        id_position:'',
-        title_position:'ครูพี่เลี้ยง',
-        persons:[
-            {
-                image:'',
-                name:'นางสาววนิดา แดงงาม',
-                discript:'',
-            },
-        ]
-    },
-    {
-        id_position:'',
-        title_position:'ภารโรง',
-        persons:[
-            {
-                image:'',
-                name:'นายทวีศักดิ์ ทีคอโงน',
-                discript:'',
-            },
-            {
-                image:'',
-                name:'นายประยูร ขาวลา',
-                discript:'',
-            },
-        ]
-    },
-    {
-        id_position:'',
-        title_position:'พนักงานขับรถ',
-        persons:[
-            {
-                image:'',
-                name:'นายบุญมี คุ้มโพธิ์น้อย',
-                discript:'',
-            },
-        ]
-    },
-])
 
-const position = ref([    
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-          {
-            name: 'Frozen Yogurt',
-            url: 'https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg',
-            position: 'ผู้อำนวยการ'
-          },
-        ])
+// delete file
+function deleteFile(file_id:number,file_name_upload:string){
+    _msg.confirm('คุณต้องการจะลบไฟล์ใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.deleteFile({file_id:file_id,file_name_upload:file_name_upload}).then((res)=>{
+                if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:1,progressbar:true,icon:'success'})
+                else _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
+                getAllFile()
+
+                // reset variable after deleted 
+                fileName_DD.value =  ''
+                fileid_DD.value =  ''
+                fileNameUpload_DD.value =  ''
+                fileFormat_DD.value =  ''
+                fileDate_DD.value =  ''
+                filePin_DD.value =  ''
+                fileSize_DD.value =  ''
+                drawer.value = false
+            })
+        }
+    })
+}
+
+// switch pin 
+function fileSwitchPin(file_id:number , file_pin_status:boolean){
+    _api.fileSwitchPin({file_id:file_id,file_pin_status:file_pin_status}).then((res)=>{
+        if(res.data.statusCode === 200){
+             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+             getAllFile()
+        }else{
+            _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
+        } 
+    })    
+}
+
+// download file 
+function downloadFile(file_id:number , file_name_upload:string,new_file_name:string){
+    // now i cant use downloadfile in pdf format then will auto open new tab in chrom 
+    // use api preview fils temporary
+    _api.previewFile({file_id:file_id,file_name_upload:file_name_upload}).then((res)=>{
+        var downloadLink = document.createElement('a');
+        downloadLink.href = res.data.file_url;
+        downloadLink.download = new_file_name ;  
+        downloadLink.click();
+    })
+}
+
+// preview file 
+function previewsFile(file_id:number , file_name_upload:string, ){
+    console.log(file_name_upload,'<=== file name upload');
+    _api.previewFile({file_id:file_id,file_name_upload:file_name_upload}).then((res)=>{
+        console.log(res.data,'<=== res data');
+                
+        if(res.data.status) window.open(res.data.file_url, '_blank')
+        else _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+    })
+}
+
+
+// edit file
+function editFile(){    
+    buttonLoading.value = true 
+
+    const formData = new FormData()
+    // case no file update
+    if(fileUpload.value === undefined || fileUpload.value === null){
+        // if no new file then send old file format
+        // fileType.value = fileFormat_DD.value 
+        formData.append('file_upload','no_file_upload')
+    }else{
+        fileFormat_DD.value = checkFileType() // if new upload get new file format
+        formData.append('file_upload',fileUpload.value[0]) 
+    }
+    formData.append('file_id',fileid_DD.value!)
+    formData.append('file_name',fileName.value!)
+    formData.append('file_name_upload',fileNameUpload_DD.value!)
+    formData.append('file_type', fileFormat_DD.value!)
+    formData.append('file_category_id', String(fileSelected_DD.value))    
+
+    _api.editFile(formData).then((res)=>{
+        if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+        else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
+        // set file name to dd drawer for update new name and then reset for reuse in add new form 
+        fileName_DD.value = fileName.value 
+        fileUpload.value = null
+        fileType.value = ''
+        buttonLoading.value = false 
+        getAllFile()
+    }).catch(()=>{
+        buttonLoading.value = false 
+    })
+}
+
+const fileEditDialog = ref(false)
+
+// set data in form update from drawer detail (_DD)
+ function settingEditFileName(file_id:number,file_name:string , file_category_id:string,file_name_upload:string,file_type:string){
+    fileSelected_DD.value = file_category_id // category selected 
+    fileid_DD.value = file_id    
+    fileNameUpload_DD.value = file_name_upload
+    fileName_DD.value = file_name // use in drawer data detail 
+    fileName.value = file_name // use in form 'add new and edit '
+    fileFormat_DD.value = file_type
+    fileEditDialog.value = true
+}
+
+
+// send data to drawer detail
+const fileName_DD = ref()
+const fileid_DD = ref()
+const fileNameUpload_DD = ref()
+const fileFormat_DD = ref()
+const fileDate_DD = ref()
+const filePin_DD = ref()
+const fileSelected_DD = ref()
+const fileSize_DD = ref() // show in drawwer detail only 
+
+function fileDetailDrawer(item:filesResponse){
+    fileSelected_DD.value = selectedCategory.value
+    fileName_DD.value = item.file_name
+    fileid_DD.value = item.file_id
+    fileNameUpload_DD.value = item.file_name_upload
+    fileFormat_DD.value = item.file_type
+    fileDate_DD.value = item.file_date
+    filePin_DD.value = item.file_pin
+    fileSize_DD.value = item.file_size
+    drawer.value = true
+}
+
+const drawer = ref(false)
+const drawerAlignment = ref('justify-start') // not use now css assign 
+watch(drawer,()=>{
+
+    if(drawer.value === false) drawerAlignment.value = 'justify-start'
+    else drawerAlignment.value = 'justify-start'
+})
+
+const searchValue = ref()
+watch(searchValue , ()=>{
+    if(searchValue.value.trim() === ''){
+        getAllFile();
+    }else{
+        dataStatus.value = 'loading_data'
+        _api.searchFile({search_keyword:searchValue.value}).then((res)=>{
+            if(res.data.statusCode === 200){
+                files.value = res.data.search_data as Array<filesResponse> 
+                if(files.value.length === 0){
+                    dataStatus.value = 'no_data'
+                }else if(files.value.length >= 1){
+                    dataStatus.value = 'load_data_succ'
+                }else{
+                    dataStatus.value = 'network_err'
+                }
+            }else{
+                _msg.toast_msg({title:res.data.msg,timer:6,icon:'error',progressbar:true})
+                dataStatus.value = 'load_data_succ'
+            }
+        })
+    }
+})
+
 </script>
 
 <template>
+    
     <AdminNavigationBar>
-        <div class="flex flex-col w-full h-full ">
-            <div class="w-full h-full flex flex-wrap ">
-
-                <!-- Manage -->
-                <div class="w-1/2 h-full overflow-auto border-2 border-gray-300">
-                    <v-card class="h-full" color="">
-                        <v-tabs
-                            v-model="tab"
-                            fixed-tabs
+        <div class="w-full h-full flex flex-col gap-1">
+            <div class="w-full flex flex-wrap">
+                <div class="md:w-1/2 less:w-full p-1">
+                        <v-btn class="h-full less:w-full sm:w-auto" 
+                        color="green" size="large" @click="fileUploadDialog = !fileUploadDialog">
+                        <p class="text-md" >
+                            <v-icon  icon="mdi-file-plus"></v-icon> เพิ่มไฟล์  
+                        </p>
+                    </v-btn>
+                 </div>
+                <div class="md:w-1/2 less:w-full p-1 flex flex-wrap justify-end">
+                    <div class="less:w-full md:w-1/2 p-1">
+                        <v-select
+                            v-model="selectedCategory"
+                            label="ประเภท"
+                            :items="allCategoryFile"
+                            class=""
+                            item-title="file_category_name"
+                            item-value="file_category_id"
+                            hide-details
+                            density="comfortable"
+                            variant="outlined"
+                        >
+                        </v-select>
+                    </div>
+                    <div class="less:w-full md:w-1/2 p-1">
+                        <v-text-field
+                            label="ค้นหา"
+                            class=""
+                            v-model="searchValue"
+                            hide-details
+                            variant="outlined"
+                            prepend-inner-icon="mdi-magnify"
                             bg-color=""
-                        >                                
-                            <v-tab value="one">บุคลากรโรงเรียน</v-tab>
-                            <v-tab value="two">คณะกรรมการศึกษาขั้นพื้นฐาน</v-tab>
-                            <v-tab value="three">คณะกรรมการนักเรียน</v-tab>
-                        </v-tabs>
-
-                        <v-card-text class="h-full" >
-                            <v-window v-model="tab" class="h-[96%]">
-                                <v-window-item value="one" class="h-full" color="primary" >
-                                    <div class="h-full w-full flex flex-col ">
-                                        <!-- menu -->
-                                        <div class="w-full h-auto flex flex-row justify-between">
-                                            <div class="w-full px-2 flex flex-row gap-2" >
-                                                <div class="w-full">
-                                                    <v-select
-                                                        label="Select Your position"
-                                                        density="compact"
-                                                        :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
-                                                    ></v-select>
-                                                </div>
-                                                <div class="w-fit flex flex-row gap-1">
-                                                    <v-btn class="w-fit" color="blue">
-                                                        <v-icon icon="mdi-pencil"> </v-icon> 
-                                                    </v-btn>
-                                                    <v-btn class="w-fit" color="green">
-                                                        <v-icon icon="mdi-plus"> </v-icon> 
-                                                    </v-btn>
-                                                    <v-btn class="w-fit" color="red">
-                                                        <v-icon icon="mdi-delete"> </v-icon> 
-                                                    </v-btn>
-                                                </div>
-                                            </div>
-                                            <div class="w-fit">
-                                                <div class="w-full flex justify-end">
-                                                    <v-btn  color="green">
-                                                        <v-icon icon="mdi-account"> </v-icon> เพิ่มบุคลากร
-                                                    </v-btn>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- table -->
-                                        <div class="w-full h-full overflow-hidden">
-                                            <v-table 
-                                                fixed-header
-                                                class="h-full overflow-auto"
-                                            >
-                                                <thead >
-                                                    <tr>
-                                                        <th class="text-left">
-                                                        ภาพ 
-                                                        </th>
-                                                        <th class="text-left">
-                                                        ชื่อ
-                                                        </th>
-                                                        <th class="text-left">
-                                                        ตำแหน่ง
-                                                        </th>
-                                                        <th class="text-center">
-                                                        จัดการ
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr
-                                                        v-for="(item , i) in position"
-                                                        :key="item.name"
-                                                    >
-                                                        <td>
-                                                            <img class="w-10 h-10 object-cover" 
-                                                            :src="item.url" alt="">    
-                                                        </td>
-                                                        <td>{{ i+1 }}. {{ item.name }}</td>
-                                                        <td>{{ item. position}}</td>
-                                                        <td>
-                                                            <div class="w-full flex flex-row gap-2 justify-center">
-                                                                <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
-                                                                    <v-icon icon="mdi-pencil"></v-icon>
-                                                                </div>
-                                                                <div class="text-green-500 hover:text-green-600 cursor-pointer">
-                                                                    <v-icon icon="mdi-folder-move-outline"></v-icon>
-                                                                </div>
-                                                                <div class="text-red-500 hover:text-red-600 cursor-pointer">
-                                                                    <v-icon icon="mdi-delete"></v-icon>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </v-table>
-                                        </div>
-                                    </div>
-                                </v-window-item>
-                                
-                                <v-window-item value="two">
-                                    คณะกรรมการศึกษาขั้นพื้นฐาน
-                                </v-window-item>
-
-                                <v-window-item value="three">
-                                    คณะกรรมการนักเรียน
-                                </v-window-item>
-                            </v-window>
-                        </v-card-text>
-                    </v-card>
-                </div>
-
-                <!-- Preview -->
-                <div class="w-1/2 h-full bg-red-100 overflow-auto border-l-0 border-2 border-gray-300">
-                    <div class="w-full bg-white h-full">
-                        <v-card class="w-full h-full" color="">
-                            <div class="w-full text-md h-[47px] flex justify-center items-center shadow-xl">
-                                <v-icon icon="mdi-eye" class="mr-3"> </v-icon> ตัวอย่าง
-                            </div>
-                            <div class="w-full h-full p-4 bg-gray-50 overflow-auto">
-                                <div class="w-full h-full">
-                                    <div class="w-full ">
-                                        <div class="h-full w-full flex flex-col justify-center items-center" 
-                                        v-for="position of persons_position">
-                                            <div class="w-full text-center text-lg py-4 flex flex-row justify-center">
-                                                <p class="underline">
-                                                    {{(position as any).title_position}} 
-                                                </p>
-                                            </div>
-                    
-                                            <div class="w-full h-full flex flex-wrap justify-center items-center gap-10 pb-10">                        
-                                                <div class="relative w-[150px] h-[200px] flex flex-wrap justify-center mt-2" v-for="person of (position as any).persons">
-                                                    <img class="object-cover rounded-lg w-[100px] h-[150px]" 
-                                                    src="https://as2.ftcdn.net/v2/jpg/02/48/78/23/1000_F_248782375_WjBW5Bh0PSRQH9qflJ5wzsBJKVfX2OAP.jpg" alt="">
-                                                    
-                                                    <div class="absolute top-0 right-0 flex flex-col">
-                                                        <div class="text-blue-500 hover:text-blue-600 cursor-pointer">
-                                                            <v-icon icon="mdi-pencil"></v-icon>
-                                                        </div>
-                                                        <div class="text-red-500 hover:text-red-600 cursor-pointer">
-                                                            <v-icon icon="mdi-delete"></v-icon>
-                                                        </div>
-                                                    </div>
-                                                    <div class="w-full text-center text-sm mt-2">
-                                                        <p>{{ person.name }}</p>
-                                                        <p class="text-sm">{{ person.discript }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </v-card>
+                            density="comfortable"
+                            required
+                        ></v-text-field>
                     </div>
                 </div>
             </div>
+            <v-divider class="border-opacity-100"></v-divider>
+            <div class="w-full" v-if="dataStatus === 'load_data_succ'">
+                <div class="w-full flex flex-wrap "
+                    :class="drawerAlignment">
+                    <div v-for="(item , i) in files" :key="item.file_name"
+                    class="w-[150px] p-2">
+                        <div @click="fileDetailDrawer(item)"
+                        class="w-full flex flex-col justify-between items-baseline rounded-md hover:shadow-xl 
+                        cursor-pointer shadow-md hover:shadow-pink-100 border-2 duration-300" >
+                            <div class="w-full h-[120px] flex justify-center p-2">
+                                <img v-if="item.file_type === 'docx'"
+                                    src="/images/icon/file_extention_docx.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-if="item.file_type === 'pdf'"
+                                    src="/images/icon/file_extention_pdf.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-if="item.file_type === 'xml' || item.file_type === 'xlsx'"
+                                    src="/images/icon/file_extention_xml.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                            </div>
+                            <div class="w-full">
+                                <v-divider class="border-opacity-100"></v-divider> 
+                            </div>
+                            <div class="w-full px-2 mt-2">
+                                <p class="text-[14px] line-clamp-2"> {{ item.file_name }}</p>
+                            </div>
+                            <div class="w-full px-2 mb-2">
+                                <p class="text-[12px] line-clamp-1"> {{ item.file_size }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-else-if="dataStatus === 'loading_data'" class="w-full h-full flex justify-center items-center">
+                <div class=" flex flex-col items-center">
+                    <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
+                    <p class="text-xl mt-2 text-pink-600"> กำลังโหลดข้อมูลกรุณารอสักครู่...</p>
+                </div>
+            </div>
+            <div v-else-if="dataStatus === 'no_data'" class="w-full h-full flex justify-center items-center">
+                <div class=" flex flex-col items-center">
+                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                        <img src="/images/illustrations/No data.svg" 
+                        class="h-full w-full" alt="">
+                    </div>
+                    <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
+                </div>
+            </div>
         </div>
+        
+        <v-navigation-drawer :disable-resize-watcher="true" :width="350" location="right" v-model="drawer">
+            <div class="w-full h-full flex flex-col px-2 ">
+                <div class="w-full h-auto flex flex-row justify-start text-4xl text-gray-500" >
+                    <v-icon 
+                        class=" hover:text-gray-400 cursor-pointer duration-300" 
+                        icon="mdi-chevron-right" 
+                        @click="drawer = false ">
+                    </v-icon>
+                </div>
+                <div class="w-full mb-3">
+                    <div class="px-2 w-full h-[180px] flex justify-center items-center">
+                        <img v-if="fileFormat_DD === 'docx'"
+                            src="/images/icon/file_extention_docx.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'pdf'"
+                            src="/images/icon/file_extention_pdf.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'xml' || fileFormat_DD === 'xlsx'"
+                            src="/images/icon/file_extention_xml.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                    </div>
+                    <v-divider thickness="2" class="border-opacity-100 mt-3" ></v-divider>
+                </div>
+                <div class="w-full pl-3 pb-3">
+                    <p class="text-md line-clamp-4"> 
+                        ชื่อไฟล์ : {{ fileName_DD }}
+                    </p>
+                    <v-divider thickness="" class="border-opacity-100 mt-3" ></v-divider>
+                </div>
+                <div class="w-full pl-3 pb-3">
+                    <p class="text-md"> 
+                        วันที่ : {{fileDate_DD}} น.
+                    </p>
+                    <v-divider thickness="" class="border-opacity-100 mt-3" ></v-divider>
+                </div>
+                <div class="w-full pl-3 pb-3">
+                    <p class="text-md"> 
+                        ประเภท : {{fileFormat_DD}}
+                    </p>
+                    <v-divider thickness="" class="border-opacity-100 mt-3" ></v-divider>
+                </div>
+                <div class="w-full pl-3 pb-3">
+                    <p class="text-md"> 
+                        ขนาดไฟล์ : {{fileSize_DD}}
+                    </p>
+                    <v-divider thickness="" class="border-opacity-100 mt-3" ></v-divider>
+                </div>
+                <div class="w-full pl-3 pb-3">
+                    <div class="w-fit flex justify-center items-center gap-1">
+                        <p class="text-md "> 
+                        ปักหมุด :
+                        </p>
+                        <v-switch
+                            @click="fileSwitchPin(fileid_DD,filePin_DD)"
+                            v-model="filePin_DD"
+                            class="pl-3"
+                            density="compact"
+                            inset
+                            hide-details
+                            color="green">
+                        </v-switch>
+                    </div>
+                    <v-divider thickness="" class="border-opacity-100 mt-3" ></v-divider>
+                </div>
+                <div class="w-full flex flex-col gap-1 pb-2">
+                    <v-btn 
+                        color="blue"    
+                        class="w-full" 
+                        v-if="fileFormat_DD === 'pdf'"
+                        @click="previewsFile(fileid_DD,fileNameUpload_DD)"    
+                    >
+                        เปิด
+                    </v-btn>
+                    <v-btn 
+                        color="blue" 
+                        class="w-full"
+                        v-if="fileFormat_DD !== 'pdf'"
+                        @click="downloadFile(fileid_DD,fileNameUpload_DD,fileName_DD)"
+                        >
+                        ดาวน์โหลด
+                    </v-btn>
+                    <v-btn 
+                        color="primary" 
+                        class="w-full"
+                        @click="settingEditFileName(
+                            fileid_DD,
+                            fileName_DD,
+                            fileSelected_DD,
+                            fileNameUpload_DD,
+                            fileFormat_DD)"
+                    >
+                        แก้ไข
+                    </v-btn>
+                    <v-btn @click="deleteFile(fileid_DD,fileNameUpload_DD)" color="red" class="w-full">ลบ</v-btn>
+                </div>
+            </div>
+        </v-navigation-drawer>
     </AdminNavigationBar>
+
+    <!-- add new file  -->
+    <v-dialog
+        persistent
+        v-model="fileUploadDialog"
+        width="550"
+        transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-xl mt-3 relative">
+                     อัพโหลดไฟล์
+                </div>
+                <div class="w-full px-6">
+                    <div class="flex flex-col gap-2 w-full">
+                        <v-form @submit.prevent="addNewFile">
+                            <v-file-input
+                                accept=".docx , .pdf , .xlsx"
+                                placeholder="เลือกภาพประจำตัว"
+                                label="เลือกไฟล์"
+                                v-model="fileUpload"
+                                class=""
+                                show-size
+                                name="file_upload"
+                                hide-details
+                                variant="outlined"
+                                prepend-icon=""
+                            ></v-file-input>
+                            <v-text-field
+                                v-model="fileName"
+                                label="ชื่อไฟล์"
+                                class="mt-3"
+                                hide-details
+                                variant="outlined"
+                                bg-color=""
+                                required
+                            ></v-text-field>
+                            <v-select
+                                v-model="selectedCategory"
+                                label="ประเภท"
+                                :items="allCategoryFile"
+                                class="mt-3"
+                                item-title="file_category_name"
+                                item-value="file_category_id"
+                                hide-details
+                                density="comfortable"
+                                variant="outlined"
+                            >
+                            </v-select>
+                            <div class="w-full mt-6 flex justify-center items-center gap-2">
+                                <v-btn color="red"
+                                    @click="fileUploadDialog = !fileUploadDialog , fileUpload = null , fileName = ''" >
+                                    ยกเลิก
+                                </v-btn>
+                                <v-btn 
+                                    color="green" 
+                                    type="submit" 
+                                    :disabled="!!!fileName || !!!fileUpload "
+                                    :loading="buttonLoading"
+                                > อัพโหลดไฟล์ </v-btn>
+                            </div>
+                        </v-form>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
+
+    <!-- edit file -->
+    <v-dialog
+        persistent
+        v-model="fileEditDialog"
+        width="550"
+        transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-xl mt-3 relative">
+                     แก้ไขไฟล์
+                </div>
+                <div class="w-full px-6">
+                    <div class="flex flex-col gap-2 w-full">
+                        <v-form @submit.prevent="editFile">
+                            <v-file-input
+                                accept=".docx , .pdf , .xlsx"
+                                placeholder="เลือกภาพประจำตัว"
+                                label="เลือกไฟล์"
+                                v-model="fileUpload"
+                                show-size
+                                name="file_upload"
+                                hide-details
+                                variant="outlined"
+                                prepend-icon=""
+                            ></v-file-input>
+                            <v-text-field
+                                v-model="fileName"
+                                label="ชื่อไฟล์"
+                                class="mt-3"
+                                hide-details
+                                variant="outlined"
+                                bg-color=""
+                                required
+                            ></v-text-field>
+                            <v-select
+                                v-model="fileSelected_DD"
+                                label="ประเภท"
+                                :items="allCategoryFile"
+                                class="mt-3"
+                                item-title="file_category_name"
+                                item-value="file_category_id"
+                                hide-details
+                                density="comfortable"
+                                variant="outlined"
+                            >
+                            </v-select>
+                            <div class="w-full mt-6 flex justify-center items-center gap-2">
+                                <v-btn color="red"
+                                    @click="fileEditDialog = false , fileUpload = null , fileName = '' " >
+                                    ยกเลิก
+                                </v-btn>
+                                <v-btn 
+                                    color="blue" 
+                                    type="submit" 
+                                    :loading="buttonLoading"
+                                    :disabled="!!!fileName_DD "
+                                > บันทึก </v-btn>
+                            </div>
+                        </v-form>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
 </template>

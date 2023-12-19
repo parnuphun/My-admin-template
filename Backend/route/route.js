@@ -50,6 +50,7 @@ route.post('/deleteFile',file_c.deleteFile)
 route.post('/fileSwitchPin',file_c.fileSwitchPin)
 route.post('/downloadFile',file_c.downloadFile)
 route.post('/previewFile',file_c.previewFile)
+route.post('/searchFile',file_c.searchFile)
 
 ////////////////////////////////////////////////////////////////////////////
 // activity images

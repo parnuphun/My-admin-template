@@ -112,6 +112,11 @@ export default class namphong_api {
         return axios.post(url+'/updateAdmin',data)
     }
 
+    // search files
+    searchFile(data:{search_keyword:string}){
+        return axios.post(url+'/searchFile',data)
+    }
+
     ///////////////////////////////////////////////////////////////////////////////
     // activity image 
     ///////////////////////////////////////////////////////////////////////////////

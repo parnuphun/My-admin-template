@@ -3,6 +3,7 @@ const upload_person_directory = require('../services/upload_person_directory')
 const delete_file = require('../services/delete_file')
 const date_convert = require('../services/date_convert');
 const rename_file = require('../services/rename_file')
+const bytes = require('bytes');
 const fs = require('fs') 
 const path = require('path')
 require('dotenv').config();
@@ -142,13 +143,13 @@ module.exports.getAllCategoryFile = async (req,res)=> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // add new file 
 module.exports.addNewFile = async (req,res)=> {
-    // console.log('file size => ',req.file.size);
     const file_name = req.body.file_name
     const file_category_id = req.body.file_category_id
     const file_type = req.body.file_type
     const file_date = new Date() 
     const file_name_upload = `${file_name}_${Date.now()}.${file_type}`
-    
+    const file_size = bytes(req.file.size)
+
     await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
     try{
         db.query(`
@@ -158,20 +159,32 @@ module.exports.addNewFile = async (req,res)=> {
                 file_date,
                 file_pin,
                 file_type,
+                file_size,
                 file_category_id)
-            VALUES (?,?,?,1,?,?)
-        `,[file_name,file_name_upload,file_date,file_type,file_category_id],(err,result)=>{
-            console.log(' ADD NEW FILES SUCCESS !!');
-
-            res.json({
+            VALUES (?,?,?,1,?,?,?)
+        `,[file_name,file_name_upload,file_date,file_type,file_size,file_category_id],(err,result)=>{
+            if(err){
+                console.log('ERR CANT ADD NEW FILE !');
+                return res.status(200).json({
+                    status:false,
+                    statusCode:500,
+                    msg:'ไม่สามารถเพิ่มไฟล์เข้าไปในระบบได้',
+                    err:err
+                })
+            }
+            console.log('ADD NEW FILES SUCCESS !!');
+            res.status(200).json({
                 status:true,
+                statusCode:200,
                 msg:'เพิ่มไฟล์สำเร็จ',
             })
         })
     }catch(err){
-        console.log('CANT ADD NEW FILES , CHECK ERR PLS !!',err);
-        res.json({
+        console.log('ERR TRY CaTCH BLOCK ,CANT ADD NEW FILES , CHECK ERR PLS !!');
+        console.log('ERR : ',err);
+        res.status(200).json({
             status:false,
+            statusCode:200,
             msg:'ไม่สามารถเพิ่มไฟล์ลงระบบได้ กรุณาติดต่อผู้ดูแลระบบ',
             err: err
         })
@@ -238,25 +251,44 @@ module.exports.getAllFiles = async (req,res) => {
 module.exports.fileSwitchPin = async (req,res) => {
     const file_id = req.body.file_id
     let status 
+    let succ_msg 
 
-    // opposit value 
-    if(req.body.file_pin_status == false) status = 1
-    else status = 0
+    // set opposit value 
+    if(req.body.file_pin_status == false) {
+        status = 1
+        succ_msg = ``
+    }else{
+        status = 0
+        succ_msg = ``
+    }
 
      try{
         db.query('UPDATE file SET file_pin = ? WHERE file_id = ?' ,[status , file_id] ,(err,result)=>{ 
+            if(err){
+                console.log('CANT SWITCH STATUS FILE');
+                console.log('ERR : ',err);
+                res.status(200).json({
+                    status:false,
+                    statusCode:500,
+                    msg:'ไม่สามารถเปลี่ยนสถานะได้',
+                    err:err
+                })
+            }
             console.log(`CHANGE STATUS FILE ID ${file_id} SUCCESS !`);
-            res.json({
+            res.status(200).json({
                 status:true,
-                msg:'เปลี่ยนสถานะสำเร็จ'
+                statusCode:200,
+                msg: 'อัพเดตสถานะสำเร็จ'
             })
         })
     }catch(err){
-        console.log('CANT CHANGE PIN STARTUS CHECK ERR PLS !!');
-        console.log('ERR ==> ',err);
-        res.json({
+        console.log('ERR TRY CATCH BLOCK , CANT CHANGE PIN STARTUS CHECK ERR PLS !!');
+        console.log('ERR : ',err);
+        res.status(200).json({
             status:false,
-            msg:'ไม่สามารถเปลี่ยนสถานะได้'
+            statusCode:500,
+            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถเปลี่ยนสถานะได้',
+            err:err
         })
     }
 }
@@ -280,6 +312,7 @@ module.exports.downloadFile = async(req,res) =>{
 
 // preview file 
 module.exports.previewFile = async(req,res) => {
+    console.log(req.body);
     const file_name_upload = req.body.file_name_upload
     const filePath = path.join(__dirname, `../public/file/${file_name_upload}`)
     // console.log('file existsSync => ',fs.existsSync(filePath));
@@ -300,16 +333,15 @@ module.exports.previewFile = async(req,res) => {
 module.exports.editFile = async(req,res) => {
     const file_id = req.body.file_id
     const file_name = req.body.file_name 
-    let file_name_upload
     const file_type = req.body.file_type
     const file_category_id = req.body.file_category_id
+    let file_name_upload 
     if(req.body.file_upload === 'no_file_upload'){ // case no file upload 
-        file_name_upload = req.file_name_upload // use old name 
+        file_name_upload = req.body.file_name_upload // use old name 
     }else{
         file_name_upload = `${file_name}_${Date.now()}.${file_type}`// use new name file uploaded
         await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
     }
-
     try{
         // get old file name first after add new file name 
         db.query('SELECT * FROM file WHERE file_id = ? ',[file_id],(err,result)=>{
@@ -343,5 +375,41 @@ module.exports.editFile = async(req,res) => {
             msg:'ไม่สามารถบันทึกไฟล์ลงในระบบได้'
         })
     }
+
+}
+
+// search file 
+module.exports.searchFile = async(req,res) =>{
+    const search_keyword = req.body.search_keyword
+    try{
+        db.query("SELECT * FROM file WHERE file_name LIKE '%"+search_keyword+"%'", async (err,result)=>{
+            if(err) {
+                console.log('ERR CANT SEARCH FILES');
+                console.log('ERR :',err);
+                return res.status(200).json({
+                    status:false,
+                    statusCode:500,
+                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
+                    err:err
+                })
+            }
+            res.status(200).json({
+                status:true,
+                statusCode:200,
+                msg:'ค้นหาข้อมูลสำเร็จ',
+                search_data:result
+            })
+        })
+    }catch(err){
+        console.log('ERR TRY CATCH BLOCK , CANT SEARCH FILES');
+        console.log('ERR :',err);
+        res.status(200).json({
+            status:false,
+            statusCode:500,
+            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
+            err:err
+        })
+    }
+
 
 }
