@@ -6,6 +6,8 @@ backend/public/file/*
 !backend/public/file.gitkeep
 backend/public/persons_image/*
 !backend/public/persons_image/.gitkeep
+backend/public/activity_image/*
+!backend/public/activity_image/.gitkeep
 
 # Logs
 logs
