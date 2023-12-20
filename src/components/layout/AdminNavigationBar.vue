@@ -102,7 +102,7 @@ function isGroupOpen() {
 <template>
     <VThemeProvider>
         <VApp>
-            <div class="h-screen bg-pink-100">
+            <div class="h-screen bg-white">
                 <!-- nav bar -->
                 <v-app-bar :elevation="2" class="h-[65px] max-h-[65px] min-h-[65px] bg-pink">
                     <!-- toggle sidebar -->

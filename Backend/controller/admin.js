@@ -139,9 +139,9 @@ module.exports.updateAdmin = async(req,res) =>{
         db.query('SELECT * FROM user WHERE user_username = ? ', [new_username],(err,result)=>{
             if(old_username!=new_username){
                 if(result.length >= 1){
-                    res.json({
+                    return res.json({
                         msg:'ชื่อผู้ใช้ซ้ำกรุณากรอกใหม่',
-                        status: true
+                        status: false
                     })
                 }
             }
@@ -172,7 +172,8 @@ module.exports.updateAdmin = async(req,res) =>{
                     console.log('UPDATE ADMIN SUCCESSS!')
                     res.json({
                         msg:'บันทึกข้อมูลเรียบร้อยแล้ว',
-                        status:true
+                        status:true,
+                        new_image_name:image
                     })
                 })
             }catch{

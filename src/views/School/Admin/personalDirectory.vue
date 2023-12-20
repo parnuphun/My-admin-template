@@ -55,7 +55,7 @@ watch(tab , ()=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Position 
 /////////////////////////////////////////////////////////////////////////////////////////////////
-
+const disPositionBtn = ref()
 // get position list and set select position
 function getAllPositionList(){
     _api.getAllPositionList({category_id:categoryNo.value}).then((res)=>{
@@ -63,6 +63,7 @@ function getAllPositionList(){
         // set select position after change tabs or managaged
         if(positionList.value?.length === 0){
             selectedPosition.value = null
+            disPositionBtn.value = true
         }else{
             if(managementStatus.value === 'nothing') {                
                 selectedPosition.value = positionList.value![0].pd_position_id
@@ -73,6 +74,7 @@ function getAllPositionList(){
             }else if(managementStatus.value === 'addposition') {
                 selectedPosition.value = positionList.value![positionList.value!.length-1]?.pd_position_id
             }  
+            disPositionBtn.value = false
         }
 
     })
@@ -288,32 +290,32 @@ function updatePersonData(){
                                     </div>
                                     <div class="w-full flex flex-row justify-between">
                                         <div class="w-full flex flex-row justify-start  gap-2">
-                                            <!-- rename position -->
-                                            <v-btn class="group w-auto" color=""
-                                            @click="positionDialogEdit = !positionDialogEdit">
-                                                <p class="group-hover:text-blue-500">
-                                                    <v-icon icon="mdi-pencil"> </v-icon> เปลี่ยนชื่อ
-                                                </p>
-                                            </v-btn>
                                             <!-- add new position -->
-                                            <v-btn class="group w-auto" color=""
+                                            <v-btn class="group w-auto" color="green" 
                                             @click="positionDialogAdd = !positionDialogAdd">
-                                                <p class="group-hover:text-green-600">
+                                                <p class="">
                                                     <v-icon icon="mdi-plus"> </v-icon> เพิ่มตำแหน่ง
                                                 </p>
                                             </v-btn>
+                                            <!-- rename position -->
+                                            <v-btn class="group w-auto" color="blue" :disabled="disPositionBtn"
+                                            @click="positionDialogEdit = !positionDialogEdit">
+                                                <p class="">
+                                                    <v-icon icon="mdi-pencil"> </v-icon> เปลี่ยนชื่อ
+                                                </p>
+                                            </v-btn>
                                             <!-- delete position -->
-                                            <v-btn class="group w-fit" color="" 
+                                            <v-btn class="group w-fit" color="red" :disabled="disPositionBtn"
                                             @click="deletePosition(selectedPosition,positionName)">
-                                            <p class="group-hover:text-red-600">
+                                            <p class="">
                                                 <v-icon icon="mdi-delete"> </v-icon> ลบ
                                             </p>
                                             </v-btn>
                                         </div>
                                         <!-- add new person -->
-                                        <v-btn class="group w-fit" color="" 
+                                        <v-btn class="group w-fit" color="green"  :disabled="disPositionBtn"
                                         @click="addNewPersonDialog()">
-                                            <p class="group-hover:text-green-600">
+                                            <p class="">
                                                 <v-icon icon="mdi-account-plus" class="mr-2"> </v-icon> เพิ่มบุคลากร
                                             </p>
                                         </v-btn>

@@ -34,7 +34,7 @@ const router = createRouter({
         { path: '/admin/adminManagement' , component: () => import('../views/School/Admin/adminManagement.vue')},
         
         // test admin ui 
-        { path: '/testui' , component: () => import('../views/test/nomphong_ui_test.vue')},
+        { path: '/test_ui' , component: () => import('../views/School/Test/test_ui.vue')},
 
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // default page
