@@ -77,9 +77,9 @@ export const navigationMenu:NavigationItem[] = [
     },
     {
         id: 'person_management' ,
-        title : 'test ui' ,
-        icon : 'mdi-account' ,
-        link : '/testui' ,
+        title : 'test' ,
+        icon : 'mdi-test-tube' ,
+        link : '/test_ui' ,
         permission : 'ทุกคน' ,
     },
 
