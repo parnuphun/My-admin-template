@@ -49,6 +49,17 @@ export default class namphong_api {
     ///////////////////////////////////////////////////////////////////////////////
     // file 
     ///////////////////////////////////////////////////////////////////////////////
+    // get total file length 
+    getFileLength(){
+        return axios.post(url+'/getFileLength')
+    }
+
+
+    // get all files 
+    getAllFiles(data:{selected_category:number,start_item:number,limit:number}){        
+        return axios.post(url+'/getAllFiles',data)
+    }
+
     // get all file catefory
     getAllCategoryFile(){
         return axios.post(url+'/getAllCategoryFile')
@@ -62,11 +73,6 @@ export default class namphong_api {
     // edit file 
     editFile(data:FormData){
         return axios.post(url+'/editFile',data)
-    }
-
-    // get all files 
-    getAllFiles(data:{selected_category:number}){
-        return axios.post(url+'/getAllFiles',data)
     }
 
     //  delete file

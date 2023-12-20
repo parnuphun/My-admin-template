@@ -141,6 +141,88 @@ module.exports.getAllCategoryFile = async (req,res)=> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // file
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// get all file length
+module.exports.getFileLength = async (req,res) =>{
+    try{
+        db.query('SELECT COUNT(file_id) AS total_file FROM file',async (err,result) => {
+            if(err){
+                console.log('ERR QUERY BLOCK , CANT GET TOTAL FILES ');
+                console.log('ERR : ' ,err);
+                res.status(500).json({
+                    status:false,
+                    status_code:200,
+                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถดึงจำนวนไฟล์ได้ !!',
+                })
+            }
+            res.status(200).json({
+                status:true,
+                status_code:200,
+                msg:'ดึงข้อมูลสำเร็จ',
+                file_length:result[0].total_file 
+            })
+        })
+    }catch(err){
+        console.log('ERR TRY CATCH BLOCK , CANT TOTAL FILES');
+        console.log('ERR : ' ,err);
+        res.status(500).json({
+            status:false,
+            status_code:200,
+            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถดึงจำนวนไฟล์ได้ !!',
+        })
+    }
+}
+
+// get all file 
+module.exports.getAllFiles = async (req,res) => {
+    const selected_category = req.body.selected_category
+    const limit = req.body.limit
+    const start_item = req.body.start_item
+    try{
+        db.query(`
+        SELECT * FROM file 
+        WHERE file_category_id = ? 
+        ORDER BY file_id DESC
+        LIMIT ? OFFSET ?`,
+        [selected_category,limit,start_item],async (err,result) => {
+            if(err){
+                console.log('ERR IN QUERY BLOCK , CANT GET FILES DATA !!');
+                console.log('ERR : ',err);
+                return res.status(200).json({
+                    status_code: 500,
+                    status:false,
+                    msg:'ดึงข้อมูลไม่สำเร็จ !!',
+                })
+            }
+
+            if(result.length != 0){
+                for(let i=0 ; i<result.length ;i++){
+                    if(result[i].file_pin == 0) result[i].file_pin = false
+                    else result[i].file_pin = true
+                    
+                    await date_convert(result[i].file_date).then((date_converted)=>{
+                        result[i].file_date = date_converted
+                    }) 
+                }
+            }
+
+            res.status(200).json({
+                status_code:200,
+                status:true,
+                msg:'ดึงข้อมูลสำเร็จ',
+                files_data:result
+            })
+        })
+    }catch(err){
+        console.log('ERR IN TRY CATCH BLOCK , CANT GET FILES DATA !!');
+        console.log('ERR : ',err);
+        res.status(200).json({
+            status_code: 500,
+            status:false,
+            msg:'เกิดข้อผิดพลาดในระบบ ดึงข้อมูลไม่สำเร็จ !!',
+        })
+    }
+}
+
 // add new file 
 module.exports.addNewFile = async (req,res)=> {
     const file_name = req.body.file_name
@@ -212,37 +294,6 @@ module.exports.deleteFile = async (req,res) => {
         res.json({
             status:false,
             msg:'ไม่สามารถลบไฟล์ได้ กรุณษติดต่อผู้ดูแลระบบ'
-        })
-    }
-}
-
-// get all file 
-module.exports.getAllFiles = async (req,res) => {
-    const selected_category = req.body.selected_category
-    try{
-        db.query('SELECT * FROM file WHERE file_category_id = ? ORDER BY file_id DESC',[selected_category],async (err,result) => {
-            if(result.length != 0){
-                for(let i=0 ; i<result.length ;i++){
-                    if(result[i].file_pin == 0) result[i].file_pin = false
-                    else result[i].file_pin = true
-                    
-                    await date_convert(result[i].file_date).then((date_converted)=>{
-                        result[i].file_date = date_converted
-                    }) 
-                     
-                }
-            }
-            res.json({
-                status:true,
-                msg:'ดึงข้อมูลสำเร็จ',
-                fileData:result
-            })
-        })
-    }catch(err){
-        console.log('CANT GET ALL FILES PLS CHECK ERR!!!');
-        res.json({
-            status:false,
-            msg:'ดึงข้อมูลไม่สำเร็จ !!',
         })
     }
 }

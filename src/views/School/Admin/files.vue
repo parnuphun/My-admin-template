@@ -16,6 +16,7 @@ const allCategoryFile = ref<Array<fileCategoryRespone>>()
 const buttonLoading = ref(false)
 // working at first  
 onMounted(()=>{
+    getFileLength()
     getAllCategoryFile()
     getAllFile()
 })
@@ -34,20 +35,6 @@ function getAllCategoryFile(){
     })
 }
 
-const files = ref<Array<filesResponse>>()
-// get all file 
-function getAllFile(){
-    dataStatus.value = 'loading_data'
-    _api.getAllFiles({selected_category:selectedCategory.value}).then((res)=>{
-        files.value = res.data.fileData as Array<filesResponse>
-        if(files.value.length === 0){
-            dataStatus.value = 'no_data'
-        }else if(files.value.length >= 1){
-            dataStatus.value = 'load_data_succ'
-        }
-    })
-}
-
 // check file type
 function checkFileType(){
     if(fileUpload.value[0].type === 'application/pdf'){
@@ -58,7 +45,6 @@ function checkFileType(){
         return 'xlsx'
     }
 }
-
 
 const fileUploadDialog = ref(false) 
 const fileName = ref<string>() // file name for update and addnew form 
@@ -98,7 +84,6 @@ watch(fileUpload,()=>{
         }
     }
 })
-
 
 // delete file
 function deleteFile(file_id:number,file_name_upload:string){
@@ -158,7 +143,6 @@ function previewsFile(file_id:number , file_name_upload:string, ){
     })
 }
 
-
 // edit file
 function editFile(){    
     buttonLoading.value = true 
@@ -194,9 +178,8 @@ function editFile(){
 }
 
 const fileEditDialog = ref(false)
-
 // set data in form update from drawer detail (_DD)
- function settingEditFileName(file_id:number,file_name:string , file_category_id:string,file_name_upload:string,file_type:string){
+function settingEditFileName(file_id:number,file_name:string , file_category_id:string,file_name_upload:string,file_type:string){
     fileSelected_DD.value = file_category_id // category selected 
     fileid_DD.value = file_id    
     fileNameUpload_DD.value = file_name_upload
@@ -205,7 +188,6 @@ const fileEditDialog = ref(false)
     fileFormat_DD.value = file_type
     fileEditDialog.value = true
 }
-
 
 // send data to drawer detail
 const fileName_DD = ref()
@@ -230,9 +212,8 @@ function fileDetailDrawer(item:filesResponse){
 }
 
 const drawer = ref(false)
-const drawerAlignment = ref('justify-start') // not use now css assign 
+const drawerAlignment = ref('justify-start') // not use now , this is css assign 
 watch(drawer,()=>{
-
     if(drawer.value === false) drawerAlignment.value = 'justify-start'
     else drawerAlignment.value = 'justify-start'
 })
@@ -259,6 +240,65 @@ watch(searchValue , ()=>{
             }
         })
     }
+})
+
+const files = ref<Array<filesResponse>>()
+// get total file length 
+function getFileLength(){
+    _api.getFileLength().then((res)=>{
+        totalPage.value = Math.ceil(res.data.file_length/sizeSelected.value)
+        console.log('total pages : ',Math.ceil(res.data.file_length/sizeSelected.value));         
+    })
+}
+// get all file 
+function getAllFile(){
+    dataStatus.value = 'loading_data'
+    _api.getAllFiles({selected_category:selectedCategory.value,start_item:startItem.value,limit:sizeSelected.value}).then((res)=>{
+        if(res.data.status_code === 200){
+            files.value = res.data.files_data as Array<filesResponse>
+            if(files.value.length === 0){
+                dataStatus.value = 'no_data'
+            }else if(files.value.length >= 1){
+                dataStatus.value = 'load_data_succ'
+            }
+        }else{
+            dataStatus.value = 'err_data'
+        }
+    }).catch(()=>{
+        dataStatus.value = 'network_err'
+    })
+}
+
+// pagination 
+const totalPage = ref() // total page
+const size = ref([25,50,100]) // 
+const sizeSelected = ref(size.value[0]) // "LIMIT"
+const currentPage = ref(1) // current page
+const startItem = ref<number>(0) // first item "OFFSET"
+
+const pagination = ref(1) // v-model v-pagination 
+
+function changePage(){
+    currentPage.value = pagination.value
+    startItem.value = (currentPage.value -1) * sizeSelected.value
+    
+    console.log(startItem.value);
+    
+}
+
+watch(pagination,()=>{    
+    // console.log("pagination value :" , pagination.value);
+    // console.log("current page :" , currentPage.value);
+    changePage()  
+    getFileLength() 
+    getAllFile()
+})
+
+watch(sizeSelected,()=>{
+    // console.log('limit size :', sizeSelected.value);
+    changePage()  
+    getFileLength()  
+    getAllFile()
 })
 
 </script>
@@ -307,11 +347,11 @@ watch(searchValue , ()=>{
                 </div>
             </div>
             <v-divider class="border-opacity-100"></v-divider>
-            <div class="w-full" v-if="dataStatus === 'load_data_succ'">
-                <div class="w-full flex flex-wrap "
+            <div class="w-full flex flex-col justify-start " v-if="dataStatus === 'load_data_succ'">
+                <div class="w-full flex flex-wrap  "
                     :class="drawerAlignment">
                     <div v-for="(item , i) in files" :key="item.file_name"
-                    class="w-[150px] p-2">
+                    class="less:w-1/2 sm:w-1/5 md:w-2/12  p-2">
                         <div @click="fileDetailDrawer(item)"
                         class="w-full flex flex-col justify-between items-baseline rounded-md hover:shadow-xl 
                         cursor-pointer shadow-md hover:shadow-pink-100 border-2 duration-300" >
@@ -333,7 +373,7 @@ watch(searchValue , ()=>{
                                 <v-divider class="border-opacity-100"></v-divider> 
                             </div>
                             <div class="w-full px-2 mt-2">
-                                <p class="text-[14px] line-clamp-2"> {{ item.file_name }}</p>
+                                <p class="text-[14px] line-clamp-2"> {{startItem+(i+1)}}. {{ item.file_name }}</p>
                             </div>
                             <div class="w-full px-2 mb-2">
                                 <p class="text-[12px] line-clamp-1"> {{ item.file_size }}</p>
@@ -341,7 +381,30 @@ watch(searchValue , ()=>{
                         </div>
                     </div>
                 </div>
+                <div class="w-full my-2">
+                    <v-divider class="border-opacity-100"></v-divider> 
+                </div>
+                <div class="w-full flex justify-end">
+                    <div class="w-[100px]">
+                        <v-selection>
+                            <v-select
+                                :items="size"
+                                variant="outlined"
+                                v-model="sizeSelected"
+                                hide-details="auto"
+                            ></v-select>
+                        </v-selection>
+                    </div>
+                    <div class="w-fit">
+                        <v-pagination 
+                            :length="totalPage"
+                            v-model="pagination"
+                            :total-visible="5">
+                        </v-pagination>
+                    </div>
+                </div>
             </div>
+
             <div v-else-if="dataStatus === 'loading_data'" class="w-full h-full flex justify-center items-center">
                 <div class=" flex flex-col items-center">
                     <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
@@ -459,6 +522,7 @@ watch(searchValue , ()=>{
                 </div>
             </div>
         </v-navigation-drawer>
+
     </AdminNavigationBar>
 
     <!-- add new file  -->
