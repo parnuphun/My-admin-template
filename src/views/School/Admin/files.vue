@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import {ref ,onMounted ,watch} from 'vue'
-import {fileCategoryRespone , filesResponse , dataStatus} from '../../../store/Interface' 
+import {fileCategoryRespone , filesResponse , dataStatus , viewData} from '../../../store/Interface' 
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
+import { reactive } from 'vue';
  
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
  
 const dataStatus = ref<dataStatus>()
 
-const selectedCategory = ref(1) // selected file category 
+const selectedCategory = ref(0) // selected file category , set default = 0 it mean fetch all data
 const allCategoryFile = ref<Array<fileCategoryRespone>>()
 
 const buttonLoading = ref(false)
@@ -22,8 +23,13 @@ onMounted(()=>{
 })
 
 // detect cetegory fetch data
-watch(selectedCategory , ()=>{    
-    getAllFile()
+watch(selectedCategory , ()=>{  
+    // reset page after change category 
+    currentPage.value = 1  // *** maybe err this variable just check it first if pagination got problem
+    pagination.value = 1
+    changePage()
+          
+    getFileCheck()
     drawer.value = false
 })
   
@@ -32,6 +38,10 @@ function getAllCategoryFile(){
     _api.getAllCategoryFile().then((res)=>{        
         // console.log('data ====>',res.data.file_catefory_data);
         allCategoryFile.value = res.data.file_catefory_data as Array<fileCategoryRespone>
+        allCategoryFile.value.unshift({
+            file_category_id:0,
+            file_category_name:'ทั้งหมด'
+        })
     })
 }
 
@@ -60,7 +70,7 @@ function addNewFile(){
     formData.append('file_name',fileName.value!)
     formData.append('file_upload',fileUpload.value[0])
     formData.append('file_type', fileType.value!)
-    formData.append('file_category_id', String(selectedCategory.value))
+    formData.append('file_category_id', String(fileSelected_DD.value))
 
     _api.addNewFile(formData).then((res)=>{
         if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
@@ -92,7 +102,7 @@ function deleteFile(file_id:number,file_name_upload:string){
             _api.deleteFile({file_id:file_id,file_name_upload:file_name_upload}).then((res)=>{
                 if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:1,progressbar:true,icon:'success'})
                 else _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
-                getAllFile()
+                getFileCheck()
 
                 // reset variable after deleted 
                 fileName_DD.value =  ''
@@ -112,8 +122,8 @@ function deleteFile(file_id:number,file_name_upload:string){
 function fileSwitchPin(file_id:number , file_pin_status:boolean){
     _api.fileSwitchPin({file_id:file_id,file_pin_status:file_pin_status}).then((res)=>{
         if(res.data.statusCode === 200){
-             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
-             getAllFile()
+            _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+            getFileCheck();
         }else{
             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
         } 
@@ -164,14 +174,18 @@ function editFile(){
     formData.append('file_category_id', String(fileSelected_DD.value))    
 
     _api.editFile(formData).then((res)=>{
-        if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
-        else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
+        if(res.data.status_code === 200){ 
+            _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'}) 
+            fileNameUpload_DD.value = res.data.new_file_name
+        }else {
+            _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+        }
         // set file name to dd drawer for update new name and then reset for reuse in add new form 
-        fileName_DD.value = fileName.value 
+        fileName_DD.value = fileName.value         
         fileUpload.value = null
         fileType.value = ''
         buttonLoading.value = false 
-        getAllFile()
+        getFileCheck()
     }).catch(()=>{
         buttonLoading.value = false 
     })
@@ -180,7 +194,7 @@ function editFile(){
 const fileEditDialog = ref(false)
 // set data in form update from drawer detail (_DD)
 function settingEditFileName(file_id:number,file_name:string , file_category_id:string,file_name_upload:string,file_type:string){
-    fileSelected_DD.value = file_category_id // category selected 
+    fileSelected_DD.value = Number(file_category_id) // category selected 
     fileid_DD.value = file_id    
     fileNameUpload_DD.value = file_name_upload
     fileName_DD.value = file_name // use in drawer data detail 
@@ -196,11 +210,11 @@ const fileNameUpload_DD = ref()
 const fileFormat_DD = ref()
 const fileDate_DD = ref()
 const filePin_DD = ref()
-const fileSelected_DD = ref()
+const fileSelected_DD = ref<any>(1) // set 1 for set default file category add new form
 const fileSize_DD = ref() // show in drawwer detail only 
 
 function fileDetailDrawer(item:filesResponse){
-    fileSelected_DD.value = selectedCategory.value
+    fileSelected_DD.value = item.file_category_id
     fileName_DD.value = item.file_name
     fileid_DD.value = item.file_id
     fileNameUpload_DD.value = item.file_name_upload
@@ -218,22 +232,32 @@ watch(drawer,()=>{
     else drawerAlignment.value = 'justify-start'
 })
 
-const searchValue = ref()
+// search 
+const searchValue = reactive({
+    searchText:'',
+    searchTriger:false // triger 
+})
 watch(searchValue , ()=>{
-    if(searchValue.value.trim() === ''){
+    if(searchValue.searchText.trim() === ''){
+        getFileLength();        
         getAllFile();
     }else{
         dataStatus.value = 'loading_data'
-        _api.searchFile({search_keyword:searchValue.value}).then((res)=>{
+        _api.searchFile({search_keyword:searchValue.searchText,selected_category:selectedCategory.value,start_item:startItem.value,limit:sizeSelected.value})
+            .then((res)=>{
             if(res.data.statusCode === 200){
                 files.value = res.data.search_data as Array<filesResponse> 
                 if(files.value.length === 0){
                     dataStatus.value = 'no_data'
                 }else if(files.value.length >= 1){
                     dataStatus.value = 'load_data_succ'
+                             
                 }else{
                     dataStatus.value = 'network_err'
                 }
+                // set total page after search
+                totalFiles.value = res.data.data_length                    
+                totalPage.value = Math.ceil(res.data.data_length/sizeSelected.value)           
             }else{
                 _msg.toast_msg({title:res.data.msg,timer:6,icon:'error',progressbar:true})
                 dataStatus.value = 'load_data_succ'
@@ -245,9 +269,9 @@ watch(searchValue , ()=>{
 const files = ref<Array<filesResponse>>()
 // get total file length 
 function getFileLength(){
-    _api.getFileLength().then((res)=>{
+    _api.getFileLength({selected_category:selectedCategory.value}).then((res)=>{
+        totalFiles.value = res.data.file_length
         totalPage.value = Math.ceil(res.data.file_length/sizeSelected.value)
-        console.log('total pages : ',Math.ceil(res.data.file_length/sizeSelected.value));         
     })
 }
 // get all file 
@@ -259,7 +283,7 @@ function getAllFile(){
             if(files.value.length === 0){
                 dataStatus.value = 'no_data'
             }else if(files.value.length >= 1){
-                dataStatus.value = 'load_data_succ'
+                dataStatus.value = 'load_data_succ'                
             }
         }else{
             dataStatus.value = 'err_data'
@@ -270,7 +294,8 @@ function getAllFile(){
 }
 
 // pagination 
-const totalPage = ref() // total page
+const totalPage = ref()  
+const totalFiles = ref() 
 const size = ref([25,50,100]) // 
 const sizeSelected = ref(size.value[0]) // "LIMIT"
 const currentPage = ref(1) // current page
@@ -280,27 +305,38 @@ const pagination = ref(1) // v-model v-pagination
 
 function changePage(){
     currentPage.value = pagination.value
-    startItem.value = (currentPage.value -1) * sizeSelected.value
-    
-    console.log(startItem.value);
-    
+    startItem.value = (currentPage.value -1) * sizeSelected.value 
 }
 
-watch(pagination,()=>{    
-    // console.log("pagination value :" , pagination.value);
-    // console.log("current page :" , currentPage.value);
-    changePage()  
-    getFileLength() 
-    getAllFile()
+// detect pagination 
+watch(pagination,()=>{         
+    changePage()
+    getFileCheck()
 })
 
+// detect size select
 watch(sizeSelected,()=>{
-    // console.log('limit size :', sizeSelected.value);
-    changePage()  
-    getFileLength()  
-    getAllFile()
+    changePage()
+    getFileCheck()
 })
 
+const viewData = ref<viewData>('detail')
+// detect viewData 
+watch(viewData , ()=>{
+    console.log(viewData.value);
+})
+
+// check search trigger before fetch all data
+function getFileCheck(){    
+    if(searchValue.searchText === ''){
+        // no value in seachValue the get common data
+        getFileLength()
+        getAllFile()
+    }else{
+        // triger seachValue for seaching next after change category id       
+        searchValue.searchTriger = !searchValue.searchTriger
+    }
+}
 </script>
 
 <template>
@@ -308,13 +344,29 @@ watch(sizeSelected,()=>{
     <AdminNavigationBar>
         <div class="w-full h-full flex flex-col gap-1">
             <div class="w-full flex flex-wrap">
-                <div class="md:w-1/2 less:w-full p-1">
-                        <v-btn class="h-full less:w-full sm:w-auto" 
-                        color="green" size="large" @click="fileUploadDialog = !fileUploadDialog">
+                <div class="md:w-1/2 less:w-full p-1 flex gap-2 less:justify-between md:justify-start items-center">
+                    <v-btn class="h-full less:w-1/2 sm:w-auto" 
+                        color="pink" size="large" @click="fileUploadDialog = !fileUploadDialog">
                         <p class="text-md" >
                             <v-icon  icon="mdi-file-plus"></v-icon> เพิ่มไฟล์  
                         </p>
                     </v-btn>
+                    <div class="h-full less:w-1/2 sm:w-auto flex justify-end items-center" >
+                        <v-btn-toggle   
+                            color="pink" 
+                            v-model="viewData" 
+                            mandatory
+                            variant="outlined" 
+                            size="large">
+                            <v-btn value="detail">
+                                <v-icon>mdi-grid</v-icon>
+                            </v-btn>
+    
+                            <v-btn value="table">
+                                <v-icon>mdi-table</v-icon>
+                            </v-btn>
+                        </v-btn-toggle>
+                    </div>
                  </div>
                 <div class="md:w-1/2 less:w-full p-1 flex flex-wrap justify-end">
                     <div class="less:w-full md:w-1/2 p-1">
@@ -335,7 +387,7 @@ watch(sizeSelected,()=>{
                         <v-text-field
                             label="ค้นหา"
                             class=""
-                            v-model="searchValue"
+                            v-model="searchValue.searchText"
                             hide-details
                             variant="outlined"
                             prepend-inner-icon="mdi-magnify"
@@ -346,12 +398,14 @@ watch(sizeSelected,()=>{
                     </div>
                 </div>
             </div>
+            <div class=" px-4">
+               <p class="text-lg"> ไฟล์ทั้งหมด : {{ totalFiles }}</p>
+            </div>
             <v-divider class="border-opacity-100"></v-divider>
             <div class="w-full flex flex-col justify-start " v-if="dataStatus === 'load_data_succ'">
-                <div class="w-full flex flex-wrap  "
-                    :class="drawerAlignment">
+                <div class="w-full flex flex-wrap " v-if="viewData === 'detail'">
                     <div v-for="(item , i) in files" :key="item.file_name"
-                    class="less:w-1/2 sm:w-1/5 md:w-2/12  p-2">
+                    class="less:w-1/3 sm:w-1/5 md:w-1/6  p-2">
                         <div @click="fileDetailDrawer(item)"
                         class="w-full flex flex-col justify-between items-baseline rounded-md hover:shadow-xl 
                         cursor-pointer shadow-md hover:shadow-pink-100 border-2 duration-300" >
@@ -376,33 +430,61 @@ watch(sizeSelected,()=>{
                                 <p class="text-[14px] line-clamp-2"> {{startItem+(i+1)}}. {{ item.file_name }}</p>
                             </div>
                             <div class="w-full px-2 mb-2">
-                                <p class="text-[12px] line-clamp-1"> {{ item.file_size }}</p>
+                                <p class="text-[13px] text-gray-500 line-clamp-1"> {{ item.file_size }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="w-full" v-if="viewData === 'table'">
+                    <v-table>
+                        <thead>
+                            <tr class="bg-[#E91E63] text-white ">
+                                <th class="text-left w-[20px]"> # </th>
+                                <th class="text-center w-[100px]"> ประเภท </th>
+                                <th class="text-left"> ชื่อไฟล์ </th>
+                                <th class="text-center w-[30px] "> ขนาด </th>
+                                <th class="text-center w-[100px]"> ปักหมุด </th>
+                                <th class="text-center w-[200px] "> วันที่อัพโหลด </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-for="(item , i) in files" :key="item.file_id" 
+                        class="hover:bg-gray-200 cursor-pointer duration-50"
+                        @click="fileDetailDrawer(item)">
+                            <td>{{startItem+(i+1)}}.</td>
+                            <td>
+                                <div class="less:w-[100px] md:w-full h-[70px] flex justify-center p-2">
+                                    <img v-if="item.file_type === 'docx'"
+                                        src="/images/icon/file_extention_docx.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'pdf'"
+                                        src="/images/icon/file_extention_pdf.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'xml' || item.file_type === 'xlsx'"
+                                        src="/images/icon/file_extention_xml.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                </div>
+                            </td>
+                            <td>{{ item.file_name }}</td>
+                            <td class="">{{ item.file_size }}</td>
+                            <td class="text-center">
+                                <v-icon v-if="item.file_pin === true"
+                                class="text-red-500" size="large">mdi-pin</v-icon>
+                                <v-icon v-if="item.file_pin === false"
+                                class="" size="large">mdi-pin-off</v-icon>
+                            </td>
+                            <td class="text-center ">{{ item.file_date }} น.</td>
+                        </tr>
+                        </tbody>
+                    </v-table>
+                </div>
                 <div class="w-full my-2">
                     <v-divider class="border-opacity-100"></v-divider> 
                 </div>
-                <div class="w-full flex justify-end">
-                    <div class="w-[100px]">
-                        <v-selection>
-                            <v-select
-                                :items="size"
-                                variant="outlined"
-                                v-model="sizeSelected"
-                                hide-details="auto"
-                            ></v-select>
-                        </v-selection>
-                    </div>
-                    <div class="w-fit">
-                        <v-pagination 
-                            :length="totalPage"
-                            v-model="pagination"
-                            :total-visible="5">
-                        </v-pagination>
-                    </div>
-                </div>
+               
             </div>
 
             <div v-else-if="dataStatus === 'loading_data'" class="w-full h-full flex justify-center items-center">
@@ -420,6 +502,25 @@ watch(sizeSelected,()=>{
                     <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
                 </div>
             </div>
+            <div class="w-full flex justify-end">
+                    <div class="w-[100px]">
+                        <v-selection>
+                            <v-select
+                                :items="size"
+                                variant="outlined"
+                                v-model="sizeSelected"
+                                hide-details="auto"
+                            ></v-select>
+                        </v-selection>
+                    </div>
+                    <div class="sm:w-fit">
+                        <v-pagination 
+                            :length="totalPage"
+                            v-model="pagination"
+                            :total-visible="3">
+                        </v-pagination>
+                    </div>
+                </div>
         </div>
         
         <v-navigation-drawer :disable-resize-watcher="true" :width="350" location="right" v-model="drawer">
@@ -530,10 +631,11 @@ watch(sizeSelected,()=>{
         persistent
         v-model="fileUploadDialog"
         width="550"
+        class="rounded-none"
         transition="dialog-bottom-transition"
     >
-        <v-card class="pb-2">
-            <div class="flex flex-col w-full ">
+        <v-card class="pb-2 rounded-none" >
+            <div class="flex flex-col w-full  ">
                 <div class="w-full py-3 flex justify-center text-xl mt-3 relative">
                      อัพโหลดไฟล์
                 </div>
@@ -541,15 +643,16 @@ watch(sizeSelected,()=>{
                     <div class="flex flex-col gap-2 w-full">
                         <v-form @submit.prevent="addNewFile">
                             <v-file-input
-                                accept=".docx , .pdf , .xlsx"
+                                accept=".docx , .doc , .pdf , .xlsx , .xls"
                                 placeholder="เลือกภาพประจำตัว"
                                 label="เลือกไฟล์"
                                 v-model="fileUpload"
                                 class=""
+                                persistent-clear
                                 show-size
                                 name="file_upload"
-                                hide-details
                                 variant="outlined"
+                                hide-details="auto"
                                 prepend-icon=""
                             ></v-file-input>
                             <v-text-field
@@ -562,7 +665,7 @@ watch(sizeSelected,()=>{
                                 required
                             ></v-text-field>
                             <v-select
-                                v-model="selectedCategory"
+                                v-model="fileSelected_DD"
                                 label="ประเภท"
                                 :items="allCategoryFile"
                                 class="mt-3"
@@ -575,13 +678,13 @@ watch(sizeSelected,()=>{
                             </v-select>
                             <div class="w-full mt-6 flex justify-center items-center gap-2">
                                 <v-btn color="red"
-                                    @click="fileUploadDialog = !fileUploadDialog , fileUpload = null , fileName = ''" >
+                                    @click="fileUploadDialog = !fileUploadDialog , fileUpload = null , fileName = '' , fileSelected_DD = 1" >
                                     ยกเลิก
                                 </v-btn>
                                 <v-btn 
                                     color="green" 
                                     type="submit" 
-                                    :disabled="!!!fileName || !!!fileUpload "
+                                    :disabled="!!!fileName || !!!fileUpload || fileSelected_DD === 0 || !!!fileSelected_DD "
                                     :loading="buttonLoading"
                                 > อัพโหลดไฟล์ </v-btn>
                             </div>
@@ -608,7 +711,7 @@ watch(sizeSelected,()=>{
                     <div class="flex flex-col gap-2 w-full">
                         <v-form @submit.prevent="editFile">
                             <v-file-input
-                                accept=".docx , .pdf , .xlsx"
+                                accept=".docx , .doc , .pdf , .xlsx , .xls"
                                 placeholder="เลือกภาพประจำตัว"
                                 label="เลือกไฟล์"
                                 v-model="fileUpload"

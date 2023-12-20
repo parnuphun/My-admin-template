@@ -50,8 +50,8 @@ export default class namphong_api {
     // file 
     ///////////////////////////////////////////////////////////////////////////////
     // get total file length 
-    getFileLength(){
-        return axios.post(url+'/getFileLength')
+    getFileLength(data:{selected_category:number}){
+        return axios.post(url+'/getFileLength',data)
     }
 
 
@@ -119,7 +119,7 @@ export default class namphong_api {
     }
 
     // search files
-    searchFile(data:{search_keyword:string}){
+    searchFile(data:{search_keyword:string,selected_category:number,start_item:number,limit:number}){
         return axios.post(url+'/searchFile',data)
     }
 

@@ -143,8 +143,13 @@ module.exports.getAllCategoryFile = async (req,res)=> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // get all file length
 module.exports.getFileLength = async (req,res) =>{
+    const selected_category = req.body.selected_category
+    let query = 'SELECT COUNT(file_id) AS total_file FROM file'
+    if(selected_category !== 0){
+        query += ` WHERE file_category_id = ${selected_category}`
+    }
     try{
-        db.query('SELECT COUNT(file_id) AS total_file FROM file',async (err,result) => {
+        db.query(query,async (err,result) => {
             if(err){
                 console.log('ERR QUERY BLOCK , CANT GET TOTAL FILES ');
                 console.log('ERR : ' ,err);
@@ -154,12 +159,22 @@ module.exports.getFileLength = async (req,res) =>{
                     msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถดึงจำนวนไฟล์ได้ !!',
                 })
             }
-            res.status(200).json({
-                status:true,
-                status_code:200,
-                msg:'ดึงข้อมูลสำเร็จ',
-                file_length:result[0].total_file 
-            })
+            if(result.length === 0) {
+                res.status(200).json({
+                    status:true,
+                    status_code:200,
+                    msg:'ดึงข้อมูลสำเร็จ',
+                    file_length: 0
+                })
+            }
+            else if(result.length >= 1) {
+                res.status(200).json({
+                    status:true,
+                    status_code:200,
+                    msg:'ดึงข้อมูลสำเร็จ',
+                    file_length:result[0].total_file
+                })
+            }
         })
     }catch(err){
         console.log('ERR TRY CATCH BLOCK , CANT TOTAL FILES');
@@ -177,13 +192,17 @@ module.exports.getAllFiles = async (req,res) => {
     const selected_category = req.body.selected_category
     const limit = req.body.limit
     const start_item = req.body.start_item
+    let query_select = `SELECT * FROM file`
+    let query_where = ` WHERE file_category_id = ${selected_category}`
+    let query_limit = ` ORDER BY file_id DESC LIMIT ${limit} OFFSET ${start_item}`
+
+    if(selected_category !== 0 ){
+        query_select = query_select + query_where + query_limit
+    }else{
+        query_select = query_select + query_limit
+    }
     try{
-        db.query(`
-        SELECT * FROM file 
-        WHERE file_category_id = ? 
-        ORDER BY file_id DESC
-        LIMIT ? OFFSET ?`,
-        [selected_category,limit,start_item],async (err,result) => {
+        db.query(query_select,async (err,result) => {
             if(err){
                 console.log('ERR IN QUERY BLOCK , CANT GET FILES DATA !!');
                 console.log('ERR : ',err);
@@ -380,7 +399,7 @@ module.exports.previewFile = async(req,res) => {
     }
 }
 
-// edit file 
+// update file 
 module.exports.editFile = async(req,res) => {
     const file_id = req.body.file_id
     const file_name = req.body.file_name 
@@ -396,34 +415,71 @@ module.exports.editFile = async(req,res) => {
     try{
         // get old file name first after add new file name 
         db.query('SELECT * FROM file WHERE file_id = ? ',[file_id],(err,result)=>{
+            if(err){
+                console.log('ERR QEURY BLOCK ,CANNOT UPDATE FILE ERR AT GET OLD FILE NAME ,');
+                console.log('ERR : ',err);
+                return res.status(200).json({
+                    status_code: 500,
+                    status:false ,
+                    msg:'ไม่สามารถบันทึกไฟล์ลงในระบบได้',
+                    err:err
+                })
+            }
             let old_file_name = result[0].file_name_upload
-            db.query(`UPDATE file 
+            try{
+                db.query(`UPDATE file 
                         SET file_name = ? ,
                         file_name_upload = ?,
                         file_type = ? ,
                         file_category_id = ? 
-                    WHERE file_id = ?`,
-            [file_name,file_name_upload,file_type,file_category_id,file_id],    
-            async(err,result)=>{
-                if(req.body.file_upload === 'no_file_upload'){
-                    console.log('UPDATE FILE CASE:NO UPLOAD FILE ');
-                }else{
-                    console.log('UPDATE FILE CASE: UPLOAD FILE ');
-                    await delete_file(old_file_name,'file') // after update remove old file
-                }
-                console.log('UPDATE FILED SUCCESS !!');
-                res.json({
-                    status:true,
-                    msg:'บันทึกข้อมูลเรียบร้อย'
+                        WHERE file_id = ?`,
+                [file_name,file_name_upload,file_type,file_category_id,file_id],    
+                async(err,result)=>{
+                    if(err){
+                        console.log('ERR QEURY BLOCK 2 ,CANNOT UPDATE FILE  ,');
+                        console.log('ERR : ',err);
+                        return res.status(200).json({
+                            status_code: 500,
+                            status:false ,
+                            msg:'ไม่สามารถบันทึกไฟล์ลงในระบบได้',
+                            err:err
+                        })
+                    }
+                    // check file before delete
+                    if(req.body.file_upload === 'no_file_upload'){
+                        console.log('UPDATE FILE CASE:NO UPLOAD FILE ');
+                    }else{
+                        console.log('UPDATE FILE CASE: UPLOAD FILE ');
+                        await delete_file(old_file_name,'file') // after update remove old file
+                    }
+                    console.log('UPDATE FILED SUCCESS !!');
+                    res.status(200).json({
+                        status:true,
+                        status_code: 200 ,
+                        msg:'บันทึกข้อมูลเรียบร้อย',
+                        new_file_name : file_name_upload
+                    })
                 })
-            })
+            }catch{
+                console.log('ERR TRY CATCH BLOCK 2,CANNOT UPDATE FILE');
+                console.log('ERR : ',err);
+                res.status(200).json({
+                    status_code: 500,
+                    status:false ,
+                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถบันทึกไฟล์ลงในระบบได้',
+                    err:err
+                })
+            }
         })
 
     }catch(err){
-        console.log('CANNOT UPDATE FILE ,PLS CHECK ERR !!');
-        res.json({
+        console.log('ERR TRY CATCH BLOCK ,CANNOT UPDATE FILE ');
+        console.log('ERR : ',err);
+        res.status(200).json({
+            status_code: 500,
             status:false ,
-            msg:'ไม่สามารถบันทึกไฟล์ลงในระบบได้'
+            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถบันทึกไฟล์ลงในระบบได้',
+            err:err
         })
     }
 
@@ -432,8 +488,22 @@ module.exports.editFile = async(req,res) => {
 // search file 
 module.exports.searchFile = async(req,res) =>{
     const search_keyword = req.body.search_keyword
+    const selected_category = req.body.selected_category
+    const limit = req.body.limit
+    const start_item = req.body.start_item
+
+    let query_select = `SELECT * FROM file WHERE file_name LIKE ?` 
+    let query_and_condition = ` AND file_category_id = ${selected_category}`
+    let query_limit = ` LIMIT ${limit} OFFSET ${start_item}`
+
+    if(selected_category === 0) {
+        query_select = query_select + query_limit
+    }else{
+        query_select = query_select + query_and_condition + query_limit
+    }
+
     try{
-        db.query("SELECT * FROM file WHERE file_name LIKE '%"+search_keyword+"%'", async (err,result)=>{
+        db.query(query_select, ['%'+search_keyword+'%'], async (err,result)=>{
             if(err) {
                 console.log('ERR CANT SEARCH FILES');
                 console.log('ERR :',err);
@@ -444,12 +514,55 @@ module.exports.searchFile = async(req,res) =>{
                     err:err
                 })
             }
-            res.status(200).json({
-                status:true,
-                statusCode:200,
-                msg:'ค้นหาข้อมูลสำเร็จ',
-                search_data:result
-            })
+            
+            if(result.length != 0){
+                for(let i=0 ; i<result.length ;i++){
+                    if(result[i].file_pin == 0) result[i].file_pin = false
+                    else result[i].file_pin = true
+                    
+                    await date_convert(result[i].file_date).then((date_converted)=>{
+                        result[i].file_date = date_converted
+                    }) 
+                }
+            }
+            let search_file_data = result 
+
+            try {
+                if(selected_category === 0) {
+                    query_select = `SELECT * FROM file WHERE file_name LIKE ?` 
+                }else{
+                    query_select = `SELECT * FROM file WHERE file_name LIKE ?` + query_and_condition 
+                }
+                db.query(query_select ,['%'+search_keyword+'%'], async (err ,result)=>{
+                    if(err) {
+                        console.log('ERR CANT SEARCH FILES');
+                        console.log('ERR :',err);
+                        return res.status(200).json({
+                            status:false,
+                            statusCode:500,
+                            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
+                            err:err
+                        })
+                    }
+                    res.status(200).json({
+                        status:true,
+                        statusCode:200,
+                        msg:'ค้นหาข้อมูลสำเร็จ',
+                        search_data:search_file_data ,
+                        data_length: result.length 
+                    })
+                })
+
+            } catch (err) {
+                console.log('ERR TRY CATCH BLOCK 2 , CANT SEARCH FILES');
+                console.log('ERR :',err);
+                res.status(200).json({
+                    status:false,
+                    statusCode:500,
+                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
+                    err:err
+                })
+            }
         })
     }catch(err){
         console.log('ERR TRY CATCH BLOCK , CANT SEARCH FILES');
