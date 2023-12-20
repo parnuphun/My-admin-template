@@ -88,10 +88,21 @@ module.exports.login = async (req,res) => {
     try{
         // check username 
         db.query(`SELECT * FROM user WHERE user_username = ? `,[username], async (err,result)=>{
-            if(err) return 'database error ';
+            if(err) {
+                console.log('ERR IN QUERY BLOCK ,LOGIN CHECK USERNAME ');
+                console.log('ERR : ',err);
+                return res.status(200).json({ 
+                    status: false ,
+                    status_code: 500,
+                    msg: 'ไม่สามารถเข้าสู่ระบบได้' ,
+                    err: err
+                });
+            }
 
+            // if no username in system just return false 
             if(result.length === 0 ){
-                return res.json({ 
+                console.log('LOGIN FAILED NO USERNAME IN SYSTEM.');
+                return res.status(200).json({ 
                     status: false ,
                     status_code: 401,
                     msg: 'กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง' ,
@@ -104,16 +115,18 @@ module.exports.login = async (req,res) => {
                 if(err) return 'bcrypt password err'
                 if(result === true){
                     user.user_token = await createToken(user,false);
-                    res.json({ 
+                    console.log('LOGIN SUCESS !!');
+                    res.status(200).json({ 
                         status: true ,
-                        status_code: 401,
+                        status_code: 200,
                         msg: 'เข้าสู่ระบบสำเร็จ', 
                         user: user 
                     });
                 }else{
+                    console.log('LOGIN FAILED , PASSWORD INVALID. ');
                     return res.json({ 
                         status: false ,
-                        status_code: 401,
+                        status_code: 200,
                         msg:  `กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง ` 
                     });
                 }
@@ -121,8 +134,14 @@ module.exports.login = async (req,res) => {
         })
 
     }catch(err) {
-        console.error('Unexpected error:', error);
-        res.status(500).json({ error: 'Internal server error' })
+        console.log('ERR IN TRYCATCH BLOCK ,LOGIN CHECK USERNAME ');
+        console.log('ERR : ',err);
+        return res.status(200).json({ 
+            status: false ,
+            status_code: 500,
+            msg: 'เกิดข้อผิดพลาดในระบบ ไม่สามารถเข้าสู่ระบบได้' ,
+            err: err
+        });
     }
 
 }
