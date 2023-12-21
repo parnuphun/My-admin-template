@@ -53,8 +53,16 @@ function checkFileType(){
         return 'docx'
     }else if(fileUpload.value[0].type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
         return 'xlsx'
+    }else if(fileUpload.value[0].type  === 'application/msword'){
+        return 'doc'
+    }else if(fileUpload.value[0].type  === 'application/vnd.ms-excel'){
+        return 'xls'
+    }else if(fileUpload.value[0].type  === 'text/csv'){
+        return 'csv'
     }
 }
+
+
 
 const fileUploadDialog = ref(false) 
 const fileName = ref<string>() // file name for update and addnew form 
@@ -87,6 +95,8 @@ function addNewFile(){
 }
 // set auto file name 
 watch(fileUpload,()=>{
+    console.log('+++',fileUpload.value);
+    
     if(fileUpload.value !== null && fileUpload.value !== undefined ){
         // if file name is unvariable and add file first just set filename = file.filename 
         if(fileName.value === '' || fileName.value === undefined || fileName.value === null ){            
@@ -414,12 +424,28 @@ function getFileCheck(){
                                     src="/images/icon/file_extention_docx.png"
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
-                                <img v-if="item.file_type === 'pdf'"
+                                <img v-else-if="item.file_type === 'doc'"
+                                    src="/images/icon/file_extention_doc.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'xlsx'"
+                                    src="/images/icon/file_extention_xlsx.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'xls'"
+                                    src="/images/icon/file_extention_xls.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'csv'"
+                                    src="/images/icon/file_extention_csv.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'pdf'"
                                     src="/images/icon/file_extention_pdf.png"
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
-                                <img v-if="item.file_type === 'xml' || item.file_type === 'xlsx'"
-                                    src="/images/icon/file_extention_xml.png"
+                                <img v-else-if="item.file_type === 'ppt'"
+                                    src="/images/icon/file_extention_xml.ppt"
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
                             </div>
@@ -458,12 +484,24 @@ function getFileCheck(){
                                         src="/images/icon/file_extention_docx.png"
                                         class="object-fit h-full" 
                                         alt="file_format_icon">
-                                    <img v-if="item.file_type === 'pdf'"
-                                        src="/images/icon/file_extention_pdf.png"
+                                    <img v-if="item.file_type === 'doc'"
+                                        src="/images/icon/file_extention_doc.png"
                                         class="object-fit h-full" 
                                         alt="file_format_icon">
-                                    <img v-if="item.file_type === 'xml' || item.file_type === 'xlsx'"
-                                        src="/images/icon/file_extention_xml.png"
+                                    <img v-if="item.file_type === 'xlsx'"
+                                        src="/images/icon/file_extention_xlsx.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'xls'"
+                                        src="/images/icon/file_extention_xls.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'csv'"
+                                        src="/images/icon/file_extention_csv.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'pdf'"
+                                        src="/images/icon/file_extention_pdf.png"
                                         class="object-fit h-full" 
                                         alt="file_format_icon">
                                 </div>
@@ -538,14 +576,27 @@ function getFileCheck(){
                             src="/images/icon/file_extention_docx.png"
                             class="object-fit h-full" 
                             alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'doc'"
+                            src="/images/icon/file_extention_doc.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'xlsx'"
+                            src="/images/icon/file_extention_xlsx.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'xls'"
+                            src="/images/icon/file_extention_xls.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'csv'"
+                            src="/images/icon/file_extention_csv.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
                         <img v-if="fileFormat_DD === 'pdf'"
                             src="/images/icon/file_extention_pdf.png"
                             class="object-fit h-full" 
                             alt="file_format_icon">
-                        <img v-if="fileFormat_DD === 'xml' || fileFormat_DD === 'xlsx'"
-                            src="/images/icon/file_extention_xml.png"
-                            class="object-fit h-full" 
-                            alt="file_format_icon">
+                        
                     </div>
                     <v-divider thickness="2" class="border-opacity-100 mt-3" ></v-divider>
                 </div>
@@ -639,20 +690,21 @@ function getFileCheck(){
                 <div class="w-full py-3 flex justify-center text-xl mt-3 relative">
                      อัพโหลดไฟล์
                 </div>
-                <div class="w-full px-6">
+                <div class="w-full px-6 mt-3">
                     <div class="flex flex-col gap-2 w-full">
                         <v-form @submit.prevent="addNewFile">
                             <v-file-input
-                                accept=".docx , .doc , .pdf , .xlsx , .xls"
-                                placeholder="เลือกภาพประจำตัว"
+                                accept=".docx , .doc , .pdf , .xlsx , .xls , .csv "
+                                placeholder=""
                                 label="เลือกไฟล์"
                                 v-model="fileUpload"
                                 class=""
                                 persistent-clear
+                                hide-details="auto"
                                 show-size
                                 name="file_upload"
                                 variant="outlined"
-                                hide-details="auto"
+                                hint=""
                                 prepend-icon=""
                             ></v-file-input>
                             <v-text-field
@@ -711,7 +763,7 @@ function getFileCheck(){
                     <div class="flex flex-col gap-2 w-full">
                         <v-form @submit.prevent="editFile">
                             <v-file-input
-                                accept=".docx , .doc , .pdf , .xlsx , .xls"
+                                accept=".docx , .doc , .pdf , .xlsx , .xls , .csv  "
                                 placeholder="เลือกภาพประจำตัว"
                                 label="เลือกไฟล์"
                                 v-model="fileUpload"
