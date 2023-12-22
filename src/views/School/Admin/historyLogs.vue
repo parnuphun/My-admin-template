@@ -83,6 +83,7 @@ watch(searchValue , ()=>{
         _api.searchHistory({search_keyword:searchValue.searchText,start_item:startItem.value,limit:sizeSelected.value}).then((res)=>{
             totalHistoryLogs.value = res.data.history_data_search_length
             historyLogs.value = res.data.history_data_search
+            totalPage.value = Math.ceil(totalHistoryLogs.value / sizeSelected.value)        
         })
     }
 })
@@ -114,36 +115,49 @@ watch(searchValue , ()=>{
             </div>
             <v-divider class="border-opacity-75"></v-divider>
 
-            <div clsas="w-full">
+            <div clsas="w-full sm:hidden md:block ">
                 <v-table>
                     <thead>
                         <tr>
                             <th class="text-center w-20">#</th>
-                            <th>ผู้ใช้งาน</th>
-                            <th>การกระทำ</th>
-                            <th class="text-center w-fit">เวลา</th>
+                            <!-- <th>ผู้ใช้งาน</th> -->
+                            <th>รายละเอียด</th>
+                            <th class="text-center w-[190px] min-w-[190px]">เวลา</th>
+                            <th class="text-center w-24">ฟังก์ชัน</th>
                             <th class="text-center w-24">ประเภท</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(item , i ) in historyLogs" :key="item.history_logs_id" >
-                            <td class="text-center">{{ i+1 }}</td>
-                            <td>{{ item.history_logs_username }}</td>
+                            <td class="text-center">{{ (startItem+i)+1 }}</td>
+                            <!-- <td>{{ item.history_logs_username }}</td> -->
                             <td>{{ item.history_logs_text }}</td>
                             <td class="text-center w-fit">{{ item.history_logs_date }}</td>
                             <td>
-                                <v-chip color="primary" v-if="item.history_logs_type === 'login'">
-                                    <v-icon icon="mdi-login" class="mr-2"></v-icon> เข้าใช้งานระบบ
-                                </v-chip>
-                                <v-chip color="success" v-else-if="item.history_logs_type === 'add'">
-                                    <v-icon icon="mdi-plus" class="mr-2"></v-icon> เพิ่มข้อมูล
-                                </v-chip>
-                                <v-chip color="primary" v-else-if="item.history_logs_type === 'update'">
-                                    <v-icon icon="mdi-pencil" class="mr-2"></v-icon> แก้ไขข้อมูล
-                                </v-chip>
-                                <v-chip color="red" v-else-if="item.history_logs_type === 'delete'">
-                                    <v-icon icon="mdi-delete" class="mr-2"></v-icon> ลบข้อมูล
-                                </v-chip>
+                                <div class="flex justify-center items-center">
+                                    <v-chip class="w-full" color="" v-if="item.history_logs_fucntion === 'login'">
+                                        <v-icon icon="mdi-login" class="mr-2"></v-icon> เข้าใช้งานระบบ
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'file'">
+                                        <v-icon icon="mdi-file-outline" class="mr-2"></v-icon> ไฟล์เอกสาร
+                                    </v-chip>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flex justify-center items-center">
+                                    <v-chip class="w-full" color="orange" v-if="item.history_logs_type === 'login'">
+                                        <v-icon icon="mdi-login" class="mr-2"></v-icon> เข้าใช้งานระบบ
+                                    </v-chip>
+                                    <v-chip class="w-full" color="success" v-else-if="item.history_logs_type === 'add'">
+                                        <v-icon icon="mdi-plus" class="mr-2"></v-icon> เพิ่มข้อมูล
+                                    </v-chip>
+                                    <v-chip class="w-full" color="primary" v-else-if="item.history_logs_type === 'update'">
+                                        <v-icon icon="mdi-pencil" class="mr-2"></v-icon> แก้ไขข้อมูล
+                                    </v-chip>
+                                    <v-chip class="w-full" color="red" v-else-if="item.history_logs_type === 'delete'">
+                                        <v-icon icon="mdi-delete" class="mr-2"></v-icon> ลบข้อมูล
+                                    </v-chip>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

@@ -57,14 +57,16 @@ module.exports.searchHistory = (req,res) => {
     const limit = req.body.limit
     const start_item = req.body.start_item
 
-    let query_select = `SELECT * FROM history_logs WHERE history_logs_text LIKE ? LIMIT ${limit} OFFSET ${start_item}` 
+    let query_select = `SELECT * FROM history_logs WHERE history_logs_text LIKE ? ORDER BY history_logs_id DESC LIMIT ${limit} OFFSET ${start_item}` 
 
     try{
         db.query(query_select , ['%'+search_keyword+'%'] , async(err ,result) => {
             if(err) {
                 return return_err(res,'QUERY BLOCK','SEARCH HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
             }
-
+            for(let i = 0 ; i<result.length ; i++){
+                result[i].history_logs_date = await date_convert(result[i].history_logs_date)
+            }
             let history_data_search = result
             try{
                 db.query(`SELECT * FROM history_logs WHERE history_logs_text LIKE ?`,['%'+search_keyword+'%'] ,async(err,result)=>{
