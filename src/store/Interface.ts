@@ -7,6 +7,19 @@ export type dataStatus = 'no_data' | 'loading_data' | 'err_data' | 'load_data_su
 export type viewData = 'detail' | 'table'
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+// history logs
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export type historyType = 'update' | 'add' | 'delete' | 'login'
+export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity' | 'new' | 'file'
+export interface historyLogsResponse {
+    history_logs_id : number ,
+    history_logs_username : string,
+    history_logs_type : historyType,
+    history_logs_fucntion : historyFunction,
+    history_logs_text : string ,
+    history_logs_date : string ,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
 // file
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 

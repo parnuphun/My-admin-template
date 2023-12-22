@@ -1,6 +1,7 @@
 const db = require('../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const timeStamp = require('../services/timeStamp')
 require('dotenv').config();
 
 
@@ -82,7 +83,6 @@ module.exports.adminRegister = async (req,res) => {
 }
 
 module.exports.login = async (req,res) => {
-    console.log(req.body);
     const username = req.body.username
     const password = req.body.password
     try{
@@ -99,6 +99,8 @@ module.exports.login = async (req,res) => {
                 });
             }
 
+            let user_data = result[0]
+
             // if no username in system just return false 
             if(result.length === 0 ){
                 console.log('LOGIN FAILED NO USERNAME IN SYSTEM.');
@@ -112,8 +114,24 @@ module.exports.login = async (req,res) => {
             const user = result[0]
             // check password 
             bcrypt.compare(password, user.user_password, async function(err, result) {
-                if(err) return 'bcrypt password err'
+                if(err) {
+                    console.log('ERR IN BCRYPT PASSWORD BLOCK ');
+                    console.log('ERR : ',err);
+                    return res.status(200).json({ 
+                        status: false ,
+                        status_code: 500,
+                        msg: 'ไม่สามารถเข้าสู่ระบบได้' ,
+                        err: err
+                    });
+                }
+
                 if(result === true){
+                    timeStamp(
+                        `${user_data.user_firstname} ${user_data.user_lastname}`,
+                        'login',
+                        'login', 
+                        `${user_data.user_firstname} ${user_data.user_lastname} เข้าสู่ระบบ`)
+
                     user.user_token = await createToken(user,false);
                     console.log('LOGIN SUCESS !!');
                     res.status(200).json({ 
@@ -126,7 +144,7 @@ module.exports.login = async (req,res) => {
                     console.log('LOGIN FAILED , PASSWORD INVALID. ');
                     return res.json({ 
                         status: false ,
-                        status_code: 200,
+                        status_code: 401,
                         msg:  `กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง ` 
                     });
                 }

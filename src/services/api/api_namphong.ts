@@ -140,4 +140,19 @@ export default class namphong_api {
     deleteActivityImage(data:{activity_image_id:number,activity_image_cover_delete:string}){
         return axios.post(url+'/deleteActivityImage',data)
     }
+
+    //get history 
+    getHistory(data:{limit:number,start_item:number}){
+        return axios.post(url+'/getHistory',data)
+    }
+
+    // get history length
+    getHistoryLength(){
+        return axios.post(url+'/getHistoryLength')
+    }
+
+    // search history 
+    searchHistory(data:{search_keyword:string,start_item:number,limit:number}){
+        return axios.post(url+'/searchHistory',data)
+    }
 }

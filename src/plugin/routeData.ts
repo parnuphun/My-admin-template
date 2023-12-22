@@ -76,12 +76,19 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
-        id: 'person_management' ,
-        title : 'test' ,
-        icon : 'mdi-test-tube' ,
-        link : '/test_ui' ,
+        id: 'history_logs' ,
+        title : 'ประวัติการเข้าใช้งาน' ,
+        icon : 'mdi-clipboard-text-clock-outline' ,
+        link : '/admin/history' ,
         permission : 'ทุกคน' ,
     },
+    // {
+    //     id: 'person_management' ,
+    //     title : 'test' ,
+    //     icon : 'mdi-test-tube' ,
+    //     link : '/test_ui' ,
+    //     permission : 'ทุกคน' ,
+    // },
 
     // {
     //     id: 'test_Component' ,
