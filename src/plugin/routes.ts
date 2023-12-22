@@ -1,4 +1,4 @@
-import { createRouter , createWebHistory } from 'vue-router'
+import { createRouter , createWebHistory ,useRouter } from 'vue-router'
 import MsgAlert from '../services/msgAlert'
 // import authService from '../services/auth'
 const _msgAlert = new MsgAlert()
@@ -53,7 +53,21 @@ const router = createRouter({
 })
 
 // route guard
-router.beforeEach((to,from)=>{
+router.beforeEach((to,from,next)=>{
+      // Check if the user is trying to access an admin route
+  if (to.path.startsWith('/admin')) {
+    // Check if the user has credentials in localStorage
+        const hasCredentials = localStorage.getItem('Credential');
+    if (!hasCredentials) {
+      // If no credentials, redirect to the login page or show an error message
+      next('/login')
+    } else {
+      // If credentials exist, allow access to the admin route
+      next()
+    }
+  } else{
+    next()
+  }
     // // ถ้า login แล้วจะกลับมาที่หน้า Login อีกไม่ได้
     // _auth.isLoggedIn().then((isLoggedIn)=>{
     //     if((to.path.startsWith('/testBackend/login')) && isLoggedIn === true){
