@@ -5,12 +5,26 @@
 export type dataStatus = 'no_data' | 'loading_data' | 'err_data' | 'load_data_succ' | 'network_err'
 // view data
 export type viewData = 'detail' | 'table'
+// admin data 
+export interface credential {
+    user_id:number,
+    user_image:string,
+    user_username:string,
+    user_firstname:string,
+    user_lastname:string,
+    user_email:string,
+    user_phone:string,
+    user_address:string,
+    user_fullname:string,
+    user_password:string,
+    user_token:string
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // history logs
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 export type historyType = 'update' | 'add' | 'delete' | 'login'
-export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity' | 'new' | 'file'
+export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity' | 'new' | 'file' | 'login'
 export interface historyLogsResponse {
     history_logs_id : number ,
     history_logs_username : string,
@@ -20,7 +34,7 @@ export interface historyLogsResponse {
     history_logs_date : string ,
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// file
+// username 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface adminResponse {

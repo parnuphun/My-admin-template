@@ -43,7 +43,7 @@ function logout() {
         if (isConfirmed) {
             // _msg.default_msg({ title: 'ออกจากระบบแล้ว', timer: 1, progressbar: true })
             _msg.toast_msg({ title: 'ออกจากระบบแล้ว', icon:'success'})
-            localStorage.removeItem('credential')
+            localStorage.removeItem('Credential')
             setTimeout(() => {
                 router.push('/login')
             }, 500);
