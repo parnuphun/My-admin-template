@@ -526,7 +526,7 @@ module.exports.searchFile = async(req,res) =>{
                 }
             }
             let search_file_data = result 
-
+            
             try {
                 if(selected_category === 0) {
                     query_select = `SELECT * FROM file WHERE file_name LIKE ?` 

@@ -247,6 +247,7 @@ const searchValue = reactive({
     searchText:'',
     searchTriger:false // triger 
 })
+
 watch(searchValue , ()=>{
     if(searchValue.searchText.trim() === ''){
         getFileLength();        
@@ -260,8 +261,7 @@ watch(searchValue , ()=>{
                 if(files.value.length === 0){
                     dataStatus.value = 'no_data'
                 }else if(files.value.length >= 1){
-                    dataStatus.value = 'load_data_succ'
-                             
+                    dataStatus.value = 'load_data_succ'   
                 }else{
                     dataStatus.value = 'network_err'
                 }
@@ -445,7 +445,7 @@ function getFileCheck(){
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
                                 <img v-else-if="item.file_type === 'ppt'"
-                                    src="/images/icon/file_extention_xml.ppt"
+                                    src="/images/icon/file_extention_ppt.png"
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
                             </div>
@@ -475,7 +475,7 @@ function getFileCheck(){
                         </thead>
                         <tbody>
                         <tr v-for="(item , i) in files" :key="item.file_id" 
-                        class="hover:bg-gray-200 cursor-pointer duration-50"
+                        class=" hover:bg-gray-200 cursor-pointer duration-100"
                         @click="fileDetailDrawer(item)">
                             <td>{{startItem+(i+1)}}.</td>
                             <td>
@@ -507,22 +507,21 @@ function getFileCheck(){
                                 </div>
                             </td>
                             <td>{{ item.file_name }}</td>
-                            <td class="">{{ item.file_size }}</td>
+                            <td class="text-center">{{ item.file_size }}</td>
                             <td class="text-center">
                                 <v-icon v-if="item.file_pin === true"
                                 class="text-red-500" size="large">mdi-pin</v-icon>
                                 <v-icon v-if="item.file_pin === false"
                                 class="" size="large">mdi-pin-off</v-icon>
                             </td>
-                            <td class="text-center ">{{ item.file_date }} น.</td>
+                            <td class="text-center ">{{ item.file_date }}</td>
                         </tr>
                         </tbody>
                     </v-table>
                 </div>
                 <div class="w-full my-2">
                     <v-divider class="border-opacity-100"></v-divider> 
-                </div>
-               
+                </div> 
             </div>
 
             <div v-else-if="dataStatus === 'loading_data'" class="w-full h-full flex justify-center items-center">
@@ -540,25 +539,43 @@ function getFileCheck(){
                     <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
                 </div>
             </div>
-            <div class="w-full flex justify-end">
-                    <div class="w-[100px]">
-                        <v-selection>
-                            <v-select
-                                :items="size"
-                                variant="outlined"
-                                v-model="sizeSelected"
-                                hide-details="auto"
-                            ></v-select>
-                        </v-selection>
+            <div v-else-if="dataStatus === 'err_data'" class="w-full h-full flex justify-center items-center">
+                <div class=" flex flex-col items-center">
+                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                        <img src="/images/illustrations/No data-amico.svg" 
+                        class="h-full w-full" alt="">
                     </div>
-                    <div class="sm:w-fit">
-                        <v-pagination 
-                            :length="totalPage"
-                            v-model="pagination"
-                            :total-visible="3">
-                        </v-pagination>
-                    </div>
+                    <p class="text-xl text-pink-600"> เกิดข้อผิดพลาดในการรับข้อมูล</p>
                 </div>
+            </div>
+            <div v-else-if="dataStatus === 'network_err'" class="w-full h-full flex justify-center items-center">
+                <div class=" flex flex-col items-center">
+                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                        <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
+                        class="h-full w-full" alt="">
+                    </div>
+                    <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
+                </div>
+            </div>
+            <div class="w-full flex justify-end">
+                <div class="w-[100px]">
+                    <v-selection>
+                        <v-select
+                            :items="size"
+                            variant="outlined"
+                            v-model="sizeSelected"
+                            hide-details="auto"
+                        ></v-select>
+                    </v-selection>
+                </div>
+                <div class="sm:w-fit">
+                    <v-pagination 
+                        :length="totalPage"
+                        v-model="pagination"
+                        :total-visible="3">
+                    </v-pagination>
+                </div>
+            </div>
         </div>
         
         <v-navigation-drawer :disable-resize-watcher="true" :width="350" location="right" v-model="drawer">
@@ -608,7 +625,7 @@ function getFileCheck(){
                 </div>
                 <div class="w-full pl-3 pb-3">
                     <p class="text-md"> 
-                        วันที่ : {{fileDate_DD}} น.
+                        วันที่ : {{fileDate_DD}}
                     </p>
                     <v-divider thickness="" class="border-opacity-100 mt-3" ></v-divider>
                 </div>
