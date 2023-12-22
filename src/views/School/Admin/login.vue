@@ -25,9 +25,9 @@ const password = ref()
 function login(){
     btnLoading.value = true
     _api.login({username:username.value,password:password.value}).then((res) => {            
-        if(res.data.status_code === 200){
+        if(res.data.status_code === 200){            
             errMessage.value = 'login_succ'              
-            // localStorage.setItem('Credential',JSON.stringify(res.data.user))
+            localStorage.setItem('Credential',JSON.stringify(res.data.user_data))
             setTimeout(()=>{
                 nextPage('/admin/news')
             },500)

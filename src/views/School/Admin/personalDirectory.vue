@@ -58,7 +58,7 @@ watch(tab , ()=>{
 const disPositionBtn = ref()
 // get position list and set select position
 function getAllPositionList(){
-    _api.getAllPositionList({category_id:categoryNo.value}).then((res)=>{
+    _api.getAllPersonPositionList({category_id:categoryNo.value}).then((res)=>{
         positionList.value = res.data.positionData    
         // set select position after change tabs or managaged
         if(positionList.value?.length === 0){
@@ -84,7 +84,9 @@ function getAllPositionList(){
 function addPosition(){
     if(positionName.value.trim() == '') return _msg.toast_msg({title:'กรุณากรอกข้อมูลให้ถูกต้อง',timer:5,icon:'error',progressbar:true})
 
-    _api.addPosition({position_name:positionName.value,position_category:categoryNo.value}).then(async (res)=>{
+    _api.addPosition({position_name:positionName.value,position_category_id:categoryNo.value,
+        credential_admin_fullname:'',position_category_name:''})
+    .then(async (res)=>{
         if(res.data.status){
             _msg.toast_msg({title:res.data.msg,timer:5,icon:'success',progressbar:true})
             getAllPositionList()

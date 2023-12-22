@@ -5,9 +5,54 @@
 export type dataStatus = 'no_data' | 'loading_data' | 'err_data' | 'load_data_succ' | 'network_err'
 // view data
 export type viewData = 'detail' | 'table'
+// admin data 
+export interface credential {
+    user_id:number,
+    user_image:string,
+    user_username:string,
+    user_firstname:string,
+    user_lastname:string,
+    user_email:string,
+    user_phone:string,
+    user_address:string,
+    user_fullname:string,
+    user_password:string,
+    user_token:string
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Common
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface personCategory {
+    pd_category_id  : number,
+    pd_category_name : string
+}
+
+export interface personPosition {
+    pd_position_id : number,
+    pd_position_name : string ,
+    pd_position_order  : number ,
+    pd_category_id   : number 
+}
+
+export interface personDirectoryResponse {
+    
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// file
+// history logs
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export type historyType = 'update' | 'add' | 'delete' | 'login'
+export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity' | 'new' | 'file' | 'login'
+export interface historyLogsResponse {
+    history_logs_id : number ,
+    history_logs_username : string,
+    history_logs_type : historyType,
+    history_logs_fucntion : historyFunction,
+    history_logs_text : string ,
+    history_logs_date : string ,
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// username 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface adminResponse {
@@ -25,7 +70,8 @@ export interface adminResponse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // file
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-type file_type =  'xlsx' | 'docx' | 'pdf' | 'xml'
+// * .ppt not use now 
+type file_type =  'doc' | 'docx' | 'xlsx' | 'xls' | 'csv' | 'pdf' | 'ppt'
 
 export interface fileCategoryRespone {
     file_category_id:number,

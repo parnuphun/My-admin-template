@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref ,onMounted ,watch} from 'vue'
-import {fileCategoryRespone , filesResponse , dataStatus , viewData} from '../../../store/Interface' 
+import {fileCategoryRespone , filesResponse , dataStatus , viewData , credential} from '../../../store/Interface' 
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
@@ -15,8 +15,13 @@ const selectedCategory = ref(0) // selected file category , set default = 0 it m
 const allCategoryFile = ref<Array<fileCategoryRespone>>()
 
 const buttonLoading = ref(false)
+ 
+const credential = ref<credential>()
+
 // working at first  
 onMounted(()=>{
+    credential.value = JSON.parse(localStorage.getItem('Credential')||'')
+    
     getFileLength()
     getAllCategoryFile()
     getAllFile()
@@ -53,8 +58,16 @@ function checkFileType(){
         return 'docx'
     }else if(fileUpload.value[0].type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'){
         return 'xlsx'
+    }else if(fileUpload.value[0].type  === 'application/msword'){
+        return 'doc'
+    }else if(fileUpload.value[0].type  === 'application/vnd.ms-excel'){
+        return 'xls'
+    }else if(fileUpload.value[0].type  === 'text/csv'){
+        return 'csv'
     }
 }
+
+
 
 const fileUploadDialog = ref(false) 
 const fileName = ref<string>() // file name for update and addnew form 
@@ -72,6 +85,8 @@ function addNewFile(){
     formData.append('file_type', fileType.value!)
     formData.append('file_category_id', String(fileSelected_DD.value))
 
+    formData.append('credential_admin_fullname',credential.value!.user_fullname)
+    
     _api.addNewFile(formData).then((res)=>{
         if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
         else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
@@ -87,6 +102,7 @@ function addNewFile(){
 }
 // set auto file name 
 watch(fileUpload,()=>{
+    
     if(fileUpload.value !== null && fileUpload.value !== undefined ){
         // if file name is unvariable and add file first just set filename = file.filename 
         if(fileName.value === '' || fileName.value === undefined || fileName.value === null ){            
@@ -96,10 +112,16 @@ watch(fileUpload,()=>{
 })
 
 // delete file
-function deleteFile(file_id:number,file_name_upload:string){
+function deleteFile(file_id:number,file_name_upload:string,file_name:string){
     _msg.confirm('คุณต้องการจะลบไฟล์ใช่ไหม').then((isConfirmed)=>{
         if(isConfirmed){
-            _api.deleteFile({file_id:file_id,file_name_upload:file_name_upload}).then((res)=>{
+            _api.deleteFile({
+                file_id:file_id,
+                file_name_upload:file_name_upload,
+                credential_admin_fullname:credential.value!.user_fullname,
+                file_name:file_name
+            })
+            .then((res)=>{
                 if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:1,progressbar:true,icon:'success'})
                 else _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
                 getFileCheck()
@@ -119,8 +141,13 @@ function deleteFile(file_id:number,file_name_upload:string){
 }
 
 // switch pin 
-function fileSwitchPin(file_id:number , file_pin_status:boolean){
-    _api.fileSwitchPin({file_id:file_id,file_pin_status:file_pin_status}).then((res)=>{
+function fileSwitchPin(file_id:number , file_pin_status:boolean , file_name:string){
+    _api.fileSwitchPin({
+        file_id:file_id,
+        file_pin_status:file_pin_status,
+        credential_admin_fullname:credential.value!.user_fullname,
+        file_name:file_name})
+    .then((res)=>{
         if(res.data.statusCode === 200){
             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
             getFileCheck();
@@ -156,7 +183,9 @@ function previewsFile(file_id:number , file_name_upload:string, ){
 // edit file
 function editFile(){    
     buttonLoading.value = true 
-
+    console.log('new ',fileName.value);
+    console.log('old ',oldFileName_DD.value);
+    
     const formData = new FormData()
     // case no file update
     if(fileUpload.value === undefined || fileUpload.value === null){
@@ -172,6 +201,8 @@ function editFile(){
     formData.append('file_name_upload',fileNameUpload_DD.value!)
     formData.append('file_type', fileFormat_DD.value!)
     formData.append('file_category_id', String(fileSelected_DD.value))    
+    formData.append('file_old_name', oldFileName_DD.value)    
+    formData.append('credential_admin_fullname',credential.value!.user_fullname)
 
     _api.editFile(formData).then((res)=>{
         if(res.data.status_code === 200){ 
@@ -205,6 +236,7 @@ function settingEditFileName(file_id:number,file_name:string , file_category_id:
 
 // send data to drawer detail
 const fileName_DD = ref()
+const oldFileName_DD = ref() // check for update time stamp if file name change
 const fileid_DD = ref()
 const fileNameUpload_DD = ref()
 const fileFormat_DD = ref()
@@ -215,6 +247,7 @@ const fileSize_DD = ref() // show in drawwer detail only
 
 function fileDetailDrawer(item:filesResponse){
     fileSelected_DD.value = item.file_category_id
+    oldFileName_DD.value = item.file_name
     fileName_DD.value = item.file_name
     fileid_DD.value = item.file_id
     fileNameUpload_DD.value = item.file_name_upload
@@ -237,6 +270,7 @@ const searchValue = reactive({
     searchText:'',
     searchTriger:false // triger 
 })
+
 watch(searchValue , ()=>{
     if(searchValue.searchText.trim() === ''){
         getFileLength();        
@@ -250,8 +284,7 @@ watch(searchValue , ()=>{
                 if(files.value.length === 0){
                     dataStatus.value = 'no_data'
                 }else if(files.value.length >= 1){
-                    dataStatus.value = 'load_data_succ'
-                             
+                    dataStatus.value = 'load_data_succ'   
                 }else{
                     dataStatus.value = 'network_err'
                 }
@@ -399,7 +432,7 @@ function getFileCheck(){
                 </div>
             </div>
             <div class=" px-4">
-               <p class="text-lg"> ไฟล์ทั้งหมด : {{ totalFiles }}</p>
+               <p class="text-lg"> จำนวนรายการ : {{ totalFiles }}</p>
             </div>
             <v-divider class="border-opacity-100"></v-divider>
             <div class="w-full flex flex-col justify-start " v-if="dataStatus === 'load_data_succ'">
@@ -414,12 +447,28 @@ function getFileCheck(){
                                     src="/images/icon/file_extention_docx.png"
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
-                                <img v-if="item.file_type === 'pdf'"
+                                <img v-else-if="item.file_type === 'doc'"
+                                    src="/images/icon/file_extention_doc.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'xlsx'"
+                                    src="/images/icon/file_extention_xlsx.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'xls'"
+                                    src="/images/icon/file_extention_xls.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'csv'"
+                                    src="/images/icon/file_extention_csv.png"
+                                    class="object-fit h-full" 
+                                    alt="file_format_icon">
+                                <img v-else-if="item.file_type === 'pdf'"
                                     src="/images/icon/file_extention_pdf.png"
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
-                                <img v-if="item.file_type === 'xml' || item.file_type === 'xlsx'"
-                                    src="/images/icon/file_extention_xml.png"
+                                <img v-else-if="item.file_type === 'ppt'"
+                                    src="/images/icon/file_extention_ppt.png"
                                     class="object-fit h-full" 
                                     alt="file_format_icon">
                             </div>
@@ -438,7 +487,7 @@ function getFileCheck(){
                 <div class="w-full" v-if="viewData === 'table'">
                     <v-table>
                         <thead>
-                            <tr class="bg-[#E91E63] text-white ">
+                            <tr class="">
                                 <th class="text-left w-[20px]"> # </th>
                                 <th class="text-center w-[100px]"> ประเภท </th>
                                 <th class="text-left"> ชื่อไฟล์ </th>
@@ -449,7 +498,7 @@ function getFileCheck(){
                         </thead>
                         <tbody>
                         <tr v-for="(item , i) in files" :key="item.file_id" 
-                        class="hover:bg-gray-200 cursor-pointer duration-50"
+                        class=" hover:bg-gray-200 cursor-pointer duration-100"
                         @click="fileDetailDrawer(item)">
                             <td>{{startItem+(i+1)}}.</td>
                             <td>
@@ -458,33 +507,44 @@ function getFileCheck(){
                                         src="/images/icon/file_extention_docx.png"
                                         class="object-fit h-full" 
                                         alt="file_format_icon">
-                                    <img v-if="item.file_type === 'pdf'"
-                                        src="/images/icon/file_extention_pdf.png"
+                                    <img v-if="item.file_type === 'doc'"
+                                        src="/images/icon/file_extention_doc.png"
                                         class="object-fit h-full" 
                                         alt="file_format_icon">
-                                    <img v-if="item.file_type === 'xml' || item.file_type === 'xlsx'"
-                                        src="/images/icon/file_extention_xml.png"
+                                    <img v-if="item.file_type === 'xlsx'"
+                                        src="/images/icon/file_extention_xlsx.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'xls'"
+                                        src="/images/icon/file_extention_xls.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'csv'"
+                                        src="/images/icon/file_extention_csv.png"
+                                        class="object-fit h-full" 
+                                        alt="file_format_icon">
+                                    <img v-if="item.file_type === 'pdf'"
+                                        src="/images/icon/file_extention_pdf.png"
                                         class="object-fit h-full" 
                                         alt="file_format_icon">
                                 </div>
                             </td>
                             <td>{{ item.file_name }}</td>
-                            <td class="">{{ item.file_size }}</td>
+                            <td class="text-center">{{ item.file_size }}</td>
                             <td class="text-center">
                                 <v-icon v-if="item.file_pin === true"
                                 class="text-red-500" size="large">mdi-pin</v-icon>
                                 <v-icon v-if="item.file_pin === false"
                                 class="" size="large">mdi-pin-off</v-icon>
                             </td>
-                            <td class="text-center ">{{ item.file_date }} น.</td>
+                            <td class="text-center ">{{ item.file_date }}</td>
                         </tr>
                         </tbody>
                     </v-table>
                 </div>
                 <div class="w-full my-2">
                     <v-divider class="border-opacity-100"></v-divider> 
-                </div>
-               
+                </div> 
             </div>
 
             <div v-else-if="dataStatus === 'loading_data'" class="w-full h-full flex justify-center items-center">
@@ -502,25 +562,43 @@ function getFileCheck(){
                     <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
                 </div>
             </div>
-            <div class="w-full flex justify-end">
-                    <div class="w-[100px]">
-                        <v-selection>
-                            <v-select
-                                :items="size"
-                                variant="outlined"
-                                v-model="sizeSelected"
-                                hide-details="auto"
-                            ></v-select>
-                        </v-selection>
+            <div v-else-if="dataStatus === 'err_data'" class="w-full h-full flex justify-center items-center">
+                <div class=" flex flex-col items-center">
+                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                        <img src="/images/illustrations/No data-amico.svg" 
+                        class="h-full w-full" alt="">
                     </div>
-                    <div class="sm:w-fit">
-                        <v-pagination 
-                            :length="totalPage"
-                            v-model="pagination"
-                            :total-visible="3">
-                        </v-pagination>
-                    </div>
+                    <p class="text-xl text-pink-600"> เกิดข้อผิดพลาดในการรับข้อมูล</p>
                 </div>
+            </div>
+            <div v-else-if="dataStatus === 'network_err'" class="w-full h-full flex justify-center items-center">
+                <div class=" flex flex-col items-center">
+                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                        <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
+                        class="h-full w-full" alt="">
+                    </div>
+                    <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
+                </div>
+            </div>
+            <div class="w-full flex justify-end">
+                <div class="w-[100px]">
+                    <v-selection>
+                        <v-select
+                            :items="size"
+                            variant="outlined"
+                            v-model="sizeSelected"
+                            hide-details="auto"
+                        ></v-select>
+                    </v-selection>
+                </div>
+                <div class="sm:w-fit">
+                    <v-pagination 
+                        :length="totalPage"
+                        v-model="pagination"
+                        :total-visible="3">
+                    </v-pagination>
+                </div>
+            </div>
         </div>
         
         <v-navigation-drawer :disable-resize-watcher="true" :width="350" location="right" v-model="drawer">
@@ -538,14 +616,27 @@ function getFileCheck(){
                             src="/images/icon/file_extention_docx.png"
                             class="object-fit h-full" 
                             alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'doc'"
+                            src="/images/icon/file_extention_doc.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'xlsx'"
+                            src="/images/icon/file_extention_xlsx.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'xls'"
+                            src="/images/icon/file_extention_xls.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
+                        <img v-if="fileFormat_DD === 'csv'"
+                            src="/images/icon/file_extention_csv.png"
+                            class="object-fit h-full" 
+                            alt="file_format_icon">
                         <img v-if="fileFormat_DD === 'pdf'"
                             src="/images/icon/file_extention_pdf.png"
                             class="object-fit h-full" 
                             alt="file_format_icon">
-                        <img v-if="fileFormat_DD === 'xml' || fileFormat_DD === 'xlsx'"
-                            src="/images/icon/file_extention_xml.png"
-                            class="object-fit h-full" 
-                            alt="file_format_icon">
+                        
                     </div>
                     <v-divider thickness="2" class="border-opacity-100 mt-3" ></v-divider>
                 </div>
@@ -557,7 +648,7 @@ function getFileCheck(){
                 </div>
                 <div class="w-full pl-3 pb-3">
                     <p class="text-md"> 
-                        วันที่ : {{fileDate_DD}} น.
+                        วันที่ : {{fileDate_DD}}
                     </p>
                     <v-divider thickness="" class="border-opacity-100 mt-3" ></v-divider>
                 </div>
@@ -579,7 +670,7 @@ function getFileCheck(){
                         ปักหมุด :
                         </p>
                         <v-switch
-                            @click="fileSwitchPin(fileid_DD,filePin_DD)"
+                            @click="fileSwitchPin(fileid_DD,filePin_DD,fileName_DD)"
                             v-model="filePin_DD"
                             class="pl-3"
                             density="compact"
@@ -619,7 +710,7 @@ function getFileCheck(){
                     >
                         แก้ไข
                     </v-btn>
-                    <v-btn @click="deleteFile(fileid_DD,fileNameUpload_DD)" color="red" class="w-full">ลบ</v-btn>
+                    <v-btn @click="deleteFile(fileid_DD,fileNameUpload_DD,fileName_DD)" color="red" class="w-full">ลบ</v-btn>
                 </div>
             </div>
         </v-navigation-drawer>
@@ -639,20 +730,21 @@ function getFileCheck(){
                 <div class="w-full py-3 flex justify-center text-xl mt-3 relative">
                      อัพโหลดไฟล์
                 </div>
-                <div class="w-full px-6">
+                <div class="w-full px-6 mt-3">
                     <div class="flex flex-col gap-2 w-full">
                         <v-form @submit.prevent="addNewFile">
                             <v-file-input
-                                accept=".docx , .doc , .pdf , .xlsx , .xls"
-                                placeholder="เลือกภาพประจำตัว"
+                                accept=".docx , .doc , .pdf , .xlsx , .xls , .csv "
+                                placeholder=""
                                 label="เลือกไฟล์"
                                 v-model="fileUpload"
                                 class=""
                                 persistent-clear
+                                hide-details="auto"
                                 show-size
                                 name="file_upload"
                                 variant="outlined"
-                                hide-details="auto"
+                                hint=""
                                 prepend-icon=""
                             ></v-file-input>
                             <v-text-field
@@ -711,7 +803,7 @@ function getFileCheck(){
                     <div class="flex flex-col gap-2 w-full">
                         <v-form @submit.prevent="editFile">
                             <v-file-input
-                                accept=".docx , .doc , .pdf , .xlsx , .xls"
+                                accept=".docx , .doc , .pdf , .xlsx , .xls , .csv  "
                                 placeholder="เลือกภาพประจำตัว"
                                 label="เลือกไฟล์"
                                 v-model="fileUpload"

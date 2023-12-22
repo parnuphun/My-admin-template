@@ -11,6 +11,9 @@ const persons_pd_c = require('../controller/personal_directory')
 const file_c = require('../controller/files')
 const admin_c = require('../controller/admin')
 const activity_image_ct = require('../controller/activity_image')
+const history_ct = require('../controller/history_log')
+
+
 ////////////////////////////////////////////////////////////////////////////
 // login
 ////////////////////////////////////////////////////////////////////////////
@@ -28,8 +31,8 @@ route.post('/deleteAdmin',admin_c.deleteAdmin)
 ////////////////////////////////////////////////////////////////////////////
 // person directory
 ////////////////////////////////////////////////////////////////////////////
-// personal directory
-route.post('/getAllPositionList',persons_pd_c.getAllPositionList)
+route.post('/getAllPersonCategoryList',persons_pd_c.getAllPersonCategoryList)
+route.post('/getAllPersonPositionList',persons_pd_c.getAllPersonPositionList)
 route.post('/addPosition',persons_pd_c.addPosition)
 route.post('/deletePosition',persons_pd_c.deletePosition)
 route.post('/RenamePosition',persons_pd_c.RenamePosition)
@@ -63,7 +66,12 @@ route.post('/getActivityImage',activity_image_ct.getActivityImage)
 route.post('/deleteActivityImage',activity_image_ct.deleteActivityImage)
 
 
-
+////////////////////////////////////////////////////////////////////////////
+// history 
+////////////////////////////////////////////////////////////////////////////
+route.post('/getHistoryLength',history_ct.getHistoryLength)
+route.post('/getHistory',history_ct.getHistory)
+route.post('/searchHistory',history_ct.searchHistory)
 
 ////////////////////////////////////////////////////////////////////////////
 // test

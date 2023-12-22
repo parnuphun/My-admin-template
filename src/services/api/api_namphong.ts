@@ -6,14 +6,18 @@ const url = 'http://localhost:3001'
 
 export default class namphong_api {
     // log in addmin
-    login(data:{username:string,password:string}){   
-        console.log(url+'/login',data);
-             
+    login(data:{username:string,password:string}){                
         return axios.post(url+'/login',data)
     }
 
+    //get all category list
+    getAllPersonCategoryList(){
+        return axios.post(url+'/getAllPersonCategoryList')
+    }
+
     // add new position  
-    addPosition(data:{position_name:string , position_category:number}){        
+    addPosition(data:{position_name:string , position_category_id:number , 
+        position_category_name:string ,credential_admin_fullname:string}){        
         return axios.post(url+'/addPosition',data)
     }
     // delete position 
@@ -21,8 +25,8 @@ export default class namphong_api {
         return axios.post(url+'/deletePosition',data)
     }
     //get all position 
-    getAllPositionList(data:{category_id:number}){
-        return axios.post(url+'/getAllPositionList',data)
+    getAllPersonPositionList(data:{category_id:number}){
+        return axios.post(url+'/getAllPersonPositionList',data)
     }
     //rename position 
     RenamePosition(data:{position_id:number , position_name:string}){
@@ -54,7 +58,6 @@ export default class namphong_api {
         return axios.post(url+'/getFileLength',data)
     }
 
-
     // get all files 
     getAllFiles(data:{selected_category:number,start_item:number,limit:number}){        
         return axios.post(url+'/getAllFiles',data)
@@ -76,12 +79,12 @@ export default class namphong_api {
     }
 
     //  delete file
-    deleteFile(data:{file_id:number,file_name_upload:string}){
+    deleteFile(data:{file_id:number,file_name_upload:string,credential_admin_fullname:string,file_name:string}){
         return axios.post(url+'/deleteFile',data)
     }
 
     // switch pin status
-    fileSwitchPin(data:{file_id:number,file_pin_status:boolean}){
+    fileSwitchPin(data:{file_id:number,file_pin_status:boolean,credential_admin_fullname:string,file_name:string}){
         return axios.post(url+'/fileSwitchPin',data)
     }
 
@@ -139,5 +142,20 @@ export default class namphong_api {
     //delete activity image
     deleteActivityImage(data:{activity_image_id:number,activity_image_cover_delete:string}){
         return axios.post(url+'/deleteActivityImage',data)
+    }
+
+    //get history 
+    getHistory(data:{limit:number,start_item:number}){
+        return axios.post(url+'/getHistory',data)
+    }
+
+    // get history length
+    getHistoryLength(){
+        return axios.post(url+'/getHistoryLength')
+    }
+
+    // search history 
+    searchHistory(data:{search_keyword:string,start_item:number,limit:number}){
+        return axios.post(url+'/searchHistory',data)
     }
 }

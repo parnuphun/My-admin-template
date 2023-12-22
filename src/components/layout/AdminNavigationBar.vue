@@ -41,11 +41,12 @@ function getCurrentPath(url: string) {
 function logout() {
     _msg.confirm('คุณต้องการจากระบบใช่ไหม ?', 'question').then((isConfirmed) => {
         if (isConfirmed) {
-            _msg.default_msg({ title: 'ออกจากระบบแล้ว', timer: 1, progressbar: true })
-            localStorage.removeItem('credential')
+            // _msg.default_msg({ title: 'ออกจากระบบแล้ว', timer: 1, progressbar: true })
+            _msg.toast_msg({ title: 'ออกจากระบบแล้ว', icon:'success'})
+            localStorage.removeItem('Credential')
             setTimeout(() => {
-                router.push('/testBackend/login')
-            }, 1500);
+                router.push('/login')
+            }, 500);
         }
     })
 }
@@ -126,9 +127,14 @@ function isGroupOpen() {
                                 </v-btn>
                             </template>
 
-                            <v-card min-width="300">
+                            <v-card min-width="auto">
                                 <v-list line="three">
-                                    <v-list-item :title="`${credentialData.userFname} ${credentialData.userLname}`"
+                                    <v-list-item @click="logout()">
+                                        <template v-slot:append>
+                                            ออกจากระบบ <v-icon class="ml-4">mdi-login</v-icon>
+                                        </template>
+                                    </v-list-item>
+                                    <!-- <v-list-item :title="`${credentialData.userFname} ${credentialData.userLname}`"
                                         :subtitle="credentialData.userRoles.toString()">
                                         <template v-slot:prepend>
                                             <v-avatar size="x-large">
@@ -139,7 +145,7 @@ function isGroupOpen() {
                                         <template v-slot:append>
                                             <v-btn @click="logout()" variant="text" icon="mdi-login"></v-btn>
                                         </template>
-                                    </v-list-item>
+                                    </v-list-item> -->
                                 </v-list>
                                 <v-divider></v-divider>
                             </v-card>

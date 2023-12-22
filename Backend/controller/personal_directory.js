@@ -2,89 +2,151 @@ const db = require('../config/database');
 const upload_person_directory = require('../services/upload_person_directory')
 const delete_image = require('../services/delete_file')
 require('dotenv').config();
-
-// send all position 
-module.exports.getAllPositionList = async (req,res)=> {
-    const category_id = req.body.category_id
+const return_err =require('../services/return_err');
+const timeStamp = require('../services/timeStamp');
+ 
+// get all category 
+module.exports.getAllPersonCategoryList = async (req,res) =>{
     try{
-        db.query("SELECT * FROM personal_directory_position WHERE pd_category_id = ?",[category_id],(err,result)=>{
-            if(err) return 'db err'
+        db.query("SELECT * FROM personal_directory_category", async (err,result) =>{
+            if(err){
+                return return_err(res,'QUERY BLOCK','GET PERSON CATEGORY',err,500,'ไม่สามารถดึงข้อมูลได้')
+            }
             res.json({
                 status:true,
                 status_code:200,
-                msg:`query success!!`,
-                positionData:result
+                position_category:result
             })
         })
 
     }catch(err){
-        console.error('something err');
-        res.json({
-            status:false,
-            msg:'err'
+        return_err(res,'TRY CATCH BLOCK','GET PERSON CATEGORY',err,500,'ไม่สามารถดึงข้อมูลได้')
+    }
+}
+
+// get all position 
+module.exports.getAllPersonPositionList = async (req,res)=> {
+    const category_id = req.body.category_id
+    try{
+        db.query("SELECT * FROM personal_directory_position WHERE pd_category_id = ?",[category_id],(err,result)=>{
+            if(err){
+                return return_err(res,'QUERY BLOCK','GET PERSON POSITION',err,500,'ไม่สามารถดึงข้อมูลได้')
+            }
+            res.json({
+                status:true,
+                status_code:200,
+                person_position:result
+            })
         })
+
+    }catch(err){
+        return_err(res,'TRY CATCH BLOCK','GET PERSON POSITION',err,500,'ไม่สามารถดึงข้อมูลได้')
     }
 }
 
 // add new position 
 module.exports.addPosition = async (req,res) => {
     const position_name = req.body.position_name
-    const position_category = req.body.position_category
+    const position_category_id = req.body.position_category_id
+    const position_category_name = req.body.position_category_name
+    const credential_admin_fullname = req.body.credential_admin_fullname
+ 
     try{
-        // check order first
-        db.query('SELECT * FROM personal_directory_position',(err,result)=>{
-            if(err) return 'db err' 
-            if(result.length === 0){
-                // if no one position add first ordered
+        db.query(`SELECT * FROM personal_directory_position WHERE pd_position_name = ? AND pd_category_id = ?` ,
+        [position_name,position_category_id],async (err,result)=>{ 
+            if(err )return return_err(res,'QEURY BLOCK','ADD NEW POSITION CHECK NAME',err,500,'')
+            if(result.length >= 1){
+                res.status(200).json({
+                    status_code:409,
+                    status: false ,
+                    msg:'ชื่อตำแหน่งซ้ำ กรณาป้อนใหม่' 
+                })
+            }else{
                 try{
-                    db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order,pd_category_id)
-                        VALUES(?,1,?)`,[position_name,position_category], async (err, result) =>{ 
-                        if(err) return 'db err'
-                        res.json({
-                            status:true,
+                    db.query(`
+                    INSERT INTO personal_directory_position(
+                        pd_position_name,
+                        pd_category_id 
+                    )VALUES(?,?)` ,[position_name,position_category_id],async (err,result)=>{ 
+                        if(err )return return_err(res,'QEURY BLOCK 2 ','ADD NEW POSITION',err,500,'')
+                        timeStamp(
+                            credential_admin_fullname,
+                            'add',
+                            'person_directory',
+                            `${credential_admin_fullname} เพิ่มตำแหน่งบุคลกรชื่อ ' ${position_name} ' ในหมวดหมู่ ' ${position_category_name} ' `
+                        )
+                        
+                        res.status(200).json({
                             status_code:200,
-                            msg:`เพิ่มตำแหน่ง ${position_name} สำเร็จ!`
+                            status:false ,
+                            msg: 'เพิ่มตำแหน่งสำเร็จ'
                         })
                     })
                 }catch(err){
-                    console.error('something err');
-                    res.json({
-                        status:false,
-                        msg:'err'
-                    })
-                }
-            }else{
-                // not first 
-                let order = result.length+1 
-                try{
-                    db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order,pd_category_id)
-                    VALUES(?,?,?)`,[position_name,order,position_category], async (err, result) =>{ 
-                    if(err) throw err
-                    res.json({
-                        status:true,
-                        status_code:200,
-                        msg:`เพิ่มตำแหน่ง ${position_name} สำเร็จ!`
-                    })
-                })
-                }catch(err){
-                    console.error('something err');
-                    res.json({
-                        status:false,
-                        msg:'err'
-                    })
+                    return return_err(res,'TRY CATCH BLOCK 2 ','ADD NEW POSITION',err,500,'')
                 }
             }
         })
+    }catch(err){
+        return return_err(res,'TRY CATCH BLOCK','ADD NEW POSITION',err,500,'')
+    }
 
-
+    try{
 
     }catch(err){
-        console.error('something err');
-        res.json({
-            status:false,
-            msg:'err'
-        })
+        return return_err(res,'TRY CATCH BLOCK','ADD NEW POSITION',err,500,'')
     }
+
+    // try{
+    //     // check order first
+    //     db.query('SELECT * FROM personal_directory_position',(err,result)=>{
+    //         if(err) return return_err(res,'QUERY BLOCK','GET PERSON POSITION',err,500,'')
+
+    //         if(result.length === 0){
+    //             // if no one position add first ordered
+    //             try{
+    //                 db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order,pd_category_id)
+    //                     VALUES(?,1,?)`,[position_name,position_category_id], async (err, result) =>{ 
+    //                         if(err) return return_err(res,'QUERY BLOCK','GET PERSON POSITION',err,500,'')
+                        
+    //                     res.status(200).json({
+    //                         status:true,
+    //                         status_code:200,
+    //                         msg:`เพิ่มตำแหน่ง ${position_name} สำเร็จ!`
+    //                     })
+    //                 })
+    //             }catch(err){
+    //                 return return_err(res,'TRY CATCH BLOCK','ADD NEW POSITION',err,500,'')
+    //                 res.json({
+    //                     status:false,
+    //                     msg:'err'
+    //                 })
+    //             }
+    //         }else{
+    //             // not first 
+    //             let order = result.length+1 
+    //             try{
+    //                 db.query(`INSERT INTO personal_directory_position(pd_position_name ,pd_position_order,pd_category_id)
+    //                 VALUES(?,?,?)`,[position_name,order,position_category], async (err, result) =>{ 
+    //                 if(err) throw err
+    //                 res.json({
+    //                     status:true,
+    //                     status_code:200,
+    //                     msg:`เพิ่มตำแหน่ง ${position_name} สำเร็จ!`
+    //                 })
+    //             })
+    //             }catch(err){
+    //                 console.error('something err');
+    //                 res.json({
+    //                     status:false,
+    //                     msg:'err'
+    //                 })
+    //             }
+    //         }
+    //     })
+    // }catch(err){
+    //     return return_err(res,'TRY CATCH BLOCK','ADD NEW POSITION',err,500,'')
+    // }
 }
 
 // delete position

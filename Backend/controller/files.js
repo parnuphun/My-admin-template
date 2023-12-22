@@ -3,6 +3,7 @@ const upload_person_directory = require('../services/upload_person_directory')
 const delete_file = require('../services/delete_file')
 const date_convert = require('../services/date_convert');
 const rename_file = require('../services/rename_file')
+const timeStamp = require('../services/timeStamp')
 const bytes = require('bytes');
 const fs = require('fs') 
 const path = require('path')
@@ -250,6 +251,7 @@ module.exports.addNewFile = async (req,res)=> {
     const file_date = new Date() 
     const file_name_upload = `${file_name}_${Date.now()}.${file_type}`
     const file_size = bytes(req.file.size)
+    const credential_admin_fullname = req.body.credential_admin_fullname
 
     await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
     try{
@@ -273,7 +275,13 @@ module.exports.addNewFile = async (req,res)=> {
                     err:err
                 })
             }
-            console.log('ADD NEW FILES SUCCESS !!');
+
+            timeStamp(
+                credential_admin_fullname,
+                'add',
+                'file', 
+                `${credential_admin_fullname} เพิ่มไฟล์เอกสาร '${file_name}'`
+            )
             res.status(200).json({
                 status:true,
                 statusCode:200,
@@ -297,11 +305,18 @@ module.exports.addNewFile = async (req,res)=> {
 module.exports.deleteFile = async (req,res) => {
     const file_id = req.body.file_id
     const file_name_upload = req.body.file_name_upload
+    const credential_admin_fullname = req.body.credential_admin_fullname
+    const file_name = req.body.file_name
     try{
         db.query('DELETE FROM file WHERE file_id = ?',[file_id],async (err,result)=>{
             await delete_file(file_name_upload,'file')
             console.log(`DELETE FILE ID ${file_id} SUCCESS !!!`)
-
+            timeStamp(
+                credential_admin_fullname,
+                'delete',
+                'file',
+                `${credential_admin_fullname} ลบไฟล์เอกสาร ' ${file_name} '`
+            )
             res.json({
                 status:true,
                 msg:'ลบไฟล์สำเร็จแล้ว'
@@ -320,16 +335,18 @@ module.exports.deleteFile = async (req,res) => {
 // file switch pin
 module.exports.fileSwitchPin = async (req,res) => {
     const file_id = req.body.file_id
+    const credential_admin_fullname = req.body.credential_admin_fullname
+    const file_name = req.body.file_name
     let status 
     let succ_msg 
 
     // set opposit value 
     if(req.body.file_pin_status == false) {
         status = 1
-        succ_msg = ``
+        succ_msg = `เปิดการมองเห็น`
     }else{
         status = 0
-        succ_msg = ``
+        succ_msg = `ปิดการมองเห็น`
     }
 
      try{
@@ -340,15 +357,21 @@ module.exports.fileSwitchPin = async (req,res) => {
                 res.status(200).json({
                     status:false,
                     statusCode:500,
-                    msg:'ไม่สามารถเปลี่ยนสถานะได้',
                     err:err
                 })
             }
-            console.log(`CHANGE STATUS FILE ID ${file_id} SUCCESS !`);
+            
+            timeStamp(
+                credential_admin_fullname,
+                'update',
+                'file',
+                `${credential_admin_fullname} ${succ_msg} ไฟล์เอกสาร ' ${file_name} '`
+            )
+
             res.status(200).json({
                 status:true,
                 statusCode:200,
-                msg: 'อัพเดตสถานะสำเร็จ'
+                msg: succ_msg
             })
         })
     }catch(err){
@@ -403,8 +426,10 @@ module.exports.previewFile = async(req,res) => {
 module.exports.editFile = async(req,res) => {
     const file_id = req.body.file_id
     const file_name = req.body.file_name 
+    const file_old_name = req.body.file_old_name // old file anme not upload 
     const file_type = req.body.file_type
     const file_category_id = req.body.file_category_id
+    const credential_admin_fullname = req.body.credential_admin_fullname
     let file_name_upload 
     if(req.body.file_upload === 'no_file_upload'){ // case no file upload 
         file_name_upload = req.body.file_name_upload // use old name 
@@ -425,7 +450,7 @@ module.exports.editFile = async(req,res) => {
                     err:err
                 })
             }
-            let old_file_name = result[0].file_name_upload
+            let old_file_name = result[0].file_name_upload // old file name upload
             try{
                 db.query(`UPDATE file 
                         SET file_name = ? ,
@@ -452,7 +477,17 @@ module.exports.editFile = async(req,res) => {
                         console.log('UPDATE FILE CASE: UPLOAD FILE ');
                         await delete_file(old_file_name,'file') // after update remove old file
                     }
-                    console.log('UPDATE FILED SUCCESS !!');
+
+                    let msg_time_stamp = `${credential_admin_fullname} แก้ไขไฟล์ ' ${file_old_name} '`
+                    if(file_name !== file_old_name){
+                        msg_time_stamp = msg_time_stamp + ` และได้มีการเปลี่ยนชื่อไฟล์เป็น ' ${file_name} '`
+                    }
+                    timeStamp(
+                        credential_admin_fullname,
+                        'update',
+                        'file',
+                        msg_time_stamp
+                    )
                     res.status(200).json({
                         status:true,
                         status_code: 200 ,
@@ -526,7 +561,7 @@ module.exports.searchFile = async(req,res) =>{
                 }
             }
             let search_file_data = result 
-
+            
             try {
                 if(selected_category === 0) {
                     query_select = `SELECT * FROM file WHERE file_name LIKE ?` 
