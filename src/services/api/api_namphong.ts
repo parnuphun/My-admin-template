@@ -6,9 +6,7 @@ const url = 'http://localhost:3001'
 
 export default class namphong_api {
     // log in addmin
-    login(data:{username:string,password:string}){   
-        console.log(url+'/login',data);
-             
+    login(data:{username:string,password:string}){                
         return axios.post(url+'/login',data)
     }
 
@@ -54,7 +52,6 @@ export default class namphong_api {
         return axios.post(url+'/getFileLength',data)
     }
 
-
     // get all files 
     getAllFiles(data:{selected_category:number,start_item:number,limit:number}){        
         return axios.post(url+'/getAllFiles',data)
@@ -76,12 +73,12 @@ export default class namphong_api {
     }
 
     //  delete file
-    deleteFile(data:{file_id:number,file_name_upload:string}){
+    deleteFile(data:{file_id:number,file_name_upload:string,credential_admin_fullname:string,file_name:string}){
         return axios.post(url+'/deleteFile',data)
     }
 
     // switch pin status
-    fileSwitchPin(data:{file_id:number,file_pin_status:boolean}){
+    fileSwitchPin(data:{file_id:number,file_pin_status:boolean,credential_admin_fullname:string,file_name:string}){
         return axios.post(url+'/fileSwitchPin',data)
     }
 

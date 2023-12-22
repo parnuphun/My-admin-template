@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref ,onMounted ,watch} from 'vue'
-import {fileCategoryRespone , filesResponse , dataStatus , viewData} from '../../../store/Interface' 
+import {fileCategoryRespone , filesResponse , dataStatus , viewData , credential} from '../../../store/Interface' 
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
@@ -15,8 +15,15 @@ const selectedCategory = ref(0) // selected file category , set default = 0 it m
 const allCategoryFile = ref<Array<fileCategoryRespone>>()
 
 const buttonLoading = ref(false)
+ 
+const credential = ref<credential>()
+
 // working at first  
 onMounted(()=>{
+    credential.value = JSON.parse(localStorage.getItem('Credential')||'')
+    console.log(credential.value);
+    console.log(credential.value!.user_fullname);
+    
     getFileLength()
     getAllCategoryFile()
     getAllFile()
@@ -80,6 +87,8 @@ function addNewFile(){
     formData.append('file_type', fileType.value!)
     formData.append('file_category_id', String(fileSelected_DD.value))
 
+    formData.append('credential_admin_fullname',credential.value!.user_fullname)
+    
     _api.addNewFile(formData).then((res)=>{
         if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
         else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
@@ -95,7 +104,6 @@ function addNewFile(){
 }
 // set auto file name 
 watch(fileUpload,()=>{
-    console.log('+++',fileUpload.value);
     
     if(fileUpload.value !== null && fileUpload.value !== undefined ){
         // if file name is unvariable and add file first just set filename = file.filename 
@@ -106,10 +114,16 @@ watch(fileUpload,()=>{
 })
 
 // delete file
-function deleteFile(file_id:number,file_name_upload:string){
+function deleteFile(file_id:number,file_name_upload:string,file_name:string){
     _msg.confirm('คุณต้องการจะลบไฟล์ใช่ไหม').then((isConfirmed)=>{
         if(isConfirmed){
-            _api.deleteFile({file_id:file_id,file_name_upload:file_name_upload}).then((res)=>{
+            _api.deleteFile({
+                file_id:file_id,
+                file_name_upload:file_name_upload,
+                credential_admin_fullname:credential.value!.user_fullname,
+                file_name:file_name
+            })
+            .then((res)=>{
                 if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:1,progressbar:true,icon:'success'})
                 else _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
                 getFileCheck()
@@ -129,8 +143,13 @@ function deleteFile(file_id:number,file_name_upload:string){
 }
 
 // switch pin 
-function fileSwitchPin(file_id:number , file_pin_status:boolean){
-    _api.fileSwitchPin({file_id:file_id,file_pin_status:file_pin_status}).then((res)=>{
+function fileSwitchPin(file_id:number , file_pin_status:boolean , file_name:string){
+    _api.fileSwitchPin({
+        file_id:file_id,
+        file_pin_status:file_pin_status,
+        credential_admin_fullname:credential.value!.user_fullname,
+        file_name:file_name})
+    .then((res)=>{
         if(res.data.statusCode === 200){
             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
             getFileCheck();
@@ -166,7 +185,9 @@ function previewsFile(file_id:number , file_name_upload:string, ){
 // edit file
 function editFile(){    
     buttonLoading.value = true 
-
+    console.log('new ',fileName.value);
+    console.log('old ',oldFileName_DD.value);
+    
     const formData = new FormData()
     // case no file update
     if(fileUpload.value === undefined || fileUpload.value === null){
@@ -182,6 +203,8 @@ function editFile(){
     formData.append('file_name_upload',fileNameUpload_DD.value!)
     formData.append('file_type', fileFormat_DD.value!)
     formData.append('file_category_id', String(fileSelected_DD.value))    
+    formData.append('file_old_name', oldFileName_DD.value)    
+    formData.append('credential_admin_fullname',credential.value!.user_fullname)
 
     _api.editFile(formData).then((res)=>{
         if(res.data.status_code === 200){ 
@@ -215,6 +238,7 @@ function settingEditFileName(file_id:number,file_name:string , file_category_id:
 
 // send data to drawer detail
 const fileName_DD = ref()
+const oldFileName_DD = ref() // check for update time stamp if file name change
 const fileid_DD = ref()
 const fileNameUpload_DD = ref()
 const fileFormat_DD = ref()
@@ -225,6 +249,7 @@ const fileSize_DD = ref() // show in drawwer detail only
 
 function fileDetailDrawer(item:filesResponse){
     fileSelected_DD.value = item.file_category_id
+    oldFileName_DD.value = item.file_name
     fileName_DD.value = item.file_name
     fileid_DD.value = item.file_id
     fileNameUpload_DD.value = item.file_name_upload
@@ -409,7 +434,7 @@ function getFileCheck(){
                 </div>
             </div>
             <div class=" px-4">
-               <p class="text-lg"> ไฟล์ทั้งหมด : {{ totalFiles }}</p>
+               <p class="text-lg"> จำนวนรายการ : {{ totalFiles }}</p>
             </div>
             <v-divider class="border-opacity-100"></v-divider>
             <div class="w-full flex flex-col justify-start " v-if="dataStatus === 'load_data_succ'">
@@ -464,7 +489,7 @@ function getFileCheck(){
                 <div class="w-full" v-if="viewData === 'table'">
                     <v-table>
                         <thead>
-                            <tr class="bg-[#E91E63] text-white ">
+                            <tr class="">
                                 <th class="text-left w-[20px]"> # </th>
                                 <th class="text-center w-[100px]"> ประเภท </th>
                                 <th class="text-left"> ชื่อไฟล์ </th>
@@ -647,7 +672,7 @@ function getFileCheck(){
                         ปักหมุด :
                         </p>
                         <v-switch
-                            @click="fileSwitchPin(fileid_DD,filePin_DD)"
+                            @click="fileSwitchPin(fileid_DD,filePin_DD,fileName_DD)"
                             v-model="filePin_DD"
                             class="pl-3"
                             density="compact"
@@ -687,7 +712,7 @@ function getFileCheck(){
                     >
                         แก้ไข
                     </v-btn>
-                    <v-btn @click="deleteFile(fileid_DD,fileNameUpload_DD)" color="red" class="w-full">ลบ</v-btn>
+                    <v-btn @click="deleteFile(fileid_DD,fileNameUpload_DD,fileName_DD)" color="red" class="w-full">ลบ</v-btn>
                 </div>
             </div>
         </v-navigation-drawer>
