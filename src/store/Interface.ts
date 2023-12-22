@@ -19,6 +19,24 @@ export interface credential {
     user_password:string,
     user_token:string
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Common
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface personCategory {
+    pd_category_id  : number,
+    pd_category_name : string
+}
+
+export interface personPosition {
+    pd_position_id : number,
+    pd_position_name : string ,
+    pd_position_order  : number ,
+    pd_category_id   : number 
+}
+
+export interface personDirectoryResponse {
+    
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // history logs

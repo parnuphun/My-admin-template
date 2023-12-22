@@ -21,8 +21,6 @@ const credential = ref<credential>()
 // working at first  
 onMounted(()=>{
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
-    console.log(credential.value);
-    console.log(credential.value!.user_fullname);
     
     getFileLength()
     getAllCategoryFile()

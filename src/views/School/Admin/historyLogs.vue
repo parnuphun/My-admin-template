@@ -131,7 +131,7 @@ watch(searchValue , ()=>{
                         <tr v-for="(item , i ) in historyLogs" :key="item.history_logs_id" >
                             <td class="text-center">{{ (startItem+i)+1 }}</td>
                             <!-- <td>{{ item.history_logs_username }}</td> -->
-                            <td>{{ item.history_logs_text }}</td>
+                            <td class="py-2">{{ item.history_logs_text }}</td>
                             <td class="text-center w-fit">{{ item.history_logs_date }}</td>
                             <td>
                                 <div class="flex justify-center items-center">
@@ -140,6 +140,9 @@ watch(searchValue , ()=>{
                                     </v-chip>
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'file'">
                                         <v-icon icon="mdi-file-outline" class="mr-2"></v-icon> ไฟล์เอกสาร
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'person_directory'">
+                                        <v-icon icon="mdi-account-box-multiple-outline" class="mr-2"></v-icon> บุคลากร
                                     </v-chip>
                                 </div>
                             </td>

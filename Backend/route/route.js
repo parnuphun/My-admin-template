@@ -31,8 +31,8 @@ route.post('/deleteAdmin',admin_c.deleteAdmin)
 ////////////////////////////////////////////////////////////////////////////
 // person directory
 ////////////////////////////////////////////////////////////////////////////
-// personal directory
-route.post('/getAllPositionList',persons_pd_c.getAllPositionList)
+route.post('/getAllPersonCategoryList',persons_pd_c.getAllPersonCategoryList)
+route.post('/getAllPersonPositionList',persons_pd_c.getAllPersonPositionList)
 route.post('/addPosition',persons_pd_c.addPosition)
 route.post('/deletePosition',persons_pd_c.deletePosition)
 route.post('/RenamePosition',persons_pd_c.RenamePosition)
