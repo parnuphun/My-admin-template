@@ -582,14 +582,12 @@ function getFileCheck(){
             </div>
             <div class="w-full flex justify-end">
                 <div class="w-[100px]">
-                    <v-selection>
-                        <v-select
-                            :items="size"
-                            variant="outlined"
-                            v-model="sizeSelected"
-                            hide-details="auto"
-                        ></v-select>
-                    </v-selection>
+                    <v-select
+                        :items="size"
+                        variant="outlined"
+                        v-model="sizeSelected"
+                        hide-details="auto"
+                    ></v-select>
                 </div>
                 <div class="sm:w-fit">
                     <v-pagination 
