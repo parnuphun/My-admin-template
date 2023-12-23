@@ -5,8 +5,8 @@ const fs = require('fs');
 // Disable SIMD globally
 sharp.simd(false);
 
-module.exports = async (req,name)=> {
-    let nname = `resize_${name}_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`;
+module.exports = async (req)=> {
+    let nname = `resize_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`;
     try {
         await sharp(req.file.path)
           .resize(200)

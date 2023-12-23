@@ -10,6 +10,9 @@ export default class namphong_api {
         return axios.post(url+'/login',data)
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // person directory 
+    ///////////////////////////////////////////////////////////////////////////////
     //get all category list
     getAllPersonCategoryList(){
         return axios.post(url+'/getAllPersonCategoryList')
@@ -21,7 +24,8 @@ export default class namphong_api {
         return axios.post(url+'/addPosition',data)
     }
     // delete position 
-    deletePosition(data:{position_id:number}){        
+    deletePosition(data:{position_id:number,position_name:string,credential_admin_fullname:string
+    position_category_name:string}){        
         return axios.post(url+'/deletePosition',data)
     }
     //get all position 
@@ -29,8 +33,16 @@ export default class namphong_api {
         return axios.post(url+'/getAllPersonPositionList',data)
     }
     //rename position 
-    RenamePosition(data:{position_id:number , position_name:string}){
-        return axios.post(url+'/RenamePosition',data)
+    renamePosition(data:{
+        position_id:number , 
+        position_name:string , 
+        position_old_name:string,
+        credential_admin_fullname:string,
+        position_category_id:number}){
+
+            console.log( data);
+            
+        return axios.post(url+'/renamePosition',data)
     }
 
     // add new person

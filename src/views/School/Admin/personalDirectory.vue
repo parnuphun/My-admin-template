@@ -110,7 +110,7 @@ function deletePosition(position_id:number , position_name:string){
             // }
             
             
-            _api.deletePosition({position_id:position_id}).then((res)=>{
+            _api.deletePosition({position_id:position_id,credential_admin_fullname:'',position_name:'',position_category_name:''}).then((res)=>{
                 if(res.data.status){
                     _msg.toast_msg({title:'ลบสำเร็จ',timer:5,icon:'success',progressbar:true})
                     getAllPositionList()
@@ -139,7 +139,8 @@ function RenamePosition(){
         if(isConfirmed){            
             if(positionName.value.trim() == '') return _msg.toast_msg({title:'กรุณากรอกข้อมูลให้ถูกต้อง',timer:5,icon:'error',progressbar:true})
             
-            _api.RenamePosition({position_id:(selectedPosition.value as number) , position_name:positionName.value}).then((res)=>{
+            _api.renamePosition({position_id:(selectedPosition.value as number) , position_name:positionName.value ,credential_admin_fullname :'' ,position_category_id:1 , position_old_name :''}
+            ,).then((res)=>{
                 if(res.data.status){
                     _msg.toast_msg({title:res.data.msg,timer:5,icon:'success',progressbar:true})
                     getAllPositionList()
