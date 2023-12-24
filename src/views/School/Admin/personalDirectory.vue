@@ -560,7 +560,8 @@ function getPersonDirectoryTableTree(){
                         shadow-md hover:shadow-xl duration-200 hover:shadow-pink-200 "> 
                             <div class="w-fit min-w-fit py-1 border-2">
                                 <img v-if="item.pd_person_image === 'no_image_upload'" 
-                                src="images/avartars/default_avatar.png" class="w-[100px]" alt="">
+                                src="/images/avartars/default_avatar.png" class="w-[100px]" alt="">
+                                
                                 <img v-else :src="personBaseImageUrl+item.pd_person_image" 
                                     class="object-fill w-[100px]"
                                     alt="person_image">
@@ -685,8 +686,10 @@ function getPersonDirectoryTableTree(){
                                     @click="updatePersonSetData(item)"
                                     v-for="item in (position as any).persons">
                                         <div class="w-[120px] h-[150px] border-2 rounded-md">
-                                            <img class="object-cover  w-full  h-full rounded-md " 
+                                            <img v-if="item.pd_person_image !== 'no_image_upload'" class="object-cover  w-full  h-full rounded-md " 
                                             :src="personBaseImageUrl+item.pd_person_image" alt="">
+                                            <img v-else class="object-cover  w-full  h-full rounded-md " 
+                                            src="/images/avartars/default_avatar.png" alt="">
                                         </div>
                                         <div class="w-full text-center text-sm mt-2">
                                             <p class="text-md">{{ item.pd_person_name }}</p>
