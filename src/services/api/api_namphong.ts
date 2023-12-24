@@ -49,17 +49,38 @@ export default class namphong_api {
     addPerson(data:FormData){
         return axios.post(url+'/addPerson',data)
     }
-    // update person
+    // update person // old
     editPerson(data:FormData){
         return axios.post(url+'/editPerson',data)
     }
-    // get all person 
-    getPersonDirectoryOne(data:{category_id:number}){
-        return axios.post(url+'/getPersonDirectoryOne',data)
+
+    // update person
+    updatePerson(data:FormData){
+        return axios.post(url+'/updatePerson',data)
+    }
+
+    //get all person list length 
+    getAllpersonListLength(data:{person_category_id:number}){
+        return axios.post(url+'/getAllpersonListLength',data)
+    }
+
+    // get all person list 
+    getAllpersonList(data:{limit:number,start_item:number,person_category_id:number}){
+        return axios.post(url+'/getAllpersonList',data)
+    }
+
+    // get all person (three table list )
+    getPersonDirectoryTableTree(data:{category_id:number}){
+        return axios.post(url+'/getPersonDirectoryTableTree',data)
     }
     // delete person
-    deletePerson(data:{person_id:number,person_image:string}){
+    deletePerson(data:{person_id:number,person_image:string,person_name:string,credential_admin_fullname:string}){
         return axios.post(url+'/deletePerson',data)
+    }
+
+    // seach person 
+    searchPersons(data:{search_keyword:string,start_item:number,limit:number,person_category_id:number}){
+        return axios.post(url+'/searchPersons',data)
     }
 
     ///////////////////////////////////////////////////////////////////////////////

@@ -20,7 +20,7 @@ export interface credential {
     user_token:string
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-// Common
+// person 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 export interface personCategory {
     pd_category_id  : number,
@@ -35,7 +35,22 @@ export interface personPosition {
 }
 
 export interface personDirectoryResponse {
-    
+    pd_person_id : number,
+    pd_person_image : string,
+    pd_person_name : string ,
+    pd_person_phone : string ,
+    pd_person_email : string ,
+    pd_person_descript : string ,
+    pd_position_name? : string,
+    pd_position_id : number ,
+    pd_category_name? : string,
+    pd_category_id : number ,
+}
+
+export interface personDirectoryTableTree {
+    position_id : number , 
+    position_name : string ,
+    persons : Array<personDirectoryResponse>,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

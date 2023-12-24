@@ -50,7 +50,6 @@ watch(pagination,()=>{
 // detect sizeSelected
 watch(sizeSelected,()=>{
     pagination.value = 1 // reset
-
     changePage()
     getHistoryAndLength()
 })
@@ -184,7 +183,8 @@ watch(searchValue , ()=>{
                     <v-pagination 
                         :length="totalPage"
                         v-model="pagination"
-                        :total-visible="3">
+                        :total-visible="3"
+                        >
                     </v-pagination>
                 </div>
             </div>

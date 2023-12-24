@@ -36,10 +36,14 @@ route.post('/getAllPersonPositionList',persons_pd_c.getAllPersonPositionList)
 route.post('/addPosition',persons_pd_c.addPosition)
 route.post('/deletePosition',persons_pd_c.deletePosition)
 route.post('/renamePosition',persons_pd_c.renamePosition)
-route.post('/getPersonDirectoryOne',persons_pd_c.getPersonDirectoryOne)
+route.post('/getPersonDirectoryTableTree',persons_pd_c.getPersonDirectoryTableTree)
 route.post('/addPerson',upload_person_image,persons_pd_c.addPerson)
-route.post('/editPerson',upload_person_image,persons_pd_c.editPerson)
+route.post('/updatePerson',upload_person_image,persons_pd_c.updatePerson)
 route.post('/deletePerson',persons_pd_c.deletePerson)
+
+route.post('/getAllpersonListLength',persons_pd_c.getAllpersonListLength)
+route.post('/getAllpersonList',persons_pd_c.getAllpersonList)
+route.post('/searchPersons',persons_pd_c.searchPersons)
 
 ////////////////////////////////////////////////////////////////////////////
 // files
