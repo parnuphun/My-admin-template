@@ -1,11 +1,12 @@
-## install
+## installation
+### frontend
 - `npm i` install dependecncies
 - `npm run dev`  start project
-
-## notes
-- Responsive Breakpoint base on tailwind css , not vuetify .
-
-## problem notes
-- [Fix CORS with Proxy](https://vitejs.dev/config/server-options.html#server-proxy)
-- [Vuetify Standard Color](https://stackoverflow.com/questions/52258669/how-to-change-the-text-color-of-a-vuetify-button)
-- [Vuetify Transition](https://www.youtube.com/watch?v=z9DxKjnpjnI)
+- `npm run build` build project
+### backend
+- `npm i` or `yarn install` install dependecncies
+- `npm start` start server
+  
+## my notes
+- Responsive Breakpoint base on tailwind css , not vuetify.
+- In package.json in build script add `--base=/` with time protection. Enter the path directly and the page is blank.
