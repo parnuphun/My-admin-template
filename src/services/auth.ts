@@ -1,13 +1,21 @@
 import axios from 'axios'
 import router from '../plugin/routes'
 
- 
-const credential = JSON.parse(localStorage.getItem('Credential')!)
+let token = ''
+if(localStorage.getItem('Credential')){
+    console.log('true');    
+    const credential = JSON.parse(localStorage.getItem('Credential') || '')
+    if(credential !== undefined || credential !== 'undefined' || credential !== null || credential !== ''){
+        token = credential.user_token
+    }
+}
+
+console.log(token,'<=token');
 
 const axiosAuth = axios.create({
     headers: {
         // Include your token here
-        'Authorization': `Bearer ${credential.user_token}`,
+        'Authorization': `Bearer ${token}`,
     },
 })
 
