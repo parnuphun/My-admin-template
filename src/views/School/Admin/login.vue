@@ -5,6 +5,7 @@ import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vu
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
 import { useRouter } from 'vue-router' ;
+import axiosAuth from '../../../services/auth';
 
 const router_s = useRouter();
 
@@ -28,6 +29,7 @@ function login(){
         if(res.data.status_code === 200){            
             errMessage.value = 'login_succ'              
             localStorage.setItem('Credential',JSON.stringify(res.data.user_data))
+            axiosAuth.defaults.headers['Authorization'] = `Bearer ${res.data.user_data.user_token}`; // update token in header
             setTimeout(()=>{
                 nextPage('/admin/news')
             },500)
@@ -49,7 +51,6 @@ function login(){
     });
 }
  
-
 </script>
 
 <template>
@@ -106,8 +107,6 @@ function login(){
                         class="mt-4 w-full" size="large" color="pink">
                             เข้าสู่ระบบ
                         </v-btn>
-
-
                     </v-form>
                 </div>
             </div>

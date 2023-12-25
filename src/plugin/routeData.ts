@@ -90,10 +90,17 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
-        id: 'person_management' ,
-        title : 'ทดสอบ' ,
+        id: 'test_ui' ,
+        title : 'ทดสอบ user interface' ,
         icon : 'mdi-test-tube' ,
         link : '/test_ui' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'test_api_auth' ,
+        title : 'ทดสอบ api auth' ,
+        icon : 'mdi-test-tube' ,
+        link : '/test_api_auth' ,
         permission : 'ทุกคน' ,
     },
 

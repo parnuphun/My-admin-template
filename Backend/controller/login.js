@@ -11,7 +11,7 @@ function createToken(data,rememberMe){
 
         let loginOption = {
             algorithm:'HS256',
-            expiresIn:'8h'
+            expiresIn:'1h'
         }
 
         if(rememberMe){

@@ -8,8 +8,21 @@ const router = createRouter({
     history : createWebHistory(),
     routes: [
         /////////////////////////////////////////////////////////////////////////////////////////////////
+        // default page
+        /////////////////////////////////////////////////////////////////////////////////////////////////
+        // page not found 404 for client
+        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/School/Error/Err_pageNotFound404.vue')} ,
+        // page not found 404 for admin 
+        { path: '/admin/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
+        // 401 Unauthorized 
+        { path: '/err401' , component: () => import('../views/School/Error/Err_Unauthorized 401.vue')},
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////
         // สำหรับหน้าบ้าน client
         /////////////////////////////////////////////////////////////////////////////////////////////////
+        
+
         // default redirect
         { path: '/' , component: () => import('../views/School/User/SchoolMain.vue')} ,
         { path: '/about' , component: () => import('../views/School/User/SchoolAbout.vue')} ,
@@ -36,14 +49,9 @@ const router = createRouter({
         
         // test admin ui 
         { path: '/test_ui' , component: () => import('../views/School/Test/test_ui.vue')},
+        { path: '/test_api_auth' , component: () => import('../views/School/Test/test_api_auth.vue')},
 
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // default page
-        /////////////////////////////////////////////////////////////////////////////////////////////////
-        // page not found 404 for client
-        { path: '/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageServerErr500.vue')} ,
-        // page not found 404 for admin 
-        { path: '/admin/:pathMatch(.*)*' , component: ()=> import ('../views/Common/ErrorPage/PageNotFound404.vue')} ,
+
 
     ],
     scrollBehavior(to, from, savedPosition) {
@@ -55,44 +63,16 @@ const router = createRouter({
 // route guard
 router.beforeEach((to,from,next)=>{
       // Check if the user is trying to access an admin route
-  if (to.path.startsWith('/admin')) {
-    // Check if the user has credentials in localStorage
-        const hasCredentials = localStorage.getItem('Credential');
-    if (!hasCredentials) {
-      // If no credentials, redirect to the login page or show an error message
-      next('/login')
-    } else {
-      // If credentials exist, allow access to the admin route
+  if(to.path.startsWith('/admin')) {
+      const hasCredentials = localStorage.getItem('Credential');
+      if (!hasCredentials) {
+        next('/err401')
+      } else {
+        next()
+      }
+  }else{
       next()
-    }
-  } else{
-    next()
   }
-    // // ถ้า login แล้วจะกลับมาที่หน้า Login อีกไม่ได้
-    // _auth.isLoggedIn().then((isLoggedIn)=>{
-    //     if((to.path.startsWith('/testBackend/login')) && isLoggedIn === true){
-    //         router.push('/')
-    //         return false
-    //     }
-    // })
-
-    // // ยกเว้น path forgot password
-    // if((from.path.startsWith('/testBackend/login') && to.path.startsWith('/testBackend/forgotPassword'))
-    //     || (from.path.startsWith('/') && to.path.startsWith('/testBackend/forgotPassword'))){
-    //     return true
-    // }
-
-    // // กรณีไม่ไปหน้าอื่นที่ไม่ใช่หน้า login แล้วยังไม่ได้ล็อคอินให้ login ก่อน
-    // _auth.isLoggedIn().then((isLoggedIn)=>{
-    //     if(!to.path.startsWith('/testBackend/login') && isLoggedIn === false) {
-    //         _msgAlert.confirm('หมดอายุการใช้งาน','error').then((isConfirmed)=>{
-    //             if(isConfirmed){
-    //                 router.push('/testBackend/login')
-    //             }
-    //         })
-    //         return false
-    //     }
-    // })
 })
 
 export default router
