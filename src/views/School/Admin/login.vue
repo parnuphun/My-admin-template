@@ -90,6 +90,7 @@ function login(){
                             class="mt-4"
                             hide-details
                             variant="outlined"
+                            autocomplete="current-username"
                             bg-color=""
                             required
                         ></v-text-field>
@@ -98,6 +99,7 @@ function login(){
                             label="รหัสผ่าน"
                             class="mt-4"
                             type="password"
+                            autocomplete="current-password"
                             hide-details
                             variant="outlined"
                             bg-color=""

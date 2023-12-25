@@ -11,4 +11,7 @@ const credential = ref()
 </script>
 
 <template>
+    <AdminNavigationBar>
+        
+    </AdminNavigationBar>
  </template>
