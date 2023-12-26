@@ -18,6 +18,7 @@ function nextPage(path:string) {
 
 type errMessage = 'login_succ' | 'login_failed' | 'no_action' | 'server_err'
 const errMessage = ref<errMessage>('no_action')
+const errMsgResponse = ref()
 const btnLoading = ref(false)
 
 const username = ref()
@@ -35,9 +36,11 @@ function login(){
             },500)
         }else if(res.data.status_code === 401){
             errMessage.value = 'login_failed'
+            errMsgResponse.value = res.data.msg
             password.value = ''
         }else{
             errMessage.value = 'server_err'
+            errMsgResponse.value = res.data.msg
         }
         setTimeout(() => {
             // errMessage.value = 'no_action'
@@ -74,7 +77,7 @@ function login(){
                             ></v-alert>
                             <v-alert v-else-if="errMessage === 'login_failed'"
                                 type="error"
-                                text="กรุณากรอกชื่อผู้ใช้งานและรหัสผ่านให้ถูกต้อง"
+                                :text="errMsgResponse"
                             ></v-alert>
                             <v-alert v-else-if="errMessage === 'server_err'"
                                 type="error"

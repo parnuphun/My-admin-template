@@ -7,17 +7,22 @@ export type dataStatus = 'no_data' | 'loading_data' | 'err_data' | 'load_data_su
 export type viewData = 'detail' | 'table'
 // admin data 
 export interface credential {
-    user_id:number,
-    user_image:string,
-    user_username:string,
-    user_firstname:string,
-    user_lastname:string,
-    user_email:string,
-    user_phone:string,
-    user_address:string,
-    user_fullname:string,
-    user_password:string,
+    user_id:number
+    user_image:string
+    user_username:string
+    user_firstname:string
+    user_lastname:string
+    user_email:string
+    user_phone:string
+    user_address:string
+    user_fullname:string
+    user_password:string
     user_token:string
+    user_login_date:string
+    user_rule: userRule
+    user_delete: boolean
+    user_base_image_path:string
+
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // person 
@@ -70,15 +75,19 @@ export interface historyLogsResponse {
 // username 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+export type userRule = 'admin' | 'user'
+
 export interface adminResponse {
-    user_id:number,
-    user_image:string,
-    user_username:string,
-    user_firstname:string,
-    user_lastname:string,
-    user_email:string,
-    user_phone:string,
+    user_id:number
+    user_image:string
+    user_username:string
+    user_firstname:string
+    user_lastname:string
+    user_email:string
+    user_phone:string
     user_address:string
+    user_rule: userRule
+    user_delete: boolean
 }
 
 

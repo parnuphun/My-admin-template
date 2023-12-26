@@ -2,11 +2,12 @@ const db = require('../config/database');
 const bcrypt = require('bcrypt');
 const delete_image = require('../services/delete_file')
 require('dotenv').config();
+const timeStamp = require('../services/timeStamp')
 
 // get all user
 module.exports.getAllAdmin = async(req,res) => {
     try{
-        db.query('SELECT * FROM user ORDER BY user_id DESC',(err,result)=>{
+        db.query('SELECT * FROM user ORDER BY user_rule DESC , user_id DESC',(err,result)=>{
             res.json({
                 status:true,
                 msg:'ดึงข้อมูลสำเร็จ',
@@ -27,89 +28,82 @@ module.exports.getAllAdmin = async(req,res) => {
 
 // add new admin
 module.exports.addNewAdmin = async(req,res) =>{
-    const username = req.body.username
-    const password = req.body.password
-    const firstname = req.body.firstname
-    const lastname = req.body.lastname
-    const email = req.body.email
-    const address = req.body.address
-    const phone = req.body.phone
-    let image 
- 
+    let admin_image = req.body.admin_image
     if(req.body.admin_image === 'no_image_upload' ){
-        image = 'no_image_upload'
+        admin_image = 'no_image_upload'
     }else{
-        image = req.file.filename
+        admin_image = req.file.filename
     }
+    const admin_username = req.body.admin_username
+    const admin_password = req.body.admin_password
+    const admin_firstname = req.body.admin_firstname
+    const admin_lastname = req.body.admin_lastname
+    const admin_email = req.body.admin_email
+    const admin_phone = req.body.admin_phone
+    let admin_address = req.body.admin_address
+    const admin_rule = req.body.admin_rule
+    const credential_admin_fullname = req.body.credential_admin_fullname 
+    if(admin_address === undefined || admin_address === 'undefined') admin_address = ''
+    console.log(admin_password);
 
     try{
-        // check username 
-        db.query(`SELECT * FROM user WHERE user_username = ?` , [username] , async(err , result )=>{
-            if(err) return 'database err'
+        db.query(`SELECT * FROM user WHERE user_username = ?`,[admin_username],async(err,result)=>{
+            if(err) return return_err(res,'QUERY BLOCK','ADD NEW ADMIN ',err,500,'เกิดความผิดพลาด ไม่สามารถเพิ่มผู้ใช้งานได้')
             if(result.length >= 1){
-                console.log('CANT ADD NEW ADMIN , THIS USERNAME AREADY !');
-                res.json({
-                    msg: 'มีชื่อผู้ใช้งานนี้อล้วในระบบ',
-                    status:false
+                return res.status(200).json({
+                    status_code : 409 ,
+                    status:false ,
+                    msg: 'มีชื่อผู้ใช้งานนี้ในระบบแล้วกรุณากรอกชื่อผู้ใช้งานใหม่'
                 })
             }
 
-            if(result.length === 0){
-                // no username then register
-                // and before register bcrypt password first 
-                const hashedPassword = await bcrypt.hash(password, 10);
-
-                try{
-                    db.query(`
-                        INSERT INTO user (
-                            user_username, 
-                            user_password, 
-                            user_image,
-                            user_firstname, 
-                            user_lastname,
-                            user_email,
-                            user_phone,
-                            user_address
-                            )
-                        VALUES (?,?,?,?,?,?,?,?)` 
-                        , 
-                        [
-                            username,
-                            hashedPassword,
-                            image,
-                            firstname,
-                            lastname,
-                            email,
-                            phone,
-                            address
-                        ] , async(err , result) => {   
-                        console.log('ADD NEW ADMIN SUCCESS !!');                     
-                        return res.json({
+            try{
+                let hashed_password = await bcrypt.hash(admin_password, 10);
+                db.query(`
+                INSERT INTO user(
+                    user_username,
+                    user_password,
+                    user_image,
+                    user_firstname,
+                    user_lastname,
+                    user_email,
+                    user_phone,
+                    user_address,
+                    user_rule,
+                    user_delete) 
+                VALUES(?,?,?,?,?,?,?,?,?,0)
+                    `,[
+                        admin_username,
+                        hashed_password,
+                        admin_image,
+                        admin_firstname,
+                        admin_lastname,
+                        admin_email,
+                        admin_phone,
+                        admin_address,
+                        admin_rule
+                    ] , async (err,result)=>{
+                        if(err) return return_err(res,'QUERY BLOCK','ADD NEW ADMIN ',err,500,'เกิดความผิดพลาด ไม่สามารถเพิ่มผู้ใช้งานได้')
+                        timeStamp(
+                            credential_admin_fullname,
+                            'add',
+                            'admin',
+                            `${credential_admin_fullname} ได้เพิ่มบัญชีผู้ใช้งานระบบ ' ${admin_username} '`
+                        )
+                        res.status(200).json({
+                            status_code:200,
                             status:true,
-                            msg:'สมัครเสร็จเรียบร้อย'
+                            msg:'เพิ่มผู้ใช้งานสำเร็จ'
                         })
-
                     })
-                }catch(err){
-                    console.log('CANT ADD NEW ADMIN , PLS CHECK ERR !!!')
-                    console.log('ERR 2 : ',err)
-                    res.json({
-                        msg:'ไม่สามารถเพิ่มผู้ดูแลระบบได้',
-                        status:false
-                    })
-                }
+            }catch(err){
+                return return_err(res,'TRY CATCH BLOCK 2','ADD NEW ADMIN ',err,500,'เกิดความผิดพลาด ไม่สามารถเพิ่มผู้ใช้งานได้')
             }
         })
-
     }catch(err){
-        console.log('CANT ADD NEW ADMIN , PLS CHECK ERR !')
-        console.log('ERR 1  : ', err)
-        res.json({
-            msg:'ไม่สามารถเพิ่มผู้ดูแลระบบได้',
-            status:false
-        })
+        return return_err(res,'TRY CATCH BLOCK','ADD NEW ADMIN ',err,500,'เกิดความผิดพลาด ไม่สามารถเพิ่มผู้ใช้งานได้')
     }
-
+    
 }
 
 // update admin 
@@ -199,24 +193,69 @@ module.exports.updateAdmin = async(req,res) =>{
 // delete admin 
 module.exports.deleteAdmin = async(req,res) =>{
     const user_id = req.body.user_id
+    const user_fullname = req.body.user_fullname
     const image_name = req.body.image_name
+    const credential_admin_fullname = req.body.credential_admin_fullname
+
     try{
         db.query('DELETE FROM user WHERE user_id = ? ',[user_id],async (err,result)=>{
-            console.log(`DELETE USER ID ${user_id} SUCCESS!!`);
+            if(err) return return_err(res,'QUERY BLOCK','DELETE ADMIN ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
             await delete_image(image_name , 'admin_image')
-            res.json({
-                msg:'ลบผู้ใช้งานสำเร็จ',
-                status: true
+
+            timeStamp(
+                credential_admin_fullname,
+                'delete',
+                'admin',
+                `${credential_admin_fullname} ลบผู้ใช้งาน ' ${user_fullname} '`
+            )   
+
+            res.status(200).json({
+                status_code:200,
+                status: true ,
+                msg:'ลบผู้ใช้งานสำเร็จ'
             })
         })
 
     }catch(err){
-        console.log('CANT DELETE USER , PLS CHECK ERR !!');
-        console.log('ERR : ', err);
-        res.json({
-            msg:'ลบผู้ใช้งานไม่สำเร็จ',
-            status:false
+        return return_err(res,'TRY CATCH BLOCK','DELETE ADMIN ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+    }
+}
+
+// reset password
+module.exports.resetPassword = async(req,res) =>{
+    const password = req.body.password
+    const user_id = req.body.user_id
+    const user_username = req.body.user_username
+    const credential_admin_fullname = req.body.credential_admin_fullname 
+    const credential_admin_id = req.body.credential_admin_id
+    
+    try{
+        let hashed_password = await bcrypt.hash(password,10)
+        db.query(`UPDATE user SET user_password = ? WHERE user_id = ? `,[hashed_password,user_id] , async(err,result)=>{
+            if(err) return return_err(res,'QUERY BLOCK','RESET PASSWORD ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+            let msg_stamp 
+            if(credential_admin_id === user_id){
+                msg_stamp = `${credential_admin_fullname} เปลี่ยนรหัสผ่าน`
+            }else{
+                msg_stamp = `${credential_admin_fullname} เปลี่ยนรหัสผ่านผู้ใช้งาน ' ${user_username} '`
+            }
+            timeStamp(
+                credential_admin_fullname,
+                'update',
+                'admin',
+                msg_stamp
+            )
+
+            res.status(200).json({
+                status_code:200,
+                status:true,
+                msg:'เปลี่ยนรหัสผ่านเรียบร้อย'
+            })
+
+
         })
+    }catch{
+        return return_err(res,'TRY CATCH BLOCK','RESET PASSWORD ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
     }
 }
 

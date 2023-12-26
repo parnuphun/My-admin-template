@@ -6,22 +6,34 @@ import { webSetting, layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/GlobalData'
 import MsgAlert from '../../services/msgAlert';
 // import { checkPermission , Permission } from "../../services/auth"
+import {credential} from '../../store/Interface'
 
 const _msg = new MsgAlert()
 const isOpenMenu = ref(false)
 const isDrawer = ref(true)
-const credentialData = ref()
 const isAlert = ref(false)
 const listOpend = ref<Array<string>>([''])
+
 // theme
 const rentTheme = ref('dark')
 let setting: webSetting = reactive({
     theme: 'light'
 })
 
+const credential = ref<credential>()
+const admin_image = ref()
+const base_image_path = ref()
+const admin_fullname = ref()
+const admin_email = ref()
 onMounted(() => {
+    credential.value = JSON.parse(localStorage.getItem('Credential')!)
+    admin_image.value = credential.value!.user_image
+    base_image_path.value = credential.value!.user_base_image_path
+
+    admin_fullname.value = credential.value!.user_fullname
+    admin_email.value =credential.value!.user_email
+    
     isGroupOpen()
-    // credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
 })
 
 function changeTheme(theme: layOutTheme) {
@@ -167,6 +179,24 @@ function isGroupOpen() {
                 <!-- side bar -->
                 <v-navigation-drawer v-model="isRail" :elevation="2">
                     <!-- menu list -->
+                    <v-list class="mt-2">
+                        <v-list-item
+                        >
+                            <div class="w-full flex flex-row items-center">
+                                <div class="rounded-full border-2">
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" v-if="admin_image === 'no_image_upload'"
+                                    src="/images/avartars/default_avatar.png" >
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" v-else
+                                    :src="base_image_path + admin_image " >
+                                </div>
+                                <div class="w-full h-full justify-center items-start flex flex-col pl-2">
+                                    <p class="line-clamp-1">{{ admin_fullname }}</p>
+                                    <p class="text-[14px] text-gray-500 line-clamp-1">{{ admin_email }}</p>
+                                </div>
+                            </div>
+                        </v-list-item>
+                    </v-list>
+                    <v-divider class="border-opacity-100"></v-divider>
                     <v-list class="" nav :opened="listOpend">
                         <div v-for="navItem of navigationMenu">
                             <!-- v-if=" checkPermission(navItem.permission) || isAdmin() " -->

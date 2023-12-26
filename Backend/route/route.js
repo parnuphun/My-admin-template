@@ -28,6 +28,7 @@ route.post('/addNewAdmin',authorization,upload_admin_image,admin_c.addNewAdmin)
 route.post('/updateAdmin',authorization,upload_admin_image,admin_c.updateAdmin)
 route.post('/getAllAdmin',authorization,admin_c.getAllAdmin)
 route.post('/deleteAdmin',authorization,admin_c.deleteAdmin)
+route.post('/resetPassword',authorization,admin_c.resetPassword)
 
 ////////////////////////////////////////////////////////////////////////////
 // person directory
@@ -85,7 +86,6 @@ route.post('/searchHistory',authorization,history_ct.searchHistory)
 // check token in header
 route.post('/test_check_token', authorization ,(req,res) => {
     const token = String(req.headers.authorization).split(' ')[1]
-    console.log(' token is not expire ');
     res.status(200).json({
         status:true,
         status_code:200,
@@ -94,7 +94,7 @@ route.post('/test_check_token', authorization ,(req,res) => {
 })
 
 // delete file check err permission 
-route.post('/test_delete_image',(req,res)=>{
+route.post('/test_delete_image', authorization ,(req,res)=>{
     let dl_state = delete_image(req.body.image_name , 'persons_image')
     if(dl_state.status){
         res.json({
@@ -109,7 +109,7 @@ route.post('/test_delete_image',(req,res)=>{
 
 const {faker } = require('@faker-js/faker');
 // add fake data
-route.post('/test_add_faker_file',(req,res)=>{ 
+route.post('/test_add_faker_file', authorization,(req,res)=>{ 
     console.log(req.body);
     const num = req.body.number_of_file
     

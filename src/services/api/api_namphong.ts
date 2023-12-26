@@ -144,7 +144,7 @@ export default class namphong_api {
     }
 
     // delete admin 
-    deleteAdmin(data:{image_name:string,user_id:number}){
+    deleteAdmin(data:{image_name:string,user_id:number,user_fullname:string,credential_admin_fullname:string}){
         return axiosAuth.post(url+'/deleteAdmin',data)
     }
 
@@ -152,6 +152,12 @@ export default class namphong_api {
     updateAdmin(data:FormData){
         return axiosAuth.post(url+'/updateAdmin',data)
     }
+
+    // reset password
+    resetPassword(data:{password:string,user_id:number,user_username:string,credential_admin_fullname:string,credential_admin_id:number}){
+        return axiosAuth.post(url+'/resetPassword',data)
+    }
+
 
     // search files
     searchFile(data:{search_keyword:string,selected_category:number,start_item:number,limit:number}){

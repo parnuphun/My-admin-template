@@ -3,14 +3,12 @@ import router from '../plugin/routes'
 
 let token = ''
 if(localStorage.getItem('Credential')){
-    console.log('true');    
     const credential = JSON.parse(localStorage.getItem('Credential') || '')
     if(credential !== undefined || credential !== 'undefined' || credential !== null || credential !== ''){
         token = credential.user_token
     }
 }
 
-console.log(token,'<=token');
 
 const axiosAuth = axios.create({
     headers: {

@@ -2,7 +2,8 @@ const db = require('../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const timeStamp = require('../services/timeStamp')
-const return_err =require('../services/return_err')
+const return_err =require('../services/return_err');
+const date_convert = require('../services/date_convert');
 require('dotenv').config();
 
 
@@ -91,9 +92,6 @@ module.exports.login = async (req,res) => {
         db.query(`SELECT * FROM user WHERE user_username = ? `,[username], async (err,result)=>{
             if(err) return return_err(res,'QUERY BLOCK','LOGIN CHECK USERNAME',err,500,'ไม่สามารถเข้าสู่ระบบได้')
 
-            let user_data = result[0]
-            user_data.user_fullname = user_data.user_firstname + ' ' + user_data.user_lastname
-
             // if no username in system just return false 
             if(result.length === 0 ){
                 console.log('LOGIN FAILED NO USERNAME IN SYSTEM.');
@@ -103,12 +101,24 @@ module.exports.login = async (req,res) => {
                     msg: 'กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง' ,
                 });
             }
+            let user_data = result[0]
+            user_data.user_fullname = `${user_data.user_firstname} ${user_data.user_lastname}`
 
             const user = result[0]
             // check password 
             bcrypt.compare(password, user.user_password, async function(err, result) {
                 if(err) return return_err(res,'BCRYPT PASSWORD BLOCK','LOGIN',err,500,'ไม่สามารถเข้าสู่ระบบได้')
                 if(result === true){
+
+                    //check user delete
+                    if(user.user_delete === 1){
+                        return res.status(200).json({ 
+                            status: false ,
+                            status_code: 401,
+                            msg: 'กรุณาตรวจสอบความถูกต้องของ username และ password อีกครั้ง' ,
+                        });
+                    }
+
                     timeStamp(
                         `${user_data.user_firstname} ${user_data.user_lastname}`,
                         'login',
@@ -117,6 +127,16 @@ module.exports.login = async (req,res) => {
                     )
 
                     user.user_token = await createToken(user,false);
+                    let current_date = new Date()
+                    user.user_login_date = await date_convert(current_date)
+                    user.user_expire_date = await date_convert(current_date.getTime() + 60 * 60 * 1000)
+                    user.user_delete = (user.user_delete === 1)
+                    user.user_base_image_path = process.env.ADMIN_IMAGE
+                    // user.user_expire_date = await date_convert(new Date().addHours(1))
+                    
+                    // format delete status
+                    
+
                     res.status(200).json({ 
                         status: true ,
                         status_code: 200,
@@ -136,7 +156,7 @@ module.exports.login = async (req,res) => {
         })
 
     }catch(err) {
-        return_err(res,'BCRYPT TRY CATCH BLOCK','LOGIN',err,500,'ไม่สามารถเข้าสู่ระบบได้')
+        return_err(res,'BCRYPT TRY CATCH BLOCK','LOGIN',err,500,'ไม่สามารถเข้าสู่ระบบได้ในตอนนี้ โปรดติดต่อผู้ดูแลระบบ')
     }
 
 }

@@ -96,14 +96,13 @@ export const navigationMenu:NavigationItem[] = [
         link : '/test_ui' ,
         permission : 'ทุกคน' ,
     },
-    {
-        id: 'test_api_auth' ,
-        title : 'ทดสอบ api auth' ,
-        icon : 'mdi-test-tube' ,
-        link : '/test_api_auth' ,
-        permission : 'ทุกคน' ,
-    },
-
+    // {
+    //     id: 'test_api_auth' ,
+    //     title : 'ทดสอบ api auth' ,
+    //     icon : 'mdi-test-tube' ,
+    //     link : '/test_api_auth' ,
+    //     permission : 'ทุกคน' ,
+    // },
     // {
     //     id: 'test_Component' ,
     //     title : 'ทดสอบ' ,

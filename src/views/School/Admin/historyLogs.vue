@@ -143,6 +143,9 @@ watch(searchValue , ()=>{
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'person_directory'">
                                         <v-icon icon="mdi-account-box-multiple-outline" class="mr-2"></v-icon> บุคลากร
                                     </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'admin'">
+                                        <v-icon icon="mdi-account-outline" class="mr-2"></v-icon> ผู้ดูแลระบบ
+                                    </v-chip>
                                 </div>
                             </td>
                             <td>

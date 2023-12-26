@@ -139,7 +139,7 @@ function updateAdmin(){
 //delete user
 function deleteUser(user_id:number,image:string){
     _msg.confirm('คุณต้องการลบผู้ใช่งานใช่หรือไม่').then((isConfirm)=>{
-        _api.deleteAdmin({image_name:image,user_id:user_id}).then((res)=>{
+        _api.deleteAdmin({image_name:image,user_id:user_id,user_fullname:'',credential_admin_fullname:''}).then((res)=>{
             if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:3,icon:'success'})
             else  _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
             getAllAdmin();
