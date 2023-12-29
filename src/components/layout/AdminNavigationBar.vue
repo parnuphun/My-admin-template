@@ -13,6 +13,7 @@ const isOpenMenu = ref(false)
 const isDrawer = ref(true)
 const isAlert = ref(false)
 const listOpend = ref<Array<string>>([''])
+ 
 
 // theme
 const rentTheme = ref('dark')
@@ -85,7 +86,12 @@ watch(isAlert, () => {
 
 const props = defineProps<{
     isLoadingProgressBar?: boolean
+    image?:string
 }>()
+
+watch(props,()=>{
+    // console.log('props image => ',props.image);
+})
 
 function isAdmin(): boolean {
     console.log('isAdmin fucntion ');
@@ -184,9 +190,17 @@ function isGroupOpen() {
                         >
                             <div class="w-full flex flex-row items-center">
                                 <div class="rounded-full border-2">
-                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" v-if="admin_image === 'no_image_upload'"
-                                    src="/images/avartars/default_avatar.png" >
-                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" v-else
+                                    <!-- no image upload -->
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" 
+                                    v-if="admin_image === 'no_image_upload'"
+                                    src="/images/avartars/default_avatar.png" > 
+                                    <!-- iamge from admin page -->
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" 
+                                    v-else-if="props.image"
+                                    :src="base_image_path + props.image"  >
+                                    <!-- image from localstorage -->
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" 
+                                    v-else
                                     :src="base_image_path + admin_image " >
                                 </div>
                                 <div class="w-full h-full justify-center items-start flex flex-col pl-2">
