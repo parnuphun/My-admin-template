@@ -271,32 +271,36 @@ const searchValue = reactive({
     searchTriger:false // triger 
 })
 
+const timeoutId = ref()
 watch(searchValue , ()=>{
-    if(searchValue.searchText.trim() === ''){
-        getFileLength();        
-        getAllFile();
-    }else{
-        dataStatus.value = 'loading_data'
-        _api.searchFile({search_keyword:searchValue.searchText,selected_category:selectedCategory.value,start_item:startItem.value,limit:sizeSelected.value})
-            .then((res)=>{
-            if(res.data.statusCode === 200){
-                files.value = res.data.search_data as Array<filesResponse> 
-                if(files.value.length === 0){
-                    dataStatus.value = 'no_data'
-                }else if(files.value.length >= 1){
-                    dataStatus.value = 'load_data_succ'   
+    clearTimeout(timeoutId.value)
+    timeoutId.value = setTimeout(()=>{
+        if(searchValue.searchText.trim() === ''){
+            getFileLength();        
+            getAllFile();
+        }else{
+            dataStatus.value = 'loading_data'
+            _api.searchFile({search_keyword:searchValue.searchText,selected_category:selectedCategory.value,start_item:startItem.value,limit:sizeSelected.value})
+                .then((res)=>{
+                if(res.data.statusCode === 200){
+                    files.value = res.data.search_data as Array<filesResponse> 
+                    if(files.value.length === 0){
+                        dataStatus.value = 'no_data'
+                    }else if(files.value.length >= 1){
+                        dataStatus.value = 'load_data_succ'   
+                    }else{
+                        dataStatus.value = 'network_err'
+                    }
+                    // set total page after search
+                    totalFiles.value = res.data.data_length                    
+                    totalPage.value = Math.ceil(res.data.data_length/sizeSelected.value)           
                 }else{
-                    dataStatus.value = 'network_err'
+                    _msg.toast_msg({title:res.data.msg,timer:6,icon:'error',progressbar:true})
+                    dataStatus.value = 'load_data_succ'
                 }
-                // set total page after search
-                totalFiles.value = res.data.data_length                    
-                totalPage.value = Math.ceil(res.data.data_length/sizeSelected.value)           
-            }else{
-                _msg.toast_msg({title:res.data.msg,timer:6,icon:'error',progressbar:true})
-                dataStatus.value = 'load_data_succ'
-            }
-        })
-    }
+            })
+        }
+    },500)
 })
 
 const files = ref<Array<filesResponse>>()

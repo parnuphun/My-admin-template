@@ -74,17 +74,21 @@ const searchValue = reactive({
     searchTriger:false // triger 
 })
 
+const timeoutId = ref()
 watch(searchValue , ()=>{
-    if(searchValue.searchText.trim() === ''){
+    clearTimeout(timeoutId.value);
+    timeoutId.value = setTimeout(() => {
+        if(searchValue.searchText.trim() === ''){
         getHistoryLength();
         getHistory();
-    }else{
-        _api.searchHistory({search_keyword:searchValue.searchText,start_item:startItem.value,limit:sizeSelected.value}).then((res)=>{
-            totalHistoryLogs.value = res.data.history_data_search_length
-            historyLogs.value = res.data.history_data_search
-            totalPage.value = Math.ceil(totalHistoryLogs.value / sizeSelected.value)        
-        })
-    }
+        }else{
+            _api.searchHistory({search_keyword:searchValue.searchText,start_item:startItem.value,limit:sizeSelected.value}).then((res)=>{
+                totalHistoryLogs.value = res.data.history_data_search_length
+                historyLogs.value = res.data.history_data_search
+                totalPage.value = Math.ceil(totalHistoryLogs.value / sizeSelected.value)        
+            })
+        }
+    },500)
 })
 
 </script>

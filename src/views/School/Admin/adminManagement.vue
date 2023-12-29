@@ -455,7 +455,7 @@ const searchValue = reactive({
 const timeoutId = ref()
 watch(searchValue , ()=>{    
     clearTimeout(timeoutId.value);
-     timeoutId.value = setTimeout(() => {
+    timeoutId.value = setTimeout(() => {
         if(searchValue.searchText.trim() === ''){
             getAllData()
         }else{
