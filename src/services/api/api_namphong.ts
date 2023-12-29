@@ -130,17 +130,27 @@ export default class namphong_api {
         return axiosAuth.post(url+'/previewFile',data)
     }
 
+    // search files
+    searchFile(data:{search_keyword:string,selected_category:number,start_item:number,limit:number}){
+        return axiosAuth.post(url+'/searchFile',data)
+    }
+
     ///////////////////////////////////////////////////////////////////////////////
     // admin 
     ///////////////////////////////////////////////////////////////////////////////
+    // get all admin length 
+    getAllAdminLength(){
+        return axiosAuth.post(url+'/getAllAdminLength')
+    }
+
     // add new admin
     addNewAdmin(data:FormData){
         return axiosAuth.post(url+'/addNewAdmin',data)
     }
 
     // get all admins
-    getAllAdmin(){
-        return axiosAuth.post(url+'/getAllAdmin')
+    getAllAdmin(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getAllAdmin',data)
     }
 
     // delete admin 
@@ -158,11 +168,12 @@ export default class namphong_api {
         return axiosAuth.post(url+'/resetPassword',data)
     }
 
-
-    // search files
-    searchFile(data:{search_keyword:string,selected_category:number,start_item:number,limit:number}){
-        return axiosAuth.post(url+'/searchFile',data)
+    //search admin
+    searchAdmin(data:{search_keyword:string,start_item:number,limit:number}){
+        return axiosAuth.post(url+'/searchAdmin',data)
     }
+
+
 
     ///////////////////////////////////////////////////////////////////////////////
     // activity image 

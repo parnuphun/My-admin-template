@@ -22,6 +22,8 @@ export interface credential {
     user_rule: userRule
     user_delete: boolean
     user_base_image_path:string
+    user_join_date:string
+    user_latest_login_date:string
 
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,6 +90,8 @@ export interface adminResponse {
     user_address:string
     user_rule: userRule
     user_delete: boolean
+    user_join_date:string
+    user_latest_login_date:string
 }
 
 

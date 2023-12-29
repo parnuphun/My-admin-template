@@ -24,6 +24,8 @@ route.post('/adminRegister',login_c.adminRegister)
 ////////////////////////////////////////////////////////////////////////////
 // users
 ////////////////////////////////////////////////////////////////////////////
+route.post('/searchAdmin',authorization,admin_c.searchAdmin)
+route.post('/getAllAdminLength',authorization,admin_c.getAllAdminLength)
 route.post('/addNewAdmin',authorization,upload_admin_image,admin_c.addNewAdmin)
 route.post('/updateAdmin',authorization,upload_admin_image,admin_c.updateAdmin)
 route.post('/getAllAdmin',authorization,admin_c.getAllAdmin)
