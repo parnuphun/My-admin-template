@@ -110,12 +110,6 @@ function getAllpersonListLength(){
     })
 }
 
-watch(personList,()=>{
-    if(personList.value!.length === 0 ){
-        dataPersonListStatus.value = 'no_data'
-    }
-})
-
 function getAllpersonList(){
     dataPersonListStatus.value = 'loading_data'
     _api.getAllpersonList({limit:sizeSelected.value,start_item:startItem.value,person_category_id:selectedPersonCategory.value}).then((res)=>{         
@@ -449,20 +443,39 @@ const searchValue = reactive({
     searchTriger:false // triger 
 })
 
+const timeoutId = ref()
 watch(searchValue , ()=>{
-    if(searchValue.searchText.trim() === ''){
-        getAllData()
-    }else{        
-        _api.searchPersons({
-            search_keyword:searchValue.searchText,
-            start_item:startItem.value,
-            limit:sizeSelected.value,
-            person_category_id:selectedPersonCategory.value}).then((res)=>{
-            totalPerson.value = res.data.person_data_length
-            personList.value = res.data.person_data
-            totalPage.value = Math.ceil(totalPerson.value / sizeSelected.value)       
-        })
-    }
+    clearTimeout(timeoutId.value)
+    timeoutId.value = setTimeout(() => {        
+        if(searchValue.searchText.trim() === ''){
+            getAllData()
+        }else{        
+            dataPersonListStatus.value ='loading_data'
+            _api.searchPersons({
+                search_keyword:searchValue.searchText,
+                start_item:startItem.value,
+                limit:sizeSelected.value,
+                person_category_id:selectedPersonCategory.value})
+            .then((res)=>{
+                totalPerson.value = res.data.person_data_length
+                personList.value = res.data.person_data
+                totalPage.value = Math.ceil(totalPerson.value / sizeSelected.value)       
+                if(res.data.status_code === 200){
+                    if(personList.value!.length >= 1){
+                        dataPersonListStatus.value = 'load_data_succ'
+                    }else if(personList.value!.length <= 0){
+                        dataPersonListStatus.value = 'no_data'
+                    }else{
+                        dataPersonListStatus.value = 'err_data'
+                    }
+                }else{
+                    dataPersonListStatus.value = 'err_data'
+                }
+            }).catch((err)=>{
+                dataPersonListStatus.value = 'network_err'
+            })
+        }
+    }, 500);
 })
 
  
@@ -597,17 +610,31 @@ function getPersonDirectoryTableTree(){
                 </div>
             </div>
             <div class="w-full h-full flex flex-col justify-center items-center" v-else-if="dataPersonListStatus === 'no_data'">
-                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
-                        <img src="/images/illustrations/No data.svg" 
-                        class="h-full w-full" alt="">
-                    </div>
-                    <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
+                <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                    <img src="/images/illustrations/No data.svg" 
+                    class="h-full w-full" alt="">
+                </div>
+                <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
             </div>
-            <div class="w-full h-full flex justify-center item-center" v-else-if="dataPersonListStatus === 'loading_data'">
+            <div class="w-full h-full flex flex-col justify-center items-center" v-else-if="dataPersonListStatus === 'loading_data'">
                 <div class="h-full flex flex-col items-center justify-center">
                     <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
                     <p class="text-xl mt-2 text-pink-600"> กำลังโหลดข้อมูลกรุณารอสักครู่...</p>
                 </div>
+            </div>
+            <div class="w-full h-full flex flex-col justify-center items-center" v-else-if="dataPersonListStatus === 'err_data'">
+                <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                    <img src="/images/illustrations/No data-amico.svg" 
+                    class="h-full w-full" alt="">
+                </div>
+                <p class="text-xl text-pink-600"> เกิดข้อผิดพลาดในการรับข้อมูล</p>
+            </div>
+            <div class="w-full h-full flex flex-col justify-center items-center" v-else-if="dataPersonListStatus === 'network_err'">
+                <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                    <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
+                    class="h-full w-full" alt="">
+                </div>
+                <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้</p>
             </div>
 
             <v-divider class="border-opacity-75"></v-divider>
