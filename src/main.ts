@@ -32,6 +32,9 @@ import { interceptor } from './services/Interceptor'
 // marquee slide
 import Vue3Marquee from 'vue3-marquee'
 
+// // rich text 
+// import { QuillEditor } from '@vueup/vue-quill'
+// import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 createApp(App)
     .use(vuetify)

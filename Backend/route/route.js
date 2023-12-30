@@ -4,7 +4,13 @@ const {authorization} = require('../services/auth')
 
 const db = require('../config/database');
 
-const {upload_person_image, upload_file , upload_admin_image ,upload_activity_image} = require('../services/upload')
+const {
+    upload_person_image, 
+    upload_file, 
+    upload_admin_image,
+    upload_activity_image,
+    upload_news_cover_image
+} = require('../services/upload')
 const delete_image = require('../services/delete_file')
 
 const login_c = require('../controller/login')
@@ -13,7 +19,7 @@ const file_c = require('../controller/files')
 const admin_c = require('../controller/admin')
 const activity_image_ct = require('../controller/activity_image')
 const history_ct = require('../controller/history_log')
-
+const news_ct = require('../controller/news')
 
 ////////////////////////////////////////////////////////////////////////////
 // login
@@ -73,6 +79,20 @@ route.post('/addNewActivityImage',authorization,upload_activity_image,activity_i
 route.post('/getActivityImage',authorization,activity_image_ct.getActivityImage)
 route.post('/deleteActivityImage',authorization,activity_image_ct.deleteActivityImage)
 
+////////////////////////////////////////////////////////////////////////////
+// news
+////////////////////////////////////////////////////////////////////////////
+
+route.post('/addNewsCategory',authorization,news_ct.addNewsCategory)
+route.post('/getAllNewsCategory',authorization,news_ct.getAllNewsCategory)
+route.post('/updateNewsCategory',authorization,news_ct.updateNewsCategory)
+route.post('/deleteNewsCategory',authorization,news_ct.deleteNewsCategory)
+
+route.post('/getAllNewsLength',authorization,news_ct.getAllNewsLength)
+route.post('/getAllNewsList',authorization,news_ct.getAllNewsList)
+route.post('/addNews',authorization,upload_news_cover_image,news_ct.addNews)
+route.post('/deleteNews',authorization,news_ct.deleteNews)
+route.post('/updateNews',authorization,upload_news_cover_image,news_ct.updateNews)
 
 ////////////////////////////////////////////////////////////////////////////
 // history 

@@ -173,7 +173,40 @@ export default class namphong_api {
         return axiosAuth.post(url+'/searchAdmin',data)
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // news 
+    ///////////////////////////////////////////////////////////////////////////////
+    getAllNewsCategory(){
+        return axiosAuth.post(url+'/getAllNewsCategory')
+    }
 
+    addNewsCategory(data:{news_category_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/addNewsCategory',data)
+    }
+
+    updateNewsCategory(data:{news_category_id:number,news_category_name:string,news_category_name_old:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/updateNewsCategory',data)
+    }
+
+    deleteNewsCategory(data:{news_category_id:number,news_category_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteNewsCategory',data)
+    }
+
+    addNews(data:FormData){
+        return axiosAuth.post(url+'/addNews',data)
+    }
+
+    updateNews(data:FormData){
+        return axiosAuth.post(url+'/updateNews',data)
+    }
+
+    deleteNews(data:{news_id:number,news_topic:string,news_cover_image:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteNews',data)
+    }
+
+    getAllNewsList(){
+        return axiosAuth.post(url+'/getAllNewsList')
+    }
 
     ///////////////////////////////////////////////////////////////////////////////
     // activity image 

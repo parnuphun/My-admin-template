@@ -1,520 +1,716 @@
 <script setup lang="ts">
+import {QuillEditor } from '@vueup/vue-quill'
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
-import { ref } from 'vue';
+import { ref, onMounted , watch} from 'vue';
 import MsgAlert from '../../../services/msgAlert';
+import apiNamphong from '../../../services/api/api_namphong';
+import {credential , newsCategoryResponse , dataStatus ,newsResponse} from '../../../store/Interface'
+import '@vueup/vue-quill/dist/vue-quill.snow.css';
+
 
 const _msg = new MsgAlert();
+const _api = new apiNamphong()
+const btnLoading = ref(false)
 
-const previewNewAnnoceDialgo = ref(false) 
-const tab = ref()
+const credential = ref<credential>()
 
-interface newsType {
-    news_id: number,
-    news_image: string,
-    news_name: string,
-    news_date: string,
+onMounted(()=>{
+    credential.value = JSON.parse(localStorage.getItem('Credential')!)
+    getAllNewsCategory()
+    getAllNewsList()
+})
+
+
+const newsList =ref<Array<newsResponse>>()
+const newsListStatus = ref<dataStatus>()
+const baseImage = ref()
+// get news list 
+function getAllNewsList(){
+    newsListStatus.value = 'loading_data'
+    _api.getAllNewsList().then((res)=>{
+        if(res.data.status_code === 200){
+            newsList.value = res.data.news_data
+            baseImage.value = res.data.base_image
+            if(newsList.value!.length >= 1){
+                newsListStatus.value = 'load_data_succ'                
+            }else if(newsList.value!.length <= 0){
+                newsListStatus.value = 'no_data'
+            }else{
+                newsListStatus.value = 'err_data'
+            }
+        }else{
+            newsListStatus.value = 'err_data'
+        }
+    }).catch((err)=>{
+        newsListStatus.value = 'network_err'
+    })
 }
-const news_topic = ref<Array<newsType>>([
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-    {
-        news_id: 1,
-        news_image: `/images/namphon_mockup/news/news03.jpg`,
-        news_name: `new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@))))new stop poci sa; laskd_)@!#_)!@#(!@)_#)!_@#(@!%&*)(!@(#_!@#(+!@#!+@_%*#(@)) `,
-        news_date: '1 ตุลาคม 2656',
-    },
-])
 
-interface newsAnnoce {
-    news_ann_id: number,
-    news_ann_name: string,
-    news_ann_image: string,
-    news_ann_date: string,
-}
-const news_annoce = ref<Array<newsAnnoce>>([
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-    {
-        news_ann_id: 1,
-        news_ann_name: 'ประกาศประกาศประกาศประกาศประกาศประกาศประกาศ',
-        news_ann_image: '/images/namphon_mockup/news/ann02.jpg',
-        news_ann_date: '3 ธันวาคม 1454',
-    },
-])
+const addNewsCategoryDialog = ref(false)
+const renameNewsCategoryDialog = ref(false)
+const newsCategoryDrawer = ref(false)
+const addNewsDrawer = ref(false)
+const editNewDrawer = ref(false)
+const newsCategoryName = ref()
+const errMsgNewsCategory = ref<'name_exist' | 'no_action'>('no_action')
+const newsCategoryList = ref<Array<newsCategoryResponse>>()
+const newsCategoryListStatus = ref<dataStatus>()
 
-function lightBox(image:string){
-    _msg.lightBox(image)
+// get category
+function getAllNewsCategory(){
+    newsCategoryListStatus.value = 'loading_data'
+    _api.getAllNewsCategory().then((res)=>{
+        if(res.data.status_code === 200){
+            newsCategoryList.value = res.data.news_category_data
+            if(newsCategoryList.value!.length >= 1){
+                newsCategoryListStatus.value = 'load_data_succ'
+            }else if(newsCategoryList.value!.length <= 0){
+                newsCategoryListStatus.value = 'no_data'
+            }else{
+                newsCategoryListStatus.value = 'err_data'
+            }
+        }else{
+            newsCategoryListStatus.value = 'err_data'
+        }
+    }).catch((err)=>{
+        newsCategoryListStatus.value = 'network_err'
+    })
 }
+
+// add category 
+function addNewsCategory(){
+    btnLoading.value = true
+    _api.addNewsCategory({news_category_name:newsCategoryName.value,credential_admin_fullname:credential.value!.user_fullname})
+    .then((res)=>{
+        if(res.data.status_code === 409){
+            errMsgNewsCategory.value = 'name_exist'
+        }else if(res.data.status_code === 200){
+            _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+            getAllNewsCategory()
+            errMsgNewsCategory.value = 'no_action'
+            newsCategoryName.value = ''
+        }else{
+            _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+        }
+        btnLoading.value = false
+    }).catch((err)=>{
+        btnLoading.value = false
+        _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:20,progressbar:true,icon:'error'})
+
+    })
+}
+ 
+// update category 
+const oldNewsCategoryName = ref()
+const newsCategoryId = ref()
+function setupUpdateNewsCategory(name:string,id:number){
+    oldNewsCategoryName.value = name 
+    newsCategoryName.value = name
+    newsCategoryId.value = id
+    renameNewsCategoryDialog.value = true
+}
+function updateNewsCategory(){
+    _msg.confirm('คุณต้องการจะเปลี่ยนชื่อหมวดหมู่ใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.updateNewsCategory({
+                    news_category_id:newsCategoryId.value,
+                    news_category_name:newsCategoryName.value,
+                    news_category_name_old:oldNewsCategoryName.value,
+                    credential_admin_fullname:credential.value!.user_fullname}
+            ).then((res)=>{
+                if(res.data.status_code === 409){
+                    errMsgNewsCategory.value = 'name_exist'
+                }else if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+                    errMsgNewsCategory.value = 'no_action'
+                    getAllNewsCategory()
+                }else{
+                    _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+                }
+                btnLoading.value = false
+            }).catch((err)=>{
+                btnLoading.value = false
+                _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:20,progressbar:true,icon:'error'})
+            })
+        }
+    })
+} 
+
+
+// delete category 
+function deleteNewsCategory(){
+    _msg.confirm('คุณต้องการจะลบใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.deleteNewsCategory({
+                news_category_id : newsCategoryId.value,
+                news_category_name : newsCategoryName.value,
+                credential_admin_fullname:credential.value!.user_fullname
+            }).then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+                    getAllNewsCategory()
+                }else{
+                    _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+                }
+            }).catch((err)=>{
+                _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:20,progressbar:true,icon:'error'})
+            })
+        }
+    })
+}
+
+// detect drawer 
+watch(newsCategoryDrawer,()=>{
+    if(newsCategoryDrawer.value === true){
+        if(addNewsDrawer.value === true){
+            addNewsDrawer.value = false
+        }
+        if(editNewDrawer.value === true){
+            editNewDrawer.value = false
+        }
+    }
+}) 
+
+watch(addNewsDrawer ,()=>{
+    if(addNewsDrawer.value === true){
+        if(editNewDrawer.value === true){
+            editNewDrawer.value = false
+        }
+        if(newsCategoryDrawer.value === true){
+            newsCategoryDrawer.value = false 
+        }
+    }
+})
+
+watch(editNewDrawer,()=>{
+    if(editNewDrawer.value === true){
+        if(addNewsDrawer.value === true){
+            addNewsDrawer.value = false
+        }
+        if(newsCategoryDrawer.value === true){
+            newsCategoryDrawer.value = false 
+        }
+    }
+})
+
+
+// add news
+const newsTopic = ref()
+const newsContent = ref() // quill
+const selectedNewsCategory = ref() 
+const newsCoverImage = ref<Array<File>>()
+function addNews(){
+    const formData = new FormData()
+    if(newsCoverImage.value !== null && newsCoverImage.value !== undefined && newsCoverImage.value.length !== 0){ // iamge -1
+        formData.append('news_cover_image',newsCoverImage.value[0])
+    }else{
+        formData.append('news_cover_image','no_image_upload')
+    }
+    formData.append('news_topic',newsTopic.value) // topic -2
+    formData.append('news_contents',newsContent.value) // rich text content -3 
+    formData.append('news_category',selectedNewsCategory.value) // category id  -4 
+    formData.append('credential_admin_fullname',credential.value!.user_fullname) // credential admin fullname -5
+
+     
+    btnLoading.value = true
+    _api.addNews(formData).then((res)=>{
+        if(res.data.status_code === 200){
+            _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+            clearData('add_news_drawer')
+            getAllNewsList();
+            addNewsDrawer.value = false
+        }else{
+            _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+        }
+        btnLoading.value = false 
+    }).catch((err)=>{
+        btnLoading.value = false 
+        _msg.toast_msg({title:'ระบบเกิดความผิดพลาด กรุณาติดต่อผู้ดูแลระบบ',timer:10,progressbar:true,icon:'error'})
+    })
+}
+
+const newsDetail = ref<newsResponse>()
+const newsDetailIndex = ref()
+const newsDetailContent = ref()
+const newsDetailTopic = ref()
+const newsDetailSelectedCategory = ref()
+function setUpNewsDetail(item:newsResponse,index:number){
+    newsDetailIndex.value = index
+    newsDetail.value = item
+    editNewDrawer.value = true
+    newsDetailContent.value = newsDetail.value.news_contents
+    newsDetailTopic.value = newsDetail.value.news_topic
+    newsDetailSelectedCategory.value = newsDetail.value!.news_category
+}
+
+function updateNews(){
+    _msg.confirm('คูณต้องการจะบันทึกข้อมูลใช่ไหม').then((isConfirm)=>{
+        if(isConfirm){
+            const formData = new FormData()
+            if(newsCoverImage.value !== null && newsCoverImage.value !== undefined && newsCoverImage.value.length !== 0){ // iamge -1
+                formData.append('news_cover_image',newsCoverImage.value[0])
+            }else{
+                formData.append('news_cover_image','no_image_upload')
+            }
+            formData.append('news_cover_image_old',newsDetail.value!.news_cover_image) //old image -2 
+            formData.append('news_id',String(newsDetail.value!.news_id)) //news id -3 
+            formData.append('news_topic',newsDetailTopic.value) // topic -4
+            formData.append('news_topic_old',newsDetail.value!.news_topic) // topic old -5
+            formData.append('news_contents',newsDetailContent.value) // rich text content -6
+            formData.append('news_category',newsDetailSelectedCategory.value) // category id  -7
+            formData.append('credential_admin_fullname',credential.value!.user_fullname) // credential admin fullname -8
+
+            _api.updateNews(formData).then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
+                    getAllNewsList()
+                }else{
+                    _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:10})
+                }
+            }).catch((err)=>{
+                _msg.toast_msg({title:'ระบบเกิดความผิดพลาด กรุณาติดต่อผู้ดูแลระบบ',icon:'error',progressbar:true,timer:20})
+            })
+        }
+    })
+}
+
+function deleteNews(){
+    _msg.confirm('คุณต้องการลบโพสต์ใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.deleteNews({
+                news_id:newsDetail.value!.news_id,
+                news_topic:newsDetail.value!.news_topic,
+                news_cover_image:newsDetail.value!.news_cover_image,
+                credential_admin_fullname:credential.value!.user_fullname
+            }).then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+                    getAllNewsList()
+                    clearData('delete_news_drawer')
+                }else{
+                    _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+                }
+            }).catch((err)=>{
+                _msg.toast_msg({title:'เกิดข้อผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:10,progressbar:true,icon:'error'})
+            })
+        }
+    })
+}
+
+function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_news_drawer'){
+    if(formType === 'update_news_drawer' || 'delete_news_drawer'){
+        newsDetail.value = undefined
+        newsDetailIndex.value = ''
+        newsTopic.value = '' 
+        selectedNewsCategory.value = ''
+        editNewDrawer.value = false 
+    }else if(formType === 'add_news_drawer'){
+        newsDetailIndex.value = ''
+        newsTopic.value = '' 
+        newsContent.value = '<p></p>' 
+        selectedNewsCategory.value = null
+        addNewsDrawer.value = false
+    }  
+}
+
 </script>
 
 <template>
     <AdminNavigationBar>
-        <div class="flex flex-col w-full h-full border-gray-300 border-2 ">
-            <div class="w-full h-full flex flex-col overflow-hidden bg-white">
-                <div class="w-full h-full flex justify-between">
-                    <v-card class="w-full h-full">
-                        <v-tabs class="w-full text-xl" v-model="tab" color="white" bg-color="pink">
-                            <v-tab value="one" size="large" prepend-icon="mdi-newspaper">ข่าวสาร</v-tab>
-                            <v-tab value="two" size="large" prepend-icon="mdi-bullhorn-variant">ประกาศ</v-tab>
-                        </v-tabs>
-
-                        <v-card-text class=" h-[93%]">
-                            <v-window v-model="tab" class="h-full">
-                                <v-window-item value="one" class="h-full ">
-                                    <div class="w-full h-full flex flex-col">
-                                        <div class="w-full h-[75px] min-[75px] bg-whiteflex justify-between items-center px-2">
-                                            <div class="w-full h-full flex flex-row justify-start items-center gap-2">
-                                                <div class="w-[70%]">
-                                                    <v-text-field label="ค้นหา" class="" hide-details variant="outlined"
-                                                        prepend-inner-icon="mdi-magnify" bg-color="" density="comfortable"
-                                                        required></v-text-field>
-                                                </div>
-                                                <div class="flex h-full items-center justify-center ">
-                                                    <v-btn class="h-full" color="pink" size="large">
-                                                        <p class="text- -500 text-md">
-                                                            <v-icon icon="mdi-file"></v-icon> เพิ่มกระทู้
-                                                        </p>
-                                                    </v-btn>
-                                                </div>
-                                                <div class="w-[30%] flex justify-end">
-                                                    <v-pagination density="comfortable" :length="4"></v-pagination>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="w-full h-full">
-                                            <div class="bg-white w-full h-full ">
-                                                <v-table class="h-[92%] overflow-auto" fixed-header>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-left w-10">
-                                                                #
-                                                            </th>
-                                                            <th class="text-center w-[230px]">
-                                                                รูปภาพ
-                                                            </th>
-                                                            <th class="text-left w-auto">
-                                                                ชื่อ
-                                                            </th>
-                                                            <th class="text-center w-40 ">
-                                                                วันที่
-                                                            </th>
-                                                            <th class="text-center w-44">
-                                                                จัดการ
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="hover:bg-gray-300" v-for="(item, i) in news_topic"
-                                                            :key="item.news_id">
-                                                            <td> {{ i + 1 }} </td>
-                                                            <td class="py-1 ">
-                                                                <img :src="item.news_image"
-                                                                    class="object-cover h-[100px] w-[200px]" alt="">
-                                                            </td>
-                                                            <td>
-                                                                <p class="line-clamp-3">
-                                                                    {{ item.news_name }}
-                                                                </p>
-                                                            </td>
-                                                            <td class="text-center"> {{ item.news_date }} </td>
-                                                            <td>
-                                                                <div
-                                                                    class="w-fit flex flex-row justify-end items-center gap-1">
-                                                                    <v-btn>
-                                                                        <p class="text-green-500">
-                                                                            <v-icon icon="mdi-book-open"></v-icon>
-                                                                        </p>
-                                                                    </v-btn>
-                                                                    <v-btn>
-                                                                        <p class="text-blue-500">
-                                                                            <v-icon icon="mdi-pencil"></v-icon>
-                                                                        </p>
-                                                                    </v-btn>
-                                                                    <v-btn>
-                                                                        <p class="text-red-500">
-                                                                            <v-icon icon="mdi-delete"></v-icon>
-                                                                        </p>
-                                                                    </v-btn>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </v-table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </v-window-item>
-
-
-                                <v-window-item value="two" class="h-full">
-                                    <div class="w-full h-full flex flex-col">
-                                        <div class="w-full h-[75px] min-[75px] bg-whiteflex justify-between items-center px-2">
-                                            <div class="w-full h-full flex flex-row justify-start items-center gap-2">
-                                                <div class="w-[70%]">
-                                                    <v-text-field label="ค้นหา" class="" hide-details variant="outlined"
-                                                        prepend-inner-icon="mdi-magnify" bg-color="" density="comfortable"
-                                                        required></v-text-field>
-                                                </div>
-                                                <div class="flex h-full items-center gap-2 justify-center ">
-                                                    <v-btn class="h-full" color="pink" size="large">
-                                                        <p class="text- -500 text-md">
-                                                            <v-icon icon="mdi-plus"></v-icon> เพิ่มประกาศ
-                                                        </p>
-                                                    </v-btn>
-                                                    <v-btn class="h-full" color="pink" size="large" 
-                                                    @click="previewNewAnnoceDialgo = !previewNewAnnoceDialgo ;">
-                                                        <p class="text- -500 text-md">
-                                                            <v-icon icon="mdi-eye"></v-icon> ดูประกาศ
-                                                        </p>
-                                                    </v-btn>
-                                                </div>
-                                                <div class="w-[30%] flex justify-end">
-                                                    <v-pagination density="comfortable" :length="4"></v-pagination>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="w-full h-full">
-                                            <div class="bg-white w-full h-full ">
-                                                <v-table class="h-[92%] overflow-auto" fixed-header>
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="text-left w-10">
-                                                                #
-                                                            </th>
-                                                            <th class="text-center w-[230px]">
-                                                                รูปภาพ
-                                                            </th>
-                                                            <th class="text-left w-auto">
-                                                                ชื่อ
-                                                            </th>
-                                                            <th class="text-center w-40 ">
-                                                                วันที่
-                                                            </th>
-                                                            <th class="text-center w-20 ">
-                                                                ปักหมุด
-                                                            </th>
-                                                            <th class="text-center w-44">
-                                                                จัดการ
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr class="hover:bg-gray-300" v-for="(item, i) in news_annoce"
-                                                            :key="item.news_ann_id">
-                                                            <td> {{ i + 1 }} </td>
-                                                            <td class="py-1 ">
-                                                                <img :src="item.news_ann_image"
-                                                                    class="object-fill h-[100px] w-[200px] cursor-pointer
-                                                                    scale-100 hover:scale-[1.2] duration-300" 
-                                                                    alt=""
-                                                                    @click="lightBox(item.news_ann_image)"
-                                                                    >
-                                                            </td>
-                                                            <td>
-                                                                <p class="line-clamp-3">
-                                                                    {{ item.news_ann_name }}
-                                                                </p>
-                                                            </td>
-                                                            <td class="text-center"> {{ item.news_ann_date }} </td>
-                                                            <td class="">
-                                                                <div class="w-full flex justify-center items-center ">
-                                                                    <v-switch  
-                                                                        :value="true"
-                                                                        density="compact" 
-                                                                        inset 
-                                                                        hide-details 
-                                                                        color="green">
-                                                                    </v-switch>
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <div
-                                                                    class="w-fit flex flex-row justify-end items-center gap-1">
-                                                                    <v-btn>
-                                                                        <p class="text-blue-500">
-                                                                            <v-icon icon="mdi-pencil"></v-icon>
-                                                                        </p>
-                                                                    </v-btn>
-                                                                    <v-btn>
-                                                                        <p class="text-red-500">
-                                                                            <v-icon icon="mdi-delete"></v-icon>
-                                                                        </p>
-                                                                    </v-btn>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </v-table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </v-window-item>
-                            </v-window>
-                        </v-card-text>
-                    </v-card>
+        <div class="flex flex-col h-full ">
+            <div class="w-full flex flex-wrap">
+                <div class="w-full p-1 flex flex-col justify-start items-center gap-2">
+                    <div class="w-full p-1">
+                        <v-text-field
+                            label="ค้นหา"
+                            class=""
+                            hide-details
+                            variant="outlined"
+                            prepend-inner-icon="mdi-magnify"
+                            bg-color=""
+                            density="comfortable"
+                            required
+                        ></v-text-field>
+                    </div>
+                    <div class="w-full flex less:flex-wrap md:flex-row gap-2">
+                        <v-btn
+                            @click="addNewsDrawer = true" 
+                            class=" h-full less:w-full sm:w-full md:w-auto"
+                            color="pink" size="large" >
+                            <p class="text-md" >
+                                <v-icon icon="mdi-newspaper" class=""></v-icon> เพิ่มข่าวสาร  
+                            </p>
+                        </v-btn>
+                        <v-btn class="h-full less:w-full sm:w-full md:w-auto"
+                            color="pink" size="large" >
+                            <p class="text-md" >
+                                <v-icon icon="mdi-bullhorn-variant" class=""></v-icon> เพิ่มประกาศ  
+                            </p>
+                        </v-btn>
+                        <v-btn @click="newsCategoryDrawer = !newsCategoryDrawer" 
+                        class="h-full less:w-full sm:w-full md:w-auto"
+                            color="pink" size="large" >
+                            <p class="text-md" >
+                                <v-icon icon="mdi-tag" class=""></v-icon> หมวดหมู่ข่าวสาร  
+                            </p>
+                        </v-btn>
+                    </div>
                 </div>
             </div>
+            <div class=" px-4">
+               <p class="text-lg"> จำนวนรายการ : </p>
+            </div>
+            <v-divider class="border-opacity-100"></v-divider>
+            <div class="flex flex-col gap-2 py-2 pr-2">
+                <div class="flex less:flex-col sm:flex-row justify-center items-center cursor-pointer group border-2 border-pink-400" 
+                v-for="(item , i) in newsList" :key="item.news_id"
+                @click="setUpNewsDetail(item,i)"
+                >
+                    <div class="less:w-full sm:w-[300px] h-[200px] bg-red-200"
+                        :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
+                            'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }">
+                        
+                        <img v-if="item.news_cover_image !== 'no_image_upload'"
+                        class="less:w-full sm:w-[300px] h-[200px] object-cover"
+                        :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
+                            'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }"
+                        :src="baseImage+item.news_cover_image" alt="">
+                        
+                        <img v-else
+                        class="less:w-full sm:w-[300px] h-[200px] object-cover"
+                        :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
+                            'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }"
+                        src="/images/namphong_default_cover_image.jpg" alt="">
+                    </div>
+                    <div class="w-full text-lg pl-6 pr-3 py-2 group-hover:text-pink-500 duration-50">
+                        <p class="line-clamp-3">
+                           {{ i+1 }}. {{ item.news_topic }}
+                        </p>
+                        <p class="text-gray-600 text-lg mt-2">
+                            โพสต์วันที่ : {{ item.news_date }}
+                        </p>   
+                        <p class="text-gray-600 text-lg">
+                            โดย : {{ item.news_author }}
+                        </p>  
+                        <v-chip class="text-xl mt-2">
+                            <p class="text-md text-black"> 
+                                {{ item.news_category_name }}
+                            </p> 
+                        </v-chip>
+                    </div>
+                </div>
+
+            </div>
         </div>
+
+        <!-- news category -->
+        <v-navigation-drawer  :disable-resize-watcher="true" 
+        :width="350" location="right" v-model="newsCategoryDrawer">
+            <div class="w-full h-full flex flex-col px-2 pt-6">
+                <div class="w-full px-2 flex flex-row gap-1">
+                    <v-btn  @click="addNewsCategoryDialog = true" color="green" class="w-full" size="large">
+                        <v-icon icon="mdi-plus"></v-icon> เพิ่มหมวดหมู่ข่าวสาร 
+                    </v-btn>
+
+                </div>
+                <div class="w-full flex flex-col mt-2 gap-2 px-2 pb-2" v-if="newsCategoryListStatus === 'load_data_succ'">
+                    <div v-for="item in newsCategoryList" :key="item.news_category_id"
+                    @click="setupUpdateNewsCategory(item.news_category_name,item.news_category_id)"
+                        class="w-full flex flex-row gap-1 border-2 border-pink-200 p-3 rounded-md
+                        hover:bg-[#EC407A] hover:text-white cursor-pointer duration-100 hover:border-pink-50">
+                        <div class="w-full flex items-center"  >
+                            <p> {{ item.news_category_name }}</p>
+                        </div>
+                        <v-tooltip activator="parent" location="bottom end" >
+                            แก้ไข
+                        </v-tooltip>
+                    </div>
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="newsCategoryListStatus === 'no_data'">
+                    <img src="/images/illustrations/No data.svg" alt="">
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="newsCategoryListStatus === 'err_data'">
+                    <img src="/images/illustrations/500 Internal Server Error-cuate.svg" alt="">
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="newsCategoryListStatus === 'network_err'">
+                    <img src="/images/illustrations/500 Internal Server Error-cuate.svg" alt="">
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="newsCategoryListStatus === 'loading_data'">
+                    <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
+                </div>
+               
+            </div>
+        </v-navigation-drawer>
+
+        <!-- add news  -->
+        <v-navigation-drawer  :disable-resize-watcher="true" 
+        :width="650" location="right" v-model="addNewsDrawer" >
+            <div class="w-full h-full flex flex-col px-2 justify-start items-center">
+                <div class="w-full h-auto flex flex-row justify-start text-4xl text-gray-500" >
+                    <v-icon 
+                        class=" hover:text-gray-400 cursor-pointer duration-300" 
+                        icon="mdi-chevron-right" 
+                        @click="addNewsDrawer = false ">
+                    </v-icon>
+                    <div class="w-full h-full flex justify-center items-center text-xl text-black">
+                        เพิ่มข่าวสาร
+                    </div>
+                </div>
+                <v-divider class="border-opacity-100 "></v-divider>
+                <div class="w-full h-full flex flex-col gap-2">
+                    <div class="w-ful">
+                        <v-file-input
+                            accept="image/*"
+                            label="ภาพหน้าปกกระทู้"
+                            v-model="newsCoverImage"
+                            density="compact"
+                            class="mt-2"
+                            name="news_cover_image"
+                            hide-details="auto"
+                            variant="outlined"
+                            prepend-icon="mdi-camera"
+                        ></v-file-input>
+                    </div>
+                    <div class="w-full">
+                        <v-text-field
+                            label="*ชื่อหัวข้อ"
+                            density="compact"
+                            v-model="newsTopic"
+                            class="mt-2"
+                            hide-details
+                            variant="outlined"
+                            bg-color=""
+                            required
+                        ></v-text-field>
+                    </div>
+                    <div class="w-full">
+                        <v-select
+                            class="mt-2"
+                            :items="newsCategoryList"   
+                            v-model="selectedNewsCategory"
+                            item-title="news_category_name"
+                            density="compact"
+                            item-value="news_category_id"                         
+                            label="*ประเภทข่าวสาร"
+                            hide-details="auto"
+                            variant="outlined">
+                        </v-select>
+                    </div>
+                    <div class="w-full h-auto mt-2 ">
+                        <QuillEditor 
+                            theme="snow" 
+                            contentType="html" 
+                            ref="quill"
+                            v-model:content="newsContent"
+                            toolbar="full"
+                        />
+                    </div>
+                    <v-divider class="border-opacity-100 mt-24"></v-divider>
+                    <div class="w-full flex flex-row justify-center items-center gap-2 pb-2">
+                        <v-btn @click="clearData('add_news_drawer')"
+                        color="red" class="w-[100px]">ยกเลิก</v-btn>
+                        <v-btn 
+                            :disabled="!!!newsContent || !!!newsTopic || !!!selectedNewsCategory"
+                            :loading="btnLoading"
+                            color="green" 
+                            class="w-[100px]" 
+                            @click="addNews">
+                                เพิ่ม
+                            </v-btn>
+                    </div>
+                </div>
+            </div>
+        </v-navigation-drawer>
+
+        <!-- edit news -->
+        <v-navigation-drawer  :disable-resize-watcher="true" 
+        :width="650" location="right" v-model="editNewDrawer" >
+            <div class="w-full h-full flex flex-col px-2 ">
+                <div class="w-full h-auto flex flex-row justify-start text-4xl text-gray-500" >
+                    <v-icon 
+                        class=" hover:text-gray-400 cursor-pointer duration-300" 
+                        icon="mdi-chevron-right" 
+                        @click="editNewDrawer = false ">
+                    </v-icon>
+                    <div class="w-full h-full flex justify-center items-center text-xl text-black">
+                        แก้ไขข่าวสาร
+                    </div>
+                </div>
+                <v-divider class="border-opacity-100 "></v-divider>
+                <div class="w-full h-full flex flex-col gap-2">
+                    <div class="w-ful">
+                        <v-file-input
+                            accept="image/*"
+                            label="ภาพหน้าปกกระทู้"
+                            v-model="newsCoverImage"
+                            density="compact"
+                            class="mt-2"
+                            name="news_cover_image"
+                            hide-details="auto"
+                            variant="outlined"
+                            prepend-icon="mdi-camera"
+                        ></v-file-input>
+                    </div>
+                    <div class="w-full">
+                        <v-text-field
+                            label="*ชื่อหัวข้อ"
+                            density="compact"
+                            v-model="newsDetailTopic"
+                            class="mt-2"
+                            hide-details
+                            variant="outlined"
+                            bg-color=""
+                            required
+                        ></v-text-field>
+                    </div>
+                    <div class="w-full">
+                        <v-select
+                            class="mt-2"
+                            :items="newsCategoryList"   
+                            v-model="newsDetailSelectedCategory"
+                            item-title="news_category_name"
+                            density="compact"
+                            item-value="news_category_id"                         
+                            label="*ประเภทข่าวสาร"
+                            hide-details="auto"
+                            variant="outlined">
+                        </v-select>
+                    </div>
+                    <div class="w-full h-auto mt-2 ">
+                        <QuillEditor 
+                            theme="snow" 
+                            contentType="html" 
+                            v-model:content="newsDetailContent"
+                            toolbar="full"
+                        />
+                    </div>
+                    <v-divider class="border-opacity-100 mt-24"></v-divider>
+                    <div class="w-full flex flex-row justify-center items-center gap-2 pb-2">
+                        <div class="w-1/2">
+                            <v-btn @click="deleteNews()"
+                            color="red" class="w-[100px]">ลบโพสต์</v-btn>
+                        </div>
+                        <div class="w-1/2 flex gap-2 flex-row justify-end">
+                            <v-btn @click="clearData('update_news_drawer')"
+                            color="red" class="w-[100px]">ยกเลิก</v-btn>
+                            <v-btn 
+                                :disabled="!!!newsDetailContent || !!!newsDetailTopic || !!!newsDetailSelectedCategory"
+                                :loading="btnLoading"
+                                color="primary" 
+                                class="w-[100px]" 
+                                @click="updateNews()">
+                                 บันทึก
+                             </v-btn>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </v-navigation-drawer>
     </AdminNavigationBar>
 
+    <!-- add position -->
     <v-dialog
-        v-model="previewNewAnnoceDialgo"
-        width="800"
+        persistent
+        v-model="addNewsCategoryDialog"
+        width="600"
         transition="dialog-bottom-transition"
     >
         <v-card class="pb-2">
-            <div class="relative w-full h-auto">
-                <div class="sticky w-full h-full top-0 right-0 z-20 bg-white">
-                    <div class="relative w-full text-center py-6 text-2xl text-pink-500 flex justify-center items-center">
-                        <div class="less:text-lg md:text-3xl xl:text-4xl">
-                            📢 ประกาศจากทางโรงเรียน
-                        </div>
-                        <div class="absolute top-0 right-0 h-20 w-20 text-pink-500 text-3xl flex 
-                        justify-center items-center cursor-pointer hover:text-pink-300"
-                        @click="previewNewAnnoceDialgo = !previewNewAnnoceDialgo ;">
-                            <v-icon icon="mdi-close"></v-icon>
-                        </div>
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
+                    เพิ่มหมวดหมู่ข่าวสาร
+                    <div @click="addNewsCategoryDialog = false , errMsgNewsCategory = 'no_action' , newsCategoryName = ''" 
+                    class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
+                        <v-icon icon="mdi-close"></v-icon>
                     </div>
-
-                    <v-divider></v-divider>
                 </div>
-                <div class="w-full flex flex-col px-2">
-                    <div class="w-full " v-for="item of news_annoce">
-                        <div class=" w-full h-full">
-                            <img :src="(item as any).news_ann_image" alt="" 
-                            class="my-2 px-2 rounded-lg cursor-pointer w-full scale-100 hover:scale-[1.01] duration-500">
-                        </div>
-                    <v-divider></v-divider>
-                    </div>
 
+                <div class="w-full pl-7 mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
+                    <p class="text-red-500 text-[13px]"> มีชื่อหมวดหมู่นี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
+                </div>
+                <div class="w-full px-6 pb-4">
+                    <div class="flex flex-row gap-2 w-full">
+                        <v-text-field
+                            v-model="newsCategoryName"
+                            label="ป้อนชื่อหมวดหมู่"
+                            variant="outlined"
+                            density="comfortable"
+                            hide-details="auto"
+                        ></v-text-field>
+                        <v-btn color="green" size="xl" tex 
+                            :disabled="!!!newsCategoryName"
+                            :loading="btnLoading"
+                            @click="addNewsCategory()" 
+                            class="้px-3 w-[100px]">
+                                <p class="text-xl">เพิ่ม</p>
+                        </v-btn>
+                    </div>
                 </div>
             </div>
         </v-card>
-        </v-dialog>
+    </v-dialog>
+
+    <!-- rename position  -->
+    <v-dialog
+        persistent
+        v-model="renameNewsCategoryDialog"
+        width="600"
+        transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
+                    แก้ไข
+                    <div @click="renameNewsCategoryDialog = false , errMsgNewsCategory = 'no_action' , newsCategoryName = ''" 
+                    class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
+                        <v-icon icon="mdi-close"></v-icon>
+                    </div>
+                </div>
+
+                    <div class="w-full px-6 pb-4 ">
+                        <div class="w-full mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
+                        <p class="text-red-500 text-[13px]"> มีชื่อหมวดหมู่นี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
+                    </div>
+                    <div class="flex flex-row gap-2 w-full">
+                        <v-text-field
+                            v-model="newsCategoryName"
+                            label="ป้อนชื่อตำแหน่ง"
+                            variant="outlined"
+                            density="comfortable"
+                            hide-details="auto"
+                        ></v-text-field>
+                        <v-btn color="primary" size="xl" tex 
+                            :disabled="!!!newsCategoryName"
+                            :loading="btnLoading"
+                            @click="updateNewsCategory()" 
+                            class="้px-3 w-[80px]">
+                                <p class="text-xl">แก้ไข</p>
+                        </v-btn>
+                        <v-btn color="red" size="xl" tex 
+                            @click="deleteNewsCategory()"
+                            class="้px-3 w-[80px]">
+                                <p class="text-xl">ลบ</p>
+                        </v-btn>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
 </template>
+
+<style>
+    /* Global styles for heading and list elements */
+    h1, h2 {
+    font-size: 1.5em;
+    color: #333; /* Adjust the color as needed */
+    }
+
+    ul {
+    list-style-type: disc;
+    }
+
+    li {
+    margin-bottom: 0.5em;
+    /* Additional styles for list items */
+    }
+</style>

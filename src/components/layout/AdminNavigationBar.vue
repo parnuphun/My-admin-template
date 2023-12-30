@@ -189,7 +189,7 @@ function isGroupOpen() {
                         <v-list-item
                         >
                             <div class="w-full flex flex-row items-center">
-                                <div class="rounded-full border-2">
+                                <div class="rounded-full border-2 border-green-500">
                                     <!-- no image upload -->
                                     <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" 
                                     v-if="admin_image === 'no_image_upload'"

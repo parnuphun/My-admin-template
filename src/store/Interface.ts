@@ -64,7 +64,7 @@ export interface personDirectoryTableTree {
 // history logs
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 export type historyType = 'update' | 'add' | 'delete' | 'login'
-export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity' | 'new' | 'file' | 'login'
+export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity' | 'news' | 'file' | 'login'
 export interface historyLogsResponse {
     history_logs_id : number ,
     history_logs_username : string,
@@ -120,6 +120,25 @@ export interface filesResponse {
 export interface imageGalleryType {
     text:string
     url:string
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// news
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface newsCategoryResponse {
+    news_category_id:number
+    news_category_name:string
+}
+
+export interface newsResponse {
+    news_id  : number
+    news_topic : string 
+    news_contents :string 
+    news_cover_image :string
+    news_category : number // category id 
+    news_category_name : string
+    news_date : string 
+    news_author :string 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////

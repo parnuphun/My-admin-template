@@ -8,6 +8,9 @@ backend/public/persons_image/*
 !backend/public/persons_image/.gitkeep
 backend/public/activity_image/*
 !backend/public/activity_image/.gitkeep
+backend/public/news_cover_image/*
+!backend/public/news_cover_image/.gitkeep
+
 
 # Logs
 logs
