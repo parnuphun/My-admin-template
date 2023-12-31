@@ -15,7 +15,7 @@ const toolbar = [
                 ['bold', 'italic', 'underline','strike',{ 'color': [] }, { 'background': [] }],
                 [{ 'align': [] }],
                 [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                ['image','link','video'],
+                ['image','link','video' ],
                 [{ 'indent': '-1' }, { 'indent': '+1' }],
                 [{ 'direction': 'rtl' }],
             ]

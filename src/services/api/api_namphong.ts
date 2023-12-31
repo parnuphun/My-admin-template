@@ -204,8 +204,17 @@ export default class namphong_api {
         return axiosAuth.post(url+'/deleteNews',data)
     }
 
-    getAllNewsList(){
-        return axiosAuth.post(url+'/getAllNewsList')
+    getAllNewsLength(){
+        return axiosAuth.post(url+'/getAllNewsLength')
+    }
+
+    getAllNewsList(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getAllNewsList',data)
+    }
+
+    // search news 
+    searchNews(data:{search_keyword:string,start_item:number,limit:number}){
+        return axiosAuth.post(url+'/searchNews',data)
     }
 
     ///////////////////////////////////////////////////////////////////////////////

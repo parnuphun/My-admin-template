@@ -313,7 +313,7 @@ module.exports.getAllNewsList = async (req,res) => {
     const limit = req.body.limit
     const start_item = req.body.start_item
     try{
-        db.query(` SELECT * FROM news ORDER BY news_id DESC `, async(err,result)=>{
+        db.query(` SELECT * FROM news ORDER BY news_id DESC LIMIT ? OFFSET ? `,[limit,start_item],  async(err,result)=>{
             if(err) return return_err(res,'QUERY BLOCK','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
             let news_data = result
             try{
@@ -337,18 +337,65 @@ module.exports.getAllNewsList = async (req,res) => {
         return return_err(res,'TRY CATCH BLOCK','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
     }
 
-    async function setCategoryName(user_data,category_data){
-        for (let i = 0; i < user_data.length; i++) {
-            // console.log(user_data[i].news_category);
-            user_data[i].news_date = await date_convert(user_data[i].news_date)
-            for (let j = 0; j < category_data.length; j++) {   
-                if(user_data[i].news_category == category_data[j].news_category_id){
-                    user_data[i].news_category_name = category_data[j].news_category_name
-                    break ;
-                }
+ 
+}
+
+async function setCategoryName(user_data,category_data){
+    for (let i = 0; i < user_data.length; i++) {
+        user_data[i].news_date = await date_convert(user_data[i].news_date)
+        for (let j = 0; j < category_data.length; j++) {   
+            if(user_data[i].news_category == category_data[j].news_category_id){
+                user_data[i].news_category_name = category_data[j].news_category_name
+                break ;
             }
         }
-        return user_data
-       
+    }
+    return user_data
+}
+
+// search news 
+module.exports.searchNews = async (req,res) => {
+    const search_keyword = req.body.search_keyword
+    const selected_category = req.body.selected_category
+    const limit = req.body.limit
+    const start_item = req.body.start_item
+
+    let query_select = `SELECT * FROM news WHERE news_topic LIKE ?` 
+    // let query_and_condition = ` AND file_category_id = ${selected_category}`
+    let query_limit = ` LIMIT ${limit} OFFSET ${start_item}`
+
+    try{
+        // length
+        db.query(`SELECT COUNT(*) AS length FROM news WHERE news_topic LIKE ?`,['%'+search_keyword+'%'],async(err,result)=>{
+            if(err) return return_err(res,'QUERY BLOCK','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+            let length = result[0].length 
+            try{
+                // data
+                db.query(query_select+query_limit,['%'+search_keyword+'%'], async(err,result)=>{
+                    if(err) return return_err(res,'TRY CATCH BLOCK','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+                    let news_data = result
+                    try{
+                        // category
+                        db.query(`SELECT * FROM news_category`, async(err,result)=>{
+                            if(err) return return_err(res,'QUERY BLOCK 3','SEARCH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+                            news_data = await setCategoryName(news_data,result)
+                            res.status(200).json({
+                                status_code:200,
+                                status:true,
+                                news_data:news_data,
+                                news_data_length:length,
+                                msg:'เพิ่มข่าวสารเรียบร้อย'
+                            })
+                        })
+                    }catch(err){
+                        return return_err(res,'TRY CATCH BLOCK 3','SEARCH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+                    }
+                })
+            }catch(err){
+                if(err) return return_err(res,'TRY CATCH BLOCK 2','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+            }
+        })
+    }catch(err){
+        if(err) return return_err(res,'TRY CATCH BLOCK','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
     }
 }

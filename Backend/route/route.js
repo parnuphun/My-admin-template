@@ -88,8 +88,10 @@ route.post('/getAllNewsCategory',authorization,news_ct.getAllNewsCategory)
 route.post('/updateNewsCategory',authorization,news_ct.updateNewsCategory)
 route.post('/deleteNewsCategory',authorization,news_ct.deleteNewsCategory)
 
+route.post('/searchNews',authorization,news_ct.searchNews)
 route.post('/getAllNewsLength',authorization,news_ct.getAllNewsLength)
 route.post('/getAllNewsList',authorization,news_ct.getAllNewsList)
+
 route.post('/addNews',authorization,upload_news_cover_image,news_ct.addNews)
 route.post('/deleteNews',authorization,news_ct.deleteNews)
 route.post('/updateNews',authorization,upload_news_cover_image,news_ct.updateNews)

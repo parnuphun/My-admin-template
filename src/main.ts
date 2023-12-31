@@ -16,8 +16,8 @@ import './assets/style/quill.custom.css' // some class is not working need to cu
 import vuetify from './plugin/vuetify/vuetify'
 
 // v-calendar
-import VCalendar from 'v-calendar'
-import 'v-calendar/dist/style.css'
+// import VCalendar from 'v-calendar'
+// import 'v-calendar/dist/style.css'
 
 // sweet alert 2
 import VueSweetalert2 from 'vue-sweetalert2'

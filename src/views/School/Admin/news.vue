@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
-import { ref, onMounted , watch} from 'vue';
+import { ref, onMounted , reactive , watch} from 'vue';
 import MsgAlert from '../../../services/msgAlert';
 import apiNamphong from '../../../services/api/api_namphong';
 import {credential , newsCategoryResponse , dataStatus ,newsResponse} from '../../../store/Interface'
@@ -16,18 +16,39 @@ const credential = ref<credential>()
 
 onMounted(()=>{
     credential.value = JSON.parse(localStorage.getItem('Credential')!)
-    getAllNewsCategory()
-    getAllNewsList()
+    getAllData()
 })
 
+function getAllData(){
+    if(searchValue.searchText === ''){
+        // no value in seachValue the get common data
+        getAllNewsCategory()
+        getAllNewsLength()
+        getAllNewsList()
+    }else{
+        // triger seachValue for seaching next after change category id       
+        searchValue.searchTriger = !searchValue.searchTriger
+    }
+}
 
+
+const totalNews = ref()
 const newsList =ref<Array<newsResponse>>()
 const newsListStatus = ref<dataStatus>()
 const baseImage = ref()
+
+// get all news length 
+function getAllNewsLength(){
+    _api.getAllNewsLength().then((res)=>{
+        totalNews.value = res.data.news_data_length
+        totalPage.value = Math.ceil(totalNews.value / sizeSelected.value)         
+    })
+}
+
 // get news list 
 function getAllNewsList(){
     newsListStatus.value = 'loading_data'
-    _api.getAllNewsList().then((res)=>{
+    _api.getAllNewsList({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
         if(res.data.status_code === 200){
             newsList.value = res.data.news_data
             baseImage.value = res.data.base_image
@@ -227,7 +248,7 @@ function addNews(){
         if(res.data.status_code === 200){
             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
             clearData('add_news_drawer')
-            getAllNewsList();
+            getAllData();
             addNewsDrawer.value = false
         }else{
             _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
@@ -273,7 +294,7 @@ function updateNews(){
             _api.updateNews(formData).then((res)=>{
                 if(res.data.status_code === 200){
                     _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
-                    getAllNewsList()
+                    getAllData();
                     setUpNewsDetail(newsList.value![newsDetailIndex.value] , newsDetailIndex.value)
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:10})
@@ -296,7 +317,7 @@ function deleteNews(){
             }).then((res)=>{
                 if(res.data.status_code === 200){
                     _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
-                    getAllNewsList()
+                    getAllData();
                     clearData('delete_news_drawer')
                 }else{
                     _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
@@ -309,7 +330,7 @@ function deleteNews(){
 }
 
 function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_news_drawer'){
-    if(formType === 'update_news_drawer' || 'delete_news_drawer'){
+    if(formType === 'update_news_drawer' ||formType === 'delete_news_drawer'){
         newsCoverImage.value = undefined
         newsDetail.value = undefined
         newsDetailIndex.value = ''
@@ -320,11 +341,75 @@ function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_new
         newsCoverImage.value = undefined
         newsDetailIndex.value = ''
         newsTopic.value = '' 
-        newsContent.value = '<p></p>' 
+        newsContent.value = '<p></p>'
         selectedNewsCategory.value = null
-        addNewsDrawer.value = false
+        addNewsDrawer.value = false        
     }  
 }
+
+// pagination 
+const totalPage = ref()  
+const size = ref([25,50,100]) // 
+const sizeSelected = ref(size.value[0]) // "LIMIT"
+const currentPage = ref(1) // current page
+const startItem = ref<number>(0) // first item "OFFSET"
+const pagination = ref(1) // v-model v-pagination 
+
+function changePage(){
+    currentPage.value = pagination.value
+    startItem.value = (currentPage.value -1) * sizeSelected.value 
+}
+
+// detect pagination 
+watch(pagination,()=>{         
+    changePage()
+    getAllData()
+})
+
+// detect sizeSelected
+watch(sizeSelected,()=>{
+    pagination.value = 1 // reset
+    changePage()
+    getAllData()
+})
+
+// search 
+const searchValue = reactive({
+    searchText:'',
+    searchTriger:false // triger 
+})
+
+const timeoutId = ref() // deboucing
+watch(searchValue , ()=>{
+    clearTimeout(timeoutId.value);
+    timeoutId.value = setTimeout(() => {
+        if(searchValue.searchText.trim() === ''){
+            getAllData()
+        }else{
+            newsListStatus.value = 'loading_data'
+            _api.searchNews({search_keyword:searchValue.searchText,limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
+                if(res.data.status_code === 200){
+                    totalNews.value = res.data.news_data_length
+                    totalPage.value = Math.ceil(totalNews.value / sizeSelected.value)
+                    newsList.value = res.data.news_data
+                     
+                    if(newsList.value!.length >= 1){
+                        newsListStatus.value = 'load_data_succ'                
+                    }else if(newsList.value!.length <= 0){
+                        newsListStatus.value = 'no_data'
+                    }else{
+                        newsListStatus.value = 'err_data'
+                    }
+                }else{
+                    newsListStatus.value = 'err_data'
+                }
+            }).catch((err)=>{
+                newsListStatus.value = 'network_err'
+            })
+        }
+    },500)
+})
+
 
 </script>
 
@@ -336,6 +421,7 @@ function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_new
                     <div class="w-full p-1">
                         <v-text-field
                             label="ค้นหา"
+                            v-model="searchValue.searchText"
                             class=""
                             hide-details
                             variant="outlined"
@@ -351,15 +437,15 @@ function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_new
                             class=" h-full less:w-full sm:w-full md:w-auto"
                             color="pink" size="large" >
                             <p class="text-md" >
-                                <v-icon icon="mdi-newspaper" class=""></v-icon> เพิ่มข่าวสาร  
+                                <v-icon icon="mdi-newspaper-plus" class=""></v-icon> เพิ่มข่าวสาร  
                             </p>
                         </v-btn>
-                        <v-btn class="h-full less:w-full sm:w-full md:w-auto"
+                        <!-- <v-btn class="h-full less:w-full sm:w-full md:w-auto"
                             color="pink" size="large" >
                             <p class="text-md" >
                                 <v-icon icon="mdi-bullhorn-variant" class=""></v-icon> เพิ่มประกาศ  
                             </p>
-                        </v-btn>
+                        </v-btn> -->
                         <v-btn @click="newsCategoryDrawer = !newsCategoryDrawer" 
                         class="h-full less:w-full sm:w-full md:w-auto"
                             color="pink" size="large" >
@@ -371,48 +457,102 @@ function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_new
                 </div>
             </div>
             <div class=" px-4">
-               <p class="text-lg"> จำนวนรายการ : </p>
+               <p class="text-lg"> จำนวนรายการ : {{ totalNews }}</p>
             </div>
             <v-divider class="border-opacity-100"></v-divider>
             <div class="flex flex-col gap-2 py-2 pr-2">
-                <div class="flex less:flex-col sm:flex-row justify-center items-center cursor-pointer group border-2 border-pink-400" 
-                v-for="(item , i) in newsList" :key="item.news_id"
-                @click="setUpNewsDetail(item,i)"
-                >
-                    <div class="less:w-full sm:w-[300px] h-[200px] bg-red-200"
-                        :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
-                            'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }">
-                        
-                        <img v-if="item.news_cover_image !== 'no_image_upload'"
-                        class="less:w-full sm:w-[300px] h-[200px] object-cover"
-                        :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
-                            'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }"
-                        :src="baseImage+item.news_cover_image" alt="">
-                        
-                        <img v-else
-                        class="less:w-full sm:w-[300px] h-[200px] object-cover"
-                        :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
-                            'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }"
-                        src="/images/namphong_default_cover_image.jpg" alt="">
-                    </div>
-                    <div class="w-full text-lg pl-6 pr-3 py-2 group-hover:text-pink-500 duration-50">
-                        <p class="line-clamp-3">
-                           {{ i+1 }}. {{ item.news_topic }}
-                        </p>
-                        <p class="text-gray-600 text-lg mt-2">
-                            โพสต์วันที่ : {{ item.news_date }}
-                        </p>   
-                        <p class="text-gray-600 text-lg">
-                            โดย : {{ item.news_author }}
-                        </p>  
-                        <v-chip class="text-xl mt-2">
-                            <p class="text-md text-black"> 
-                                {{ item.news_category_name }}
-                            </p> 
-                        </v-chip>
+                <div class="w-full h-full flex flex-col gap-2 py-2 pr-2" v-if="newsListStatus === 'load_data_succ'">
+                    <div class="flex less:flex-col sm:flex-row justify-center items-center cursor-pointer group border-2 border-pink-400" 
+                    v-for="(item , i) in newsList" :key="item.news_id"
+                    @click="setUpNewsDetail(item,i)"
+                    >
+                        <div class="less:w-full sm:w-[300px] h-[200px] bg-red-200"
+                            :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
+                                'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }">
+                            
+                            <img v-if="item.news_cover_image !== 'no_image_upload'"
+                            class="less:w-full sm:w-[300px] h-[200px] object-cover"
+                            :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
+                                'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }"
+                            :src="baseImage+item.news_cover_image" alt="">
+                            
+                            <img v-else
+                            class="less:w-full sm:w-[300px] h-[200px] object-cover"
+                            :class="{'min-w-[200px]' : addNewsDrawer === true || editNewDrawer === true ,
+                                'min-w-[300px]' : addNewsDrawer === false && editNewDrawer === false  }"
+                            src="/images/namphong_default_cover_image.jpg" alt="">
+                        </div>
+                        <div class="w-full text-lg pl-6 pr-3 py-2 group-hover:text-pink-500 duration-50">
+                            <p class="line-clamp-3">
+                               {{ startItem+ (i+1) }}. {{ item.news_topic }}
+                            </p>
+                            <p class="text-gray-600 text-lg mt-2">
+                                โพสต์วันที่ : {{ item.news_date }}
+                            </p>   
+                            <p class="text-gray-600 text-lg">
+                                โดย : {{ item.news_author }}
+                            </p>  
+                            <v-chip class="text-xl mt-2">
+                                <p class="text-md text-black"> 
+                                    {{ item.news_category_name }}
+                                </p> 
+                            </v-chip>
+                        </div>
                     </div>
                 </div>
-
+                <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="newsListStatus === 'no_data'">
+                    <div class=" flex flex-col items-center">
+                        <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                            <img src="/images/illustrations/No data.svg" 
+                            class="h-full w-full" alt="">
+                        </div>
+                        <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
+                    </div>
+                </div>
+                <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="newsListStatus === 'loading_data'">
+                    <div class=" flex flex-col items-center">
+                        <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
+                        <p class="text-xl mt-2 text-pink-600"> กำลังโหลดข้อมูลกรุณารอสักครู่...</p>
+                    </div>
+                </div>
+                <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="newsListStatus === 'err_data'">
+                    <div class=" flex flex-col items-center">
+                        <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                            <img src="/images/illustrations/No data-amico.svg" 
+                            class="h-full w-full" alt="">
+                        </div>
+                        <p class="text-xl text-pink-600"> เกิดข้อผิดพลาดในการรับข้อมูล</p>
+                    </div>
+                </div>
+                <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="newsListStatus === 'network_err'">
+                    <div class=" flex flex-col items-center">
+                        <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                            <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
+                            class="h-full w-full" alt="">
+                        </div>
+                        <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
+                    </div>
+                </div>
+            </div>
+            <v-divider class="border-opacity-75"></v-divider>
+            
+            <div class="w-full flex justify-end mt-3 pr-12">
+                <div class="w-[100px]">
+                    <v-select
+                        :items="size"
+                        variant="outlined"
+                        v-model="sizeSelected"
+                        hide-details="auto"
+                    ></v-select>
+                </div>
+                <div class="sm:w-fit">
+                    <v-pagination 
+                        :length="totalPage"
+                        v-model="pagination"
+                        :total-visible="3"
+                        >
+                    </v-pagination>
+                </div>
             </div>
         </div>
 
@@ -712,18 +852,5 @@ function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_new
 </template>
 
 <style>
-    /* Global styles for heading and list elements */
-    h1, h2 {
-    font-size: 1.5em;
-    color: #333; /* Adjust the color as needed */
-    }
-
-    ul {
-    list-style-type: disc;
-    }
-
-    li {
-    margin-bottom: 0.5em;
-    /* Additional styles for list items */
-    }
+ 
 </style>
