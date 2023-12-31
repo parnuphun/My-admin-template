@@ -113,7 +113,7 @@ module.exports.updateNewsCategory = async(req,res) => {
 
 }
 
-// rename news category 
+// delete news category 
 module.exports.deleteNewsCategory = async(req,res) => {
     const credential_admin_fullname = req.body.credential_admin_fullname
     const news_category_name = req.body.news_category_name
@@ -121,7 +121,16 @@ module.exports.deleteNewsCategory = async(req,res) => {
 
     try{
         db.query(` DELETE FROM news_category WHERE news_category_id = ?`,[news_category_id],async(err,result)=>{
-            if(err) return return_err(res,'QUERY BLOCK','DELETE NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+            if(err) {
+                if(err.code === 'ER_ROW_IS_REFERENCED_2'){
+                    return res.status(200).json({
+                        status_code:500,
+                        status:true,
+                        msg:'ไม่สามารถลบหมวดหมู่นี้ได้ เนื่องจากมีโพสต์ที่อยู่ในหมวดหมู่นี้อยู่'
+                    })
+                }
+                return return_err(res,'QUERY BLOCK','DELETE NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+            } 
             timeStamp(
                 credential_admin_fullname,
                 'delete',
