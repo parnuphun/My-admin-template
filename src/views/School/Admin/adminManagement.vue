@@ -605,7 +605,7 @@ watch(searchValue , ()=>{
                 </div>
                 <v-divider class="border-opacity-75"></v-divider>
             
-                <div class="w-full flex justify-end mt-3">
+                <div class="w-full flex justify-end mt-3 pr-12">
                     <div class="w-[100px]">
                         <v-select
                             :items="size"

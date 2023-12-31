@@ -584,7 +584,7 @@ function getFileCheck(){
                     <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
                 </div>
             </div>
-            <div class="w-full flex justify-end">
+            <div class="w-full flex justify-end pr-12">
                 <div class="w-[100px]">
                     <v-select
                         :items="size"
