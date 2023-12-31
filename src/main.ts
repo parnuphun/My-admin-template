@@ -8,6 +8,10 @@ import routes from './plugin/routes'
 // tailwind css
 import './assets/style/tailwind.css'
 
+// quill css
+import '@vueup/vue-quill/dist/vue-quill.core.css'; // official quill
+import './assets/style/quill.custom.css' // some class is not working need to custom 
+
 // Vuetify
 import vuetify from './plugin/vuetify/vuetify'
 
@@ -24,17 +28,8 @@ import moment from 'moment'
 import 'moment/dist/locale/th'
 moment.locale('th')
 
-// interceptor
-import { interceptor } from './services/Interceptor'
-// axios.interceptors.request.use(interceptor)
- 
-
 // marquee slide
 import Vue3Marquee from 'vue3-marquee'
-
-// // rich text 
-// import { QuillEditor } from '@vueup/vue-quill'
-// import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 createApp(App)
     .use(vuetify)

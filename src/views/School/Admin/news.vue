@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {QuillEditor } from '@vueup/vue-quill'
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
 import { ref, onMounted , watch} from 'vue';
 import MsgAlert from '../../../services/msgAlert';
 import apiNamphong from '../../../services/api/api_namphong';
 import {credential , newsCategoryResponse , dataStatus ,newsResponse} from '../../../store/Interface'
+import {QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 
 
@@ -136,7 +136,6 @@ function updateNewsCategory(){
     })
 } 
 
-
 // delete category 
 function deleteNewsCategory(){
     _msg.confirm('คุณต้องการจะลบใช่ไหม').then((isConfirmed)=>{
@@ -148,6 +147,8 @@ function deleteNewsCategory(){
             }).then((res)=>{
                 if(res.data.status_code === 200){
                     _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+                    renameNewsCategoryDialog.value = false 
+                    newsCategoryName.value = ''
                     getAllNewsCategory()
                 }else{
                     _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
@@ -197,6 +198,15 @@ watch(editNewDrawer,()=>{
 // add news
 const newsTopic = ref()
 const newsContent = ref() // quill
+const quillToolbar = [
+                [{ 'header': [] }],
+                ['bold', 'italic', 'underline','strike',{ 'color': [] }, { 'background': [] }],
+                [{ 'align': [] }],
+                [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                ['image','link','video'],
+                [{ 'indent': '-1' }, { 'indent': '+1' }],
+                [{ 'direction': 'rtl' }],
+            ]
 const selectedNewsCategory = ref() 
 const newsCoverImage = ref<Array<File>>()
 function addNews(){
@@ -264,6 +274,7 @@ function updateNews(){
                 if(res.data.status_code === 200){
                     _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
                     getAllNewsList()
+                    setUpNewsDetail(newsList.value![newsDetailIndex.value] , newsDetailIndex.value)
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:10})
                 }
@@ -299,12 +310,14 @@ function deleteNews(){
 
 function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_news_drawer'){
     if(formType === 'update_news_drawer' || 'delete_news_drawer'){
+        newsCoverImage.value = undefined
         newsDetail.value = undefined
         newsDetailIndex.value = ''
         newsTopic.value = '' 
         selectedNewsCategory.value = ''
         editNewDrawer.value = false 
     }else if(formType === 'add_news_drawer'){
+        newsCoverImage.value = undefined
         newsDetailIndex.value = ''
         newsTopic.value = '' 
         newsContent.value = '<p></p>' 
@@ -502,7 +515,7 @@ function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_new
                             contentType="html" 
                             ref="quill"
                             v-model:content="newsContent"
-                            toolbar="full"
+                            :toolbar="quillToolbar"
                         />
                     </div>
                     <v-divider class="border-opacity-100 mt-24"></v-divider>
@@ -581,7 +594,7 @@ function clearData(formType:'add_news_drawer'|'update_news_drawer' | 'delete_new
                             theme="snow" 
                             contentType="html" 
                             v-model:content="newsDetailContent"
-                            toolbar="full"
+                            :toolbar="quillToolbar"
                         />
                     </div>
                     <v-divider class="border-opacity-100 mt-24"></v-divider>
