@@ -19,12 +19,12 @@ onMounted(()=>{
     getAllData()
 })
 
-function getAllData(){
+async function getAllData(){
     if(searchValue.searchText === ''){
         // no value in seachValue the get common data
-        getAllNewsCategory()
-        getAllNewsLength()
-        getAllNewsList()
+        await getAllNewsCategory()
+        await getAllNewsLength()
+        await getAllNewsList()
     }else{
         // triger seachValue for seaching next after change category id       
         searchValue.searchTriger = !searchValue.searchTriger
@@ -38,7 +38,7 @@ const newsListStatus = ref<dataStatus>()
 const baseImage = ref()
 
 // get all news length 
-function getAllNewsLength(){
+async function getAllNewsLength(){
     _api.getAllNewsLength().then((res)=>{
         totalNews.value = res.data.news_data_length
         totalPage.value = Math.ceil(totalNews.value / sizeSelected.value)         
@@ -46,14 +46,14 @@ function getAllNewsLength(){
 }
 
 // get news list 
-function getAllNewsList(){
+async function getAllNewsList(){
     newsListStatus.value = 'loading_data'
     _api.getAllNewsList({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
         if(res.data.status_code === 200){
             newsList.value = res.data.news_data
             baseImage.value = res.data.base_image
             if(newsList.value!.length >= 1){
-                newsListStatus.value = 'load_data_succ'                
+                newsListStatus.value = 'load_data_succ'             
             }else if(newsList.value!.length <= 0){
                 newsListStatus.value = 'no_data'
             }else{
@@ -78,7 +78,7 @@ const newsCategoryList = ref<Array<newsCategoryResponse>>()
 const newsCategoryListStatus = ref<dataStatus>()
 
 // get category
-function getAllNewsCategory(){
+async function getAllNewsCategory(){
     newsCategoryListStatus.value = 'loading_data'
     _api.getAllNewsCategory().then((res)=>{
         if(res.data.status_code === 200){
@@ -265,13 +265,15 @@ const newsDetailIndex = ref()
 const newsDetailContent = ref()
 const newsDetailTopic = ref()
 const newsDetailSelectedCategory = ref()
-function setUpNewsDetail(item:newsResponse,index:number){
-    newsDetailIndex.value = index
+async function setUpNewsDetail(item:newsResponse,index:number,afterUpdate?:boolean){
     newsDetail.value = item
+    if(afterUpdate !== true){
+        newsDetailContent.value = newsDetail.value.news_contents
+        newsDetailTopic.value = newsDetail.value.news_topic
+        newsDetailSelectedCategory.value = newsDetail.value!.news_category
+    }
+    newsDetailIndex.value = index
     editNewDrawer.value = true
-    newsDetailContent.value = newsDetail.value.news_contents
-    newsDetailTopic.value = newsDetail.value.news_topic
-    newsDetailSelectedCategory.value = newsDetail.value!.news_category
 }
 
 function updateNews(){
@@ -291,11 +293,12 @@ function updateNews(){
             formData.append('news_category',newsDetailSelectedCategory.value) // category id  -7
             formData.append('credential_admin_fullname',credential.value!.user_fullname) // credential admin fullname -8
 
-            _api.updateNews(formData).then((res)=>{
+            _api.updateNews(formData).then(async (res)=>{
                 if(res.data.status_code === 200){
                     _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
-                    getAllData();
-                    setUpNewsDetail(newsList.value![newsDetailIndex.value] , newsDetailIndex.value)
+                    await getAllData();
+                    
+                    await setUpNewsDetail(newsList.value![newsDetailIndex.value] , newsDetailIndex.value , true)
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:10})
                 }
