@@ -15,6 +15,8 @@ const btnLoading = ref(false)
 const credential = ref<credential>()
 
 onMounted(()=>{
+    document.title = 'ข่าวสาร'
+
     credential.value = JSON.parse(localStorage.getItem('Credential')!)
     getAllData()
 })

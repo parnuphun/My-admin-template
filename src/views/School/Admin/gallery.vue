@@ -12,6 +12,7 @@ const addNewDialog = ref(false)
 
 
 onMounted(()=>{
+    document.title = 'ภาพกิจกรรม'
     getActivityImage()
 })
 

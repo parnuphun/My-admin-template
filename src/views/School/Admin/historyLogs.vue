@@ -8,6 +8,8 @@ import { historyLogsResponse } from '../../../store/Interface'
 const _api = new apiNamphong()
  
 onMounted(()=>{
+    document.title = 'ประวัติการใช้งาน'
+
     getHistoryLength()
     getHistory()
 })

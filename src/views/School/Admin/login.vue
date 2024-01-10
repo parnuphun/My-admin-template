@@ -12,6 +12,10 @@ const router_s = useRouter();
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
 
+onMounted(()=>{
+    document.title = 'เข้าสู่ระบบ'
+})
+
 function nextPage(path:string) {
     router_s.push(path)
 }

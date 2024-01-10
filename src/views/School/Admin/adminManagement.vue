@@ -25,6 +25,7 @@ const credential_id = ref()
 const credential_rule = ref()
 const credential_image = ref()
 onMounted(() => {
+    document.title = 'จัดการผู้ใช้งาน'
     credential.value = JSON.parse(localStorage.getItem('Credential')!)
     credential_id.value = credential.value!.user_id
     credential_rule.value = credential.value!.user_rule

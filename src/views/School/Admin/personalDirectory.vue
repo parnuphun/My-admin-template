@@ -16,6 +16,8 @@ const credential = ref<credential>()
 const btnLoading = ref(false)
 
 onMounted(()=>{
+    document.title = 'ทำเนียบบุคลากร'
+
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
     getAllPersonCategoryList()
     getAllPersonPositionList()

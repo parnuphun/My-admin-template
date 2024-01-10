@@ -20,6 +20,7 @@ const credential = ref<credential>()
 
 // working at first  
 onMounted(()=>{
+    document.title = 'ไฟล์เอกสาร'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
     
     getFileLength()
@@ -73,6 +74,7 @@ const fileUploadDialog = ref(false)
 const fileName = ref<string>() // file name for update and addnew form 
 const fileUpload = ref<any>() // file 
 const fileType = ref<string>() // 'file format ex. pdf doc sxl'
+const uploadProgress = ref(0)
 // add new file 
 function addNewFile(){
     buttonLoading.value = true
@@ -87,10 +89,15 @@ function addNewFile(){
 
     formData.append('credential_admin_fullname',credential.value!.user_fullname)
     
-    _api.addNewFile(formData).then((res)=>{
+    _api.addNewFile(formData,{
+        onUploadProgress: function (progressEvent:any) {
+            uploadProgress.value = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+            console.log(uploadProgress.value );
+        }
+    }).then((res)=>{
         if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
         else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
-
+        
         buttonLoading.value = false
         fileName.value = ''
         fileUpload.value = null
@@ -734,6 +741,7 @@ function getFileCheck(){
                 </div>
                 <div class="w-full px-6 mt-3">
                     <div class="flex flex-col gap-2 w-full">
+                       
                         <v-form @submit.prevent="addNewFile">
                             <v-file-input
                                 accept=".docx , .doc , .pdf , .xlsx , .xls , .csv "
@@ -770,6 +778,7 @@ function getFileCheck(){
                                 variant="outlined"
                             >
                             </v-select>
+
                             <div class="w-full mt-6 flex justify-center items-center gap-2">
                                 <v-btn color="red"
                                     @click="fileUploadDialog = !fileUploadDialog , fileUpload = null , fileName = '' , fileSelected_DD = 1" >
