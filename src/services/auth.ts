@@ -1,5 +1,6 @@
 import axios from 'axios'
 import router from '../plugin/routes'
+import MsgAlert from './msgAlert';
 
 let token = ''
 if(localStorage.getItem('Credential')){
@@ -8,6 +9,10 @@ if(localStorage.getItem('Credential')){
         token = credential.user_token
     }
 }
+
+
+
+const _msg = new MsgAlert()
 
 
 const axiosAuth = axios.create({
@@ -22,6 +27,7 @@ axiosAuth.interceptors.response.use(
         // Check if the status_code is 401 redirect to login page
         if (res.data && res.data.status_code === 401) {
             // Redirect to the login page
+            _msg.toast_msg({title:'ระยะเวลาการใช้งานหมดแล้ว กรุณาเข้าสู่ระบบใหม่', timer:180, progressbar:true, icon:'warning'})
             router.push('/err401')
         }
         return res;

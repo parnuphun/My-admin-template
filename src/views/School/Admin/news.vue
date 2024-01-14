@@ -467,7 +467,7 @@ watch(searchValue , ()=>{
             <v-divider class="border-opacity-100"></v-divider>
             <div class="flex flex-col gap-2 py-2 pr-2">
                 <div class="w-full h-full flex flex-col gap-2 py-2 pr-2" v-if="newsListStatus === 'load_data_succ'">
-                    <div class="flex less:flex-col sm:flex-row justify-center items-center cursor-pointer group border-2 border-pink-400" 
+                    <div class="flex less:flex-col sm:flex-row justify-center items-start cursor-pointer group border-2 border-pink-400" 
                     v-for="(item , i) in newsList" :key="item.news_id"
                     @click="setUpNewsDetail(item,i)"
                     >

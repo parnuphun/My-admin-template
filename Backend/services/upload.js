@@ -35,7 +35,6 @@ const storage_file = multer.diskStorage({
 // admin image
 const storage_admin_image = multer.diskStorage({
     destination(req,file,next){
-        console.log('test two');
         next(null,path.join(__dirname,'../public/admin_image'))
     },
     filename(req,file,next){
@@ -46,7 +45,6 @@ const storage_admin_image = multer.diskStorage({
 // activity image
 const storage_activity_image = multer.diskStorage({
     destination(req,file,next){
-        console.log('test two');
         next(null,path.join(__dirname,'../public/activity_image'))
     },
     filename(req,file,next){
@@ -57,7 +55,6 @@ const storage_activity_image = multer.diskStorage({
 // news cover image  *news_cover_image
 const storage_news_cover_image = multer.diskStorage({
     destination(req,file,next){
-        console.log('test two');
         next(null,path.join(__dirname,'../public/news_cover_image'))
     },
     filename(req,file,next){
