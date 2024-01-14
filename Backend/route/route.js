@@ -75,9 +75,13 @@ route.post('/searchFile',authorization,file_c.searchFile)
 ////////////////////////////////////////////////////////////////////////////
 // activity images
 ////////////////////////////////////////////////////////////////////////////
+route.post('/getActivityLength',authorization,activity_image_ct.getActivityLength)
 route.post('/addNewActivityImage',authorization,upload_activity_image,activity_image_ct.addNewActivityImage)
+route.post('/updateActivity',authorization,upload_activity_image,activity_image_ct.updateActivity)
 route.post('/getActivityImage',authorization,activity_image_ct.getActivityImage)
 route.post('/deleteActivityImage',authorization,activity_image_ct.deleteActivityImage)
+route.post('/searchActivityImage',authorization,activity_image_ct.searchActivityImage)
+
 
 ////////////////////////////////////////////////////////////////////////////
 // news

@@ -64,7 +64,7 @@ export interface personDirectoryTableTree {
 // history logs
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 export type historyType = 'update' | 'add' | 'delete' | 'login'
-export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity' | 'news' | 'file' | 'login'
+export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity_image' | 'news' | 'file' | 'login'
 export interface historyLogsResponse {
     history_logs_id : number ,
     history_logs_username : string,

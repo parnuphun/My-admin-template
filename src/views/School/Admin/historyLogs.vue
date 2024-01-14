@@ -155,6 +155,9 @@ watch(searchValue , ()=>{
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'news'">
                                         <v-icon icon="mdi-newspaper" class="mr-2"></v-icon> ผู้ดูแลระบบ
                                     </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'activity_image'">
+                                        <v-icon icon="mdi-image-outline" class="mr-2"></v-icon> ภาพกิจกรรม
+                                    </v-chip>
                                 </div>
                             </td>
                             <td>

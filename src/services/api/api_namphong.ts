@@ -101,7 +101,7 @@ export default class namphong_api {
     }
 
     // add new file 
-    addNewFile(data:FormData){
+    addNewFile(data:FormData , config = {}){
         return axiosAuth.post(url+'/addNewFile',data)
     }
 
@@ -220,18 +220,32 @@ export default class namphong_api {
     ///////////////////////////////////////////////////////////////////////////////
     // activity image 
     ///////////////////////////////////////////////////////////////////////////////
+
+    getActivityLength(){
+        return axiosAuth.post(url+'/getActivityLength')
+    }
+
+    //get activity image
+    getActivityImage(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getActivityImage',data)
+    }
+
+    searchActivityImage(data:{search_keyword:string,start_item:number,limit:number}){
+        return axiosAuth.post(url+'/searchActivityImage',data)
+    }
+
     // add new activity image
     addNewActivityImage(data:FormData){
         return axiosAuth.post(url+'/addNewActivityImage',data)
     }
 
-    //get activity image
-    getActivityImage(){
-        return axiosAuth.post(url+'/getActivityImage')
+    updateActivity(data:FormData){
+        return axiosAuth.post(url+'/updateActivity', data)
     }
 
+
     //delete activity image
-    deleteActivityImage(data:{activity_image_id:number,activity_image_cover_delete:string}){
+    deleteActivityImage(data:{activity_image_id:number,activity_image_cover_delete:string,credential_admin_fullname:string,activity_image_name:string}){
         return axiosAuth.post(url+'/deleteActivityImage',data)
     }
 
