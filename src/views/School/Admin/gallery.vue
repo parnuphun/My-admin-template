@@ -117,7 +117,7 @@ function updateActivity(){
 
 //delete activity image 
 function deleteActivityImage(id:number,image:string,name:string){
-    _msg.confirm('ต้องการลบภาพกิจกรรมใข่ไหม่').then((isConfirm)=>{
+    _msg.confirm('ต้องการลบภาพกิจกรรมใช่ไหม').then((isConfirm)=>{
         if(isConfirm){
             _api.deleteActivityImage({
                 activity_image_id:id,
@@ -274,18 +274,21 @@ watch(searchValue , ()=>{
                             </div>
                             <div class="w-full h-full flex flex-row gap-2 justify-end items-end mt-2">
                                 <v-btn
-                                    color="white"
+                                    class="less:w-1/3 md:w-[120px] min-w-min"
+                                    color="blue"
                                     @click="openAlbum(item.activity_image_link)"
                                 >   
                                     ดูภาพกิจกรรม
                                 </v-btn>
                                 <v-btn
+                                    class="less:w-1/3 md:w-[120px] min-w-min"
                                     color="primary"
                                     @click="setData(item)"
                                 >   
                                     แก้ไข
                                 </v-btn>
                                 <v-btn
+                                    class="less:w-1/3 md:w-[120px] min-w-min"
                                     color="red"
                                     @click="deleteActivityImage(item.activity_image_id,item.activity_image_cover,item.activity_image_name)"
                                 >   

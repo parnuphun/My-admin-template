@@ -10,6 +10,8 @@ backend/public/activity_image/*
 !backend/public/activity_image/.gitkeep
 backend/public/news_cover_image/*
 !backend/public/news_cover_image/.gitkeep
+backend/public/banner_image/*
+!backend/public/banner_image/.gitkeep
 
 
 # Logs

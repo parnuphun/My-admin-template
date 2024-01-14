@@ -342,7 +342,6 @@ watch(addNewPassword ,()=>{
     }else{
         errMsgConfirmPassword.value = 'invalid'
     }
-    
 })
 
 // detect validate confirmpassword
