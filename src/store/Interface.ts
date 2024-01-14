@@ -64,7 +64,7 @@ export interface personDirectoryTableTree {
 // history logs
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 export type historyType = 'update' | 'add' | 'delete' | 'login'
-export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity_image' | 'news' | 'file' | 'login'
+export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity_image' | 'news' | 'file' | 'login' | 'school_setting'
 export interface historyLogsResponse {
     history_logs_id : number ,
     history_logs_username : string,
@@ -153,6 +153,17 @@ export interface activityImageResonse {
     activity_image_date: string
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// school data 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface schoolDataResonse {
+    id : number 
+    banner_img: string
+    banner_img_origin_name : string
+    banner_slogan : string
+    default_admin_password : string
+
+}
 
 // old
 

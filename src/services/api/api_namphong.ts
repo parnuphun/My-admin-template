@@ -266,6 +266,23 @@ export default class namphong_api {
     searchHistory(data:{search_keyword:string,start_item:number,limit:number}){
         return axiosAuth.post(url+'/searchHistory',data)
     }
+
+
+    // change default password
+    changeDefaultPassword(data:{credential_admin_fullname:string,default_admin_password:string}){
+        return axiosAuth.post(url+'/changeDefaultPassword',data)
+    }
+
+    // get school setting data 
+    getSchoolDataSetting(){
+        return axiosAuth.post(url+'/getSchoolDataSetting')
+    }
+
+    // update banner 
+    updateBanner(data:FormData){
+        return axiosAuth.post(url+'/updateBanner',data)
+    }
+
 }
 
  

@@ -26,18 +26,19 @@ export const navigationMenu:NavigationItem[] = [
     //     link : '/admin/dashBoard' ,
     //     permission : 'ทุกคน' ,
     // },
-    // {
-    //     id: 'annoucement_important' ,
-    //     title : 'ประกาศประชาสัมพันธ์' ,
-    //     icon : 'mdi-information' ,
-    //     link : '/admin/annoucement' ,
-    //     permission : 'ทุกคน' ,
-    // },
+
     {
         id: 'news_blog' ,
         title : 'ข่าวสาร' ,
         icon : 'mdi-newspaper' ,
         link : '/admin/news' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'annoucement_important' ,
+        title : 'ประกาศประชาสัมพันธ์' ,
+        icon : 'mdi-bullhorn-variant-outline' ,
+        link : '/admin/annoucement' ,
         permission : 'ทุกคน' ,
     },
     {
@@ -63,9 +64,16 @@ export const navigationMenu:NavigationItem[] = [
     },
     {
         id: 'student_schedule' ,
-        title : 'ตารางเรียน' ,
+        title : 'ตารางสอน' ,
         icon : 'mdi-table' ,
         link : '/admin/studentSchedule' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'student_schedule' ,
+        title : 'หลักสูตร' ,
+        icon : 'mdi-book-outline' ,
+        link : '/admin/syllabus' ,
         permission : 'ทุกคน' ,
     },
     {
@@ -90,12 +98,19 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
-        id: 'test_ui' ,
-        title : 'ทดสอบ user interface' ,
-        icon : 'mdi-test-tube' ,
-        link : '/test_ui' ,
+        id: 'setting' ,
+        title : 'ตั้งค่า' ,
+        icon : 'mdi-cog-outline' ,
+        link : '/admin/setting' ,
         permission : 'ทุกคน' ,
     },
+    // {
+    //     id: 'test_ui' ,
+    //     title : 'ทดสอบ user interface' ,
+    //     icon : 'mdi-test-tube' ,
+    //     link : '/test_ui' ,
+    //     permission : 'ทุกคน' ,
+    // },
     // {
     //     id: 'test_api_auth' ,
     //     title : 'ทดสอบ api auth' ,

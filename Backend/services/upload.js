@@ -62,6 +62,16 @@ const storage_news_cover_image = multer.diskStorage({
     }
 })
 
+// banner school
+const storage_banner = multer.diskStorage({
+    destination(req,file,next){
+        next(null,path.join(__dirname,'../public/banner_image'))
+    },
+    filename(req,file,next){
+        next(null,`banner_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
+    }
+})
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // upload method
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,12 +95,17 @@ const upload_news_cover_image = multer({
     storage : storage_news_cover_image
 }).single('news_cover_image')
 
+const upload_baner_image = multer({
+    storage : storage_banner
+}).single('banner_image')
+
 module.exports = { 
     upload_person_image ,
     upload_file,
     upload_admin_image,
     upload_activity_image,
-    upload_news_cover_image
+    upload_news_cover_image,
+    upload_baner_image
 };
 
  

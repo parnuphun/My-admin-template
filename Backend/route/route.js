@@ -9,7 +9,8 @@ const {
     upload_file, 
     upload_admin_image,
     upload_activity_image,
-    upload_news_cover_image
+    upload_news_cover_image,
+    upload_baner_image
 } = require('../services/upload')
 const delete_image = require('../services/delete_file')
 
@@ -20,7 +21,7 @@ const admin_c = require('../controller/admin')
 const activity_image_ct = require('../controller/activity_image')
 const history_ct = require('../controller/history_log')
 const news_ct = require('../controller/news')
-
+const school_setting_ct = require('../controller/school_setting')
 ////////////////////////////////////////////////////////////////////////////
 // login
 ////////////////////////////////////////////////////////////////////////////
@@ -106,6 +107,15 @@ route.post('/updateNews',authorization,upload_news_cover_image,news_ct.updateNew
 route.post('/getHistoryLength',authorization,history_ct.getHistoryLength)
 route.post('/getHistory',authorization,history_ct.getHistory)
 route.post('/searchHistory',authorization,history_ct.searchHistory)
+
+////////////////////////////////////////////////////////////////////////////
+// school setting 
+////////////////////////////////////////////////////////////////////////////
+route.post('/changeDefaultPassword',authorization,school_setting_ct.changeDefaultPassword)
+route.post('/addSchoolDefaultData',school_setting_ct.addSchoolDefaultData)
+route.post('/getSchoolDataSetting',authorization,school_setting_ct.getSchoolDataSetting)
+route.post('/updateBanner',authorization,upload_baner_image,school_setting_ct.updateBanner)
+
 
 ////////////////////////////////////////////////////////////////////////////
 // test

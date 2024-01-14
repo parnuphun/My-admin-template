@@ -158,6 +158,9 @@ watch(searchValue , ()=>{
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'activity_image'">
                                         <v-icon icon="mdi-image-outline" class="mr-2"></v-icon> ภาพกิจกรรม
                                     </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'school_setting'">
+                                        <v-icon icon="mdi-cog-outline" class="mr-2"></v-icon> ตั้งค่า
+                                    </v-chip>
                                 </div>
                             </td>
                             <td>
