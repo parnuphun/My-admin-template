@@ -65,11 +65,13 @@ module.exports.addNewActivityImage = async (req,res) => {
             activity_image_cover,
             activity_image_name,
             activity_image_link,
+            activity_image_author,
             activity_image_date)
-        VALUES (?,?,?,?)`,
+        VALUES (?,?,?,?,?)`,
         [activity_image_cover,
         activity_image_name,
         activity_image_link,
+        credential_admin_fullname,
         activity_image_date],
         (err,result)=>{
             if(err){

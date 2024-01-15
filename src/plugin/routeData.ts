@@ -56,6 +56,27 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
+        id: 'teaching_schedule' ,
+        title : 'ตารางสอน' ,
+        icon : 'mdi-table-clock' ,
+        link : '/admin/teachingSchedule' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'time_table' ,
+        title : 'ตารางเรียน' ,
+        icon : 'mdi-table' ,
+        link : '/admin/timeTable' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'student_schedule' ,
+        title : 'หลักสูตร' ,
+        icon : 'mdi-book-education-outline' ,
+        link : '/admin/syllabus' ,
+        permission : 'ทุกคน' ,
+    },
+    {
         id: 'files' ,
         title : 'เอกสาร' ,
         icon : 'mdi-file-outline' ,
@@ -63,17 +84,10 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
-        id: 'student_schedule' ,
-        title : 'ตารางสอน' ,
-        icon : 'mdi-table' ,
-        link : '/admin/studentSchedule' ,
-        permission : 'ทุกคน' ,
-    },
-    {
-        id: 'student_schedule' ,
-        title : 'หลักสูตร' ,
-        icon : 'mdi-book-outline' ,
-        link : '/admin/syllabus' ,
+        id: 'person_management' ,
+        title : 'ผู้ดูแลระบบ' ,
+        icon : 'mdi-account-outline' ,
+        link : '/admin/adminManagement' ,
         permission : 'ทุกคน' ,
     },
     {
@@ -81,13 +95,6 @@ export const navigationMenu:NavigationItem[] = [
         title : 'ส่งอีเมล' ,
         icon : 'mdi-email-outline' ,
         link : '/admin/email' ,
-        permission : 'ทุกคน' ,
-    },
-    {
-        id: 'person_management' ,
-        title : 'ผู้ดูแลระบบ' ,
-        icon : 'mdi-account-outline' ,
-        link : '/admin/adminManagement' ,
         permission : 'ทุกคน' ,
     },
     {

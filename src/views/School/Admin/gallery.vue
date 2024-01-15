@@ -271,6 +271,9 @@ watch(searchValue , ()=>{
                                 <p class="text-gray-600 text-lg mt-2">
                                     โพสต์วันที่ : {{  item.activity_image_date }}
                                 </p>
+                                <p class="text-gray-600 text-lg ">
+                                    โดย : {{  item.activity_image_author }}
+                                </p>
                             </div>
                             <div class="w-full h-full flex flex-row gap-2 justify-end items-end mt-2">
                                 <v-btn
@@ -296,7 +299,6 @@ watch(searchValue , ()=>{
                                 </v-btn>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="imagelistSatatus === 'no_data'">
@@ -466,7 +468,7 @@ watch(searchValue , ()=>{
                                      @click="editDialog = false , activityImageFile = null , activityImageName = ''" >
                                     ยกเลิก
                                 </v-btn>
-                                <v-btn color="primary" type="submit" :disabled=" !!!activityImageName || !!!activityImageLink"
+                                <v-btn color="primary" type="submit" :disabled=" !!!itemEdit!.activity_image_name || !!!itemEdit!.activity_image_link"
                                 > บันทึก </v-btn>
                             </div>
                         </v-form>
