@@ -1,6 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // Common
 ////////////////////////////////////////////////////////////////////////////////////////////////////
+export type msgValidate = 'invalid' | 'valid' | 'no_data'
 // data status
 export type dataStatus = 'no_data' | 'loading_data' | 'err_data' | 'load_data_succ' | 'network_err'
 // view data
@@ -64,7 +65,8 @@ export interface personDirectoryTableTree {
 // history logs
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 export type historyType = 'update' | 'add' | 'delete' | 'login'
-export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity_image' | 'news' | 'file' | 'login' | 'school_setting'
+export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity_image' | 
+                                'news' | 'file' | 'login' | 'school_setting' | 'annocement' 
 export interface historyLogsResponse {
     history_logs_id : number ,
     history_logs_username : string,
@@ -146,11 +148,13 @@ export interface newsResponse {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface activityImageResonse { 
-    activity_image_id: number,
-    activity_image_cover: string ,
-    activity_image_name: string ,
-    activity_image_link: string ,
-    activity_image_date: string
+    activity_image_id: number
+    activity_image_cover: string 
+    activity_image_name: string 
+    activity_image_link: string 
+    activity_image_date: string 
+    activity_image_author: string
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -162,51 +166,23 @@ export interface schoolDataResonse {
     banner_img_origin_name : string
     banner_slogan : string
     default_admin_password : string
-
+    anno_limit : number
 }
 
-// old
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// anno data 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface annoResponse {
+    anno_id : number 
+    anno_name : string
+    anno_image : string 
+    anno_pin : boolean 
+    anno_date :string 
+    anno_author: string
+}
 
-// type userRoles = 'อาจารย์' | 'นักศึกษา' | 'ผู้ดูแลระบบ'
 
-// export interface CredentialDataFromLocal {
-//     Authorization: string
-//     userAvatar: string
-//     userEmail: string
-//     userFname: string
-//     userLname: string
-//     userId: number
-//     userRmutiId: string
-//     userRoles: userRoles[]
-// }
 
-// export interface userDataRes {
-//     User_Id: number
-//     User_Avatar: string
-//     User_Usernname: string
-//     User_Email: string
-//     User_Rmuti_Id: string
-//     User_password: string
-//     User_Fname: string
-//     User_Lname: string
-//     User_Phone: string
-//     User_AboutMe: string
-//     User_Joined_Date: Date
-//     User_Email_Confirm: boolean
-//     User_Deleted: boolean
-//     User_Banned: boolean
-//     USER_ROLES: string[]
-// }
 
-// export interface ProjectDataRes {
-//     Project_Id: number
-//     Project_Name_TH: string
-//     Project_Name_EN: string
-//     Project_Detail: string
-//     Project_Avatar: string
-//     Project_Status: { Project_Status_Id: number, Project_Status_Name: string }
-//     Project_Created_By: number // user
-//     Project_Created_Date: Date
-//     Project_Deleted: boolean
-// }
 
+ 

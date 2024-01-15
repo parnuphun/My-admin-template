@@ -161,6 +161,9 @@ watch(searchValue , ()=>{
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'school_setting'">
                                         <v-icon icon="mdi-cog-outline" class="mr-2"></v-icon> ตั้งค่า
                                     </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'annocement'">
+                                        <v-icon icon="mdi-bullhorn-variant-outline" class="mr-2"></v-icon> ประกาศ
+                                    </v-chip>
                                 </div>
                             </td>
                             <td>

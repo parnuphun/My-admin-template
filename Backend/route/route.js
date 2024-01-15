@@ -10,7 +10,8 @@ const {
     upload_admin_image,
     upload_activity_image,
     upload_news_cover_image,
-    upload_baner_image
+    upload_baner_image,
+    upload_anno_image
 } = require('../services/upload')
 const delete_image = require('../services/delete_file')
 
@@ -22,6 +23,7 @@ const activity_image_ct = require('../controller/activity_image')
 const history_ct = require('../controller/history_log')
 const news_ct = require('../controller/news')
 const school_setting_ct = require('../controller/school_setting')
+const anno_ct = require('../controller/announcement')
 ////////////////////////////////////////////////////////////////////////////
 // login
 ////////////////////////////////////////////////////////////////////////////
@@ -115,6 +117,16 @@ route.post('/changeDefaultPassword',authorization,school_setting_ct.changeDefaul
 route.post('/addSchoolDefaultData',school_setting_ct.addSchoolDefaultData)
 route.post('/getSchoolDataSetting',authorization,school_setting_ct.getSchoolDataSetting)
 route.post('/updateBanner',authorization,upload_baner_image,school_setting_ct.updateBanner)
+
+////////////////////////////////////////////////////////////////////////////
+// annoicement  
+////////////////////////////////////////////////////////////////////////////
+route.post('/updateAnnoLimit',authorization,anno_ct.updateAnnoLimit)
+route.post('/addNewAnno',authorization,upload_anno_image,anno_ct.addNewAnno)
+route.post('/getAnnoList',authorization,anno_ct.getAnnoList)
+route.post('/deleteAnno',authorization,anno_ct.deleteAnno)
+route.post('/switchAnnoPin',authorization,anno_ct.switchAnnoPin)
+route.post('/getExampleAnnoList',authorization,anno_ct.getExampleAnnoList)
 
 
 ////////////////////////////////////////////////////////////////////////////

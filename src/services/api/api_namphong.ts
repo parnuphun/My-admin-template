@@ -268,6 +268,9 @@ export default class namphong_api {
     }
 
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // school setting 
+    ///////////////////////////////////////////////////////////////////////////////
     // change default password
     changeDefaultPassword(data:{credential_admin_fullname:string,default_admin_password:string}){
         return axiosAuth.post(url+'/changeDefaultPassword',data)
@@ -283,6 +286,32 @@ export default class namphong_api {
         return axiosAuth.post(url+'/updateBanner',data)
     }
 
+
+    // update annocement limit
+    updateAnnoLimit(data:{credential_admin_fullname:string,limit:number}){
+        return axiosAuth.post(url+'/updateAnnoLimit',data)
+    }
+
+    // add new
+    addNewAnno(data:FormData){
+        return axiosAuth.post(url+'/addNewAnno',data)
+    }
+
+    getAnnoList(){
+        return axiosAuth.post(url+'/getAnnoList')
+    }
+
+    deleteAnno(data:{anno_id:number,anno_image:string,anno_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteAnno',data)
+    }
+
+    switchAnnoPin(data:{anno_id:number,pin_status:number,anno_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/switchAnnoPin',data)
+    }
+
+    getExampleAnnoList(data:{limit:number}){
+        return axiosAuth.post(url+'/getExampleAnnoList',data)
+    }
 }
 
  

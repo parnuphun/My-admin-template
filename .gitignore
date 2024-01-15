@@ -12,6 +12,8 @@ backend/public/news_cover_image/*
 !backend/public/news_cover_image/.gitkeep
 backend/public/banner_image/*
 !backend/public/banner_image/.gitkeep
+backend/public/anno_image/*
+!backend/public/anno_image/.gitkeep
 
 
 # Logs

@@ -72,6 +72,16 @@ const storage_banner = multer.diskStorage({
     }
 })
 
+// announcement 
+const storage_anno = multer.diskStorage({
+    destination(req,file,next){
+        next(null,path.join(__dirname,'../public/anno_image'))
+    },
+    filename(req,file,next){
+        next(null,`anno_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
+    }
+})
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // upload method
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,6 +108,9 @@ const upload_news_cover_image = multer({
 const upload_baner_image = multer({
     storage : storage_banner
 }).single('banner_image')
+const upload_anno_image = multer({
+    storage : storage_anno
+}).single('anno_image')
 
 module.exports = { 
     upload_person_image ,
@@ -105,7 +118,8 @@ module.exports = {
     upload_admin_image,
     upload_activity_image,
     upload_news_cover_image,
-    upload_baner_image
+    upload_baner_image,
+    upload_anno_image
 };
 
  
