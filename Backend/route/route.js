@@ -27,110 +27,110 @@ const anno_ct = require('../controller/announcement')
 ////////////////////////////////////////////////////////////////////////////
 // login
 ////////////////////////////////////////////////////////////////////////////
-route.post('/login',login_c.login)
-route.post('/adminRegister',login_c.adminRegister)
+route.post('/login',login_c.login) // เข้าสู่ระบบ
+route.post('/adminRegister',login_c.adminRegister) //*** สำหรับแอดมินเท่านั้น
 
 ////////////////////////////////////////////////////////////////////////////
 // users
 ////////////////////////////////////////////////////////////////////////////
-route.post('/searchAdmin',authorization,admin_c.searchAdmin)
-route.post('/getAllAdminLength',authorization,admin_c.getAllAdminLength)
-route.post('/addNewAdmin',authorization,upload_admin_image,admin_c.addNewAdmin)
-route.post('/updateAdmin',authorization,upload_admin_image,admin_c.updateAdmin)
-route.post('/getAllAdmin',authorization,admin_c.getAllAdmin)
-route.post('/deleteAdmin',authorization,admin_c.deleteAdmin)
-route.post('/resetPassword',authorization,admin_c.resetPassword)
+route.post('/searchAdmin',authorization,admin_c.searchAdmin) // ค้าหารายชื่อผู้ใช้งาน
+route.post('/getAllAdminLength',authorization,admin_c.getAllAdminLength) // ดึงข้อมูลจำนวนของรายชื่อผู้ใช้งานทั้งหมด
+route.post('/getAllAdmin',authorization,admin_c.getAllAdmin) // ดึงข้อมูลผู้ใช้งาน
+route.post('/addNewAdmin',authorization,upload_admin_image,admin_c.addNewAdmin) // เพิ่มผู้ใช้งาน
+route.post('/updateAdmin',authorization,upload_admin_image,admin_c.updateAdmin) // อัะเดตผู้ใช่งาน
+route.post('/deleteAdmin',authorization,admin_c.deleteAdmin) // ลบผู้ใช้งาน
+route.post('/resetPassword',authorization,admin_c.resetPassword) // เปลี่ยนรหัสผ่าน
 
 ////////////////////////////////////////////////////////////////////////////
 // person directory
 ////////////////////////////////////////////////////////////////////////////
-route.post('/getAllPersonCategoryList',authorization,persons_pd_c.getAllPersonCategoryList)
-route.post('/getAllPersonPositionList',authorization,persons_pd_c.getAllPersonPositionList)
-route.post('/addPosition',authorization,persons_pd_c.addPosition)
-route.post('/deletePosition',authorization,persons_pd_c.deletePosition)
-route.post('/renamePosition',authorization,persons_pd_c.renamePosition)
-route.post('/getPersonDirectoryTableTree',authorization,persons_pd_c.getPersonDirectoryTableTree)
-route.post('/addPerson',authorization,upload_person_image,persons_pd_c.addPerson)
-route.post('/updatePerson',authorization,upload_person_image,persons_pd_c.updatePerson)
-route.post('/deletePerson',authorization,persons_pd_c.deletePerson)
+route.post('/getAllPersonCategoryList',authorization,persons_pd_c.getAllPersonCategoryList) // ดึงรายชื่อหมวดหมู่
+route.post('/getAllPersonPositionList',authorization,persons_pd_c.getAllPersonPositionList) // ดึงรายชื่อบุคลากร
+route.post('/addPosition',authorization,persons_pd_c.addPosition) // เพิ่มหมวดหมู่
+route.post('/deletePosition',authorization,persons_pd_c.deletePosition) // ลบหมวดหมู่
+route.post('/renamePosition',authorization,persons_pd_c.renamePosition) // เปลี่ยนชื่อตำแหน่ง
+route.post('/getPersonDirectoryTableTree',authorization,persons_pd_c.getPersonDirectoryTableTree) // ดึงข้อมูลรายชื่อผู้ใช้งานแบ่งหมวดหมู่ตามตำแหน่ง
+route.post('/addPerson',authorization,upload_person_image,persons_pd_c.addPerson) // เพิ่มผู้ใบุคลากร
+route.post('/updatePerson',authorization,upload_person_image,persons_pd_c.updatePerson) // อัพเดตบุคลากร
+route.post('/deletePerson',authorization,persons_pd_c.deletePerson) // ลบบุคลากร
 
-route.post('/getAllpersonListLength',authorization,persons_pd_c.getAllpersonListLength)
-route.post('/getAllpersonList',authorization,persons_pd_c.getAllpersonList)
-route.post('/searchPersons',authorization,persons_pd_c.searchPersons)
+route.post('/getAllpersonListLength',authorization,persons_pd_c.getAllpersonListLength) // ดึงข้อมูลจำนวนของลบบุคลากรทั้งหมด
+route.post('/getAllpersonList',authorization,persons_pd_c.getAllpersonList) // ดึงข้อมูลบุคลากรทั้งหมด
+route.post('/searchPersons',authorization,persons_pd_c.searchPersons) // ค้นหาบุคลากร
 
 ////////////////////////////////////////////////////////////////////////////
 // files
 ////////////////////////////////////////////////////////////////////////////
-route.post('/getFileLength',authorization,file_c.getFileLength)
-route.post('/getAllFiles',authorization,file_c.getAllFiles)
-route.post('/addFileCategory',authorization,file_c.addFileCategory)
-route.post('/renameFileCategory',authorization,file_c.renameFileCategory)
-route.post('/deleteFileCategory',authorization,file_c.deleteFileCategory)
-route.post('/getAllCategoryFile',authorization,file_c.getAllCategoryFile)
-route.post('/addNewFile',authorization,upload_file,file_c.addNewFile)
-route.post('/editFile',authorization,upload_file,file_c.editFile)
-route.post('/deleteFile',authorization,file_c.deleteFile)
-route.post('/fileSwitchPin',authorization,file_c.fileSwitchPin)
-route.post('/downloadFile',authorization,file_c.downloadFile)
-route.post('/previewFile',authorization,file_c.previewFile)
-route.post('/searchFile',authorization,file_c.searchFile)
+route.post('/getFileLength',authorization,file_c.getFileLength) // ดึงข้อมูลจำนวนของไฟล์ทั้งหมด
+route.post('/getAllFiles',authorization,file_c.getAllFiles) // ดึงข้อมูลของไฟล์ทั้งหมด
+route.post('/addFileCategory',authorization,file_c.addFileCategory) // เพิ่มหมวดหมู่เอกสาร
+route.post('/renameFileCategory',authorization,file_c.renameFileCategory) // เปลี่ยนชือหมวดหมู่เอกสาร
+route.post('/deleteFileCategory',authorization,file_c.deleteFileCategory) // ลบหมวดหมู่เอกสาร
+route.post('/getAllCategoryFile',authorization,file_c.getAllCategoryFile) // ดึงข้อมูลหมวดหมู่เอกสารทั้งหมด
+route.post('/addNewFile',authorization,upload_file,file_c.addNewFile) // เพิ่มเอกสาร
+route.post('/editFile',authorization,upload_file,file_c.editFile) // อัพเดตเอกสาร
+route.post('/deleteFile',authorization,file_c.deleteFile) // ลบเอกสาร
+route.post('/fileSwitchPin',authorization,file_c.fileSwitchPin) // ปักหมุดเอกสาร
+route.post('/downloadFile',authorization,file_c.downloadFile) // ดาวน์โหลดเอกสาร
+route.post('/previewFile',authorization,file_c.previewFile) // ส่งข้อมูลไฟล์ไปแสดงผล
+route.post('/searchFile',authorization,file_c.searchFile) // ค้นหาเอกสาร
 
 ////////////////////////////////////////////////////////////////////////////
 // activity images
 ////////////////////////////////////////////////////////////////////////////
-route.post('/getActivityLength',authorization,activity_image_ct.getActivityLength)
-route.post('/addNewActivityImage',authorization,upload_activity_image,activity_image_ct.addNewActivityImage)
-route.post('/updateActivity',authorization,upload_activity_image,activity_image_ct.updateActivity)
-route.post('/getActivityImage',authorization,activity_image_ct.getActivityImage)
-route.post('/deleteActivityImage',authorization,activity_image_ct.deleteActivityImage)
-route.post('/searchActivityImage',authorization,activity_image_ct.searchActivityImage)
+route.post('/getActivityLength',authorization,activity_image_ct.getActivityLength) // ดึงข้อมูลจำนวนของภาพกิจกรรมทั้งหมด
+route.post('/getActivityImage',authorization,activity_image_ct.getActivityImage) // ดึงข้อมูลภาพกิจกรรมทั้งหมด
+route.post('/addNewActivityImage',authorization,upload_activity_image,activity_image_ct.addNewActivityImage) // เพิ่มภาพกิจกรรม
+route.post('/updateActivity',authorization,upload_activity_image,activity_image_ct.updateActivity) // บันทึกภาพกิจกรรรม
+route.post('/deleteActivityImage',authorization,activity_image_ct.deleteActivityImage) // ลบภาพกิจกรรม
+route.post('/searchActivityImage',authorization,activity_image_ct.searchActivityImage) // ค้นหาภาพกิจกรรม
 
 
 ////////////////////////////////////////////////////////////////////////////
 // news
 ////////////////////////////////////////////////////////////////////////////
 
-route.post('/addNewsCategory',authorization,news_ct.addNewsCategory)
-route.post('/getAllNewsCategory',authorization,news_ct.getAllNewsCategory)
-route.post('/updateNewsCategory',authorization,news_ct.updateNewsCategory)
-route.post('/deleteNewsCategory',authorization,news_ct.deleteNewsCategory)
+route.post('/addNewsCategory',authorization,news_ct.addNewsCategory) // เพิ่มหมวดหมู่ข่าวสาร
+route.post('/getAllNewsCategory',authorization,news_ct.getAllNewsCategory) // ดึงข้อมูลหมวดหมู่ข่าวสาร
+route.post('/updateNewsCategory',authorization,news_ct.updateNewsCategory) // อัพเดตหมวดหมู่ข่าวสาร
+route.post('/deleteNewsCategory',authorization,news_ct.deleteNewsCategory) // ลบหมวดหมู่ข่าวสาร
 
-route.post('/searchNews',authorization,news_ct.searchNews)
-route.post('/getAllNewsLength',authorization,news_ct.getAllNewsLength)
-route.post('/getAllNewsList',authorization,news_ct.getAllNewsList)
+route.post('/searchNews',authorization,news_ct.searchNews) // ค้นหาข่าวสาร
+route.post('/getAllNewsLength',authorization,news_ct.getAllNewsLength) // ดึงข้อมูลจำนวนของข่าวสารทั้งหมด
+route.post('/getAllNewsList',authorization,news_ct.getAllNewsList) // ดึงข้อมูลข่าวสารทั้งหมด
 
-route.post('/addNews',authorization,upload_news_cover_image,news_ct.addNews)
-route.post('/deleteNews',authorization,news_ct.deleteNews)
-route.post('/updateNews',authorization,upload_news_cover_image,news_ct.updateNews)
+route.post('/addNews',authorization,upload_news_cover_image,news_ct.addNews) // เพิ่มข่าวสาร
+route.post('/deleteNews',authorization,news_ct.deleteNews) // ลบข่าวสาร
+route.post('/updateNews',authorization,upload_news_cover_image,news_ct.updateNews) // บันทึกข่าวสาร
 
 ////////////////////////////////////////////////////////////////////////////
 // history 
 ////////////////////////////////////////////////////////////////////////////
-route.post('/getHistoryLength',authorization,history_ct.getHistoryLength)
-route.post('/getHistory',authorization,history_ct.getHistory)
-route.post('/searchHistory',authorization,history_ct.searchHistory)
+route.post('/getHistoryLength',authorization,history_ct.getHistoryLength) // ดึงข้อมูลจำนวนของประวัติการใช้งานทั้งหมด
+route.post('/getHistory',authorization,history_ct.getHistory) // ดึงข้อมูลประวัติการใช้งานทั้งหมด
+route.post('/searchHistory',authorization,history_ct.searchHistory) // ค้นหา ประวัติการใช้งาน
 
 ////////////////////////////////////////////////////////////////////////////
 // school setting 
 ////////////////////////////////////////////////////////////////////////////
-route.post('/changeDefaultPassword',authorization,school_setting_ct.changeDefaultPassword)
-route.post('/addSchoolDefaultData',school_setting_ct.addSchoolDefaultData)
-route.post('/getSchoolDataSetting',authorization,school_setting_ct.getSchoolDataSetting)
-route.post('/updateBanner',authorization,upload_baner_image,school_setting_ct.updateBanner)
+route.post('/changeDefaultPassword',authorization,school_setting_ct.changeDefaultPassword) // เปลี่ยนรหัสผ่านเริ่มต้นสำหรับเพิ่มผู้ใช้งานใหม่
+route.post('/addSchoolDefaultData',school_setting_ct.addSchoolDefaultData) // เพิ่มข้อมูลการตั้งค่าของโรงเรียนครั้งแรก *** สำหรับแอดมินเท่านั้น
+route.post('/getSchoolDataSetting',authorization,school_setting_ct.getSchoolDataSetting) // ดึงข้อมูลการตั้งค่าของโรงเรียนเบื้องต้น
+route.post('/updateBanner',authorization,upload_baner_image,school_setting_ct.updateBanner) // เปลี่ยนภาพแบนเนอร์หน้าเว็บกับคำขวัญ
 
 ////////////////////////////////////////////////////////////////////////////
 // annoicement  
 ////////////////////////////////////////////////////////////////////////////
  
-route.post('/searchAnno',authorization,anno_ct.searchAnno)
-route.post('/getAnnoListLength',authorization,anno_ct.getAnnoListLength)
-route.post('/getAnnoList',authorization,anno_ct.getAnnoList)
-route.post('/getExampleAnnoList',authorization,anno_ct.getExampleAnnoList)
-route.post('/updateAnnoLimit',authorization,anno_ct.updateAnnoLimit)
-route.post('/addNewAnno',authorization,upload_anno_image,anno_ct.addNewAnno)
-route.post('/deleteAnno',authorization,anno_ct.deleteAnno)
-route.post('/switchAnnoPin',authorization,anno_ct.switchAnnoPin)
-route.post('/updateAnno',authorization,upload_anno_image,anno_ct.updateAnno)
+route.post('/searchAnno',authorization,anno_ct.searchAnno) // ค้นหาประกาศ
+route.post('/getAnnoListLength',authorization,anno_ct.getAnnoListLength) // ดึงข้อมูลจำนวนของประกาศทั้งหมด
+route.post('/getAnnoList',authorization,anno_ct.getAnnoList) // ดึงข้อมูลประกาศทั้งหมด
+route.post('/getExampleAnnoList',authorization,anno_ct.getExampleAnnoList) // ดึงข้อมูลตัวอย่างที่จำนำประกาศมาแสดง
+route.post('/updateAnnoLimit',authorization,anno_ct.updateAnnoLimit) // ปรับจำนวนประกาศที่จำนำมาแสดง
+route.post('/addNewAnno',authorization,upload_anno_image,anno_ct.addNewAnno) // เพิ่มประกาศใหม่
+route.post('/deleteAnno',authorization,anno_ct.deleteAnno) // ลบประกาศ
+route.post('/switchAnnoPin',authorization,anno_ct.switchAnnoPin) // ปักหมุดประกาศ
+route.post('/updateAnno',authorization,upload_anno_image,anno_ct.updateAnno) // อัพเดตประกาศ
 
 ////////////////////////////////////////////////////////////////////////////
 // test
