@@ -4,7 +4,6 @@ const delete_image = require('../services/delete_file')
 require('dotenv').config();
 const return_err =require('../services/return_err');
 const timeStamp = require('../services/timeStamp');
-const { query } = require('express');
  
 // get all category 
 module.exports.getAllPersonCategoryList = async (req,res) =>{
@@ -523,7 +522,6 @@ module.exports.updatePerson = async (req,res) => {
     //     })
     // }
 }
-
 
 // search persons by category 
 module.exports.searchPersons = async (req,res) => {

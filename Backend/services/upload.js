@@ -1,9 +1,6 @@
 const multer = require('multer')
 const path = require('path')
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//storage
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+ 
 // person directory 
 const storage_person_image = multer.diskStorage({
     destination(req,file,next){
@@ -21,6 +18,9 @@ const storage_person_image_update = multer.diskStorage({
         next(null,`${Math.round(Math.random()*100000)}_${Date.now()}.png`)
     }
 })
+const upload_person_image = multer({
+    storage : storage_person_image
+}).single('person_image');  
 
 // file 
 const storage_file = multer.diskStorage({
@@ -31,6 +31,10 @@ const storage_file = multer.diskStorage({
         next(null,`${Math.round(Math.random()*100000)}_${Date.now()}_${file.originalname}`)
     }
 })
+const upload_file = multer({
+    storage : storage_file
+}).single('file_upload')
+
 
 // admin image
 const storage_admin_image = multer.diskStorage({
@@ -41,6 +45,9 @@ const storage_admin_image = multer.diskStorage({
         next(null,`${Math.round(Math.random()*100000)}_${Date.now()}.png`)
     }
 })
+const upload_admin_image = multer({
+    storage : storage_admin_image
+}).single('admin_image')
 
 // activity image
 const storage_activity_image = multer.diskStorage({
@@ -51,6 +58,9 @@ const storage_activity_image = multer.diskStorage({
         next(null,`activity_image_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
     }
 })
+const upload_activity_image = multer({
+    storage : storage_activity_image
+}).single('activity_image_cover')
 
 // news cover image  *news_cover_image
 const storage_news_cover_image = multer.diskStorage({
@@ -61,6 +71,9 @@ const storage_news_cover_image = multer.diskStorage({
         next(null,`news_cover_image_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
     }
 })
+const upload_news_cover_image = multer({
+    storage : storage_news_cover_image
+}).single('news_cover_image')
 
 // banner school
 const storage_banner = multer.diskStorage({
@@ -71,6 +84,9 @@ const storage_banner = multer.diskStorage({
         next(null,`banner_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
     }
 })
+const upload_baner_image = multer({
+    storage : storage_banner
+}).single('banner_image')
 
 // announcement 
 const storage_anno = multer.diskStorage({
@@ -81,37 +97,11 @@ const storage_anno = multer.diskStorage({
         next(null,`anno_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
     }
 })
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// upload method
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const upload_file = multer({
-    storage : storage_file
-}).single('file_upload')
-
-const upload_person_image = multer({
-    storage : storage_person_image
-}).single('person_image');  
-
-const upload_admin_image = multer({
-    storage : storage_admin_image
-}).single('admin_image')
- 
-const upload_activity_image = multer({
-    storage : storage_activity_image
-}).single('activity_image_cover')
-
-const upload_news_cover_image = multer({
-    storage : storage_news_cover_image
-}).single('news_cover_image')
-
-const upload_baner_image = multer({
-    storage : storage_banner
-}).single('banner_image')
 const upload_anno_image = multer({
     storage : storage_anno
 }).single('anno_image')
 
+  
 module.exports = { 
     upload_person_image ,
     upload_file,

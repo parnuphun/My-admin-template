@@ -35,43 +35,9 @@ module.exports.searchAnno = async(req,res) => {
             default_path:process.env.ANNO_IMAGE
         })
     }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','SEARCH ANNO ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','SEARCH ANNO ',err,500)
     }
 
-    // old query version
-    // try{
-    //     db.query(`SELECT COUNT(*) AS length FROM announment WHERE anno_name LIKE ?  `,['%'+search_keyword+'%'], async (err,result)=>{
-    //         if(err)return return_err(res,'QUERY BLOCK','SEARCH ANNO ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //         let length = result[0].length
-    //         try {
-    //             db.query(`SELECT * FROM announment WHERE anno_name LIKE ? 
-    //             ORDER BY anno_date DESC LIMIT ? OFFSET ? `,['%'+search_keyword+'%' ,limit,start_item], async (err,result)=>{
-    //                 if(err)return return_err(res,'QUERY BLOCK 2','SEARCH ANNO ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //                 if(result.length > 0){
-    //                     for (let i = 0; i < result.length; i++) {
-    //                         result[i].anno_date = await date_convert(result[i].anno_date)
-    //                         if(result[i].anno_pin === 0){
-    //                             result[i].anno_pin = false
-    //                         }else{
-    //                             result[i].anno_pin = true
-    //                         }
-    //                     }
-    //                 }
-    //                 res.status(200).json({
-    //                     status_code:200,
-    //                     status:true,
-    //                     anno_length:length,
-    //                     anno_data:result,
-    //                     default_path:process.env.ANNO_IMAGE
-    //                 })
-    //             })
-    //         } catch (err) {
-    //             return return_err(res,'TRY CATCH BLOCK 2','SEARCH ANNO ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //         }
-    //     })
-    // }catch(err){
-    //     return return_err(res,'TRY CATCH BLOCK','SEARCH ANNO ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    // }
 }
 
 // get anno list length 
@@ -88,17 +54,9 @@ module.exports.getAnnoListLength = async(req,res) => {
         })
 
     }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','GET ANNO LENGTH ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','GET ANNO LENGTH ',err,500)
     }
 
-    // db.query(`SELECT COUNT(*) AS length FROM announment `, async (err,result)=>{
-    //     if(err)return return_err(res,'QUERY BLOCK','GET ANNO LENGTH ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //     res.status(200).json({
-    //         status_code:200,
-    //         status:true,
-    //         anno_length:result[0].length
-    //     })
-    // })
 }
 
 // get anno list 
@@ -124,28 +82,9 @@ module.exports.getAnnoList = async(req,res) => {
         })
        
     }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','GET ANNO LIST ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','GET ANNO LIST ',err,500)
     }
 
-    // db.query(`SELECT * FROM announment ORDER BY anno_date DESC LIMIT ? OFFSET ? `,[limit,start_item], async (err,result)=>{
-    //     if(err)return return_err(res,'QUERY BLOCK','GET ANNO LIST ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //     if(result.length > 0){
-    //         for (let i = 0; i < result.length; i++) {
-    //             result[i].anno_date = await date_convert(result[i].anno_date)
-    //             if(result[i].anno_pin === 0){
-    //                 result[i].anno_pin = false
-    //             }else{
-    //                 result[i].anno_pin = true
-    //             }
-    //         }
-    //     }
-    //     res.status(200).json({
-    //         status_code:200,
-    //         status:true,
-    //         anno_data:result,
-    //         default_path:process.env.ANNO_IMAGE
-    //     })
-    // })
 }
 
 // get example anno list 
@@ -163,18 +102,9 @@ module.exports.getExampleAnnoList = async(req,res) => {
         })
 
     }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','GET ANNO LIST ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','GET ANNO LIST ',err,500)
     }
 
-    // db.query(`SELECT anno_image FROM announment WHERE anno_pin = 1 ORDER BY anno_date DESC LIMIT ?`,[limit], async (err,result)=>{
-    //     if(err)return return_err(res,'QUERY BLOCK','GET ANNO LIST ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //     res.status(200).json({
-    //         status_code:200,
-    //         status:true,
-    //         example_anno_data:result,
-    //         default_path:process.env.ANNO_IMAGE
-    //     })
-    // })
 }
 
 // update limit 
@@ -210,38 +140,9 @@ module.exports.updateAnnoLimit = async(req,res) =>{
 
 
     } catch (err) {
-        return return_err(res,'TRY CATCH BLOCK','UPDATE ANNO LIMIT ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','UPDATE ANNO LIMIT ',err,500)
     }
 
-    // db.query(`SELECT COUNT(*) AS length FROM school_setting`,(err,result)=>{
-    //     if(err) return return_err(res,'QUERY BLOCK','UPDATE ANNO LIMIT ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //     if(result[0].length === 0) {
-    //         return res.status(200).json({
-    //             status_code : 404 ,
-    //             status:false,
-    //             msg:'ไม่มีข้อมูลในระบบ กรุณาแจ้งนักพัฒนาระบบ'
-    //         })
-    //     }else{
-    //         try {
-    //            db.query(`UPDATE school_setting SET anno_limit = ? WHERE id = 1`,[limit], async(err,result)=>{
-    //                 if(err)  return return_err(res,'QUERY BLOCK 2','UPDATE ANNO LIMIT ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //                 timeStamp(
-    //                     credential_admin_fullname,
-    //                     'update',
-    //                     'annocement' ,
-    //                     `${credential_admin_fullname} แก้ไขจำนวนประกาศ`
-    //                 )
-    //                 res.status(200).json({
-    //                     status_code: 200,
-    //                     status:true,
-    //                     msg:'บันทึกข้อมูลเรียบร้อย'
-    //                 })
-    //             })
-    //         } catch (err) {
-    //             return return_err(res,'TRY CATCH BLOCK 2','UPDATE ANNO LIMIT ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //         }
-    //     }
-    // })
 }
 
 // add new anno 
@@ -274,26 +175,8 @@ module.exports.addNewAnno = async(req,res) => {
         })
         
     } catch (error) {
-        return return_err(res,'TRY CATCH BLOCK','ADD NEW ANNO  ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','ADD NEW ANNO  ',err,500)
     }
-    // db.query(`
-    // INSERT INTO announment(anno_name,anno_image,anno_pin,anno_date,anno_author)
-    // VALUE(?,?,1,?,?)`,[name,image,date,credential_admin_fullname],async(err,result) => {
-    //     if(err) return return_err(res,'QUERY BLOCK','ADD NEW ANNO  ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-
-    //     timeStamp(
-    //         credential_admin_fullname,
-    //         'add',
-    //         'annocement',
-    //         `${credential_admin_fullname} เพิ่มประกาศ ' ${name} '`
-    //     )
-
-    //     res.status(200).json({
-    //         status_code:200,
-    //         status:true,
-    //         msg:'เพิ่มประกาศสำเร็จ'
-    //     })
-    // })
 }
 
 // update
@@ -328,40 +211,9 @@ module.exports.updateAnno = async(req,res) => {
     })
         
     } catch (error) {
-        return return_err(res,'TRY CATCH BLOCK','UPDATE ANNO  ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','UPDATE ANNO  ',err,500)
     }
 
-//     db.query(`
-//     UPDATE announment 
-//     SET 
-//         anno_name = ? ,
-//         anno_image = ? 
-//     WHERE anno_id = ? 
-// `,[name,image,id],async(err,result) => {
-//         if(err) return return_err(res,'QUERY BLOCK','UPDATE ANNO  ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-
-//         let timeStamp_msg = `${credential_admin_fullname} แก้ไขประกาศ ' ${name} '`
-//         if(name !== old_name){
-//             timeStamp_msg = timeStamp_msg + ` และได้เปลี่ยนชื่อ '${ old_name }' เป็น ' ${name} '` 
-//         }
-//         if(image !== old_image){
-//             await delete_image(old_image,'anno_image')
-//         }
-//         timeStamp(
-//             credential_admin_fullname,
-//             'update',
-//             'annocement',
-//             timeStamp_msg
-//         )
-
-//         res.status(200).json({
-//             status_code:200,
-//             status:true,
-//             msg:'บันทึกข้อมูลเสร็จสิ้น'
-//         })
-
-
-//     })
 
 }
 
@@ -390,25 +242,8 @@ module.exports.deleteAnno = async(req,res) => {
         })
 
     } catch (err) {
-        return return_err(res,'TRY CATCH BLOCK','DELETE ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','DELETE ',err,500)
     }
-
-    // db.query(`DELETE FROM announment WHERE anno_id = ?` ,[id] , async(err,result)=> {
-    //     if(err) return return_err(res,'TRY QUERY','DELETE ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //     await delete_image(image,'anno_image')
-    //     timeStamp(
-    //         credential_admin_fullname,
-    //         'delete',
-    //         'annocement',
-    //         `${credential_admin_fullname} ได้ลบประกาศ ' ${name} '`
-    //     )
-
-    //     res.status(200).json({
-    //         status_code:200,
-    //         status:true,
-    //         msg:'ลบประกาศสำเร็็จ'
-    //     })
-    // })
 }
 
 // switch pin
@@ -435,21 +270,6 @@ module.exports.switchAnnoPin = async(req,res) => {
         })
        
     } catch (err) {
-        return return_err(res,'TRY CATCH BLOCK','SWITCH ANNO PIN ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','SWITCH ANNO PIN ',err,500)
     }
-
-    // db.query(`UPDATE announment SET anno_pin = ? WHERE anno_id = ? `,[pin_status,id],async(err,result) => {
-    //     if(err) return return_err(res,'QUERY BLOCK','SWITCH ANNO PIN ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    //     timeStamp(
-    //         credential_admin_fullname,
-    //         'update',
-    //         'annocement',
-    //         `${credential_admin_fullname} ปรับการมองเห็นประกาศ ' ${name} '`
-    //     )
-    //     res.status(200).json({
-    //         status_code:200,
-    //         status:true,
-    //         msg:'เปลี่ยนการมองเห็นแล้ว'
-    //     })
-    //    })
 }

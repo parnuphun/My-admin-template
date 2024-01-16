@@ -3,167 +3,153 @@ const delete_image = require('../services/delete_file')
 const timeStamp = require('../services/timeStamp');
 const date_convert = require('../services/date_convert');
 const return_err =require('../services/return_err');
+const { dbQuery } = require('../services/query');
 require('dotenv').config();
 
 
 // get all news category 
 module.exports.getAllNewsCategory = async(req,res) =>{
     try{
-        db.query(`SELECT * FROM news_category`,async(err,result)=>{
-            if(err) return return_err(res,'QUERY BLOCK','GET ALL CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            
-            res.status(200).json({
-                status_code:200,
-                status:true,
-                msg:'เพิ่มหมวดหมู่สำเร็จ',
-                news_category_data:result
-            })
+        const result = await dbQuery(`SELECT * FROM news_category`)
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'เพิ่มหมวดหมู่สำเร็จ',
+            news_category_data:result
         })
+       
     }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','GET ALL CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','GET NEWS CATEGORY ',err,500)
     }
 
 }
 
 // add news category 
 module.exports.addNewsCategory = async(req,res) => {
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    const news_category_name = req.body.news_category_name
+    try {
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const news_category_name = req.body.news_category_name
 
-    try{
-        db.query('SELECT * FROM news_category WHERE news_category_name = ? ',[news_category_name],(err,result)=>{
-            if(err)  return return_err(res,'QUERY BLOCK','ADD NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            if(result.length >= 1){
-                return res.status(200).json({
-                    status_code:409,
-                    status:true,
-                    msg:'มีชื่อหมวดหมู่นี้แล้ว'
-                })
-            }else{
-                try{
-                    db.query(`INSERT INTO news_category(news_category_name) VALUES(?)`,[news_category_name],async(err,result)=>{
-                        if(err) return return_err(res,'QUERY BLOCK 2','ADD NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                        timeStamp(
-                            credential_admin_fullname,
-                            'add',
-                            'news',
-                            `${credential_admin_fullname} เพิ่มหมวดหมู่ข่าวสารใหม่ ' ${news_category_name} '`
-                        )
-                        res.status(200).json({
-                            status_code:200,
-                            status:true,
-                            msg:'เพิ่มหมวดหมู่สำเร็จ'
-                        })
-                    })
-                }catch(err){
-                    return return_err(res,'TRY CATCH BLOCK 2','ADD NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                }
-            }
+        const qr_check_username = `SELECT * FROM news_category WHERE news_category_name = ?`
+        const qr_add = `INSERT INTO news_category(news_category_name) VALUES(?)`
+
+        const result_check_username = await dbQuery(qr_check_username,[news_category_name])
+        if(result_check_username.length >= 1)return res.status(200).json({
+            status_code:409,
+            status:true,
+            msg:'มีชื่อหมวดหมู่นี้แล้ว'
         })
-    }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','ADD NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+
+        await dbQuery(qr_add,[news_category_name])
+        await timeStamp(
+            credential_admin_fullname,
+            'add',
+            'news',
+            `${credential_admin_fullname} เพิ่มหมวดหมู่ข่าวสารใหม่ ' ${news_category_name} '`
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'เพิ่มหมวดหมู่สำเร็จ'
+        })
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','ADD NEWS CATEGORY ',err,500)
     }
 
 }
 
 // rename news category 
 module.exports.updateNewsCategory = async(req,res) => {
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    const news_category_name_old = req.body.news_category_name_old
-    const news_category_name = req.body.news_category_name
-    const news_category_id = req.body.news_category_id
 
-    try{
-        db.query('SELECT * FROM news_category WHERE news_category_name = ? ',[news_category_name],(err,result)=>{
-            if(err)  return return_err(res,'QUERY BLOCK','ADD NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            if(result.length >= 1){
-                return res.status(200).json({
-                    status_code:409,
-                    status:true,
-                    msg:'มีชื่อหมวดหมู่นี้แล้ว'
-                })
-            }else{
-                try{
-                    db.query(`
-                        UPDATE news_category
-                        SET news_category_name = ? 
-                        WHERE news_category_id = ?
-                    `,[news_category_name , news_category_id],async(err,result)=>{
-                        if(err) return return_err(res,'QUERY BLOCK','UPDATE CATEGORY NAME ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                        timeStamp(
-                            credential_admin_fullname,
-                            'update',
-                            'news',
-                            `${credential_admin_fullname} เปลี่ยนชื่อหมวดหมู่ข่าวสาร ' ${news_category_name_old} ' เป็น ' ${news_category_name} '`
-                        )
-                        res.status(200).json({
-                            status_code:200,
-                            status:true,
-                            msg:'บันทึกข้อมูลเสร็จสิ้น'
-                        })
-                    })
-                }catch(err){
-                    return return_err(res,'TRY CATCH BLOCK 2 ','UPDATE CATEGORY NAME ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                }
-            }
+    try {
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const news_category_name_old = req.body.news_category_name_old
+        const news_category_name = req.body.news_category_name
+        const news_category_id = req.body.news_category_id
+
+        const qr_check_username = `SELECT * FROM news_category WHERE news_category_name = ?`
+        const qr_rename = `UPDATE news_category
+        SET news_category_name = ? 
+        WHERE news_category_id = ?`
+
+        const result_check_username = await dbQuery(qr_check_username,[news_category_name])
+        if(result_check_username.length >= 1)return res.status(200).json({
+            status_code:409,
+            status:true,
+            msg:'มีชื่อหมวดหมู่นี้แล้ว'
         })
-    }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','UPDATE CATEGORY NAME ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    }
 
+        await dbQuery(qr_rename,[news_category_name , news_category_id])
+        await timeStamp(
+            credential_admin_fullname,
+            'update',
+            'news',
+            `${credential_admin_fullname} เปลี่ยนชื่อหมวดหมู่ข่าวสาร ' ${news_category_name_old} ' เป็น ' ${news_category_name} '`
+        )
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'บันทึกข้อมูลเสร็จสิ้น'
+        })
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','RENAME NEWS CATEGORY ',err,500)
+    }
+    
 }
 
 // delete news category 
 module.exports.deleteNewsCategory = async(req,res) => {
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    const news_category_name = req.body.news_category_name
-    const news_category_id = req.body.news_category_id
+    try {
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const news_category_name = req.body.news_category_name
+        const news_category_id = req.body.news_category_id
 
-    try{
-        db.query(` DELETE FROM news_category WHERE news_category_id = ?`,[news_category_id],async(err,result)=>{
-            if(err) {
-                if(err.code === 'ER_ROW_IS_REFERENCED_2'){
-                    return res.status(200).json({
-                        status_code:500,
-                        status:true,
-                        msg:'ไม่สามารถลบหมวดหมู่นี้ได้ เนื่องจากมีโพสต์ที่อยู่ในหมวดหมู่นี้อยู่'
-                    })
-                }
-                return return_err(res,'QUERY BLOCK','DELETE NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            } 
-            timeStamp(
-                credential_admin_fullname,
-                'delete',
-                'news',
-                `${credential_admin_fullname} ลบหมวดหมู่ ' ${news_category_name} '`
-            )
-            res.status(200).json({
-                status_code:200,
-                status:true,
-                msg:'ลบข้อมูลเสร็จสิ้น'
-            })
+        const qr_delete = `DELETE FROM news_category WHERE news_category_id = ?`
+        await dbQuery(qr_delete,news_category_id)
+
+        await timeStamp(
+            credential_admin_fullname,
+            'delete',
+            'news',
+            `${credential_admin_fullname} ลบหมวดหมู่ ' ${news_category_name} '`
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'ลบข้อมูลเสร็จสิ้น'
         })
-    }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','DELETE NEWS CATEGORY ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    }
 
+    } catch (err) {
+        // check category used aready
+        if(err.code === 'ER_ROW_IS_REFERENCED_2'){
+            return res.status(200).json({
+                status_code:500,
+                status:true,
+                msg:'ไม่สามารถลบหมวดหมู่นี้ได้ เนื่องจากมีโพสต์ที่อยู่ในหมวดหมู่นี้อยู่'
+            })
+        }else {
+            return return_err(res,'TRY CATCH BLOCK','DELETE NEWS CATEGORY ',err,500)
+        }
+    }
 }
 
 // add news
 module.exports.addNews = async(req,res) => {
-    let news_cover_image
-    if(req.body.news_cover_image === 'no_image_upload'){
-         news_cover_image = req.body.news_cover_image
-    }else{
-        news_cover_image = req.file.filename
-    }
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    const news_category = req.body.news_category
-    const news_contents = req.body.news_contents
-    const news_topic = req.body.news_topic
-    const curren_date = new Date()
-    try{
-        db.query(`
+
+    try {
+        let news_cover_image = (req.body.news_cover_image === 'no_image_upload') ? req.body.news_cover_image : req.file.filename
+       
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const news_category = req.body.news_category
+        const news_contents = req.body.news_contents
+        const news_topic = req.body.news_topic
+        const curren_date = new Date()
+
+        const qr_add = ` 
             INSERT INTO news(
                 news_topic,
                 news_contents,
@@ -171,181 +157,167 @@ module.exports.addNews = async(req,res) => {
                 news_category,
                 news_date,
                 news_author)
-            VALUES(?,?,?,?,?,?)
-        `,[
-            news_topic,
+            VALUES(?,?,?,?,?,?)`
+        const qr_params = 
+            [news_topic,
             news_contents,
             news_cover_image,
             news_category,
             curren_date,
-            credential_admin_fullname
-        ], async(err,result)=>{
-            if(err) return return_err(res,'TRY CATCH BLOCK','ADD NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            timeStamp(
-                credential_admin_fullname,
-                'add',
-                'news',
-                `${credential_admin_fullname} โพสต์ข่าวสารใหม่ ' ${news_topic} ' `
-            )
-            res.status(200).json({
-                status_code:200,
-                status:true,
-                msg:'เพิ่มข่าวสารเรียบร้อย'
-            })
-        })
-    }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','ADD NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+            credential_admin_fullname]
 
+        await dbQuery(qr_add,qr_params)
+        await timeStamp(
+            credential_admin_fullname,
+            'add',
+            'news',
+            `${credential_admin_fullname} โพสต์ข่าวสารใหม่ ' ${news_topic} ' `
+        )
+        
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'เพิ่มข่าวสารเรียบร้อย'
+        })
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','ADD NEWS CATEGORY ',err,500)
     }
 }
 
 // update news 
 module.exports.updateNews = async(req,res) =>{ 
-    let news_cover_image
-    if(req.body.news_cover_image === 'no_image_upload'){
-        news_cover_image = req.body.news_cover_image_old
-    }else{
-        news_cover_image = req.file.filename
-    }
-    const news_cover_image_old = req.body.news_cover_image_old
-    const news_id = req.body.news_id
-    const news_topic = req.body.news_topic
-    const news_topic_old = req.body.news_topic_old
-    const news_contents = req.body.news_contents
-    const news_category = req.body.news_category 
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    try{
-        db.query(`
+    try {
+        let news_cover_image = (req.body.news_cover_image === 'no_image_upload') ? req.body.news_cover_image_old : req.file.filename
+        
+        const news_cover_image_old = req.body.news_cover_image_old
+        const news_id = req.body.news_id
+        const news_topic = req.body.news_topic
+        const news_topic_old = req.body.news_topic_old
+        const news_contents = req.body.news_contents
+        const news_category = req.body.news_category 
+        const credential_admin_fullname = req.body.credential_admin_fullname
+
+        const qr_update = `
             UPDATE news 
             SET 
                 news_topic = ? ,
                 news_contents = ? ,
                 news_cover_image = ? ,
                 news_category  = ? 
-            WHERE news_id = ? 
-        `,[
+            WHERE news_id = ? `
+        const qr_update_params = [
             news_topic,
             news_contents,
             news_cover_image,
             news_category,
             news_id
-        ], async(err,result)=>{ 
-            if(err) return return_err(res,'QUERY BLOCK','UPDATE NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            if(news_cover_image_old === 'no_image_upload' && news_cover_image !== 'no_image_upload'){
-                await delete_image(news_cover_image_old,'news_cover_image')
-            }
-            let msg_timeStamp = `${credential_admin_fullname} แก้ไข ${news_topic}` 
-            if(news_topic !== news_topic_old){
-                msg_timeStamp = msg_timeStamp + ` และได้เปลี่ยนชื่อจาก ' ${news_topic_old} ' เป็น ' ${news_topic} '`
-            }
-            timeStamp(
-                credential_admin_fullname,
-                'update',
-                'news',
-                msg_timeStamp
-            )
+        ]
 
-            res.status(200).json({
-                status:true,
-                status_code:200,
-                msg:'บัยทึกข้อมูลเสร็จสิ้น'
-            })
+        await dbQuery(qr_update,qr_update_params)
+        if(news_cover_image_old === 'no_image_upload' && news_cover_image !== 'no_image_upload'){
+            await delete_image(news_cover_image_old,'news_cover_image')
+        }
+        
+        let msg_timeStamp = `${credential_admin_fullname} แก้ไข ${news_topic}` 
+        if(news_topic !== news_topic_old)msg_timeStamp = msg_timeStamp + ` และได้เปลี่ยนชื่อจาก ' ${news_topic_old} ' เป็น ' ${news_topic} '`
+        await timeStamp(
+            credential_admin_fullname,
+            'update',
+            'news',
+            msg_timeStamp
+        )
+
+        res.status(200).json({
+            status:true,
+            status_code:200,
+            msg:'บัยทึกข้อมูลเสร็จสิ้น'
         })
 
-    }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','UPDATE NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','UPDATE NEWS CATEGORY ',err,500)
     }
 }
 
 // delete news
 module.exports.deleteNews = async(req,res) => {
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    const news_id = req.body.news_id
-    const news_topic = req.body.news_topic
-    const news_cover_image = req.body.news_cover_image
 
     try{
-        db.query(`DELETE FROM news WHERE news_id = ? `,[news_id], async(err,result)=>{
-            if(err) return return_err(res,'QUERY BLOCK','DELETE NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            if(news_cover_image !== 'no_image_upload'){
-                await delete_image(news_cover_image,'news_cover_image')
-            }
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const news_id = req.body.news_id
+        const news_topic = req.body.news_topic
+        const news_cover_image = req.body.news_cover_image
 
-            timeStamp(
-                credential_admin_fullname,
-                'delete',
-                'news',
-                `${credential_admin_fullname} ลบข่าวสาร ' ${news_topic} '`
-            )
+        const qr_delete = `DELETE FROM news WHERE news_id = ?`
+        await dbQuery(qr_delete,news_id)
+        if(news_cover_image !== 'no_image_upload')await delete_image(news_cover_image,'news_cover_image')
+        
+        await timeStamp(
+            credential_admin_fullname,
+            'delete',
+            'news',
+            `${credential_admin_fullname} ลบข่าวสาร ' ${news_topic} '`
+        )
 
-            res.status(200).json({
-                status:true,
-                status_code:200,
-                msg:'ลบโพสต์เสร็จสิ้น'
-            })
+        res.status(200).json({
+            status:true,
+            status_code:200,
+            msg:'ลบโพสต์เสร็จสิ้น'
         })
-
     }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','DELETE NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+        return return_err(res,'TRY CATCH BLOCK','DELETE NEWS ',err,500)
     }
 }
 
 // get all news length 
 module.exports.getAllNewsLength = async (req,res) => {
-    try{
-        db.query(` SELECT COUNT(*) AS length FROM news `, async(err,result)=>{
-            if(err) return return_err(res,'TRY CATCH BLOCK','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            res.status(200).json({
-                status_code:200,
-                status:true,
-                news_data_length:result[0].length,
-                msg:'เพิ่มข่าวสารเรียบร้อย'
-            })
+    try {
+        const result_length = await dbQuery(`SELECT COUNT(*) AS length FROM news`)
+        const length = result_length[0].length
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            news_data_length:length,
+            msg:'เพิ่มข่าวสารเรียบร้อย'
         })
-    }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','GET NEWS LENGTH ',err,500)
     }
+     
 }
 
 // get all news list 
 module.exports.getAllNewsList = async (req,res) => {
-    const limit = req.body.limit
-    const start_item = req.body.start_item
-    try{
-        db.query(` SELECT * FROM news ORDER BY news_id DESC LIMIT ? OFFSET ? `,[limit,start_item],  async(err,result)=>{
-            if(err) return return_err(res,'QUERY BLOCK','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            let news_data = result
-            try{
-                db.query(`SELECT * FROM news_category`, async(err,result)=>{
-                    if(err) return return_err(res,'QUERY BLOCK 2','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                    // console.log(result);
-                    news_data = await setCategoryName(news_data,result)
-                    res.status(200).json({
-                        status_code:200,
-                        status:true,
-                        news_data:news_data,
-                        msg:'ดึงข้อมูลสำเร็จ',
-                        base_image: process.env.NEWS_COVER_IMAGE
-                    })
-                })
-            }catch(err){
-                return return_err(res,'TRY CATCH BLOCK 2','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            }
-        })
-    }catch(err){
-        return return_err(res,'TRY CATCH BLOCK','GET NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-    }
+    try {
+        const limit = req.body.limit
+        const start_item = req.body.start_item
 
+        const qr_get_data = `SELECT * FROM news ORDER BY news_id DESC LIMIT ? OFFSET ?`
+        let result_data = await dbQuery(qr_get_data,[limit,start_item])
+        result_data = await setCategoryName(result_data)
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            news_data:result_data,
+            msg:'ดึงข้อมูลสำเร็จ',
+            base_image: process.env.NEWS_COVER_IMAGE
+        })
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','GET NEWS ',err,500)
+    }
  
 }
 
-async function setCategoryName(user_data,category_data){
+// use by functuin -> get all , search all 
+async function setCategoryName(user_data){
+    const category_name = await dbQuery(`SELECT * FROM news_category`)
+
     for (let i = 0; i < user_data.length; i++) {
         user_data[i].news_date = await date_convert(user_data[i].news_date)
-        for (let j = 0; j < category_data.length; j++) {   
-            if(user_data[i].news_category == category_data[j].news_category_id){
-                user_data[i].news_category_name = category_data[j].news_category_name
+        for (let j = 0; j < category_name.length; j++) {   
+            if(user_data[i].news_category == category_name[j].news_category_id){
+                user_data[i].news_category_name = category_name[j].news_category_name
                 break ;
             }
         }
@@ -355,47 +327,33 @@ async function setCategoryName(user_data,category_data){
 
 // search news 
 module.exports.searchNews = async (req,res) => {
-    const search_keyword = req.body.search_keyword
-    const selected_category = req.body.selected_category
-    const limit = req.body.limit
-    const start_item = req.body.start_item
 
-    let query_select = `SELECT * FROM news WHERE news_topic LIKE ?` 
-    // let query_and_condition = ` AND file_category_id = ${selected_category}`
-    let query_limit = ` LIMIT ${limit} OFFSET ${start_item}`
+    try {
+        const search_keyword = req.body.search_keyword
+        const selected_category = req.body.selected_category
+        const limit = req.body.limit
+        const start_item = req.body.start_item
 
-    try{
-        // length
-        db.query(`SELECT COUNT(*) AS length FROM news WHERE news_topic LIKE ?`,['%'+search_keyword+'%'],async(err,result)=>{
-            if(err) return return_err(res,'QUERY BLOCK','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            let length = result[0].length 
-            try{
-                // data
-                db.query(query_select+query_limit,['%'+search_keyword+'%'], async(err,result)=>{
-                    if(err) return return_err(res,'TRY CATCH BLOCK','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                    let news_data = result
-                    try{
-                        // category
-                        db.query(`SELECT * FROM news_category`, async(err,result)=>{
-                            if(err) return return_err(res,'QUERY BLOCK 3','SEARCH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                            news_data = await setCategoryName(news_data,result)
-                            res.status(200).json({
-                                status_code:200,
-                                status:true,
-                                news_data:news_data,
-                                news_data_length:length,
-                                msg:'เพิ่มข่าวสารเรียบร้อย'
-                            })
-                        })
-                    }catch(err){
-                        return return_err(res,'TRY CATCH BLOCK 3','SEARCH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-                    }
-                })
-            }catch(err){
-                if(err) return return_err(res,'TRY CATCH BLOCK 2','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
-            }
+        let qr_search = `SELECT * FROM news WHERE news_topic LIKE ?` 
+        // let query_and_condition = ` AND file_category_id = ${selected_category}`
+        let qr_limit = ` LIMIT ${limit} OFFSET ${start_item}`
+        let qr_length = `SELECT COUNT(*) AS length FROM news WHERE news_topic LIKE ?`
+
+        const result_length = await dbQuery(qr_length,['%'+search_keyword+'%'])
+        const length = result_length[0].length
+
+        let result_search = await dbQuery(qr_search+qr_limit , ['%'+search_keyword+'%'])
+        
+        result_search = await setCategoryName(result_search)
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            news_data:result_search,
+            news_data_length:length,
+            msg:'เพิ่มข่าวสารเรียบร้อย'
         })
-    }catch(err){
-        if(err) return return_err(res,'TRY CATCH BLOCK','SEACH NEWS ',err,500,'เกิดความผิดพลาด ไม่สามารถดำเนินการได้')
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','SEARCH NEWS ',err,500)
     }
 }
