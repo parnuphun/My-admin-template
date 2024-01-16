@@ -257,7 +257,7 @@ watch(searchValue , ()=>{
                     v-for="(item , i) in activityImagesList" :key="item.activity_image_id"
                     
                     >
-                        <div class="less:w-full min-w-[300px] sm:w-[300px] h-[200px] bg-red-200">
+                        <div class="less:w-full min-w-[300px] sm:w-[300px] h-[200px]">
                             <img v-if="item.activity_image_cover"
                             class="less:w-full min-w-[300px] sm:w-[300px] h-[200px] object-cover"
                             :src="imageDefaultPath+item.activity_image_cover" alt="">

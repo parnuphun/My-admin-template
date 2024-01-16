@@ -4,6 +4,7 @@ import {ref , watch , onMounted} from 'vue';
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
 import { credential , schoolDataResonse ,msgValidate , dataStatus , annoResponse} from '../../../store/Interface'
+import { reactive } from 'vue';
 
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
@@ -12,6 +13,7 @@ const btnLoading = ref(false)
 
 const annoLimitDialog = ref(false)
 const addNewAnnoDialog = ref(false)
+const updateAnnoDialog = ref(false)
 const annoExampleDialog = ref(false)
 onMounted(()=>{
     document.title = 'ประกาศประชาสัมพันธ์'
@@ -21,15 +23,33 @@ onMounted(()=>{
 })
 
 function getAll(){
-    getAnnoList();
-}
+    if(searchValue.searchText === ''){
+        // no value in seachValue the get common data
+        getAnnoListLength();
+        getAnnoList();
+    }else{
+        // triger seachValue for seaching next after change category id       
+        searchValue.searchTriger = !searchValue.searchTriger
+    }
 
+}
+// get length 
+const totalAnnoList = ref()
+function getAnnoListLength(){
+    _api.getAnnoListLength().then((res)=>{
+    if(res.data.status_code === 200){
+        totalAnnoList.value = res.data.anno_length
+        totalPage.value = Math.ceil(totalAnnoList.value / sizeSelected.value)   
+    }
+    })
+}
+// get 
 const annoList = ref<Array<annoResponse>>()
 const annoListStatus = ref<dataStatus>('no_data')
 const defaultImgPath = ref()
 function getAnnoList(){
     annoListStatus.value = 'loading_data'
-    _api.getAnnoList().then((res)=>{
+    _api.getAnnoList({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
         if(res.data.status_code === 200){
             annoList.value = res.data.anno_data
             defaultImgPath.value = res.data.default_path
@@ -46,6 +66,7 @@ function getAnnoList(){
     })
 }
 
+// limit anno list example
 const annoLimit = ref()
 function updateAnnoLimit(){
     btnLoading.value = true
@@ -75,6 +96,7 @@ function getSchoolDataSetting(){
     })
 }
 
+// add new 
 const annoFile = ref<any>()
 const annoName = ref()
 const errMsgFileChcek = ref<msgValidate>('no_data')
@@ -101,6 +123,49 @@ function addNewAnno(){
     })
 }
 
+// update
+const annoDetail = ref<annoResponse>() 
+const annoIndex = ref()
+function setData(item:annoResponse , index:number ){
+    annoFile.value = undefined
+    annoDetail.value = item 
+    annoName.value = annoDetail.value!.anno_name
+    annoIndex.value = index
+    updateAnnoDialog.value = true 
+}
+function updateAnno(){
+    _msg.confirm('คุณต้องการบันทึกข้อมูลใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed) {
+            const formData = new FormData()
+            if(annoFile.value === undefined || annoFile.value === null){
+                formData.append('anno_image','no_image_upload') // 1 image
+            }else{
+                formData.append('anno_image',annoFile.value[0]!) // 1 image
+            }
+
+            formData.append('anno_old_image',annoDetail.value!.anno_image) // 2 old image
+            formData.append('anno_name',annoName.value) // 3 new name 
+            formData.append('anno_old_name',annoDetail.value!.anno_name) // 4 old name 
+            formData.append('credential_admin_fullname',credential.value!.user_fullname) // 5 admin
+            formData.append('anno_id',String(annoDetail.value!.anno_id)) // 6 id
+
+            btnLoading.value = true
+            _api.updateAnno(formData).then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,timer:1.5,progressbar:true,icon:'success'})
+                    getAll();
+                }else{
+                    _msg.toast_msg({title:res.data.msg,timer:30,progressbar:true,icon:'error'})
+                }
+                btnLoading.value = false
+            }).catch((err)=>{
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',timer:30,progressbar:true,icon:'error'})
+                btnLoading.value = false
+            })
+        }
+    })
+}
+
 // delete 
 function deleteAnno(id:number,name:string,image:string){
     _msg.confirm(`คุณต้องการลบประกาศใช่ไหม`).then((isCOnfirmed)=>{
@@ -113,13 +178,14 @@ function deleteAnno(id:number,name:string,image:string){
                 }else{
                     _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
                 }
-            }).catch((Err)=>{
+            }).catch((err)=>{
                 _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',timer:30,progressbar:true,icon:'error'})
             })
         }
     })
 }
 
+// switch pin 
 function switchAnnoPin(id:number,status:boolean,name:string){
     let pin_status
     if(status === true) pin_status = 0 
@@ -141,12 +207,12 @@ const exampleAnnoList = ref<Array<object>>()
 function getExampleAnnoList(){
     _api.getExampleAnnoList({limit:annoLimit.value}).then((res)=>{
         if(res.data.status_code === 200){
-            exampleAnnoList.value = res.data.example_anno_data
-            console.log(res.data);
-            
+            exampleAnnoList.value = res.data.example_anno_data            
         }
     })
 }
+
+
 
 //detect anno name
 watch(annoName,()=>{
@@ -164,17 +230,80 @@ watch(annoFile,()=>{
         errMsgFileChcek.value = 'valid'
     }
 })
+
+// pagination 
+const totalPage = ref()  
+const size = ref([25,50,100]) // 
+const sizeSelected = ref(size.value[0]) // "LIMIT"
+const currentPage = ref(1) // current page
+const startItem = ref<number>(0) // first item "OFFSET"
+const pagination = ref(1) // v-model v-pagination 
+
+function changePage(){
+    currentPage.value = pagination.value
+    startItem.value = (currentPage.value -1) * sizeSelected.value 
+}
+
+// detect pagination 
+watch(pagination,()=>{         
+    changePage()
+    getAll()
+})
+
+// detect sizeSelected
+watch(sizeSelected,()=>{
+    pagination.value = 1 // reset
+    changePage()
+    getAll()
+})
+
+
+// search 
+const searchValue = reactive({
+    searchText:'',
+    searchTriger:false // triger 
+})
+
+const timeoutId = ref()
+watch(searchValue , ()=>{
+    clearTimeout(timeoutId.value);
+    timeoutId.value = setTimeout(() => {
+        if(searchValue.searchText.trim() === ''){
+            getAll()
+        }else{
+            annoListStatus.value = 'loading_data'
+            _api.searchAnno({search_keyword:searchValue.searchText,start_item:startItem.value,limit:sizeSelected.value})
+            .then((res)=>{
+                if(res.data.status_code === 200){
+                    totalAnnoList.value = res.data.anno_length
+                    annoList.value = res.data.anno_data
+                    totalPage.value = Math.ceil(totalAnnoList.value / sizeSelected.value) 
+                    if(annoList.value!.length > 0){
+                        annoListStatus.value = 'load_data_succ'
+                    }else{
+                        annoListStatus.value = 'no_data'
+                    }
+                }else{
+                    annoListStatus.value = 'err_data'
+                }
+            }).catch((err)=>{
+                annoListStatus.value = 'network_err'
+            })
+        }
+    },500)
+})
 </script>
 
 <template>
     <AdminNavigationBar>
-        <div class="flex flex-col h-full ">
+        <div class="flex flex-col ">
             <div class="w-full flex flex-wrap">
                 <div class="w-full p-1 flex flex-wrap justify-end">
                     <div class="w-full p-1">
                         <v-text-field
                             label="ค้นหา"
                             class=""
+                            v-model="searchValue.searchText"
                             hide-details
                             variant="outlined"
                             prepend-inner-icon="mdi-magnify"
@@ -212,23 +341,19 @@ watch(annoFile,()=>{
                 </div>
             </div>
             <div class=" px-4">
-                <p class="text-lg"> จำนวนรายการ : {{  }}</p>
+                <p class="text-lg"> จำนวนรายการ : {{ totalAnnoList }}</p>
             </div>
             <v-divider class="border-opacity-75"></v-divider>
-            <div class="w-full h-full flex flex-col gap-2 py-2 pr-2" v-if="annoListStatus === 'load_data_succ'">
-                <div class="flex less:flex-col sm:flex-row justify-center items-start group border-2 
-                border-pink-400" 
-                v-for="(item,i) in annoList" :key="item.anno_id"
-                
-                >
+            <div class="w-full h-auto flex flex-col gap-2 py-2 pr-2" v-if="annoListStatus === 'load_data_succ'">
+                <div class="h-full flex less:flex-col sm:flex-row justify-center items-start group border-2 
+                border-pink-400" v-for="(item,i) in annoList" :key="item.anno_id"          >
                     <div class="less:w-full min-w-[170px] sm:w-[170px] h-[200px] ">
                         <img v-if="item.anno_image"
                         class="less:w-full min-w-[170px] sm:w-[170px] h-[200px] object-cover"
                         :src="defaultImgPath+item.anno_image" alt="">
-                    
                     </div>
-                    <div class="w-full h-full flex flex-col text-lg pl-6 pr-3 py-2 group-hover:text-pink-500 duration-50">
-                        <div class="w-full h-full">
+                    <div class="w-full h-[200px] flex flex-col text-lg pl-6 pr-3 py-2 group-hover:text-pink-500 duration-50 ">
+                        <div class="w-full h-full ">
                             <p class="line-clamp-3">
                                 {{  i+1 }}. {{ item.anno_name }}
                             </p>
@@ -239,19 +364,23 @@ watch(annoFile,()=>{
                                 โดย : {{  item.anno_author }}
                             </p>
                         </div>
-                        <div class="w-full h-full flex flex-row gap-2 justify-end items-end mt-2">
-                            <div class="md:mr-2">
+                        <div class="w-full h-full flex flex-row gap-2 justify-end items-end mt-2  ">
+                            <div class="md:mr-2 h-fit">
                                 <v-switch
                                     @click="switchAnnoPin(item.anno_id,item.anno_pin,item.anno_name)"
                                     v-model="item.anno_pin"
-                                    class="pl-3"
+                                    class="h-full"
                                     density="compact"
                                     inset
                                     hide-details
                                     color="green">
                                 </v-switch>
+                                <v-tooltip location="top" activator="parent">
+                                    ปักหมุดการมองเห็น
+                                </v-tooltip>
                             </div>
                             <v-btn
+                                @click="setData(item,i)"
                                 class="less:w-1/3 md:w-[120px] min-w-min"
                                 color="primary"
                             >   
@@ -265,6 +394,59 @@ watch(annoFile,()=>{
                                 
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'no_data'">
+                    <div class=" flex flex-col items-center">
+                        <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                            <img src="/images/illustrations/No data.svg" 
+                            class="h-full w-full" alt="">
+                        </div>
+                        <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
+                    </div>
+                </div>
+            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'loading_data'">
+                <div class=" flex flex-col items-center">
+                    <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
+                    <p class="text-xl mt-2 text-pink-600"> กำลังโหลดข้อมูลกรุณารอสักครู่...</p>
+                </div>
+            </div>
+            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'err_data'">
+                <div class=" flex flex-col items-center">
+                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                        <img src="/images/illustrations/No data-amico.svg" 
+                        class="h-full w-full" alt="">
+                    </div>
+                    <p class="text-xl text-pink-600"> เกิดข้อผิดพลาดในการรับข้อมูล</p>
+                </div>
+            </div>
+            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'network_err'">
+                <div class=" flex flex-col items-center">
+                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
+                        <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
+                        class="h-full w-full" alt="">
+                    </div>
+                    <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
+                </div>
+            </div>
+            <v-divider class="border-opacity-75"></v-divider>
+            
+            <div class="w-full flex justify-end mt-3 pr-12">
+                <div class="w-[100px]">
+                    <v-select
+                        :items="size"
+                        variant="outlined"
+                        v-model="sizeSelected"
+                        hide-details="auto"
+                    ></v-select>
+                </div>
+                <div class="sm:w-fit">
+                    <v-pagination 
+                        :length="totalPage"
+                        v-model="pagination"
+                        :total-visible="3"
+                        >
+                    </v-pagination>
                 </div>
             </div>
         </div>
@@ -368,6 +550,60 @@ watch(annoFile,()=>{
         </v-card>
     </v-dialog>
 
+    <!-- update annocement -->
+    <v-dialog
+        persistent
+        v-model="updateAnnoDialog"
+        width="600"
+        transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
+                    แก้ไข
+                </div>
+
+                <div class="w-full px-6 pb-4 mt-3">
+                    <v-file-input
+                        accept="image/*"
+                        label="ภาพประกาศ"
+                        v-model="annoFile"
+                        prepend-inner-icon="mdi-image"
+                        show-size
+                        name="anno_image"
+                        hide-details="auto"
+                        variant="outlined"
+                        prepend-icon=""
+                    ></v-file-input>
+                    <v-text-field
+                        label="*ชื่อประกาศ"
+                        class="mt-3"
+                        v-model="annoName"
+                        :rules="[
+                            () => errMsgAnnoName === 'valid' || 'กรุณาใส่ชื่อระบุประกาศ'
+                        ]"
+                        hide-details="auto"
+                        variant="outlined"
+                        bg-color=""
+                        required
+                    ></v-text-field>
+
+                </div>
+                <div class="flex w-full flex-row justify-center items-center gap-2">
+                    <v-btn class="w-[100px]" color="red"
+                    @click="annoFile=updateAnnoDialog=false , annoFile=undefined , annoName=''" >
+                        ยกเลิก
+                    </v-btn>
+                    <v-btn class="w-[100px]" color="primary" @click="updateAnno()"
+                    :loading="btnLoading" :disabled="errMsgAnnoName !== 'valid' ">
+                        บันทึก
+                    </v-btn>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
+
+    <!-- example  -->
     <v-dialog
         v-model="annoExampleDialog"
         width="800"
@@ -402,5 +638,5 @@ watch(annoFile,()=>{
                 </div>
             </div>
         </v-card>
-        </v-dialog>
+    </v-dialog>
 </template>

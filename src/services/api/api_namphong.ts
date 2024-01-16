@@ -287,6 +287,13 @@ export default class namphong_api {
     }
 
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // anno 
+    ///////////////////////////////////////////////////////////////////////////////
+    // seach anno 
+    searchAnno(data:{search_keyword:string,limit:number,start_item:number}){
+        return axiosAuth.post(url+'/searchAnno',data)
+    }
     // update annocement limit
     updateAnnoLimit(data:{credential_admin_fullname:string,limit:number}){
         return axiosAuth.post(url+'/updateAnnoLimit',data)
@@ -297,18 +304,32 @@ export default class namphong_api {
         return axiosAuth.post(url+'/addNewAnno',data)
     }
 
-    getAnnoList(){
-        return axiosAuth.post(url+'/getAnnoList')
+    // update 
+    updateAnno(data:FormData){
+        return axiosAuth.post(url+'/updateAnno',data)
     }
 
+    // get length 
+    getAnnoListLength(){
+        return axiosAuth.post(url+'/getAnnoListLength')
+    }
+
+    // get all anno list
+    getAnnoList(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getAnnoList',data)
+    }
+
+    // delete 
     deleteAnno(data:{anno_id:number,anno_image:string,anno_name:string,credential_admin_fullname:string}){
         return axiosAuth.post(url+'/deleteAnno',data)
     }
 
+    // switch pin 
     switchAnnoPin(data:{anno_id:number,pin_status:number,anno_name:string,credential_admin_fullname:string}){
         return axiosAuth.post(url+'/switchAnnoPin',data)
     }
 
+    // example anno 
     getExampleAnnoList(data:{limit:number}){
         return axiosAuth.post(url+'/getExampleAnnoList',data)
     }

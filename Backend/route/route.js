@@ -121,13 +121,16 @@ route.post('/updateBanner',authorization,upload_baner_image,school_setting_ct.up
 ////////////////////////////////////////////////////////////////////////////
 // annoicement  
 ////////////////////////////////////////////////////////////////////////////
+ 
+route.post('/searchAnno',authorization,anno_ct.searchAnno)
+route.post('/getAnnoListLength',authorization,anno_ct.getAnnoListLength)
+route.post('/getAnnoList',authorization,anno_ct.getAnnoList)
+route.post('/getExampleAnnoList',authorization,anno_ct.getExampleAnnoList)
 route.post('/updateAnnoLimit',authorization,anno_ct.updateAnnoLimit)
 route.post('/addNewAnno',authorization,upload_anno_image,anno_ct.addNewAnno)
-route.post('/getAnnoList',authorization,anno_ct.getAnnoList)
 route.post('/deleteAnno',authorization,anno_ct.deleteAnno)
 route.post('/switchAnnoPin',authorization,anno_ct.switchAnnoPin)
-route.post('/getExampleAnnoList',authorization,anno_ct.getExampleAnnoList)
-
+route.post('/updateAnno',authorization,upload_anno_image,anno_ct.updateAnno)
 
 ////////////////////////////////////////////////////////////////////////////
 // test
