@@ -14,7 +14,6 @@ const menu_icon = ref('mdi-menu') // เมนูตอนเปิดปิด
 
 function menu(e:Event){
     let list = document.querySelector('ul');        
-    
     // ตรวจสอบการเปลี่ยน icon
     if(menu_icon.value === 'mdi-menu' && list){
         menu_icon.value = 'mdi-close';

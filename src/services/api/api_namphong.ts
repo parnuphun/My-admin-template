@@ -7,6 +7,27 @@ const url = 'http://localhost:3001'
 
 
 export default class namphong_api {
+    ///////////////////////////////////////////////////////////////////////////////
+    // client 
+    ///////////////////////////////////////////////////////////////////////////////
+    // get data on main page
+    clientMainPage(){
+        return axios.post(url+'/clientMainPage')
+    }
+
+    // get news detail
+    clientGetNewsContent(data:{news_id : number}){
+        return axios.post(url+'/clientGetNewsContent',data)
+    }
+
+
+
+
+
+
+
+
+
     // log in addmin
     login(data:{username:string,password:string}){                
         return axios.post(url+'/login',data)

@@ -27,6 +27,7 @@ const router = createRouter({
         { path: '/' , component: () => import('../views/School/User/SchoolMain.vue')} ,
         { path: '/about' , component: () => import('../views/School/User/SchoolAbout.vue')} ,
         { path: '/news' , component: () => import('../views/School/User/SchoolNews.vue')} ,
+        { path: '/news/:id' , component: () => import('../views/School/User/schoolNewsDetail.vue')} ,
         { path: '/persons' , component: () => import('../views/School/User/SchoolPerson.vue')},
         { path: '/contact' , component: () => import('../views/School/User/SchoolContact.vue')},
         { path: '/gallery' , component: () => import('../views/School/User/SchoolGallery.vue')},
