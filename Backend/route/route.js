@@ -118,6 +118,11 @@ route.post('/addSchoolDefaultData',school_setting_ct.addSchoolDefaultData) // �
 route.post('/getSchoolDataSetting',authorization,school_setting_ct.getSchoolDataSetting) // ดึงข้อมูลการตั้งค่าของโรงเรียนเบื้องต้น
 route.post('/updateBanner',authorization,upload_baner_image,school_setting_ct.updateBanner) // เปลี่ยนภาพแบนเนอร์หน้าเว็บกับคำขวัญ
 
+route.post('/getClass',authorization,school_setting_ct.getClass)
+route.post('/addClass',authorization,school_setting_ct.addClass)
+route.post('/updateClass',authorization,school_setting_ct.updateClass)
+route.post('/deleteClass',authorization,school_setting_ct.deleteClass)
+
 ////////////////////////////////////////////////////////////////////////////
 // annoicement  
 ////////////////////////////////////////////////////////////////////////////

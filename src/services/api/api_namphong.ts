@@ -307,6 +307,26 @@ export default class namphong_api {
         return axiosAuth.post(url+'/updateBanner',data)
     }
 
+    // get class
+    getClass(){
+        return axiosAuth.post(url+'/getClass')
+    }
+
+    // add class
+    addClass(data:{class_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/addClass',data)
+    }
+
+    // update class
+    updateClass(data:{class_id:number,class_old_name:string,class_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/updateClass',data)
+    }
+
+    // delete class
+    deleteClass(data:{class_id:number,class_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteClass',data)
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////////
     // anno 

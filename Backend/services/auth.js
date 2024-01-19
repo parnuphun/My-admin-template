@@ -16,13 +16,12 @@ module.exports.authorization = async (req,res,next) =>{
                     })
                 }else{
                     console.log('TOKEN INVALID !!!');
+                    res.status(200).json({
+                        status:false ,
+                        status_code:401,
+                        msg: 'คุณไม่มีสิทธิ์เข้าถึงข้อมูลนี้หรือสิทธิ์การเข้าใช้งานหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง',
+                    })
                 }
-                
-                res.status(200).json({
-                    status:false ,
-                    status_code:401,
-                    msg: 'คุณไม่มีสิทธิ์เข้าถึงข้อมูลนี้หรือสิทธิ์การเข้าใช้งานหมดอายุ กรุณาเข้าสู่ระบบใหม่อีกครั้ง',
-                })
             }else{
                 next()        
             }
