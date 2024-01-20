@@ -76,7 +76,7 @@ module.exports.deleteSyllabus = async(req,res) => {
         await timeStamp(
             credential_admin_fullname,
             'delete',
-            'syllabus_image',
+            'syllabus',
             `${credential_admin_fullname} ลบหลักสูตร ${syllabus_name}`
         )
 
