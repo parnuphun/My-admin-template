@@ -374,6 +374,31 @@ export default class namphong_api {
     getExampleAnnoList(data:{limit:number}){
         return axiosAuth.post(url+'/getExampleAnnoList',data)
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // teaching schedule  
+    ///////////////////////////////////////////////////////////////////////////////
+
+    getTeachingSLength(){
+        return axiosAuth.post(url+'/getTeachingSLength')
+    }
+
+    getTeachingS(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getTeachingS',data)
+    }
+
+    deleteTeachignS(data:{ts_id:number,ts_name:string,ts_image:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteTeachignS',data)
+    }
+
+    addTeachingS(data:FormData){
+        return axiosAuth.post(url+'/addTeachingS',data)
+    }
+
+    updateTeachS(data:FormData){
+        return axiosAuth.post(url+'/updateTeachS',data)
+    }
+
 }
 
  

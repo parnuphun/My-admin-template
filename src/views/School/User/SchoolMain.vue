@@ -155,7 +155,7 @@ const menu = ref<Array<Object>>([
                 </div>
                 <div class="w-full h-auto flex flex-wrap justify-start items-start">
                     <div class="xl:w-1/4 lg:w-1/4 md:w-1/4 sm:w-1/2 less:w-1/2 h-auto xl:p-4 flex flex-col 
-                    group  cursor-pointer less:px-2 mt-2" 
+                    group  cursor-pointer less:px-2" 
                     v-for="item of main_data?.news">
                         <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col" @click="getCurrentPath(`/news/${item.news_id}`)">
                             <img class="w-full h-full object-cover group-hover:brightness-50 duration-500" 

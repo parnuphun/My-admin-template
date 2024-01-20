@@ -89,13 +89,15 @@ onMounted(()=>{
                         </p> -->
                         <v-divider></v-divider>
                         <div class="w-full min-h-screen h-full flex flex-column justify-start items-start">
-                            <div class="w-full text-3xl flex justify-center items-center pt-8 px-4">
-                                {{ title }}
-                            </div>
-                            <div class="flex flex-wrap gap-2 px-4 text-gray-500 mt-4">
-                                วันที่ : {{ date }} โดย : {{ author }} หมวดหมู่ : {{ category }}
-                            </div>
-                            <div class="w-full border-[1.5px] border-gray-300"> 
+                            <div class="w-full bg-pink-600">
+                                <div class="w-full text-3xl flex justify-center items-center pt-12 px-4 text-white">
+                                    {{ title }}
+                                </div>
+                                <div class="flex flex-wrap gap-2 px-4 text-gray-100 mt-4 text-sm" >
+                                    วันที่ : {{ date }} โดย : {{ author }} หมวดหมู่ : {{ category }}
+                                </div>
+                                <div class="w-full border-[1.5px] border-gray-300"> 
+                                </div>
                             </div>
 
                             <div class="ql-container">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
+import pageDataStatus from '../../../components/layout/School/pageDataStatus.vue'
 import {ref , watch , onMounted} from 'vue'; 
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
@@ -396,39 +397,7 @@ watch(searchValue , ()=>{
                     </div>
                 </div>
             </div>
-            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'no_data'">
-                    <div class=" flex flex-col items-center">
-                        <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
-                            <img src="/images/illustrations/No data.svg" 
-                            class="h-full w-full" alt="">
-                        </div>
-                        <p class="text-xl text-pink-600"> ไม่มีข้อมูลในระบบ</p>
-                    </div>
-                </div>
-            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'loading_data'">
-                <div class=" flex flex-col items-center">
-                    <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
-                    <p class="text-xl mt-2 text-pink-600"> กำลังโหลดข้อมูลกรุณารอสักครู่...</p>
-                </div>
-            </div>
-            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'err_data'">
-                <div class=" flex flex-col items-center">
-                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
-                        <img src="/images/illustrations/No data-amico.svg" 
-                        class="h-full w-full" alt="">
-                    </div>
-                    <p class="text-xl text-pink-600"> เกิดข้อผิดพลาดในการรับข้อมูล</p>
-                </div>
-            </div>
-            <div class="w-full h-full flex justify-center items-center gap-2 py-2 pr-2" v-if="annoListStatus === 'network_err'">
-                <div class=" flex flex-col items-center">
-                    <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
-                        <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
-                        class="h-full w-full" alt="">
-                    </div>
-                    <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
-                </div>
-            </div>
+            <pageDataStatus v-else :data-status="annoListStatus"></pageDataStatus>
             <v-divider class="border-opacity-75"></v-divider>
             
             <div class="w-full flex justify-end mt-3 pr-12">

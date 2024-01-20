@@ -11,7 +11,8 @@ const {
     upload_activity_image,
     upload_news_cover_image,
     upload_baner_image,
-    upload_anno_image
+    upload_anno_image,
+    upload_teaching_schedule_image
 } = require('../services/upload')
 const delete_image = require('../services/delete_file')
 
@@ -24,6 +25,8 @@ const history_ct = require('../controller/history_log')
 const news_ct = require('../controller/news')
 const school_setting_ct = require('../controller/school_setting')
 const anno_ct = require('../controller/announcement')
+const teaching_schedule_ct = require('../controller/teahing_schedule')
+
 ////////////////////////////////////////////////////////////////////////////
 // login
 ////////////////////////////////////////////////////////////////////////////
@@ -136,6 +139,13 @@ route.post('/addNewAnno',authorization,upload_anno_image,anno_ct.addNewAnno) // 
 route.post('/deleteAnno',authorization,anno_ct.deleteAnno) // ลบประกาศ
 route.post('/switchAnnoPin',authorization,anno_ct.switchAnnoPin) // ปักหมุดประกาศ
 route.post('/updateAnno',authorization,upload_anno_image,anno_ct.updateAnno) // อัพเดตประกาศ
+
+
+route.post('/getTeachingSLength',authorization,teaching_schedule_ct.getTeachingSLength)
+route.post('/getTeachingS',authorization,teaching_schedule_ct.getTeachingS)
+route.post('/deleteTeachignS',authorization,teaching_schedule_ct.deleteTeachignS)
+route.post('/addTeachingS',authorization,upload_teaching_schedule_image,teaching_schedule_ct.addTeachingS)
+route.post('/updateTeachS',authorization,upload_teaching_schedule_image,teaching_schedule_ct.updateTeachS)
 
 ////////////////////////////////////////////////////////////////////////////
 // test

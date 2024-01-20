@@ -14,6 +14,8 @@ backend/public/banner_image/*
 !backend/public/banner_image/.gitkeep
 backend/public/anno_image/*
 !backend/public/anno_image/.gitkeep
+backend/public/teaching_schedule_image/*
+!backend/public/teaching_schedule_image/.gitkeep
 
 
 # Logs

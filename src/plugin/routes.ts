@@ -49,6 +49,7 @@ const router = createRouter({
         { path: '/admin/history' , component: () => import('../views/School/Admin/historyLogs.vue')},
         { path: '/admin/email' , component: () => import('../views/School/Admin/email.vue')},
         { path: '/admin/setting' , component: () => import('../views/School/Admin/setting.vue')},
+        { path: '/admin/teachingSchedule' , component: () => import('../views/School/Admin/teachingSchedule.vue')},
         
         // test admin ui 
         { path: '/test_ui' , component: () => import('../views/School/Test/test_ui.vue')},
