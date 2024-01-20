@@ -70,9 +70,7 @@ function getStudentS(){
                 studentSListStatus.value = 'no_data'
             }else{
                 studentSListStatus.value = 'err_data'
-            }
-            console.log(studentSList.value);
-            
+            }            
         }else{
             studentSListStatus.value = 'err_data'
         }
@@ -324,8 +322,8 @@ const searchValue = reactive({
         </div>
     </AdminNavigationBar>
 
-        <!-- add dialog  -->
-        <v-dialog
+    <!-- add dialog  -->
+    <v-dialog
         persistent
         v-model="addNewStudentSDialog"
         width="600"

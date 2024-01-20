@@ -431,6 +431,34 @@ export default class namphong_api {
     updateStudentS(data:FormData){
         return axiosAuth.post(url+'/updateStudentS',data)
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // syllabus  
+    ///////////////////////////////////////////////////////////////////////////////
+    // get syllabus length
+    getSyllabusLength(){
+        return axiosAuth.post(url+'/getSyllabusLength')
+    }
+
+    // get syllabus list
+    getSyllabusList(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getSyllabusList',data)
+    }
+
+    // delete syllabus 
+    deleteSyllabus(data:{syllabus_id:number,syllabus_name:string,syllabus_image:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteSyllabus',data)
+    }
+
+    // add new syllabus
+    addSyllabus(data:FormData){
+        return axiosAuth.post(url+'/addSyllabus',data)
+    }
+
+    // update syllabus
+    updateSyllabus(data:FormData){
+        return axiosAuth.post(url+'/updateSyllabus',data)
+    }
 }
 
  

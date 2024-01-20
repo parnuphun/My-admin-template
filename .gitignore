@@ -18,6 +18,8 @@ backend/public/teaching_schedule_image/*
 !backend/public/teaching_schedule_image/.gitkeep
 backend/public/student_schedule_image/*
 !backend/public/student_schedule_image/.gitkeep
+backend/public/syllabus_image/*
+!backend/public/syllabus_image/.gitkeep
 
 
 # Logs
@@ -45,3 +47,4 @@ dist-ssr
 *.sln
 *.sw?
 Backend/.env
+ 

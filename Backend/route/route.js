@@ -13,7 +13,8 @@ const {
     upload_baner_image,
     upload_anno_image,
     upload_teaching_schedule_image,
-    upload_student_schedule_image
+    upload_student_schedule_image,
+    upload_syllabus_image
 } = require('../services/upload')
 const delete_image = require('../services/delete_file')
 
@@ -28,6 +29,7 @@ const school_setting_ct = require('../controller/school_setting')
 const anno_ct = require('../controller/announcement')
 const teaching_schedule_ct = require('../controller/teahing_schedule')
 const student_schedule_ct = require('../controller/student_schedule')
+const syllabus_ct = require('../controller/syllabus')
 
 ////////////////////////////////////////////////////////////////////////////
 // login
@@ -159,6 +161,16 @@ route.post('/getStudentS',authorization,student_schedule_ct.getStudentS)
 route.post('/deleteStudentS',authorization,student_schedule_ct.deleteStudentS)
 route.post('/addStudentS',authorization,upload_student_schedule_image,student_schedule_ct.addStudentS)
 route.post('/updateStudentS',authorization,upload_student_schedule_image,student_schedule_ct.updateStudentS)
+
+////////////////////////////////////////////////////////////////////////////
+// syllabus
+////////////////////////////////////////////////////////////////////////////
+route.post('/getSyllabusLength',authorization,syllabus_ct.getSyllabusLength)
+route.post('/getSyllabusList',authorization,syllabus_ct.getSyllabusList)
+route.post('/deleteSyllabus',authorization,syllabus_ct.deleteSyllabus)
+route.post('/addSyllabus',authorization,upload_syllabus_image,syllabus_ct.addSyllabus)
+route.post('/updateSyllabus',authorization,upload_syllabus_image,syllabus_ct.updateSyllabus)
+
 
 ////////////////////////////////////////////////////////////////////////////
 // test

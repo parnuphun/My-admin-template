@@ -127,6 +127,19 @@ const upload_student_schedule_image = multer({
     storage : storage_student_schedule
 }).single('student_schedule_image')
 
+// syllabus_image
+const storage_syllabus = multer.diskStorage({
+    destination(req,file,next){
+        next(null,path.join(__dirname,'../public/syllabus_image'))
+    },
+    filename(req,file,next){
+        next(null,`syllabus_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
+    }
+})
+const upload_syllabus_image = multer({
+    storage : storage_syllabus
+}).single('syllabus_image')
+
 
   
 module.exports = { 
@@ -138,7 +151,8 @@ module.exports = {
     upload_baner_image,
     upload_anno_image,
     upload_teaching_schedule_image,
-    upload_student_schedule_image
+    upload_student_schedule_image,
+    upload_syllabus_image
 };
 
  

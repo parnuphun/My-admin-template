@@ -35,14 +35,17 @@ module.exports.getStudentS = async (req,res) => {
         const result = await dbQuery(qr_get_data,[limit,start_item])
        
         // add class name 
-        for (let i = 0; i < result.length; i++) {
-            for (let j = 0; j < result_class.length; j++) {
-                if(result[i].class_id === result_class[j].class_id){
-                    result[i].class_name = result_class[j].class_name
-                    break;
+        if(result_class.length >= 1){
+            for (let i = 0; i < result.length; i++) {
+                for (let j = 0; j < result_class.length; j++) {
+                    if(result[i].class_id === result_class[j].class_id){
+                        result[i].class_name = result_class[j].class_name
+                        break;
+                    }
                 }
             }
         }
+        
         // console.log(result);
         res.status(200).json({
             status:true,
