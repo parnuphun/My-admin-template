@@ -12,7 +12,8 @@ const {
     upload_news_cover_image,
     upload_baner_image,
     upload_anno_image,
-    upload_teaching_schedule_image
+    upload_teaching_schedule_image,
+    upload_student_schedule_image
 } = require('../services/upload')
 const delete_image = require('../services/delete_file')
 
@@ -26,6 +27,7 @@ const news_ct = require('../controller/news')
 const school_setting_ct = require('../controller/school_setting')
 const anno_ct = require('../controller/announcement')
 const teaching_schedule_ct = require('../controller/teahing_schedule')
+const student_schedule_ct = require('../controller/student_schedule')
 
 ////////////////////////////////////////////////////////////////////////////
 // login
@@ -140,12 +142,23 @@ route.post('/deleteAnno',authorization,anno_ct.deleteAnno) // ลบประก
 route.post('/switchAnnoPin',authorization,anno_ct.switchAnnoPin) // ปักหมุดประกาศ
 route.post('/updateAnno',authorization,upload_anno_image,anno_ct.updateAnno) // อัพเดตประกาศ
 
-
+////////////////////////////////////////////////////////////////////////////
+// teaching schedule  
+////////////////////////////////////////////////////////////////////////////
 route.post('/getTeachingSLength',authorization,teaching_schedule_ct.getTeachingSLength)
 route.post('/getTeachingS',authorization,teaching_schedule_ct.getTeachingS)
 route.post('/deleteTeachignS',authorization,teaching_schedule_ct.deleteTeachignS)
 route.post('/addTeachingS',authorization,upload_teaching_schedule_image,teaching_schedule_ct.addTeachingS)
 route.post('/updateTeachS',authorization,upload_teaching_schedule_image,teaching_schedule_ct.updateTeachS)
+
+////////////////////////////////////////////////////////////////////////////
+// student schedule  
+////////////////////////////////////////////////////////////////////////////
+route.post('/getStudentSLength',authorization,student_schedule_ct.getStudentSLength)
+route.post('/getStudentS',authorization,student_schedule_ct.getStudentS)
+route.post('/deleteStudentS',authorization,student_schedule_ct.deleteStudentS)
+route.post('/addStudentS',authorization,upload_student_schedule_image,student_schedule_ct.addStudentS)
+route.post('/updateStudentS',authorization,upload_student_schedule_image,student_schedule_ct.updateStudentS)
 
 ////////////////////////////////////////////////////////////////////////////
 // test

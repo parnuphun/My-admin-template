@@ -379,26 +379,58 @@ export default class namphong_api {
     // teaching schedule  
     ///////////////////////////////////////////////////////////////////////////////
 
+    // get teaching schedule length
     getTeachingSLength(){
         return axiosAuth.post(url+'/getTeachingSLength')
     }
 
+    // get teaching schedule list 
     getTeachingS(data:{limit:number,start_item:number}){
         return axiosAuth.post(url+'/getTeachingS',data)
     }
 
+    // delete teaching schedule 
     deleteTeachignS(data:{ts_id:number,ts_name:string,ts_image:string,credential_admin_fullname:string}){
         return axiosAuth.post(url+'/deleteTeachignS',data)
     }
 
+    // add new teaching schedule
     addTeachingS(data:FormData){
         return axiosAuth.post(url+'/addTeachingS',data)
     }
 
+    // update teaching schedule 
     updateTeachS(data:FormData){
         return axiosAuth.post(url+'/updateTeachS',data)
     }
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // student schedule  
+    ///////////////////////////////////////////////////////////////////////////////
+    // get student schedule length
+    getStudentSLength(){
+        return axiosAuth.post(url+'/getStudentSLength')
+    }
+
+    // get student schedule list 
+    getStudentS(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getStudentS',data)
+    }
+
+    // delete student schedule 
+    deleteStudentS(data:{ss_id:number,ss_name:string,ss_image:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteStudentS',data)
+    }
+
+    // add new student schedule
+    addStudentS(data:FormData){
+        return axiosAuth.post(url+'/addStudentS',data)
+    }
+
+    // update student schedule 
+    updateStudentS(data:FormData){
+        return axiosAuth.post(url+'/updateStudentS',data)
+    }
 }
 
  

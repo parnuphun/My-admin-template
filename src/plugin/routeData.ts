@@ -62,10 +62,10 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
-        id: 'time_table' ,
+        id: 'student_schedule' ,
         title : 'ตารางเรียน' ,
         icon : 'mdi-table' ,
-        link : '/admin/timeTable' ,
+        link : '/admin/studentSchedule' ,
         permission : 'ทุกคน' ,
     },
     {

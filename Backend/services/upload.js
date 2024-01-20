@@ -101,7 +101,7 @@ const upload_anno_image = multer({
     storage : storage_anno
 }).single('anno_image')
 
-// announcement 
+// teaching schedule 
 const storage_teaching_schedule = multer.diskStorage({
     destination(req,file,next){
         next(null,path.join(__dirname,'../public/teaching_schedule_image'))
@@ -114,6 +114,20 @@ const upload_teaching_schedule_image = multer({
     storage : storage_teaching_schedule
 }).single('teaching_schedule_image')
 
+// student schedule 
+const storage_student_schedule = multer.diskStorage({
+    destination(req,file,next){
+        next(null,path.join(__dirname,'../public/student_schedule_image'))
+    },
+    filename(req,file,next){
+        next(null,`student_schedule_${Math.round(Math.random()*100000)}_${Date.now()}.jpg`)
+    }
+})
+const upload_student_schedule_image = multer({
+    storage : storage_student_schedule
+}).single('student_schedule_image')
+
+
   
 module.exports = { 
     upload_person_image ,
@@ -123,7 +137,8 @@ module.exports = {
     upload_news_cover_image,
     upload_baner_image,
     upload_anno_image,
-    upload_teaching_schedule_image
+    upload_teaching_schedule_image,
+    upload_student_schedule_image
 };
 
  
