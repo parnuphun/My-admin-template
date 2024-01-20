@@ -26,19 +26,18 @@ export const navigationMenu:NavigationItem[] = [
     //     link : '/admin/dashBoard' ,
     //     permission : 'ทุกคน' ,
     // },
-
-    {
-        id: 'news_blog' ,
-        title : 'ข่าวสาร' ,
-        icon : 'mdi-newspaper' ,
-        link : '/admin/news' ,
-        permission : 'ทุกคน' ,
-    },
     {
         id: 'annoucement_important' ,
         title : 'ประกาศประชาสัมพันธ์' ,
         icon : 'mdi-bullhorn-variant-outline' ,
         link : '/admin/annoucement' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'news_blog' ,
+        title : 'ข่าวสาร' ,
+        icon : 'mdi-newspaper' ,
+        link : '/admin/news' ,
         permission : 'ทุกคน' ,
     },
     {

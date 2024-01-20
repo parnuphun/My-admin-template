@@ -25,7 +25,6 @@ module.exports.getTeachingSLength = async (req,res)=>{
 // get teaching schedule list 
 module.exports.getTeachingS = async (req,res) => {
     try {
-        console.log(req.body);
         const limit = req.body.limit
         const start_item = req.body.start_item
 

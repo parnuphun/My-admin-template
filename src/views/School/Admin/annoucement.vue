@@ -347,10 +347,10 @@ watch(searchValue , ()=>{
             <v-divider class="border-opacity-75"></v-divider>
             <div class="w-full h-auto flex flex-col gap-2 py-2 pr-2" v-if="annoListStatus === 'load_data_succ'">
                 <div class="h-full flex less:flex-col sm:flex-row justify-center items-start group border-2 
-                border-pink-400" v-for="(item,i) in annoList" :key="item.anno_id"          >
-                    <div class="less:w-full min-w-[170px] sm:w-[170px] h-[200px] ">
+                border-gray-400 rounded-md hover:border-pink-400" v-for="(item,i) in annoList" :key="item.anno_id"          >
+                    <div class="less:w-full min-w-[170px] sm:w-[170px] h-[200px] flex justify-center items-center">
                         <img v-if="item.anno_image"
-                        class="less:w-full min-w-[170px] sm:w-[170px] h-[200px] object-cover"
+                        class="less:w-full min-w-[160px] sm:w-[160px] less:h-full sm:h-[190px] object-cover sm:rounded-md"
                         :src="defaultImgPath+item.anno_image" alt="">
                     </div>
                     <div class="w-full h-[200px] flex flex-col text-lg pl-6 pr-3 py-2 group-hover:text-pink-500 duration-50 ">

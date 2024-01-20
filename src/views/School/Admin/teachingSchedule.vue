@@ -259,7 +259,7 @@ const searchValue = reactive({
             <div clsas="w-full " v-if="teachListStatus === 'load_data_succ'">
                 <div class="w-full pr-2">
                     <div class="h-full flex less:flex-col sm:flex-row justify-center items-start group border-2 shadow-md
-                    hover:shadow-xl hover:shadow-pink-100 mt-4 rounded-md border-gray-400" 
+                    hover:shadow-xl hover:shadow-pink-100 mt-4 rounded-md border-gray-400 hover:border-pink-500" 
                     v-for="(item, i) in teachList" :key="item.ts_id">
                         <div class="less:w-full min-w-[300px] sm:w-[300px] sm:h-[200px] less:h-[350px] rounded-md">
                             <img  
