@@ -20,7 +20,7 @@ const credential = ref<credential>()
 
 // working at first  
 onMounted(()=>{
-    document.title = 'ไฟล์เอกสาร'
+    document.title = 'เอกสาร'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
     
     getFileLength()

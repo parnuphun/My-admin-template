@@ -48,13 +48,6 @@ export const navigationMenu:NavigationItem[] = [
         permission : 'ทุกคน' ,
     },
     {
-        id: 'person_position' ,
-        title : 'ทำเนียบบุคลากร' ,
-        icon : 'mdi-account-box-multiple-outline' ,
-        link : '/admin/personalDirectory' ,
-        permission : 'ทุกคน' ,
-    },
-    {
         id: 'teaching_schedule' ,
         title : 'ตารางสอน' ,
         icon : 'mdi-table-clock' ,
@@ -73,6 +66,13 @@ export const navigationMenu:NavigationItem[] = [
         title : 'หลักสูตร' ,
         icon : 'mdi-book-education-outline' ,
         link : '/admin/syllabus' ,
+        permission : 'ทุกคน' ,
+    },
+    {
+        id: 'person_position' ,
+        title : 'ทำเนียบบุคลากร' ,
+        icon : 'mdi-account-box-multiple-outline' ,
+        link : '/admin/personalDirectory' ,
         permission : 'ทุกคน' ,
     },
     {

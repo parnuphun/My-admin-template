@@ -126,7 +126,7 @@ module.exports.updateStudentS = async (req,res) =>{
         await timeStamp(
             credential_admin_fullname,
             'update',
-            'teaching_schedule',
+            'student_schedule',
             msgTimestamp
         )
 
@@ -156,7 +156,7 @@ module.exports.deleteStudentS = async (req,res) => {
         await timeStamp(
             credential_admin_fullname,
             'delete',
-            'teaching_schedule',
+            'student_schedule',
             `${credential_admin_fullname} ลบตารางสอน ' ${ss_name} '`
         )
 

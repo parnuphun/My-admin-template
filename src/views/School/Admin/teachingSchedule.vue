@@ -182,7 +182,9 @@ function deleteTeachS(item:teachingSResponse){
     })
 }
 
-
+function openImage(img:string){
+    window.open(img,'_blank')
+}
 
 function lightBox(img:string){
     _msg.lightBox(img,'70%')
@@ -264,7 +266,7 @@ const searchValue = reactive({
                         <div class="less:w-full min-w-[300px] sm:w-[300px] sm:h-[200px] less:h-[350px] rounded-md">
                             <img  
                             class="less:w-full min-w-[300px] sm:w-[300px] sm:h-[200px] less:h-[350px] less:object-fit sm:object-cover
-                           rounded-md cursor-pointer" @click="lightBox(baseImgPath+item.ts_img)"
+                           rounded-md cursor-pointer"  
                             :src="baseImgPath+item.ts_img" alt="">
                         </div>
                         <div class="w-full h-[200px] flex flex-col text-lg pl-6 pr-3 py-2 group-hover:text-pink-500 duration-50 ">
@@ -276,13 +278,20 @@ const searchValue = reactive({
                                     <b>ชั้นปี :</b>  {{ item.class_name }} 
                                 </p>
                                 <p>
-                                    <b>ภาพการศึกษา :</b> {{ item.ts_semester }}
+                                    <b>ภาคการศึกษา :</b> {{ item.ts_semester }}
                                 </p>
                                 <p>
-                                    <b>ผู้สอน :</b> {{ item.ts_teacher }}
+                                    <b>ครูผู้สอน :</b> {{ item.ts_teacher }}
                                 </p>
                             </div>
                             <div class="w-full h-full flex flex-row gap-2 justify-end items-end mt-2  ">
+                                <v-btn
+                                    class="less:w-1/3 md:w-[120px] min-w-min"
+                                    color="blue"
+                                    @click="openImage(baseImgPath+item.ts_img)"
+                                >   
+                                    ดูตารางสอน
+                                </v-btn>
                                 <v-btn
                                     class="less:w-1/3 md:w-[120px] min-w-min"
                                     color="primary"

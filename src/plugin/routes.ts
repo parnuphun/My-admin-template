@@ -51,6 +51,7 @@ const router = createRouter({
         { path: '/admin/setting' , component: () => import('../views/School/Admin/setting.vue')},
         { path: '/admin/teachingSchedule' , component: () => import('../views/School/Admin/teachingSchedule.vue')},
         { path: '/admin/studentSchedule' , component: () => import('../views/School/Admin/studentSchedule.vue')},
+        { path: '/admin/syllabus' , component: () => import('../views/School/Admin/syllabus.vue')},
         
         // test admin ui 
         { path: '/test_ui' , component: () => import('../views/School/Test/test_ui.vue')},

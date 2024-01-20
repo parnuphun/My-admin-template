@@ -28,7 +28,7 @@ const storage_file = multer.diskStorage({
         next(null,path.join(__dirname,'../public/file'))
     },
     filename(req,file,next){
-        next(null,`${Math.round(Math.random()*100000)}_${Date.now()}_${file.originalname}`)
+        next(null,`${Math.round(Math.random()*100000)}_${Date.now()}`)
     }
 })
 const upload_file = multer({

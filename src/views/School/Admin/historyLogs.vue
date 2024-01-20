@@ -167,6 +167,9 @@ watch(searchValue , ()=>{
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'teaching_schedule'">
                                         <v-icon icon="mdi-table-clock" class="mr-2"></v-icon> ตารางสอน
                                     </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'student_schedule'">
+                                        <v-icon icon="mdi-table" class="mr-2"></v-icon> ตารางเรียน
+                                    </v-chip>
                                 </div>
                             </td>
                             <td>

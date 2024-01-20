@@ -16,7 +16,6 @@ require('dotenv').config();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // add file category (not use on cllient now)
 module.exports.addFileCategory = async (req,res) =>{
-
     try {
         const file_category_name = req.body.file_category_name
         const qr_check_username = `SELECT * FROM file_category WHERE file_category_name = ?`
@@ -179,7 +178,6 @@ module.exports.addNewFile = async (req,res)=> {
         const file_name_upload = `${file_name}_${Date.now()}.${file_type}`
         const file_size = bytes(req.file.size)
         const credential_admin_fullname = req.body.credential_admin_fullname
-
         await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
 
         const qr_add = `
