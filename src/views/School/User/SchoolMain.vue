@@ -131,7 +131,7 @@ const menu = ref<Array<Object>>([
 
         <!-- Banner -->
         <div class="w-full h-[auto] max-h-[600px] bg-gradient-to-tr flex justify-center items-start z-10" >
-            <v-parallax class="less:h-[200px] xl:h-[500px]"
+            <v-parallax class="less:h-[300px] xl:h-[500px]"
                 :src="base_img_path?.base_banner_img + banner_img">
                     <div class="relative w-full h-full flex justify-center items-center bg-black opacity-40"></div>
                     <div class="absolute w-full h-full flex justify-center items-center top-0">
@@ -156,8 +156,8 @@ const menu = ref<Array<Object>>([
                 <div class="w-full h-auto flex flex-wrap justify-start items-start">
                     <div class="xl:w-1/4 lg:w-1/4 md:w-1/4 sm:w-1/2 less:w-1/2 h-auto xl:p-4 flex flex-col 
                     group  cursor-pointer less:px-2" 
-                    v-for="item of main_data?.news">
-                        <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col" @click="getCurrentPath(`/news/${item.news_id}`)">
+                    v-for="item of main_data?.news"  @click="getCurrentPath(`/news/${item.news_id}`)">
+                        <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col">
                             <img class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
                             v-if="item.news_cover_image !== 'no_image_upload'"
                             :src="base_img_path?.base_news_img+ item.news_cover_image" alt=""> 

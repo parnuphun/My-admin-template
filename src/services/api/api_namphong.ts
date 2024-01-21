@@ -10,16 +10,35 @@ export default class namphong_api {
     ///////////////////////////////////////////////////////////////////////////////
     // client 
     ///////////////////////////////////////////////////////////////////////////////
-    // get data on main page
+    // get data on main page client
     clientMainPage(){
         return axios.post(url+'/clientMainPage')
     }
 
-    // get news detail
+    // get news detail client
     clientGetNewsContent(data:{news_id : number}){
         return axios.post(url+'/clientGetNewsContent',data)
     }
 
+    // get news length client
+    getNewsLengthClient(){
+        return axios.post(url+'/getNewsLengthClient')
+    }
+
+    // get news list client
+    getNewsListClient(data:{limit:number,start_item:number}){
+        return axios.post(url+'/getNewsListClient',data)
+    }
+
+    // get activity image list client
+    getActivityImageListClient(data:{limit:number,start_item:number}){
+        return axios.post(url+'/getActivityImageListClient',data)
+    }
+
+    // get activity image length client 
+    getActivityImageLengthClient(){
+        return axios.post(url+'/getActivityImageLengthClient')
+    }
 
 
 
