@@ -136,7 +136,7 @@ watch(searchValue , ()=>{
                         <tr v-for="(item , i ) in historyLogs" :key="item.history_logs_id" >
                             <td class="text-center">{{ (startItem+i)+1 }}</td>
                             <!-- <td>{{ item.history_logs_username }}</td> -->
-                            <td class="py-2">{{ item.history_logs_text }}</td>
+                            <td class="py-2 min-w-[500px]">{{ item.history_logs_text }}</td>
                             <td class="text-center w-fit">{{ item.history_logs_date }}</td>
                             <td>
                                 <div class="flex justify-center items-center">

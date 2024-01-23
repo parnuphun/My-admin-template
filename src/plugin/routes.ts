@@ -32,6 +32,9 @@ const router = createRouter({
         { path: '/contact' , component: () => import('../views/School/User/SchoolContact.vue')},
         { path: '/gallery' , component: () => import('../views/School/User/SchoolGallery.vue')},
         { path: '/files' , component: () => import('../views/School/User/SchoolFiles.vue')},
+        { path: '/teachingSchedule' , component: () => import('../views/School/User/SchoolTeachingS.vue')},
+        { path: '/studentSchedule' , component: () => import('../views/School/User/SchoolStudentS.vue')},
+        { path: '/syllabus' , component: () => import('../views/School/User/SchoolSyllabus.vue')},
  
         /////////////////////////////////////////////////////////////////////////////////////////////////
         // สำหรับหลังบ้าน admin 

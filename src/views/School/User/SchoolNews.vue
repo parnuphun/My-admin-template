@@ -90,7 +90,7 @@ watch(sizeSelected,()=>{
 <template>
     <div class="flex flex-col w-full relative">        
         <NampongNavBar></NampongNavBar>
-        <v-divider></v-divider>
+        <v-divider class="border-opacity-100"></v-divider>
         <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">

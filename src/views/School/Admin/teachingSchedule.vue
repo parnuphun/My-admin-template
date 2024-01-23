@@ -26,7 +26,6 @@ const credential = ref<credential>()
 onMounted(()=>{
     document.title = 'ตารางสอน'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
-    getClass()
     getAll()
 })
 
@@ -48,16 +47,6 @@ function getTeachingSLength(){
         if(res.data.status_code === 200){
             totalList.value = res.data.data_length            
             totalPage.value = Math.ceil(totalList.value / sizeSelected.value)        
-        }
-    })
-}
-
-const classList = ref<Array<classListResponse>>()
-function getClass(){
-    _api.getClass().then((res)=>{
-        if(res.data.status_code === 200){
-            classList.value = res.data.class_data
-            tsClassSelected.value = classList.value![0].class_id
         }
     })
 }
@@ -106,7 +95,6 @@ function addTeachingS(){
     formData.append('ts_name',tsName.value)
     formData.append('ts_teacher',tsTeacher.value)
     formData.append('ts_semester',tsSemester.value)
-    formData.append('class_id',tsClassSelected.value)
     btnLoading.value = true
     _api.addTeachingS(formData).then((res)=>{
         if(res.data.status_code === 200){
@@ -229,20 +217,6 @@ const searchValue = reactive({
     <AdminNavigationBar>
         <div class="flex flex-col h-full">
             <div class="w-full flex flex-wrap">
-                <!-- <div class="w-full p-1 flex flex-wrap justify-end">
-                    <div class="w-full p-1">
-                        <v-text-field
-                            label="ค้นหา"
-                            class=""
-                            hide-details
-                            variant="outlined"
-                            prepend-inner-icon="mdi-magnify"
-                            bg-color=""
-                            density="comfortable"
-                            required
-                        ></v-text-field>
-                    </div>
-                </div> -->
                 <div class="less:w-full p-1 flex less:flex-wrap sm:flex-row md:flex-row gap-2 less:justify-center md:justify-start items-center">
                     <v-btn 
                         @click="addNewTeachingSDialog = true"
@@ -273,9 +247,6 @@ const searchValue = reactive({
                             <div class="w-full h-full ">
                                 <p class="line-clamp-3">
                                     <b>ชื่อ :</b> {{ item.ts_name }}
-                                </p>
-                                <p>
-                                    <b>ชั้นปี :</b>  {{ item.class_name }} 
                                 </p>
                                 <p>
                                     <b>ภาคการศึกษา :</b> {{ item.ts_semester }}
@@ -378,17 +349,6 @@ const searchValue = reactive({
                                 hide-details="auto"
                             ></v-text-field>
                         </div>
-                        <v-select
-                            label="ชั้นปี"
-                            :items="classList"
-                            v-model="tsClassSelected"
-                            item-title="class_name"
-                            item-value="class_id"
-                            hide-details
-                            variant="outlined"
-                            class="mt-3"
-                        ></v-select>
-           
                         <div class="w-full">
                             <v-select
                                 label="ภาคเรียน"
@@ -466,17 +426,6 @@ const searchValue = reactive({
                                 hide-details="auto"
                             ></v-text-field>
                         </div>
-                        <v-select
-                            label="ชั้นปี"
-                            :items="classList"
-                            v-model="tsClassSelected"
-                            item-title="class_name"
-                            item-value="class_id"
-                            hide-details
-                            variant="outlined"
-                            class="mt-3"
-                        ></v-select>
-           
                         <div class="w-full">
                             <v-select
                                 label="ภาคเรียน"

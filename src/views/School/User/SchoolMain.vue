@@ -32,23 +32,7 @@ onMounted(async ()=>{
 })
 
 async function checkNewsBanner() {
-    if(localStorage.getItem('clientSetting')){
-        const annoCheckState = JSON.parse(localStorage.getItem('clientSetting') || '') 
-        readit.value = true
-        // if(annoCheckState.annoData !== main_data.value?.anno){
-        //     localStorage.setItem('clientSetting',JSON.stringify({
-        //         annoCheck:false
-        //     }))  
-        // }else{
-        //     localStorage.setItem('clientSetting',JSON.stringify({
-        //         annoCheck:true
-        //     }))  
-        // }
-    }else{            
-        localStorage.setItem('clientSetting',JSON.stringify({
-            annoCheck:false
-        }))  
-    }
+    
 }
 
 function getCurrentPath(url:string){
@@ -64,6 +48,28 @@ async function clientMainPage(){
             banner_img.value = main_data.value?.banner[0].banner_img
             banner_slogan.value = main_data.value?.banner[0].banner_slogan
 
+            // check first 
+            if(localStorage.getItem('clientSetting')){
+                const annoCheckState = JSON.parse(localStorage.getItem('clientSetting') || '') 
+                // compare 
+                // old data != new data
+                if(JSON.stringify(annoCheckState.anno_data ) === JSON.stringify(main_data.value!.anno)){
+                    console.log('your data is currently !!');
+                    dialog.value = false
+                  
+                }else{
+                    localStorage.setItem('clientSetting',JSON.stringify({
+                        anno_data : main_data.value!.anno
+                    }))  
+                    dialog.value = true
+                }
+                // no data in local storage
+            }else{           
+                localStorage.setItem('clientSetting',JSON.stringify({
+                    anno_data : main_data.value!.anno
+                })) 
+                dialog.value = true
+            }
         }
     })
 }
@@ -79,40 +85,45 @@ const menu = ref<Array<Object>>([
         path:'/news',
         icon:'mdi-newspaper'
     },
-    // {
-    //     title:'ตารางเรียน',
-    //     path:'/schedules',
-    //     icon:'mdi-table'
-    // },
     {
         title:'ภาพกิจกรรม',
         path:'/gallery',
-        icon:'mdi-image'
+        icon:'mdi-image-outline'
     },
     {
         title:'บุคลากร',
         path:'/persons',
-        icon:'mdi-account'
+        icon:'mdi-account-outline'
+    },
+    {
+        title:'ตารางเรียน',
+        path:'/studentSchedule',
+        icon:'mdi-table'
+    },
+    {
+        title:'ตารางสอน',
+        path:'/teachingSchedule',
+        icon:'mdi-table-clock'
     },
     {
         title:'หลักสูตร',
-        path:'/course',
-        icon:'mdi-book'
+        path:'/syllabus',
+        icon:'mdi-book-outline'
     },
     {
         title:'เอกสาร',
         path:'/files',
-        icon:'mdi-file'
+        icon:'mdi-file-outline'
     },
     {
         title:'เกี่ยวกับเรา',
         path:'/about',
-        icon:'mdi-information'
+        icon:'mdi-information-outline'
     },
     {
         title:'ติดต่อ',
         path:'/contact',
-        icon:'mdi-phone'
+        icon:'mdi-phone-outline'
     },
 ])
 </script>

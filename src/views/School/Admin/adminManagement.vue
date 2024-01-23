@@ -24,12 +24,17 @@ const credential = ref<credential>()
 const credential_id = ref()
 const credential_rule = ref()
 const credential_image = ref()
+const credential_name = ref()
+const credential_email = ref()
 onMounted(() => {
     document.title = 'จัดการผู้ใช้งาน'
     credential.value = JSON.parse(localStorage.getItem('Credential')!)
     credential_id.value = credential.value!.user_id
     credential_rule.value = credential.value!.user_rule
     credential_image.value = credential.value!.user_image
+    credential_name.value = credential.value!.user_fullname
+    credential_email.value = credential.value!.user_email
+    getSchoolDataSetting();
     getAllData();
 })
 
@@ -206,7 +211,11 @@ function updateAdmin(){
                     // update image to local storage
                     if(credential_id.value === userDetail.value?.user_id){
                         credential_image.value = res.data.new_image
+                        credential_name.value = userDetail.value!.user_firstname +' '+userDetail.value!.user_lastname
+                        credential_email.value = userDetail.value!.user_email
                         credential.value!.user_image = res.data.new_image
+                        credential.value!.user_fullname = userDetail.value!.user_firstname +' '+userDetail.value!.user_lastname
+                        credential.value!.user_email = userDetail.value!.user_email
                         localStorage.setItem('Credential', JSON.stringify(credential.value));
                     }
 
@@ -401,11 +410,22 @@ watch(addNewPhone, ()=>{
     }
 })
 
+const defaultAdminPassword = ref()
+function getSchoolDataSetting(){
+    _api.getSchoolDataSetting().then((res)=>{
+        if(res.data.status_code !== 200){
+            _msg.toast_msg({title:res.data.msg,timer:30,progressbar:true,icon:'error'})
+        }else{
+            defaultAdminPassword.value = res.data.school_data[0].default_admin_password 
+        }
+    })
+}
+
 // detect validate default password
 watch(defaultPassword,()=>{
     if(defaultPassword.value === true){
-        addNewPassword.value = 'namphong2566'
-        confirmAddNewPassword.value = 'namphong2566'
+        addNewPassword.value = defaultAdminPassword.value
+        confirmAddNewPassword.value = defaultAdminPassword.value
     }else{
         addNewPassword.value = ''
         confirmAddNewPassword.value = ''
@@ -499,7 +519,7 @@ watch(searchValue , ()=>{
 </script>
 
 <template>
-    <AdminNavigationBar :image="credential_image">
+    <AdminNavigationBar :image="credential_image" :name="credential_name" :email="credential_email">
         <div class="flex flex-col w-full h-full">
             <div class="w-full flex flex-wrap p-1">
                 <div class="w-1/2">
@@ -826,7 +846,7 @@ watch(searchValue , ()=>{
                                 >
                                     <v-tooltip location="top" activator="parent">
                                         ใช้รหัสผ่านเริ่มต้น 
-                                        <br>' namphong2566 '
+                                        <br>{{ defaultAdminPassword }}
                                     </v-tooltip>
                                 </v-checkbox>
                             </div>

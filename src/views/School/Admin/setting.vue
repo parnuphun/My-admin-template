@@ -145,6 +145,7 @@ function getClass(){
         }
     })
 }
+
 const addClassDialog = ref(false)
 const updateClassDialog = ref(false)
 const className = ref()
@@ -255,7 +256,7 @@ function deleteClass(item:classListResponse){
                                 <div class="w-full flex justify-end">
                                     <v-btn 
                                     @click="updateBanner()"
-                                    class="mt-3 w-[100px]" color="green">
+                                    class="mt-3 w-[157px]" color="green">
                                         บันทึก
                                     </v-btn>
                                 </div>
@@ -276,7 +277,7 @@ function deleteClass(item:classListResponse){
                             รหัสผ่าน
                         </p>
                         <p class="text-md text-gray-600">
-                            ตั้งค่ารหัสผ่าน Default ของผู้ใช้งานที่เพิ่มเข้ามาทีหลัง
+                            ตั้งค่ารหัสผ่านเริ่มต้น ของผู้ใช้งานที่เพิ่มเข้ามาทีหลัง
                         </p>
                         <v-divider class="border-opacity-75 mt-2"></v-divider>
                         <div class="w-full mt-4">
@@ -315,7 +316,7 @@ function deleteClass(item:classListResponse){
                                         errMsgPassword !== 'valid' || 
                                         errMsgConfirmPassword !== 'valid'"
                                 @click="changeDefaultPassword()"
-                                class="mt-3 w-[100px]" color="green">
+                                class="mt-3 w-[157px]" color="green">
                                     บันทึก
                                 </v-btn>
                             </div>
@@ -331,17 +332,19 @@ function deleteClass(item:classListResponse){
                         </p>
                         <v-divider class="border-opacity-75 mt-2"></v-divider>
                         <div class="mt-2 flex justify-end">
-                            <v-btn color="green" @click="addClassDialog = true"> เพิ่มชั้นปี </v-btn>
+                            <v-btn class="w-[157px]" color="green" @click="addClassDialog = true"> เพิ่มชั้นปี </v-btn>
                         </div>
-                        <div class="w-full flex flex-wrap">
-                            <div v-for="item in classList"
-                            class="rounded-md border-2 h-full w-full py-2 px-2 flex flex-row mt-2 justify-between items-center" >
-                                <div class="w-auto h-full flex justify-center items-center">
-                                    {{ item.class_name }}
-                                </div>
-                                <div class="w-fit flex flex-row gap-2">
-                                    <v-btn color="primary" @click="setDatabeforUpdateClass(item)">แก้ไข</v-btn>
-                                    <v-btn color="red" @click="deleteClass(item)">ลบ</v-btn>
+                        <div class="w-full">
+                            <div class="w-full flex flex-wrap max-h-[600px] overflow-auto">
+                                <div v-for="item in classList"
+                                class="rounded-md border-2 h-full w-full py-2 px-2 flex flex-row mt-2 justify-between items-center" >
+                                    <div class="w-auto h-full flex justify-center items-center">
+                                        {{ item.class_name }}
+                                    </div>
+                                    <div class="w-fit flex flex-row gap-2">
+                                        <v-btn color="primary" @click="setDatabeforUpdateClass(item)">แก้ไข</v-btn>
+                                        <v-btn color="red" @click="deleteClass(item)">ลบ</v-btn>
+                                    </div>
                                 </div>
                             </div>
                         </div>

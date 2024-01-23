@@ -29,7 +29,7 @@ module.exports.getTeachingS = async (req,res) => {
         const start_item = req.body.start_item
 
         const qr_get_class = `SELECT * FROM class`
-        const qr_get_data = `SELECT * FROM teaching_schedule ORDER BY ts_name ASC LIMIT ? OFFSET ?`
+        const qr_get_data = `SELECT * FROM teaching_schedule ORDER BY ts_id DESC LIMIT ? OFFSET ?`
 
         const result_class = await dbQuery(qr_get_class)
         const result = await dbQuery(qr_get_data,[limit,start_item])
@@ -62,14 +62,13 @@ module.exports.addTeachingS = async (req,res) => {
     try {
         const credential_admin_fullname = req.body.credential_admin_fullname
         const ts_name = req.body.ts_name
-        const class_id = req.body.class_id
         const ts_image = req.file.filename
         const ts_semester = req.body.ts_semester
         const ts_teacher = req.body.ts_teacher
 
-        const qr_add = `INSERT INTO teaching_schedule(ts_name,ts_img,ts_pin,ts_semester,ts_teacher,class_id) VALUES(?,?,1,?,?,?)`
+        const qr_add = `INSERT INTO teaching_schedule(ts_name,ts_img,ts_pin,ts_semester,ts_teacher) VALUES(?,?,1,?,?)`
          
-        await dbQuery(qr_add,[ts_name,ts_image,ts_semester,ts_teacher,class_id])
+        await dbQuery(qr_add,[ts_name,ts_image,ts_semester,ts_teacher])
 
         await timeStamp(
             credential_admin_fullname,
@@ -98,7 +97,6 @@ module.exports.updateTeachS = async (req,res) =>{
         const ts_old_image = req.body.ts_old_image
         const ts_teacher = req.body.ts_teacher
         const ts_semester = req.body.ts_semester
-        const class_id = req.body.class_id
 
         const qr_update = `
             update teaching_schedule 
@@ -106,8 +104,7 @@ module.exports.updateTeachS = async (req,res) =>{
                 ts_name = ? ,
                 ts_img = ? ,
                 ts_semester = ? ,
-                ts_teacher = ? ,
-                class_id = ?
+                ts_teacher = ?
             WHERE ts_id = ? 
              `
 
@@ -116,7 +113,6 @@ module.exports.updateTeachS = async (req,res) =>{
             teaching_schedule_image,
             ts_semester,
             ts_teacher,
-            class_id,
             ts_id
         ]
 

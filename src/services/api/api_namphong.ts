@@ -40,12 +40,50 @@ export default class namphong_api {
         return axios.post(url+'/getActivityImageLengthClient')
     }
 
+    // get all file in client
+    getAllfilsClient(){
+        return axios.post(url+'/getAllfilsClient')
+    }
+
+    //preview file client
+    previewFileClient(data:{file_id:number,file_name_upload:string}){
+        return axios.post(url+'/previewFileClient',data)
+    }
+
+    // get person directory for client
+    getPersonTreeclient(data:{category_id:number}){        
+        return axios.post(url+'/getPersonTreeclient',data)
+    }
+
+    // get person directory category for client
+    getPersonCateListClient(){
+        return axios.post(url+'/getPersonCateListClient')
+    }
+
+    // get teaching schedule for client 
+    getTeachingSClient(){
+        return axios.post(url+'/getTeachingSClient')
+    }
+
+     // get student schedule for client 
+    getStudentSClient(data:{class_id:number}){
+        return axios.post(url+'/getStudentSClient',data)
+    }
+
+    // get class for client 
+    getClassClient(){
+        return axiosAuth.post(url+'/getClassClient')
+    }
+    
+    // get syllabus for client
+    getSyllabusClient(){
+        return axiosAuth.post(url+'/getSyllabusClient')
+    }
 
 
-
-
-
-
+    ///////////////////////////////////////////////////////////////////////////////
+    // login 
+    ///////////////////////////////////////////////////////////////////////////////
 
     // log in addmin
     login(data:{username:string,password:string}){                

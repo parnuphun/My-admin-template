@@ -100,16 +100,16 @@ onMounted(()=>{
                                 </div>
                             </div>
 
-                            <div class="ql-container mt-4">
+                            <div class="ql-container mt-4 pb-6">
                                 <div class="ql-editor">
                                     <div v-html="content"></div>
                                 </div>
                             </div>
                         </div>
-                        <v-divider class="border-opacity-100"></v-divider>
+                        <!-- <v-divider class="border-opacity-100"></v-divider>
                         <div class="w-full px-6 py-2">
-                            footer detail
-                        </div>
+                        
+                        </div> -->
                     </div>
                 </div>
             </div>

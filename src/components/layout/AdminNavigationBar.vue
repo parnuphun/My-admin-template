@@ -33,7 +33,6 @@ onMounted(() => {
 
     admin_fullname.value = credential.value!.user_fullname
     admin_email.value =credential.value!.user_email
-    
     isGroupOpen()
 })
 
@@ -87,6 +86,8 @@ watch(isAlert, () => {
 const props = defineProps<{
     isLoadingProgressBar?: boolean
     image?:string
+    name?:string
+    email?:string
 }>()
 
 watch(props,()=>{
@@ -141,7 +142,7 @@ function isGroupOpen() {
                             <template v-slot:activator="{ props }">
                                 <v-btn v-bind="props" icon>
                                     <!-- icon -->
-                                    <v-icon size="large">mdi-account-circle-outline</v-icon>
+                                    <v-icon size="large">mdi-login</v-icon>
                                 </v-btn>
                             </template>
 
@@ -149,7 +150,7 @@ function isGroupOpen() {
                                 <v-list line="three">
                                     <v-list-item @click="logout()">
                                         <template v-slot:append>
-                                            ออกจากระบบ <v-icon class="ml-4">mdi-login</v-icon>
+                                            ออกจากระบบ <v-icon class="ml-4"></v-icon>
                                         </template>
                                     </v-list-item>
                                     <!-- <v-list-item :title="`${credentialData.userFname} ${credentialData.userLname}`"
@@ -203,9 +204,27 @@ function isGroupOpen() {
                                     v-else
                                     :src="base_image_path + admin_image " >
                                 </div>
-                                <div class="w-full h-full justify-center items-start flex flex-col pl-2">
-                                    <p class="line-clamp-1">{{ admin_fullname }}</p>
-                                    <p class="text-[14px] text-gray-500 line-clamp-1">{{ admin_email }}</p>
+                                <div class="w-full h-full justify-center items-start flex flex-col pl-2 line-clamp-1">
+                                    <div class="w-full ">
+                                        <p class="line-clamp-1" v-if="props.name">{{ props.name }}</p>
+                                        <p class="line-clamp-1" v-else >{{ admin_fullname }}</p>
+
+                                    </div>
+                                    <div class="w-full text-[12px]">
+                                        <p class="line-clamp-1 text-gray-500 " v-if="props.email">{{  props.email}}</p>
+                                        <p class="line-clamp-1 text-gray-500 " v-else>{{ admin_email }}</p>
+                                    </div>
+                                    <v-tooltip activator="parent" location="right" >
+                                        <div class="w-full ">
+                                            <p class="line-clamp-1" v-if="props.name">{{ props.name }}</p>
+                                            <p class="line-clamp-1" v-else >{{ admin_fullname }}</p>
+
+                                        </div>
+                                        <div class="w-full text-[12px]">
+                                            <p class="line-clamp-1 " v-if="props.email">{{  props.email}}</p>
+                                            <p class="line-clamp-1 " v-else>{{ admin_email }}</p>
+                                        </div>
+                                    </v-tooltip>
                                 </div>
                             </div>
                         </v-list-item>

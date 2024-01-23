@@ -1,7 +1,8 @@
 const { dbQuery } = require('../services/query');
 const date_convert = require('../services/date_convert')
 const return_err = require('../services/return_err')
-
+const fs = require('fs') 
+const path = require('path');
 // get data to main page 
 module.exports.mainPage =  async(req,res) => {
     try {
@@ -152,3 +153,243 @@ module.exports.getNewsContent = async(req,res) => {
         return_err(res,'TRY CATCH','GET DATA CLIENT MAIN ',err,500)
     }
 }
+
+// get file 
+module.exports.getAllfilsClient = async(req,res) => {
+    try {
+        const qr_file_category = `SELECT * FROM file_category`
+        const qr_files = `SELECT * FROM file WHERE file_pin = 1 AND file_category_id = ? ORDER BY file_date DESC`
+        
+
+        const result_file_category = await dbQuery(qr_file_category)
+        let data = []
+
+        for (let i = 0; i < result_file_category.length; i++) {
+            const result_file = await dbQuery(qr_files,[result_file_category[i].file_category_id])
+
+            let dataDetail = {}
+            dataDetail.category_id = result_file_category[i].file_category_id
+            dataDetail.category_name = result_file_category[i].file_category_name
+            dataDetail.files_list = result_file
+            for (let j = 0; j < result_file.length; j++) { 
+                result_file[j].file_date = await date_convert(result_file[j].file_date,false,true)
+            }
+            data.push(dataDetail)
+        }
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            data_list:data
+        })
+        
+    } catch (err) {
+        return_err(res,'TRY CATCH','GET FILE CLIENT ',err,500)
+    }
+}
+
+// preview file Clienent
+module.exports.previewFileClient = async(req,res) => {
+    try {        
+        const file_name_upload = req.body.file_name_upload
+        const filePath = path.join(__dirname, `../public/file/${file_name_upload}`)
+        // console.log('file existsSync => ',fs.existsSync(filePath));
+        if(fs.existsSync(filePath)){
+            res.json({
+                status: true,
+                status_code: 200 ,
+                file_url:process.env.FILE_PATH+file_name_upload
+            })
+        }else{
+            res.send({
+                status: false,
+                status_code: 200 ,
+                msg:'ไม่มีไฟล์นี้ในระบบ'
+            })
+        }
+    } catch (err) {
+        return_err(res,'TRY CATCH','PREVIEW FILE ',err,500)
+    }
+}
+
+// get person table tree preview for client 
+module.exports.getPersonTreeclient = async (req ,res) => {
+    try {
+        let position_detail  
+        let data = []
+        let dataTable = []
+        const category_id = req.body.category_id
+        const qr_position_list = `SELECT * FROM person_directory_position WHERE pd_category_id = ?`
+        const qr_persons = `SELECT * FROM person_directory_persons WHERE pd_position_id = ? `
+        
+        const result_position = await dbQuery(qr_position_list,[category_id])
+        const position_length = result_position.length
+        position_detail = result_position
+
+        if(position_length === 0)return res.status(200).json({
+            status_code : 200,
+            status : true ,
+            personsData : data,
+            personsDataTable : dataTable,
+            personsBaseImageURL: process.env.PERSONS_DIARECTORY_IMAGE,
+            msg:'ไม่มีข้อมูล' 
+        })
+        // format data
+        for(let i = 0 ; i < position_length ; i++){
+            data[i] = {};
+            data[i].position_id = position_detail[i].pd_position_id
+            data[i].position_name = position_detail[i].pd_position_name
+
+            // const result = await getPersons(position_detail[i].pd_position_id);
+            const result = await dbQuery(qr_persons,[position_detail[i].pd_position_id])
+
+            // add persons to prosition 
+            data[i].persons = result;
+            for (let j = 0; j < result.length; j++) {
+                dataTable.push(result[j]);
+            };
+
+            if(i >= (position_length-1)){
+                res.status(200).json({
+                    status_code : 200,
+                    status : true ,
+                    person_data : data,
+                    person_data_table : dataTable,
+                    base_image_path: process.env.PERSONS_DIARECTORY_IMAGE
+                })
+            }
+            
+        }
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','GET PERSON TABLE TREE ',err,500,'เกิดความผิดพลาด ไม่สามารถดึงข้อมูลได้')
+    }
+}
+
+// get all category client
+module.exports.getPersonCateListClient = async (req,res) =>{
+    try {
+        const result = await dbQuery(`SELECT * FROM person_directory_category`)
+        res.json({
+            status:true,
+            status_code:200,
+            position_category:result
+        })
+    } catch (err) {
+        return_err(res,'TRY CATCH BLOCK','GET PERSON CATEGORY',err,500)
+    }
+}
+
+// get teaching schedule list 
+module.exports.getTeachingSClient = async (req,res) => {
+    try {
+        const qr_get_class = `SELECT * FROM class`
+        const qr_get_data = `SELECT * FROM teaching_schedule ORDER BY ts_name ASC `
+
+        const result_class = await dbQuery(qr_get_class)
+        const result = await dbQuery(qr_get_data,)
+       
+        // add class name 
+        if(result_class.length >= 1){
+            for (let i = 0; i < result.length; i++) {
+                for (let j = 0; j < result_class.length; j++) {
+                    if(result[i].class_id === result_class[j].class_id){
+                        result[i].class_name = result_class[j].class_name
+                        break;
+                    }
+                }
+            }
+        }
+        res.status(200).json({
+            status:true,
+            status_code:200,
+            data_list:result,
+            base_image_path:process.env.TEACHING_SCHEDULE
+        })
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','DELETE NEWS CATEGORY ',err,500)
+    }
+}
+
+// get student schedule list 
+module.exports.getStudentSClient = async (req,res) => {
+    try {
+        const class_id = req.body.class_id
+        const qr_get_class = `SELECT * FROM class`
+        const qr_get_data = `SELECT * FROM student_schedule WHERE class_id = ? ORDER BY ss_name ASC`
+
+        const result_class = await dbQuery(qr_get_class)
+        const result = await dbQuery(qr_get_data,[class_id])
+       
+        // add class name 
+        if(result_class.length >= 1){
+            for (let i = 0; i < result.length; i++) {
+                for (let j = 0; j < result_class.length; j++) {
+                    if(result[i].class_id === result_class[j].class_id){
+                        result[i].class_name = result_class[j].class_name
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // console.log(result);
+        res.status(200).json({
+            status:true,
+            status_code:200,
+            data_list:result,
+            base_image_path:process.env.STUDENT_ScHEDULE
+        })
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','GET STUDENT SCHEDULE LiST ',err,500)
+    }
+}
+
+// get class client 
+module.exports.getClassClient = async(req,res) =>{
+    try {
+        const qr_get_data = `SELECT * FROM class`
+        const result = await dbQuery(qr_get_data)
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            class_data:result
+        })
+    } catch (err) {
+        if(err) return return_err(res,'TRY CATCH BLOCK','UPDATE BANNER ',err,500)
+    }
+}
+
+// get syllabus client
+module.exports.getSyllabusClient = async(req,res)=>{
+    try{
+        const qr_get_data = `SELECT * FROM syllabus ORDER BY syllabus_name ASC`
+        const qr_get_class = `SELECT * FROM class`
+
+        const result_class = await dbQuery(qr_get_class)
+        const result = await dbQuery(qr_get_data)
+
+        // add class name 
+        if(result_class.length >= 1){
+            for (let i = 0; i < result.length; i++) {
+                for (let j = 0; j < result_class.length; j++) {
+                    if(result[i].class_id === result_class[j].class_id){
+                        result[i].class_name = result_class[j].class_name
+                        break;
+                    }
+                }
+            }
+        }
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            data_list:result,
+            base_image_path:process.env.SYLLABUS_IMAGE
+        })
+
+    }catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','GET SYLLABUS LIST CLIENT ',err,500)
+        
+    }
+}
+

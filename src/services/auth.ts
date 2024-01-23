@@ -1,6 +1,5 @@
 import axios from 'axios'
 import router from '../plugin/routes'
-import MsgAlert from './msgAlert';
 
 let token = ''
 if(localStorage.getItem('Credential')){
@@ -9,10 +8,6 @@ if(localStorage.getItem('Credential')){
         token = credential.user_token
     }
 }
-
-
-
-
 
 const axiosAuth = axios.create({
     headers: {

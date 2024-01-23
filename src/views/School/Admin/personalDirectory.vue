@@ -545,7 +545,7 @@ function getPersonDirectoryTableTree(){
                         <v-btn 
                             @click="positionDrawer = !positionDrawer"
                             class="h-full less:w-full sm:w-full md:w-auto" 
-                            color="pink-lighten-2" size="large" >
+                            color="pink" size="large" >
                             <p class="text-md" >
                                 <v-icon icon="mdi-card-account-details-outline" class=""></v-icon> ตำแหน่ง
                             </p>
@@ -553,7 +553,7 @@ function getPersonDirectoryTableTree(){
                         <v-btn 
                             @click="personTableTreeDrawer = !personTableTreeDrawer"
                             class="h-full less:w-full sm:w-full md:w-auto" 
-                            color="pink-lighten-2" size="large" >
+                            color="pink" size="large" >
                             <p class="text-md" >
                                 <v-icon icon="mdi-family-tree" class=""></v-icon> ทำเนียบ
                             </p>

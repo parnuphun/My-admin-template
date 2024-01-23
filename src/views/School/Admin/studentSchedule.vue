@@ -420,7 +420,7 @@ const searchValue = reactive({
         <v-card class="pb-2">
             <div class="flex flex-col w-full ">
                 <div class="w-full py-3 flex justify-center text-xl mt-3 relative">
-                    แก้ไขตารางสอน
+                    แก้ไขตารางเรียน
                 </div>
                 <div class="w-full px-6">
                     <div class="flex flex-col gap-2 w-full">
