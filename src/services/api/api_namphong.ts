@@ -90,6 +90,31 @@ export default class namphong_api {
         return axios.post(url+'/login',data)
     }
 
+    // send email
+    sendEmail(data:{topic:string,content:string,email:Array<string>,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/sendEmail',data)
+    }
+
+    // get email 
+    getEmailList(){
+        return axiosAuth.post(url+'/getEmailList')
+    }
+
+    // get email sended length
+    getEmailSendedLength(){
+        return axiosAuth.post(url+'/getEmailSendedLength')
+    }
+
+    // get email sended list
+    getemailSendedList(data:{limit:number,start_item:number}){
+        return axiosAuth.post(url+'/getemailSendedList',data)
+    }
+
+    // search email sended
+    searchEmailSended(data:{limit:number,start_item:number,search_keyword:string}){
+        return axiosAuth.post(url+'/searchEmailSended',data)
+    }
+
     ///////////////////////////////////////////////////////////////////////////////
     // person directory 
     ///////////////////////////////////////////////////////////////////////////////

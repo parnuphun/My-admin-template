@@ -81,10 +81,10 @@ export interface personDirectoryTableTree {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // history logs
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-export type historyType = 'update' | 'add' | 'delete' | 'login'
+export type historyType = 'update' | 'add' | 'delete' | 'login' | 'email'
 export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity_image' | 
                                 'news' | 'file' | 'login' | 'school_setting' | 'annocement' |
-                                'teaching_schedule' | 'student_schedule' | 'syllabus'
+                                'teaching_schedule' | 'student_schedule' | 'syllabus' | 'email'
 export interface historyLogsResponse {
     history_logs_id : number ,
     history_logs_username : string,
@@ -241,5 +241,28 @@ export interface syllabusResponse{
     syllabus_image:string
     class_id:number
     class_name:string
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// email
+////////////////////////////////////////////////////////////////////////////////////////////////////
+export interface userEmailResponse {
+    name :string
+    email :string
+    image :string | 'no_image_upload'
+    from : 'ผู้ใช้งาน' | 'ทำเนียบบุคลากร'
+}
+
+export interface emailListResponse {
+    email_id : number
+    email_topic : string
+    email_content : string
+    email_to_old : Array<string>
+    email_to : Array<{
+        email_to_id : number,
+        email_to_detail: string 
+    }>
+    email_date : string
+    email_sender : string
 }
  

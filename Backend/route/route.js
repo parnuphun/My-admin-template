@@ -30,12 +30,15 @@ const anno_ct = require('../controller/announcement')
 const teaching_schedule_ct = require('../controller/teahing_schedule')
 const student_schedule_ct = require('../controller/student_schedule')
 const syllabus_ct = require('../controller/syllabus')
+const email_ct = require('../controller/email')
 
 ////////////////////////////////////////////////////////////////////////////
 // login
 ////////////////////////////////////////////////////////////////////////////
 route.post('/login',login_c.login) // เข้าสู่ระบบ
 route.post('/adminRegister',login_c.adminRegister) //*** สำหรับแอดมินเท่านั้น
+
+ 
 
 ////////////////////////////////////////////////////////////////////////////
 // users
@@ -171,6 +174,14 @@ route.post('/deleteSyllabus',authorization,syllabus_ct.deleteSyllabus)
 route.post('/addSyllabus',authorization,upload_syllabus_image,syllabus_ct.addSyllabus)
 route.post('/updateSyllabus',authorization,upload_syllabus_image,syllabus_ct.updateSyllabus)
 
+////////////////////////////////////////////////////////////////////////////
+//  email
+////////////////////////////////////////////////////////////////////////////
+route.post('/sendEmail',authorization,email_ct.sendEmail)
+route.post('/getEmailList',authorization,email_ct.getEmailList)
+route.post('/getemailSendedList',email_ct.getemailSendedList)
+route.post('/getEmailSendedLength',email_ct.getEmailSendedLength)
+route.post('/searchEmailSended',email_ct.searchEmailSended)
 
 ////////////////////////////////////////////////////////////////////////////
 // test

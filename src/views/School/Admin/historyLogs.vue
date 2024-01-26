@@ -173,6 +173,9 @@ watch(searchValue , ()=>{
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'syllabus'">
                                         <v-icon icon="mdi-book-outline" class="mr-2"></v-icon> หลักสูตร
                                     </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'email'">
+                                        <v-icon icon="mdi-email-outline" class="mr-2"></v-icon> อีเมล
+                                    </v-chip>
                                 </div>
                             </td>
                             <td>
@@ -188,6 +191,9 @@ watch(searchValue , ()=>{
                                     </v-chip>
                                     <v-chip class="w-full" color="red" v-else-if="item.history_logs_type === 'delete'">
                                         <v-icon icon="mdi-delete" class="mr-2"></v-icon> ลบข้อมูล
+                                    </v-chip>
+                                    <v-chip class="w-full" color="pink" v-else-if="item.history_logs_type === 'email'">
+                                        <v-icon icon="mdi-email-arrow-right-outline" class="mr-2"></v-icon> ส่งอีเมล
                                     </v-chip>
                                 </div>
                             </td>
