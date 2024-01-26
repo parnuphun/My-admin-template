@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
+import pageDataStatus from '../../../components/layout/School/pageDataStatus.vue'
 import { ref, onMounted ,watch ,reactive} from 'vue'
 import apiNamphong from '../../../services/api/api_namphong';
-import { historyLogsResponse } from '../../../store/Interface'
+import { historyLogsResponse , dataStatus} from '../../../store/Interface'
+import { off } from 'process';
 
 
 const _api = new apiNamphong()
@@ -14,6 +16,7 @@ onMounted(()=>{
     getHistory()
 })
 
+const dataStatus = ref<dataStatus>('no_data')
 const historyLogs = ref<Array<historyLogsResponse>>()
 const totalHistoryLogs = ref()
 
@@ -24,9 +27,22 @@ function getHistoryLength(){
     })
 }
 function getHistory(){
-    _api.getHistory({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
-        historyLogs.value = res.data.history_data  
-        console.log(historyLogs.value);
+    dataStatus.value = 'loading_data'
+    _api.getHistory({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{        
+        if(res.data.status_code === 200){
+            historyLogs.value = res.data.history_data
+            if(historyLogs.value!.length >= 1){
+                dataStatus.value = 'load_data_succ'
+            }else if(historyLogs.value!.length === 0){
+                dataStatus.value = 'no_data'
+            }else{
+                dataStatus.value = 'err_data'
+            }
+        }else{
+            dataStatus.value = 'err_data'
+        }
+    }).catch(()=>{
+        dataStatus.value = 'network_err'
     })
 }
 
@@ -120,7 +136,7 @@ watch(searchValue , ()=>{
             </div>
             <v-divider class="border-opacity-75"></v-divider>
 
-            <div clsas="w-full sm:hidden md:block ">
+            <div clsas="w-full" v-if="dataStatus === 'load_data_succ'">
                 <v-table>
                     <thead>
                         <tr>
@@ -201,6 +217,7 @@ watch(searchValue , ()=>{
                     </tbody>
                 </v-table>
             </div>
+            <pageDataStatus v-else :data-status="dataStatus"></pageDataStatus>
 
             <v-divider class="border-opacity-75"></v-divider>
             

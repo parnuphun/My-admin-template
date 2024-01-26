@@ -212,8 +212,7 @@ watch(searchValue , ()=>{
                     <div class="w-full  ">
                         <v-text-field
                             label="ค้นหา"
-                            color="pink"
-                            base-color="pink"
+                            class=""
                             v-model="searchValue.searchText"
                             hide-details
                             variant="outlined"
@@ -315,8 +314,6 @@ watch(searchValue , ()=>{
                             <v-text-field
                                 v-model="topic"
                                 label="หัวข้อ"
-                                color="pink"
-                                base-color="pink"
                                 class=" mt-3"
                                 hide-details
                                 variant="outlined"
@@ -329,15 +326,13 @@ watch(searchValue , ()=>{
                                 v-model="emailSelected"
                                 label="รายชื่ออีเมล"
                                 multiple
-                                color="pink"
-                                base-color="pink"
- 
                                 persistent-hint
                                 :items="emailSelected"
                                 chips
                                 hide-details
                                 variant="outlined"
                             >
+                            
                             </v-select>
                         </div>
                         <div class="w-full flex flex-row gap-2 p-1" v-if="drawerStatus === 'add_new'">
@@ -351,9 +346,9 @@ watch(searchValue , ()=>{
                             </v-btn>
                         </div>
                         <div class="w-full p-1">
-                            <div class="w-full h-auto mt-2 ">
+                            <div class="w-full h-auto mt-2 border-2 ">
                                 <QuillEditor 
-                                    class="min-h-[300px] border-x-2"
+                                    class="min-h-[300px]   "
                                     theme="snow" 
                                     contentType="html" 
                                     ref="quill"

@@ -77,11 +77,12 @@ const fileType = ref<string>() // 'file format ex. pdf doc sxl'
 const uploadProgress = ref(0)
 // add new file 
 function addNewFile(){
+    if(checkFileSize(fileUpload.value[0]) === false) return false
+    
     buttonLoading.value = true
-
     const formData = new FormData()    
     fileType.value = checkFileType()
-
+    
     formData.append('file_name',fileName.value!)
     formData.append('file_upload',fileUpload.value[0])
     formData.append('file_type', fileType.value!)
@@ -95,7 +96,7 @@ function addNewFile(){
             console.log(uploadProgress.value );
         }
     }).then((res)=>{
-        if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+        if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:20,icon:'error'})
         else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
         
         buttonLoading.value = false
@@ -129,8 +130,8 @@ function deleteFile(file_id:number,file_name_upload:string,file_name:string){
                 file_name:file_name
             })
             .then((res)=>{
-                if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:1,progressbar:true,icon:'success'})
-                else _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
+                if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+                else _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
                 getFileCheck()
 
                 // reset variable after deleted 
@@ -159,7 +160,7 @@ function fileSwitchPin(file_id:number , file_pin_status:boolean , file_name:stri
             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
             getFileCheck();
         }else{
-            _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
+            _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
         } 
     })    
 }
@@ -183,13 +184,14 @@ function previewsFile(file_id:number , file_name_upload:string, ){
         console.log(res.data,'<=== res data');
                 
         if(res.data.status) window.open(res.data.file_url, '_blank')
-        else _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+        else _msg.toast_msg({title:res.data.msg,timer:20,icon:'error'})
     })
 }
 
 // edit file
 function editFile(){    
-    buttonLoading.value = true 
+
+  
     console.log('new ',fileName.value);
     console.log('old ',oldFileName_DD.value);
     
@@ -201,6 +203,7 @@ function editFile(){
         formData.append('file_upload','no_file_upload')
     }else{
         fileFormat_DD.value = checkFileType() // if new upload get new file format
+        if(checkFileSize(fileUpload.value[0]) === false) return false
         formData.append('file_upload',fileUpload.value[0]) 
     }
     formData.append('file_id',fileid_DD.value!)
@@ -210,13 +213,13 @@ function editFile(){
     formData.append('file_category_id', String(fileSelected_DD.value))    
     formData.append('file_old_name', oldFileName_DD.value)    
     formData.append('credential_admin_fullname',credential.value!.user_fullname)
-
+    buttonLoading.value = true 
     _api.editFile(formData).then((res)=>{
         if(res.data.status_code === 200){ 
             _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'}) 
             fileNameUpload_DD.value = res.data.new_file_name
         }else {
-            _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+            _msg.toast_msg({title:res.data.msg,timer:20,icon:'error'})
         }
         // set file name to dd drawer for update new name and then reset for reuse in add new form 
         fileName_DD.value = fileName.value         
@@ -302,7 +305,7 @@ watch(searchValue , ()=>{
                     totalFiles.value = res.data.data_length                    
                     totalPage.value = Math.ceil(res.data.data_length/sizeSelected.value)           
                 }else{
-                    _msg.toast_msg({title:res.data.msg,timer:6,icon:'error',progressbar:true})
+                    _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
                     dataStatus.value = 'load_data_succ'
                 }
             })
@@ -381,6 +384,16 @@ function getFileCheck(){
         searchValue.searchTriger = !searchValue.searchTriger
     }
 }
+
+function checkFileSize(file:any|File){
+    if(file.size > 1024 * 1024 * 200){
+        _msg.toast_msg({title:'ไม่อนุญาตให้อัปโหลดไฟล์ที่มีขนาดเกินกว่า 200 MB',icon:'error',timer:20,progressbar:true})
+        return false
+    }else{
+        return true
+    }
+}
+
 </script>
 
 <template>
@@ -395,7 +408,7 @@ function getFileCheck(){
                             <v-icon  icon="mdi-file-plus"></v-icon> เพิ่มไฟล์  
                         </p>
                     </v-btn>
-                    <div class="h-full less:w-1/2 sm:w-auto flex justify-end items-center" >
+                    <!-- <div class="h-full less:w-1/2 sm:w-auto flex justify-end items-center" >
                         <v-btn-toggle   
                             color="pink" 
                             v-model="viewData" 
@@ -410,7 +423,7 @@ function getFileCheck(){
                                 <v-icon>mdi-table</v-icon>
                             </v-btn>
                         </v-btn-toggle>
-                    </div>
+                    </div> -->
                  </div>
                 <div class="md:w-1/2 less:w-full p-1 flex flex-wrap justify-end">
                     <div class="less:w-full md:w-1/2 p-1">

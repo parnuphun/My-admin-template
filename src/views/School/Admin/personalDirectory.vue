@@ -155,15 +155,16 @@ function addPosition(){
             positionName.value = ''
             getAllData()
         }else if(res.data.status_code === 409){
+            _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
             errMessageAddPosition.value = 'name_exist'
         }else{
             errMessageAddPosition.value = 'no_action'
-            _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:3})
+            _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
         }
         btnLoading.value = false
     }).catch(()=>{
         errMessageAddPosition.value = 'no_action'
-        _msg.toast_msg({title:'เครือข่ายมีปัญหา',icon:'error',progressbar:true,timer:3})
+        _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',icon:'error',progressbar:true,timer:20})
         btnLoading.value = false
     })
 }
@@ -173,27 +174,32 @@ const positionObject = ref<personPosition>()
  
 function renamePosition(){
     btnLoading.value = true
-    _api.renamePosition({
-        position_id : positionObject.value!.pd_position_id,
-        position_name : positionName.value,
-        position_old_name : positionObject.value!.pd_position_name,
-        credential_admin_fullname :  credential.value!.user_fullname,
-        position_category_id : positionObject.value!.pd_category_id
-    }).then((res)=>{
-        if(res.data.status_code === 200){
-            errMessageAddPosition.value = 'no_action'
-            _msg.toast_msg({title:res.data.msg,progressbar:true,timer:3,icon:'success'})
-            getAllPersonPositionList();
-        }else if(res.data.status_code === 200){
-            errMessageAddPosition.value = 'name_exist'
-         }else{
-            errMessageAddPosition.value = 'no_action'
-            _msg.toast_msg({title:res.data.msg,progressbar:true,timer:6,icon:'error'})
+    _msg.confirm('คุณต้องการจะเปลี่ยนชื่อตำแหน่งใช่หรือไม่').then((isConfirm)=>{
+        if(isConfirm){
+            _api.renamePosition({
+                position_id : positionObject.value!.pd_position_id,
+                position_name : positionName.value,
+                position_old_name : positionObject.value!.pd_position_name,
+                credential_admin_fullname :  credential.value!.user_fullname,
+                position_category_id : positionObject.value!.pd_category_id
+            }).then((res)=>{
+                if(res.data.status_code === 200){
+                    errMessageAddPosition.value = 'no_action'
+                    _msg.toast_msg({title:res.data.msg,progressbar:true,timer:3,icon:'success'})
+                    getAllPersonPositionList();
+                }else if(res.data.status_code === 200){
+                    errMessageAddPosition.value = 'name_exist'
+                    _msg.toast_msg({title:res.data.msg,progressbar:true,timer:20,icon:'error'})
+                 }else{
+                    errMessageAddPosition.value = 'no_action'
+                    _msg.toast_msg({title:res.data.msg,progressbar:true,timer:20,icon:'error'})
+                }
+                btnLoading.value = false
+            }).catch(()=>{
+                btnLoading.value = false
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',progressbar:true,timer:20,icon:'error'})
+            })
         }
-        btnLoading.value = false
-    }).catch(()=>{
-        btnLoading.value = false
-        _msg.toast_msg({title:'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้',progressbar:true,timer:20,icon:'error'})
     })
 }
 
@@ -218,7 +224,7 @@ function deletePosition(){
 
                 }
             }).catch(()=>{
-                _msg.toast_msg({title:'ไม่สามารถติดต่อเซิร์ฟเวอร์ได้',progressbar:true,timer:20,icon:'error'})
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',progressbar:true,timer:20,icon:'error'})
             })
         }
     })
@@ -351,7 +357,7 @@ function updatePerson(){
         btnLoading.value = false 
     }).catch(()=>{
         btnLoading.value = false 
-        _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ',progressbar:true,icon:"error",timer:20})
+        _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',progressbar:true,icon:"error",timer:20})
     })
 }
 
@@ -802,9 +808,9 @@ function getPersonDirectoryTableTree(){
                     </div>
                 </div>
 
-                <div class="w-full pl-7 mb-1 mt-3" v-if="errMessageAddPosition === 'name_exist'">
+                <!-- <div class="w-full pl-7 mb-1 mt-3" v-if="errMessageAddPosition === 'name_exist'">
                     <p class="text-red-500 text-[13px]"> มีชื่อตำแหน่งนี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
-                </div>
+                </div> -->
                 <div class="w-full px-6 pb-4">
                     <div class="flex flex-row gap-2 w-full">
                         <v-text-field

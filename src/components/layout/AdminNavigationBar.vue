@@ -6,7 +6,7 @@ import { webSetting, layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/GlobalData'
 import MsgAlert from '../../services/msgAlert';
 // import { checkPermission , Permission } from "../../services/auth"
-import {credential} from '../../store/Interface'
+import {credential , userRule} from '../../store/Interface'
 
 const _msg = new MsgAlert()
 const isOpenMenu = ref(false)
@@ -26,13 +26,15 @@ const admin_image = ref()
 const base_image_path = ref()
 const admin_fullname = ref()
 const admin_email = ref()
+const admin_rule = ref()
 onMounted(() => {
     credential.value = JSON.parse(localStorage.getItem('Credential')!)
     admin_image.value = credential.value!.user_image
     base_image_path.value = credential.value!.user_base_image_path
 
     admin_fullname.value = credential.value!.user_fullname
-    admin_email.value =credential.value!.user_email
+    admin_email.value = credential.value!.user_email
+    admin_rule.value = credential.value!.user_rule
     isGroupOpen()
 })
 
@@ -117,6 +119,18 @@ function isGroupOpen() {
         }
     }
 }
+ 
+ function navbarAccess(item:NavigationItem){
+    if(item.permission === 'admin' && admin_rule.value === 'admin'){
+        return true
+    }else if(item.permission === 'user' && admin_rule.value === 'admin'){
+        return true 
+    }else if(item.permission === 'admin' && admin_rule.value === 'user'){
+        return false 
+    }else{
+        return true
+    }
+ }
 </script>
 
 <template>
@@ -233,12 +247,35 @@ function isGroupOpen() {
                     <v-list class="" nav :opened="listOpend">
                         <div v-for="navItem of navigationMenu">
                             <!-- v-if=" checkPermission(navItem.permission) || isAdmin() " -->
-                            <v-list-item v-if="!navItem.childs" :title="navItem.title" :subtitle="navItem.subtitle"
-                                @click="getCurrentPath(navItem.link!)" density="comfortable" :value="navItem.id"
-                                class="text-md my-1" active-color="" :prepend-icon="navItem.icon"
+                            <!-- v-if="!navItem.childs -->
+                            <v-list-item 
+                                v-if="navbarAccess(navItem)" 
+                                :title="navItem.title" 
+                                :subtitle="navItem.subtitle"
+                                @click="getCurrentPath(navItem.link!)" 
+                                density="comfortable" 
+                                :value="navItem.id"
+                                class="text-md my-1" 
+                                active-color="" 
+                                :prepend-icon="navItem.icon"
                                 :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
-                                rounded="" color="pink">
+                                rounded="" 
+                                color="pink">
                                 <!-- <v-icon :icon="navItem.icon" start></v-icon>{{navItem.title}} -->
+                            </v-list-item>
+                            <!-- <v-list-item 
+                                v-else-if="!navItem.childs" 
+                                :title="navItem.title" 
+                                :subtitle="navItem.subtitle"
+                                @click="getCurrentPath(navItem.link!)" 
+                                density="comfortable" 
+                                :value="navItem.id"
+                                class="text-md my-1" 
+                                active-color="" 
+                                :prepend-icon="navItem.icon"
+                                :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
+                                rounded="" 
+                                color="pink">
                             </v-list-item>
                             <v-list-group v-else :value="navItem.id">
                                 <template v-slot:activator="{ props }">
@@ -247,9 +284,14 @@ function isGroupOpen() {
                                         active-color="" :prepend-icon="navItem.icon"></v-list-item>
                                 </template>
                                 <div v-for="SubNavItem of navItem.childs">
-                                    <v-list-item :title="SubNavItem.title" :subtitle="SubNavItem.subtitle"
-                                        @click="getCurrentPath(SubNavItem.link!)" density="comfortable"
-                                        :value="SubNavItem.id" class="text-md my-1" active-color=""
+                                    <v-list-item 
+                                        :title="SubNavItem.title" 
+                                        :subtitle="SubNavItem.subtitle"
+                                        @click="getCurrentPath(SubNavItem.link!)" 
+                                        density="comfortable"
+                                        :value="SubNavItem.id" 
+                                        class="text-md my-1" 
+                                        active-color=""
                                         :active="currentPath.path === SubNavItem.link || (SubNavItem.link === '/dashBoard' && currentPath.path === '/')"
                                         rounded="">
                                         <template v-slot:prepend v-if="SubNavItem.icon">
@@ -257,7 +299,7 @@ function isGroupOpen() {
                                         </template>
                                     </v-list-item>
                                 </div>
-                            </v-list-group>
+                            </v-list-group> -->
                         </div>
                     </v-list>
                 </v-navigation-drawer>

@@ -98,7 +98,7 @@ function addTeachingS(){
     btnLoading.value = true
     _api.addTeachingS(formData).then((res)=>{
         if(res.data.status_code === 200){
-            _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+            _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
             clearData()
             getTeachingS()
         }else{
@@ -140,7 +140,7 @@ function updateTeachS(){
             formData.append('class_id',tsClassSelected.value)
             _api.updateTeachS(formData).then((res)=>{
                 if(res.data.status_code === 200){
-                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
                     getAll()
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
@@ -158,7 +158,7 @@ function deleteTeachS(item:teachingSResponse){
             _api.deleteTeachignS({ts_id:item.ts_id,ts_name:item.ts_name,ts_image:item.ts_img,credential_admin_fullname:credential.value!.user_fullname})
             .then((res)=>{
                 if(res.data.status_code === 200){
-                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
                     getAll()
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})

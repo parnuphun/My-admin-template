@@ -1,5 +1,6 @@
 // import { checkPermission , Permission } from "../services/auth"
 type Permission = 'นักศึกษา' | 'อาจารย์' | 'ผู้ดูแลระบบ' | 'ทุกคน'
+import { userRule } from '../store/Interface'
 
 import {ref } from 'vue'
 export interface NavigationItem {
@@ -8,7 +9,7 @@ export interface NavigationItem {
     subtitle? : string
     icon : string
     link? : string
-    permission : Permission
+    permission : userRule
     group? : boolean
     childs? : Array<SubNavigationItem>
 }
@@ -31,84 +32,84 @@ export const navigationMenu:NavigationItem[] = [
         title : 'ประกาศประชาสัมพันธ์' ,
         icon : 'mdi-bullhorn-variant-outline' ,
         link : '/admin/annoucement' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'news_blog' ,
         title : 'ข่าวสาร' ,
         icon : 'mdi-newspaper' ,
         link : '/admin/news' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'gallery' ,
         title : 'รูปภาพกิจกรรม' ,
         icon : 'mdi-image-outline' ,
         link : '/admin/gallery' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'teaching_schedule' ,
         title : 'ตารางสอน' ,
         icon : 'mdi-table-clock' ,
         link : '/admin/teachingSchedule' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'student_schedule' ,
         title : 'ตารางเรียน' ,
         icon : 'mdi-table' ,
         link : '/admin/studentSchedule' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'student_schedule' ,
         title : 'หลักสูตร' ,
         icon : 'mdi-book-education-outline' ,
         link : '/admin/syllabus' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'person_position' ,
         title : 'ทำเนียบบุคลากร' ,
         icon : 'mdi-account-box-multiple-outline' ,
         link : '/admin/personalDirectory' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'files' ,
         title : 'เอกสาร' ,
         icon : 'mdi-file-outline' ,
         link : '/admin/files' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'person_management' ,
         title : 'ผู้ดูแลระบบ' ,
         icon : 'mdi-account-outline' ,
         link : '/admin/adminManagement' ,
-        permission : 'ทุกคน' ,
+        permission : 'user' ,
     },
     {
         id: 'email' ,
         title : 'ส่งอีเมล' ,
         icon : 'mdi-email-outline' ,
         link : '/admin/email' ,
-        permission : 'ทุกคน' ,
+        permission : 'admin' ,
     },
     {
         id: 'history_logs' ,
         title : 'ประวัติการใช้งานระบบ' ,
         icon : 'mdi-clipboard-text-clock-outline' ,
         link : '/admin/history' ,
-        permission : 'ทุกคน' ,
+        permission : 'admin' ,
     },
     {
         id: 'setting' ,
         title : 'ตั้งค่า' ,
         icon : 'mdi-cog-outline' ,
         link : '/admin/setting' ,
-        permission : 'ทุกคน' ,
+        permission : 'admin' ,
     },
     // {
     //     id: 'test_ui' ,

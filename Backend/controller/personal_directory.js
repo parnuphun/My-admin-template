@@ -56,7 +56,7 @@ module.exports.addPosition = async (req,res) => {
         if (result_check_name.length>=1) return res.status(200).json({
             status_code:409,
             status: false ,
-            msg:'ชื่อตำแหน่งซ้ำ กรณาป้อนใหม่' 
+            msg:'ชื่อตำแหน่งซ้ำ กรุณาป้อนใหม่' 
         })
 
         await dbQuery(qr_add_position,[position_name,position_category_id])
@@ -156,7 +156,7 @@ module.exports.renamePosition = async (req,res) => {
         if(result_check_name.length >= 1)return res.status(200).json({
             status_code:409,
             status: false ,
-            msg:'ชื่อตำแหน่งซ้ำ กรณาป้อนใหม่' 
+            msg:'ชื่อตำแหน่งซ้ำ กรุณาป้อนใหม่' 
         })
 
         await dbQuery(qr_rename,[position_name , position_id])

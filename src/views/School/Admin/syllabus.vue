@@ -124,7 +124,7 @@ function updateSyllabus(){
             btnLoading.value = true
             _api.updateSyllabus(formData).then((res)=>{
                 if(res.data.status_code === 200){
-                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
                     getAll()
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
@@ -132,7 +132,7 @@ function updateSyllabus(){
                 btnLoading.value = false
             }).catch((err)=>{
                 btnLoading.value = false
-                _msg.toast_msg({title:'เกิดความผิดพลาด ไม่สามารถดำเนินการได้',icon:'error',progressbar:true,timer:20})
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',icon:'error',progressbar:true,timer:20})
             })
         }
     })
@@ -151,14 +151,14 @@ function deleteSyllabus(item:syllabusResponse){
             })
             .then((res)=>{
                 if(res.data.status_code === 200){
-                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
                     getAll()
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
                 }
             }).catch((err)=>{
                 btnLoading.value = false
-                _msg.toast_msg({title:'เกิดความผิดพลาด ไม่สามารถดำเนินการได้',icon:'error',progressbar:true,timer:20})
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',icon:'error',progressbar:true,timer:20})
             })
         }
     })
@@ -247,7 +247,7 @@ const searchValue = reactive({
             <div clsas="w-full " v-if="syllabusStatus === 'load_data_succ'">
                 <div class="w-full pr-2">
                     <div class="h-full flex less:flex-col sm:flex-row justify-center items-start group border-2 shadow-md
-                    hover:shadow-xl hover:shadow-pink-100 mt-4 rounded-md border-gray-400 hover:border-pink-500" 
+                    hover:shadow-xl hover:shadow-pink-200 mt-4 rounded-md border-gray-400 hover:border-pink-500 duration-200" 
                     v-for="(item, i) in syllabusList" :key="item.syllabus_id">
                         <div class="less:w-full min-w-[300px] sm:w-[300px] sm:h-[200px] less:h-[350px] rounded-md">
                             <img  

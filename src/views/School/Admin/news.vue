@@ -108,13 +108,14 @@ function addNewsCategory(){
     .then((res)=>{
         if(res.data.status_code === 409){
             errMsgNewsCategory.value = 'name_exist'
+            _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
         }else if(res.data.status_code === 200){
             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
             getAllNewsCategory()
             errMsgNewsCategory.value = 'no_action'
             newsCategoryName.value = ''
         }else{
-            _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+            _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
         }
         btnLoading.value = false
     }).catch((err)=>{
@@ -143,13 +144,14 @@ function updateNewsCategory(){
                     credential_admin_fullname:credential.value!.user_fullname}
             ).then((res)=>{
                 if(res.data.status_code === 409){
+                    _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
                     errMsgNewsCategory.value = 'name_exist'
                 }else if(res.data.status_code === 200){
                     _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
                     errMsgNewsCategory.value = 'no_action'
                     getAllNewsCategory()
                 }else{
-                    _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+                    _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
                 }
                 btnLoading.value = false
             }).catch((err)=>{
@@ -175,7 +177,7 @@ function deleteNewsCategory(){
                     newsCategoryName.value = ''
                     getAllNewsCategory()
                 }else{
-                    _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+                    _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
                 }
             }).catch((err)=>{
                 _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:20,progressbar:true,icon:'error'})
@@ -254,12 +256,12 @@ function addNews(){
             getAllData();
             addNewsDrawer.value = false
         }else{
-            _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+            _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
         }
         btnLoading.value = false 
     }).catch((err)=>{
         btnLoading.value = false 
-        _msg.toast_msg({title:'ระบบเกิดความผิดพลาด กรุณาติดต่อผู้ดูแลระบบ',timer:10,progressbar:true,icon:'error'})
+        _msg.toast_msg({title:'ระบบเกิดความผิดพลาด กรุณาติดต่อผู้ดูแลระบบ',timer:20,progressbar:true,icon:'error'})
     })
 }
 
@@ -303,7 +305,7 @@ function updateNews(){
                     
                     await setUpNewsDetail(newsList.value![newsDetailIndex.value] , newsDetailIndex.value , true)
                 }else{
-                    _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:10})
+                    _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
                 }
             }).catch((err)=>{
                 _msg.toast_msg({title:'ระบบเกิดความผิดพลาด กรุณาติดต่อผู้ดูแลระบบ',icon:'error',progressbar:true,timer:20})
@@ -326,10 +328,10 @@ function deleteNews(){
                     getAllData();
                     clearData('delete_news_drawer')
                 }else{
-                    _msg.toast_msg({title:res.data.msg,timer:10,progressbar:true,icon:'error'})
+                    _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
                 }
             }).catch((err)=>{
-                _msg.toast_msg({title:'เกิดข้อผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:10,progressbar:true,icon:'error'})
+                _msg.toast_msg({title:'เกิดข้อผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:20,progressbar:true,icon:'error'})
             })
         }
     })
@@ -467,9 +469,9 @@ watch(searchValue , ()=>{
             </div>
             <v-divider class="border-opacity-100"></v-divider>
             <div class="flex flex-col gap-2 py-2 pr-2">
-                <div class="w-full h-full flex flex-col gap-2 py-2 pr-2" v-if="newsListStatus === 'load_data_succ'">
+                <div class="w-full h-full flex flex-col gap-4 py-2 pr-2" v-if="newsListStatus === 'load_data_succ'">
                     <div class="flex less:flex-col sm:flex-row justify-center items-start cursor-pointer group border-2
-                    border-gray-400 rounded-md hover:border-pink-500" 
+                    border-gray-400 rounded-md hover:border-pink-500 shadow-md hover:shadow-lg hover:shadow-pink-200 duration-200" 
                     v-for="(item , i) in newsList" :key="item.news_id"
                     @click="setUpNewsDetail(item,i)"
                     >
@@ -753,9 +755,9 @@ watch(searchValue , ()=>{
                     </div>
                 </div>
 
-                <div class="w-full pl-7 mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
+                <!-- <div class="w-full pl-7 mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
                     <p class="text-red-500 text-[13px]"> มีชื่อหมวดหมู่นี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
-                </div>
+                </div> -->
                 <div class="w-full px-6 pb-4">
                     <div class="flex flex-row gap-2 w-full">
                         <v-text-field
@@ -778,7 +780,7 @@ watch(searchValue , ()=>{
         </v-card>
     </v-dialog>
 
-    <!-- rename position  -->
+    <!-- rename category  -->
     <v-dialog
         persistent
         v-model="renameNewsCategoryDialog"
@@ -796,9 +798,9 @@ watch(searchValue , ()=>{
                 </div>
 
                     <div class="w-full px-6 pb-4 ">
-                        <div class="w-full mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
-                        <p class="text-red-500 text-[13px]"> มีชื่อหมวดหมู่นี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
-                    </div>
+                        <!-- <div class="w-full mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
+                            <p class="text-red-500 text-[13px]"> มีชื่อหมวดหมู่นี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
+                        </div> -->
                     <div class="flex flex-row gap-2 w-full">
                         <v-text-field
                             v-model="newsCategoryName"

@@ -12,7 +12,7 @@ module.exports.getHistoryLength = async (req,res) =>{
         const length = result_length[0].length
         
         res.status(200).json({
-            staus_code:200,
+            status_code:200,
             status:true,
             history_length : length
         })
@@ -37,7 +37,7 @@ module.exports.getHistory = async (req,res) =>{
         }
 
         res.status(200).json({
-            staus_code:200,
+            status_code:200,
             status:true,
             history_data : result_data
         })
@@ -63,7 +63,7 @@ module.exports.searchHistory = async (req,res) => {
         const result_search = await dbQuery(qr_search,['%'+search_keyword+'%' , limit , start_item])
         res.status(200).json({
             status:true,
-            staus_code:200,
+            status_code:200,
             history_data_search:result_search,
             history_data_search_length:length
         })

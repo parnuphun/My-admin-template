@@ -141,6 +141,30 @@ const upload_syllabus_image = multer({
 }).single('syllabus_image')
 
 
+// Middleware to handle file upload and check for req.aborted
+const checkAbortedReq = (req, res, next) => {
+    console.log(req.aborted);
+    if (req.aborted) {
+        // If the request is aborted, delete the uploaded file
+        if (req.file) {
+            const filePath = path.join(__dirname, '../public/file', req.file.filename);
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.error('Error deleting file:', err);
+                } else {
+                    console.log('File deleted successfully.');
+                }
+            });
+        }
+
+        // Respond with an appropriate status code or message
+        return res.status(500).json({ message: 'Request aborted, file deleted.' });
+    }
+
+    next()
+    
+};
+
   
 module.exports = { 
     upload_person_image ,
@@ -152,7 +176,8 @@ module.exports = {
     upload_anno_image,
     upload_teaching_schedule_image,
     upload_student_schedule_image,
-    upload_syllabus_image
+    upload_syllabus_image,
+    checkAbortedReq
 };
 
  

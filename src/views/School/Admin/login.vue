@@ -36,7 +36,7 @@ function login(){
             localStorage.setItem('Credential',JSON.stringify(res.data.user_data))
             axiosAuth.defaults.headers['Authorization'] = `Bearer ${res.data.user_data.user_token}`; // update token in header
             setTimeout(()=>{
-                nextPage('/admin/news')
+                nextPage('/admin/annoucement')
             },500)
         }else if(res.data.status_code === 401){
             errMessage.value = 'login_failed'

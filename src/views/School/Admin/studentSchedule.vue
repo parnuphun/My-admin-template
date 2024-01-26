@@ -102,7 +102,7 @@ function addStudentS(){
     btnLoading.value = true
     _api.addStudentS(formData).then((res)=>{
         if(res.data.status_code === 200){
-            _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+            _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
             clearData()
             getAll()
         }else{
@@ -144,7 +144,7 @@ function updateStudentS(){
             formData.append('class_id',ssClassSelected.value)
             _api.updateStudentS(formData).then((res)=>{
                 if(res.data.status_code === 200){
-                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
                     getAll()
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
@@ -157,12 +157,12 @@ function updateStudentS(){
 }
 
 function deleteStudentS(item:StudentSResponse){
-    _msg.confirm(`ต้องการลบตารางสอน ${item.ss_name} ใช่ไหม` ).then((isConfirmed)=>{
+    _msg.confirm(`คุณต้องการจะลบตารางสอนใช่ไหม` ).then((isConfirmed)=>{
         if(isConfirmed){
             _api.deleteStudentS({ss_id:item.ss_id,ss_name:item.ss_name,ss_image:item.ss_img,credential_admin_fullname:credential.value!.user_fullname})
             .then((res)=>{
                 if(res.data.status_code === 200){
-                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
                     getAll()
                 }else{
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})

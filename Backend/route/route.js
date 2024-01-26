@@ -14,7 +14,8 @@ const {
     upload_anno_image,
     upload_teaching_schedule_image,
     upload_student_schedule_image,
-    upload_syllabus_image
+    upload_syllabus_image,
+    checkAbortedReq
 } = require('../services/upload')
 const delete_image = require('../services/delete_file')
 
@@ -77,8 +78,8 @@ route.post('/addFileCategory',authorization,file_c.addFileCategory) // เพิ
 route.post('/renameFileCategory',authorization,file_c.renameFileCategory) // เปลี่ยนชือหมวดหมู่เอกสาร
 route.post('/deleteFileCategory',authorization,file_c.deleteFileCategory) // ลบหมวดหมู่เอกสาร
 route.post('/getAllCategoryFile',authorization,file_c.getAllCategoryFile) // ดึงข้อมูลหมวดหมู่เอกสารทั้งหมด
-route.post('/addNewFile',authorization,upload_file,file_c.addNewFile) // เพิ่มเอกสาร
-route.post('/editFile',authorization,upload_file,file_c.editFile) // อัพเดตเอกสาร
+route.post('/addNewFile',authorization,checkAbortedReq,upload_file,file_c.addNewFile) // เพิ่มเอกสาร
+route.post('/editFile',authorization,checkAbortedReq,upload_file,file_c.editFile) // อัพเดตเอกสาร
 route.post('/deleteFile',authorization,file_c.deleteFile) // ลบเอกสาร
 route.post('/fileSwitchPin',authorization,file_c.fileSwitchPin) // ปักหมุดเอกสาร
 route.post('/downloadFile',authorization,file_c.downloadFile) // ดาวน์โหลดเอกสาร

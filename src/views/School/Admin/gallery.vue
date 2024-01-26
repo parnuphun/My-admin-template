@@ -17,7 +17,7 @@ const imagelistSatatus = ref<dataStatus>('no_data')
 
 const credential = ref<credential>()
 onMounted(()=>{
-    document.title = 'ภาพกิจกรรม'
+    document.title = 'รูปภาพกิจกรรม'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
     getAllData()
 })
@@ -78,7 +78,7 @@ function addNewActivityImage(){
     
     _api.addNewActivityImage(formData).then((res)=>{
         if(res.data.status_code === 200) _msg.toast_msg({title:res.data.msg,timer:3,icon:'success',progressbar:true})
-        else _msg.toast_msg({title:res.data.msg,timer:5,icon:'error',progressbar:true})
+        else _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
         getAllData();
         activityImageName.value=''
         activityImageLink.value=''
@@ -109,7 +109,7 @@ function updateActivity(){
         if(isConfirm){
             _api.updateActivity(formData).then((res)=>{
                 if(res.data.status_code === 200 )_msg.toast_msg({title:res.data.msg,timer:3,icon:'success',progressbar:true})
-                else _msg.toast_msg({title:res.data.msg,timer:5,icon:'error',progressbar:true})
+                else _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
                 getAllData();
             })
         }
@@ -127,7 +127,7 @@ function deleteActivityImage(id:number,image:string,name:string){
                 activity_image_name:name
             }).then((res)=>{
                 if(res.data.status_code === 200 )_msg.toast_msg({title:res.data.msg,timer:3,icon:'success',progressbar:true})
-                else _msg.toast_msg({title:res.data.msg,timer:5,icon:'error',progressbar:true})
+                else _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
                 getAllData();
             })
         }
@@ -252,9 +252,9 @@ watch(searchValue , ()=>{
             </div>
             <v-divider class="border-opacity-100"></v-divider>
             <div class="flex flex-col gap-2 py-2 pr-2">
-                <div class="w-full h-full flex flex-col gap-2 py-2 pr-2" v-if="imagelistSatatus === 'load_data_succ'">
+                <div class="w-full h-full flex flex-col gap-4 py-2 pr-2" v-if="imagelistSatatus === 'load_data_succ'">
                     <div class="flex less:flex-col sm:flex-row justify-center items-start group border-2 
-                    border-gray-400 hover:border-pink-400 rounded-md" 
+                    border-gray-400 hover:border-pink-400 rounded-md shadow-md hover:shadow-lg hover:shadow-pink-200 duration-200" 
                     v-for="(item , i) in activityImagesList" :key="item.activity_image_id"
                     
                     >

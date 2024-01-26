@@ -205,11 +205,15 @@ module.exports.addNewFile = async (req,res)=> {
             'file', 
             `${credential_admin_fullname} เพิ่มไฟล์เอกสาร '${file_name}'`
         )
+        
         res.status(200).json({
             status:true,
             statusCode:200,
             msg:'เพิ่มไฟล์สำเร็จ',
         })
+    
+        
+        
 
     } catch (err) {
         return return_err(res,'TRY CATCH','ADD FILE ',err,500)

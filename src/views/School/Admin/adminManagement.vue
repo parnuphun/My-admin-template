@@ -77,11 +77,11 @@ function getAllAdmin(){
             }
         }else{
             dataStatus.value = 'err_data'
-            _msg.toast_msg({title:res.data.msg,timer:10,icon:'error',progressbar:true})
+            _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
         }
     }).catch((err)=>{
         dataStatus.value = 'network_err'
-        _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:10,icon:'error'})
+        _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',timer:20,icon:'error'})
     })
 }
 const btnLoading = ref(false)
@@ -137,9 +137,9 @@ function addNewAdmin(){
     btnLoading.value = true
     _api.addNewAdmin(formData).then((res)=>{        
         if(res.data.status_code === 409){
-            _msg.toast_msg({title:res.data.msg,progressbar:true,icon:'error',timer:10})
+            _msg.toast_msg({title:res.data.msg,progressbar:true,icon:'error',timer:20})
         }else if(res.data.status_code === 200){
-            _msg.toast_msg({title:res.data.msg,progressbar:true,icon:'success',timer:1})
+            _msg.toast_msg({title:res.data.msg,progressbar:true,icon:'success',timer:3})
             clearData('add_form')
             getAllData()
         }else{
@@ -147,7 +147,7 @@ function addNewAdmin(){
         }
         btnLoading.value =false
     }).catch((err)=>{
-        _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ โปรดแจ้งผู้ดูแลระบบ',progressbar:true,icon:'error',timer:20})
+        _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',progressbar:true,icon:'error',timer:20})
         btnLoading.value =false
     })
 }
@@ -227,7 +227,7 @@ function updateAdmin(){
                 }
                 btnLoading.value= false 
             }).catch((err)=>{
-                _msg.toast_msg({title:'เกิดความผิดพลาดในระบบบ กรุณาติดต่อผู้ดูแลระบบ',progressbar:true,timer:10,icon:'error'})
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',progressbar:true,timer:10,icon:'error'})
                 btnLoading.value= false 
             })
         }
@@ -251,10 +251,10 @@ function deleteUser(){
                     userDetail.value = undefined
                     
                 } else{
-                    _msg.toast_msg({title:res.data.msg,timer:10,icon:'error',progressbar:true})
+                    _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
                 }
             }).catch((err)=>{
-                _msg.toast_msg({title:'เกิดข้อผิดพลาดในระบบ ไม่สามารถดำเนินการได้ กรุณาติดต่อผู้ดูแลระบบ',timer:10,icon:'error',progressbar:true})
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',timer:10,icon:'error',progressbar:true})
             })
         }
     })
@@ -278,7 +278,7 @@ function resetPassword(){
                     _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
                 }
             }).catch((err)=>{
-                _msg.toast_msg({title:'ระบบเกิดปัญหา กรุณาติดต่อผู้ดูแลระบบ',icon:'error',progressbar:true,timer:20})
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',icon:'error',progressbar:true,timer:20})
 
             })
         }
@@ -494,11 +494,11 @@ watch(searchValue , ()=>{
                     }     
                 }else{
                     dataStatus.value = 'err_data'
-                    _msg.toast_msg({title:res.data.msg,timer:10,icon:'error',progressbar:true})
+                    _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
                 }
             }).catch((err)=>{
                 dataStatus.value = 'network_err'
-                _msg.toast_msg({title:'เกิดความผิดพลาดในระบบ กรุณาติดต่อผู้ดูแลระบบ',timer:10,icon:'error'})
+                _msg.toast_msg({title:'ไม่สามารถดำเนินการได้ กรุณาลองใหม่ภายหลังหรือติดต่อผู้พัฒนาระบบ',timer:20,icon:'error'})
             })
         }
     },500)
@@ -793,8 +793,8 @@ watch(searchValue , ()=>{
                             <v-file-input
                                 accept="image/*"
                                 v-model="imageFileUpload"
-                                placeholder="เลือกภาพประจำตัว"
-                                label="เลือกภาพประจำตัว"
+                                placeholder="เพิ่มภาพประจำตัว"
+                                label="เพิ่มภาพประจำตัว"
                                 class=""
                                 name="admin_image"
                                 hide-details="auto"
@@ -842,7 +842,7 @@ watch(searchValue , ()=>{
                                 ></v-text-field>
                             </div>
                             <div class="w-fit h-full flex justify-center items-center mt-3">
-                                <v-checkbox hide-details color="pink" v-model="defaultPassword"
+                                <v-checkbox hide-details color="pink" base-color="pink" v-model="defaultPassword"
                                 >
                                     <v-tooltip location="top" activator="parent">
                                         ใช้รหัสผ่านเริ่มต้น 
@@ -976,8 +976,8 @@ watch(searchValue , ()=>{
                             <v-file-input v-if="(userDetail!.user_id === credential_id) || credential_rule === 'admin'"
                                 accept="image/*"
                                 v-model="imageFileUpload"
-                                placeholder="เลือกภาพประจำตัว"
-                                label="เลือกภาพประจำตัว"
+                                placeholder="เพิ่มภาพประจำตัว"
+                                label="เพิ่มภาพประจำตัว"
                                 class=""
                                 name="admin_image"
                                 hide-details="auto"
@@ -1151,7 +1151,7 @@ watch(searchValue , ()=>{
                     <v-checkbox hide-details color="pink" v-model="defaultPassword"
                     label="ใช้รหัสผ่านเริ่มต้น ">
                         <v-tooltip location="top" activator="parent">
-                            namphong2566
+                            {{defaultAdminPassword}}
                         </v-tooltip>
                     </v-checkbox>
                 </div>
