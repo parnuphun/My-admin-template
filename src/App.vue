@@ -7,6 +7,16 @@
 </template>
 
 <style>
+    /* Customize the button positions */
+    .swal2-confirm {
+      order: 1; /* Set the order property to -1 to move it to the left */
+    }
+
+    .swal2-cancel {
+      order: -1; /* Set the order property to 1 to move it to the right */
+    }
+
+
     /* sweet alert */
     .swal2-container {
         z-index: 20000 !important;
@@ -29,5 +39,6 @@
         background: #64748b;
     }
 
+  
      
 </style>

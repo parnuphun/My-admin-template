@@ -24,12 +24,12 @@ const breadcrumb = ref<BreadcrumbItem[]>([
 <template>
     <div class="flex flex-col w-full relative">        
         <NampongNavBar class=""></NampongNavBar>
-        <v-divider></v-divider>
+        <v-divider class="border-opacity-100"></v-divider>
         <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
                     <div class="w-[1000px] h-full bg-white">
-                        <p class="text-xl py-4 border-l-8 border-pink-500 ">  
+                        <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
                                     <div v-if="item.disabled === true">
@@ -45,7 +45,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                                 </template>
                             </v-breadcrumbs>
                         </p>
-                        <v-divider></v-divider>
+                        <v-divider class="border-opacity-100"></v-divider>
                         <div class="md:px-16 lg:px-20 sm:px-10 less:px-2 xl:px-20 mt-6 mb-4">
                             <img class="w-full h-[350px] rounded-xl object-cover" src="/images/namphon_mockup/about01.jpg" alt="">
                             <p class="mt-2">
@@ -56,20 +56,22 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                         </div>
     
                         <div class="w-full h-auto ">
+                            <v-divider class="border-opacity-100"></v-divider>
                             <div class="py-4 text-2xl pl-4 border-l-8 border-pink-500 ">
                                 วิสัยทัศ
                             </div>
-                            <v-divider></v-divider>
+                            <v-divider class="border-opacity-100"></v-divider>
                             <div class="less:text-md md:text-xl xl:text-2xl text-center flex justify-center items-center w-full h-full py-10 
                             md:px-16 lg:px-20 sm:px-10 less:px-2 xl:px-20">
                                 "โรงเรียนเป็นแปล่งเรียนรู้เชิงนิเวศ นักเรียนและครูร่วมกันเรียนรู้ ร่วมพัฒนาอย่างมีสุข ภายใต้การบริหารจัดการแบบมีส่วนร่วมโดยใช้โรงเรียนเป็นมาตรฐาน"
                             </div>
                         </div>
                         <div class="w-full h-auto pb-10 mt-6">
+                            <v-divider class="border-opacity-100"></v-divider>
                             <div class="py-4 text-2xl pl-4 border-l-8 border-pink-500 ">
                                 พันธกิจ
                             </div>
-                            <v-divider></v-divider>
+                            <v-divider class="border-opacity-100"></v-divider>
                             <div class="w-full h-auto py-3 md:px-16 lg:px-20 sm:px-10 less:px-2 xl:px-20 mt-4">
                                 <div class="w-full relative mb-4">
                                     <div class="absolute w-10 h-10 flex justify-center items-center rounded-full 
@@ -137,14 +139,15 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                         </div>
     
                         <div class="w-full h-auto pb-10">
+                            <v-divider class="border-opacity-100"></v-divider>
                             <div class="py-4 text-2xl pl-4 border-l-8 border-pink-500 ">
                                 ประวัติความเป็นมา
                             </div>
-                            <v-divider></v-divider>
+                            <v-divider class="border-opacity-100"></v-divider>
                             <v-timeline align="start" side="end" truncate-line="end" class="px-2">
                                 <v-timeline-item dot-color="pink">
                                     <template v-slot:opposite>
-                                        2456
+                                         
                                     </template>
                                     <div>
                                         <p class="">
@@ -163,7 +166,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                                     </v-timeline-item>
                                 <v-timeline-item dot-color="pink">
                                     <template v-slot:opposite>
-                                        2471
+                                        
                                     </template>
                                     <div>
                                         <p>
@@ -173,7 +176,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                                 </v-timeline-item>
                                 <v-timeline-item dot-color="pink">
                                     <template v-slot:opposite>
-                                        2480 
+                                        
                                     </template>
                                     <div>
                                         <p>
@@ -183,7 +186,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                                 </v-timeline-item>
                                 <v-timeline-item dot-color="pink">
                                     <template v-slot:opposite>
-                                        2512 
+                                       
                                     </template>
                                     <div>
                                         <p>
@@ -193,7 +196,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                                 </v-timeline-item>
                                 <v-timeline-item dot-color="pink">
                                     <template v-slot:opposite>
-                                        2552 
+                                       
                                     </template>
                                     <div>
                                         <p>
@@ -203,7 +206,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                                 </v-timeline-item>
                                 <v-timeline-item dot-color="pink">
                                     <template v-slot:opposite>
-                                        ปัจจุบัน 
+                                       
                                     </template>
                                     <div>
                                         <p>

@@ -15,8 +15,8 @@ module.exports = async (new_path, old_path) => {
             return false
         }
     }catch(err){
-        console.log('caNT RENAME FILE , PLS CHECK ERR !!');
-        console.log('ERR =>',err);
+        console.log('CANT RENAME FILE , PLS CHECK ERR !!');
+        console.log('ERR :',err);
         return false 
     }
     

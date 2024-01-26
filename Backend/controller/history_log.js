@@ -1,93 +1,79 @@
 const db = require('../config/database');
 require('dotenv').config();
 const return_err = require('../services/return_err')
-const date_convert = require('../services/date_convert')
+const date_convert = require('../services/date_convert');
+const { dbQuery } = require('../services/query');
 
 // get all history list length 
-module.exports.getHistoryLength = (req,res) =>{
+module.exports.getHistoryLength = async (req,res) =>{
     try{
-        db.query(`SELECT COUNT(*) AS history_length FROM history_logs`, async(err,result)=>{
-            if(err){
-                return return_err(res,'QUERY BLOCK','GET HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
-            }
-            res.status(200).json({
-                status:true,
-                staus_code:200,
-                msg:'ดึงข้อมูลสำเร็จ',
-                history_length : result[0].history_length
-            })
-
+        const qr_get_length = `SELECT COUNT(*) AS length FROM history_logs`
+        const result_length = await dbQuery(qr_get_length)
+        const length = result_length[0].length
+        
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            history_length : length
         })
+
     }catch(err){
-        return_err(res,'TRY CATCH','GET HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
+        return_err(res,'TRY CATCH','GET HISTORY LENGTH ',err,500)
     }
 }
 
 // get all history list 
-module.exports.getHistory = (req,res) =>{
-    const start_item = req.body.start_item 
-    const limit = req.body.limit 
+module.exports.getHistory = async (req,res) =>{
+    try {
+        const start_item = req.body.start_item 
+        const limit = req.body.limit 
 
-    try{
-        db.query(`SELECT * FROM history_logs ORDER BY history_logs_id DESC LIMIT ? OFFSET ? `,
-        [limit,start_item], async(err,result)=>{
-            if(err){
-                return return_err(res,'QUERY BLOCK','GET HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
-            }
+        const qr_get_data = `SELECT * FROM history_logs ORDER BY history_logs_id DESC LIMIT ? OFFSET ?`
+        const result_data = await dbQuery(qr_get_data,[limit,start_item])
 
-            for(let i = 0 ; i<result.length ; i++){
-                result[i].history_logs_date = await date_convert(result[i].history_logs_date)
-            }
+        // format data
+        for(let i = 0 ; i<result_data.length ; i++){
+            result_data[i].history_logs_date = await date_convert(result_data[i].history_logs_date)
+        }
 
-            res.status(200).json({
-                status:true,
-                staus_code:200,
-                msg:'ดึงข้อมูลสำเร็จ',
-                history_data : result
-            })
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            history_data : result_data
         })
-    }catch(err){
-        return_err(res,'TRY CATCH','GET HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
+
+    } catch (err) {
+        return_err(res,'TRY CATCH','GET HISTORY',err,500)
     }
 }
 
 // search all history file 
-module.exports.searchHistory = (req,res) => {
-    const search_keyword = req.body.search_keyword
-    const limit = req.body.limit
-    const start_item = req.body.start_item
+module.exports.searchHistory = async (req,res) => {
 
-    let query_select = `SELECT * FROM history_logs WHERE history_logs_text LIKE ? ORDER BY history_logs_id DESC LIMIT ${limit} OFFSET ${start_item}` 
+    try {
+        const search_keyword = req.body.search_keyword
+        const limit = req.body.limit
+        const start_item = req.body.start_item
 
-    try{
-        db.query(query_select , ['%'+search_keyword+'%'] , async(err ,result) => {
-            if(err) {
-                return return_err(res,'QUERY BLOCK','SEARCH HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
-            }
-            for(let i = 0 ; i<result.length ; i++){
-                result[i].history_logs_date = await date_convert(result[i].history_logs_date)
-            }
-            let history_data_search = result
-            try{
-                db.query(`SELECT * FROM history_logs WHERE history_logs_text LIKE ?`,['%'+search_keyword+'%'] ,async(err,result)=>{
-                    if(err) {
-                        return return_err(res,'QUERY BLOCK(2)','SEARCH HISTORY GET LENGTH BLOCK',err,500,'ไม่สามารถดึงข้อมูลได่')
-                    }
-                    res.status(200).json({
-                        status:true,
-                        staus_code:200,
-                        msg:'ดึงข้อมูลสำเร็จ',
-                        history_data_search:history_data_search,
-                        history_data_search_length:result.length
-                    })
-                })
-            }catch(err){
-                return_err(res,'TRY CATCH(2)','SEARCH HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
-            }
+        const qr_search_length = `SELECT COUNT(*) AS length FROM history_logs WHERE history_logs_text LIKE ?`
+        const qr_search = `SELECT * FROM history_logs WHERE history_logs_text LIKE ? ORDER BY history_logs_id DESC LIMIT ? OFFSET ?`
+        
+        const result_search_length = await dbQuery(qr_search_length,['%'+search_keyword+'%'])
+        const length = result_search_length[0].length
+        const result_search = await dbQuery(qr_search,['%'+search_keyword+'%' , limit , start_item])
+        res.status(200).json({
+            status:true,
+            status_code:200,
+            history_data_search:result_search,
+            history_data_search_length:length
         })
-    }catch(err){
-        return_err(res,'TRY CATCH','SEARCH HISTORY',err,500,'ไม่สามารถดึงข้อมูลได่')
+
+        // format data
+        for(let i = 0 ; i<result_search.length ; i++){
+            result_search[i].history_logs_date = await date_convert(result_search[i].history_logs_date)
+        }
+
+    } catch (err) {
+        return_err(res,'TRY CATCH','SEARCH HISTORY',err,500)
     }
-
-
 }

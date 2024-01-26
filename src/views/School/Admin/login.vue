@@ -5,11 +5,16 @@ import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vu
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
 import { useRouter } from 'vue-router' ;
+import axiosAuth from '../../../services/auth';
 
 const router_s = useRouter();
 
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
+
+onMounted(()=>{
+    document.title = 'เข้าสู่ระบบ'
+})
 
 function nextPage(path:string) {
     router_s.push(path)
@@ -17,6 +22,7 @@ function nextPage(path:string) {
 
 type errMessage = 'login_succ' | 'login_failed' | 'no_action' | 'server_err'
 const errMessage = ref<errMessage>('no_action')
+const errMsgResponse = ref()
 const btnLoading = ref(false)
 
 const username = ref()
@@ -28,14 +34,17 @@ function login(){
         if(res.data.status_code === 200){            
             errMessage.value = 'login_succ'              
             localStorage.setItem('Credential',JSON.stringify(res.data.user_data))
+            axiosAuth.defaults.headers['Authorization'] = `Bearer ${res.data.user_data.user_token}`; // update token in header
             setTimeout(()=>{
-                nextPage('/admin/news')
+                nextPage('/admin/annoucement')
             },500)
         }else if(res.data.status_code === 401){
             errMessage.value = 'login_failed'
+            errMsgResponse.value = res.data.msg
             password.value = ''
         }else{
             errMessage.value = 'server_err'
+            errMsgResponse.value = res.data.msg
         }
         setTimeout(() => {
             // errMessage.value = 'no_action'
@@ -49,7 +58,6 @@ function login(){
     });
 }
  
-
 </script>
 
 <template>
@@ -73,7 +81,7 @@ function login(){
                             ></v-alert>
                             <v-alert v-else-if="errMessage === 'login_failed'"
                                 type="error"
-                                text="กรุณากรอกชื่อผู้ใช้งานและรหัสผ่านให้ถูกต้อง"
+                                :text="errMsgResponse"
                             ></v-alert>
                             <v-alert v-else-if="errMessage === 'server_err'"
                                 type="error"
@@ -89,6 +97,7 @@ function login(){
                             class="mt-4"
                             hide-details
                             variant="outlined"
+                            autocomplete="current-username"
                             bg-color=""
                             required
                         ></v-text-field>
@@ -97,6 +106,7 @@ function login(){
                             label="รหัสผ่าน"
                             class="mt-4"
                             type="password"
+                            autocomplete="current-password"
                             hide-details
                             variant="outlined"
                             bg-color=""
@@ -106,8 +116,6 @@ function login(){
                         class="mt-4 w-full" size="large" color="pink">
                             เข้าสู่ระบบ
                         </v-btn>
-
-
                     </v-form>
                 </div>
             </div>

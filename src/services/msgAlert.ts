@@ -160,6 +160,7 @@ export default class MsgAlert {
                 showCancelButton: showCancelButton,
                 showConfirmButton: true,
                 cancelButtonColor: '#d33',
+                confirmButtonColor: '#4caf50',
                 cancelButtonText: 'ยกเลิก',
                 confirmButtonText: confirmButtonText,
             }).then((afterClick)=>{

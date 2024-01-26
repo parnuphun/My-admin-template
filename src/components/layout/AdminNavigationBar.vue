@@ -6,22 +6,36 @@ import { webSetting, layOutTheme } from '../../store/theme/themeData'
 import { isRail } from '../../store/GlobalData'
 import MsgAlert from '../../services/msgAlert';
 // import { checkPermission , Permission } from "../../services/auth"
+import {credential , userRule} from '../../store/Interface'
 
 const _msg = new MsgAlert()
 const isOpenMenu = ref(false)
 const isDrawer = ref(true)
-const credentialData = ref()
 const isAlert = ref(false)
 const listOpend = ref<Array<string>>([''])
+ 
+
 // theme
 const rentTheme = ref('dark')
 let setting: webSetting = reactive({
     theme: 'light'
 })
 
+const credential = ref<credential>()
+const admin_image = ref()
+const base_image_path = ref()
+const admin_fullname = ref()
+const admin_email = ref()
+const admin_rule = ref()
 onMounted(() => {
+    credential.value = JSON.parse(localStorage.getItem('Credential')!)
+    admin_image.value = credential.value!.user_image
+    base_image_path.value = credential.value!.user_base_image_path
+
+    admin_fullname.value = credential.value!.user_fullname
+    admin_email.value = credential.value!.user_email
+    admin_rule.value = credential.value!.user_rule
     isGroupOpen()
-    // credentialData.value = JSON.parse(localStorage.getItem('credential')||'')
 })
 
 function changeTheme(theme: layOutTheme) {
@@ -73,7 +87,14 @@ watch(isAlert, () => {
 
 const props = defineProps<{
     isLoadingProgressBar?: boolean
+    image?:string
+    name?:string
+    email?:string
 }>()
+
+watch(props,()=>{
+    // console.log('props image => ',props.image);
+})
 
 function isAdmin(): boolean {
     console.log('isAdmin fucntion ');
@@ -98,6 +119,18 @@ function isGroupOpen() {
         }
     }
 }
+ 
+ function navbarAccess(item:NavigationItem){
+    if(item.permission === 'admin' && admin_rule.value === 'admin'){
+        return true
+    }else if(item.permission === 'user' && admin_rule.value === 'admin'){
+        return true 
+    }else if(item.permission === 'admin' && admin_rule.value === 'user'){
+        return false 
+    }else{
+        return true
+    }
+ }
 </script>
 
 <template>
@@ -123,7 +156,7 @@ function isGroupOpen() {
                             <template v-slot:activator="{ props }">
                                 <v-btn v-bind="props" icon>
                                     <!-- icon -->
-                                    <v-icon size="large">mdi-account-circle-outline</v-icon>
+                                    <v-icon size="large">mdi-login</v-icon>
                                 </v-btn>
                             </template>
 
@@ -131,7 +164,7 @@ function isGroupOpen() {
                                 <v-list line="three">
                                     <v-list-item @click="logout()">
                                         <template v-slot:append>
-                                            ออกจากระบบ <v-icon class="ml-4">mdi-login</v-icon>
+                                            ออกจากระบบ <v-icon class="ml-4"></v-icon>
                                         </template>
                                     </v-list-item>
                                     <!-- <v-list-item :title="`${credentialData.userFname} ${credentialData.userLname}`"
@@ -167,15 +200,82 @@ function isGroupOpen() {
                 <!-- side bar -->
                 <v-navigation-drawer v-model="isRail" :elevation="2">
                     <!-- menu list -->
+                    <v-list class="mt-2">
+                        <v-list-item
+                        >
+                            <div class="w-full flex flex-row items-center">
+                                <div class="rounded-full border-2 border-green-500">
+                                    <!-- no image upload -->
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" 
+                                    v-if="admin_image === 'no_image_upload'"
+                                    src="/images/avartars/default_avatar.png" > 
+                                    <!-- iamge from admin page -->
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" 
+                                    v-else-if="props.image"
+                                    :src="base_image_path + props.image"  >
+                                    <!-- image from localstorage -->
+                                    <img class="object-cover w-[50px] h-[50px] min-w-[50px] rounded-full" 
+                                    v-else
+                                    :src="base_image_path + admin_image " >
+                                </div>
+                                <div class="w-full h-full justify-center items-start flex flex-col pl-2 line-clamp-1">
+                                    <div class="w-full ">
+                                        <p class="line-clamp-1" v-if="props.name">{{ props.name }}</p>
+                                        <p class="line-clamp-1" v-else >{{ admin_fullname }}</p>
+
+                                    </div>
+                                    <div class="w-full text-[12px]">
+                                        <p class="line-clamp-1 text-gray-500 " v-if="props.email">{{  props.email}}</p>
+                                        <p class="line-clamp-1 text-gray-500 " v-else>{{ admin_email }}</p>
+                                    </div>
+                                    <v-tooltip activator="parent" location="right" >
+                                        <div class="w-full ">
+                                            <p class="line-clamp-1" v-if="props.name">{{ props.name }}</p>
+                                            <p class="line-clamp-1" v-else >{{ admin_fullname }}</p>
+
+                                        </div>
+                                        <div class="w-full text-[12px]">
+                                            <p class="line-clamp-1 " v-if="props.email">{{  props.email}}</p>
+                                            <p class="line-clamp-1 " v-else>{{ admin_email }}</p>
+                                        </div>
+                                    </v-tooltip>
+                                </div>
+                            </div>
+                        </v-list-item>
+                    </v-list>
+                    <v-divider class="border-opacity-100"></v-divider>
                     <v-list class="" nav :opened="listOpend">
                         <div v-for="navItem of navigationMenu">
                             <!-- v-if=" checkPermission(navItem.permission) || isAdmin() " -->
-                            <v-list-item v-if="!navItem.childs" :title="navItem.title" :subtitle="navItem.subtitle"
-                                @click="getCurrentPath(navItem.link!)" density="comfortable" :value="navItem.id"
-                                class="text-md my-1" active-color="" :prepend-icon="navItem.icon"
+                            <!-- v-if="!navItem.childs -->
+                            <v-list-item 
+                                v-if="navbarAccess(navItem)" 
+                                :title="navItem.title" 
+                                :subtitle="navItem.subtitle"
+                                @click="getCurrentPath(navItem.link!)" 
+                                density="comfortable" 
+                                :value="navItem.id"
+                                class="text-md my-1" 
+                                active-color="" 
+                                :prepend-icon="navItem.icon"
                                 :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
-                                rounded="" color="pink">
+                                rounded="" 
+                                color="pink">
                                 <!-- <v-icon :icon="navItem.icon" start></v-icon>{{navItem.title}} -->
+                            </v-list-item>
+                            <!-- <v-list-item 
+                                v-else-if="!navItem.childs" 
+                                :title="navItem.title" 
+                                :subtitle="navItem.subtitle"
+                                @click="getCurrentPath(navItem.link!)" 
+                                density="comfortable" 
+                                :value="navItem.id"
+                                class="text-md my-1" 
+                                active-color="" 
+                                :prepend-icon="navItem.icon"
+                                :active="currentPath.path === navItem.link || (navItem.link === '/dashBoard' && currentPath.path === '/')"
+                                rounded="" 
+                                color="pink">
                             </v-list-item>
                             <v-list-group v-else :value="navItem.id">
                                 <template v-slot:activator="{ props }">
@@ -184,9 +284,14 @@ function isGroupOpen() {
                                         active-color="" :prepend-icon="navItem.icon"></v-list-item>
                                 </template>
                                 <div v-for="SubNavItem of navItem.childs">
-                                    <v-list-item :title="SubNavItem.title" :subtitle="SubNavItem.subtitle"
-                                        @click="getCurrentPath(SubNavItem.link!)" density="comfortable"
-                                        :value="SubNavItem.id" class="text-md my-1" active-color=""
+                                    <v-list-item 
+                                        :title="SubNavItem.title" 
+                                        :subtitle="SubNavItem.subtitle"
+                                        @click="getCurrentPath(SubNavItem.link!)" 
+                                        density="comfortable"
+                                        :value="SubNavItem.id" 
+                                        class="text-md my-1" 
+                                        active-color=""
                                         :active="currentPath.path === SubNavItem.link || (SubNavItem.link === '/dashBoard' && currentPath.path === '/')"
                                         rounded="">
                                         <template v-slot:prepend v-if="SubNavItem.icon">
@@ -194,7 +299,7 @@ function isGroupOpen() {
                                         </template>
                                     </v-list-item>
                                 </div>
-                            </v-list-group>
+                            </v-list-group> -->
                         </div>
                     </v-list>
                 </v-navigation-drawer>

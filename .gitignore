@@ -8,6 +8,19 @@ backend/public/persons_image/*
 !backend/public/persons_image/.gitkeep
 backend/public/activity_image/*
 !backend/public/activity_image/.gitkeep
+backend/public/news_cover_image/*
+!backend/public/news_cover_image/.gitkeep
+backend/public/banner_image/*
+!backend/public/banner_image/.gitkeep
+backend/public/anno_image/*
+!backend/public/anno_image/.gitkeep
+backend/public/teaching_schedule_image/*
+!backend/public/teaching_schedule_image/.gitkeep
+backend/public/student_schedule_image/*
+!backend/public/student_schedule_image/.gitkeep
+backend/public/syllabus_image/*
+!backend/public/syllabus_image/.gitkeep
+
 
 # Logs
 logs
@@ -34,3 +47,4 @@ dist-ssr
 *.sln
 *.sw?
 Backend/.env
+ 

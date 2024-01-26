@@ -20,6 +20,7 @@ const credential = ref<credential>()
 
 // working at first  
 onMounted(()=>{
+    document.title = 'เอกสาร'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
     
     getFileLength()
@@ -73,13 +74,15 @@ const fileUploadDialog = ref(false)
 const fileName = ref<string>() // file name for update and addnew form 
 const fileUpload = ref<any>() // file 
 const fileType = ref<string>() // 'file format ex. pdf doc sxl'
+const uploadProgress = ref(0)
 // add new file 
 function addNewFile(){
+    if(checkFileSize(fileUpload.value[0]) === false) return false
+    
     buttonLoading.value = true
-
     const formData = new FormData()    
     fileType.value = checkFileType()
-
+    
     formData.append('file_name',fileName.value!)
     formData.append('file_upload',fileUpload.value[0])
     formData.append('file_type', fileType.value!)
@@ -87,10 +90,15 @@ function addNewFile(){
 
     formData.append('credential_admin_fullname',credential.value!.user_fullname)
     
-    _api.addNewFile(formData).then((res)=>{
-        if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+    _api.addNewFile(formData,{
+        onUploadProgress: function (progressEvent:any) {
+            uploadProgress.value = Math.round( (progressEvent.loaded * 100) / progressEvent.total );
+            console.log(uploadProgress.value );
+        }
+    }).then((res)=>{
+        if(res.data.status === false) _msg.toast_msg({title:res.data.msg,timer:20,icon:'error'})
         else _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'})
-
+        
         buttonLoading.value = false
         fileName.value = ''
         fileUpload.value = null
@@ -122,8 +130,8 @@ function deleteFile(file_id:number,file_name_upload:string,file_name:string){
                 file_name:file_name
             })
             .then((res)=>{
-                if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:1,progressbar:true,icon:'success'})
-                else _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
+                if(res.data.status) _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
+                else _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
                 getFileCheck()
 
                 // reset variable after deleted 
@@ -152,7 +160,7 @@ function fileSwitchPin(file_id:number , file_pin_status:boolean , file_name:stri
             _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'success'})
             getFileCheck();
         }else{
-            _msg.toast_msg({title:res.data.msg,timer:3,progressbar:true,icon:'error'})
+            _msg.toast_msg({title:res.data.msg,timer:20,progressbar:true,icon:'error'})
         } 
     })    
 }
@@ -176,13 +184,14 @@ function previewsFile(file_id:number , file_name_upload:string, ){
         console.log(res.data,'<=== res data');
                 
         if(res.data.status) window.open(res.data.file_url, '_blank')
-        else _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+        else _msg.toast_msg({title:res.data.msg,timer:20,icon:'error'})
     })
 }
 
 // edit file
 function editFile(){    
-    buttonLoading.value = true 
+
+  
     console.log('new ',fileName.value);
     console.log('old ',oldFileName_DD.value);
     
@@ -194,6 +203,7 @@ function editFile(){
         formData.append('file_upload','no_file_upload')
     }else{
         fileFormat_DD.value = checkFileType() // if new upload get new file format
+        if(checkFileSize(fileUpload.value[0]) === false) return false
         formData.append('file_upload',fileUpload.value[0]) 
     }
     formData.append('file_id',fileid_DD.value!)
@@ -203,13 +213,13 @@ function editFile(){
     formData.append('file_category_id', String(fileSelected_DD.value))    
     formData.append('file_old_name', oldFileName_DD.value)    
     formData.append('credential_admin_fullname',credential.value!.user_fullname)
-
+    buttonLoading.value = true 
     _api.editFile(formData).then((res)=>{
         if(res.data.status_code === 200){ 
             _msg.toast_msg({title:res.data.msg,timer:3,icon: 'success'}) 
             fileNameUpload_DD.value = res.data.new_file_name
         }else {
-            _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+            _msg.toast_msg({title:res.data.msg,timer:20,icon:'error'})
         }
         // set file name to dd drawer for update new name and then reset for reuse in add new form 
         fileName_DD.value = fileName.value         
@@ -271,32 +281,36 @@ const searchValue = reactive({
     searchTriger:false // triger 
 })
 
+const timeoutId = ref()
 watch(searchValue , ()=>{
-    if(searchValue.searchText.trim() === ''){
-        getFileLength();        
-        getAllFile();
-    }else{
-        dataStatus.value = 'loading_data'
-        _api.searchFile({search_keyword:searchValue.searchText,selected_category:selectedCategory.value,start_item:startItem.value,limit:sizeSelected.value})
-            .then((res)=>{
-            if(res.data.statusCode === 200){
-                files.value = res.data.search_data as Array<filesResponse> 
-                if(files.value.length === 0){
-                    dataStatus.value = 'no_data'
-                }else if(files.value.length >= 1){
-                    dataStatus.value = 'load_data_succ'   
+    clearTimeout(timeoutId.value)
+    timeoutId.value = setTimeout(()=>{
+        if(searchValue.searchText.trim() === ''){
+            getFileLength();        
+            getAllFile();
+        }else{
+            dataStatus.value = 'loading_data'
+            _api.searchFile({search_keyword:searchValue.searchText,selected_category:selectedCategory.value,start_item:startItem.value,limit:sizeSelected.value})
+                .then((res)=>{
+                if(res.data.statusCode === 200){
+                    files.value = res.data.search_data as Array<filesResponse> 
+                    if(files.value.length === 0){
+                        dataStatus.value = 'no_data'
+                    }else if(files.value.length >= 1){
+                        dataStatus.value = 'load_data_succ'   
+                    }else{
+                        dataStatus.value = 'network_err'
+                    }
+                    // set total page after search
+                    totalFiles.value = res.data.data_length                    
+                    totalPage.value = Math.ceil(res.data.data_length/sizeSelected.value)           
                 }else{
-                    dataStatus.value = 'network_err'
+                    _msg.toast_msg({title:res.data.msg,timer:20,icon:'error',progressbar:true})
+                    dataStatus.value = 'load_data_succ'
                 }
-                // set total page after search
-                totalFiles.value = res.data.data_length                    
-                totalPage.value = Math.ceil(res.data.data_length/sizeSelected.value)           
-            }else{
-                _msg.toast_msg({title:res.data.msg,timer:6,icon:'error',progressbar:true})
-                dataStatus.value = 'load_data_succ'
-            }
-        })
-    }
+            })
+        }
+    },500)
 })
 
 const files = ref<Array<filesResponse>>()
@@ -370,6 +384,16 @@ function getFileCheck(){
         searchValue.searchTriger = !searchValue.searchTriger
     }
 }
+
+function checkFileSize(file:any|File){
+    if(file.size > 1024 * 1024 * 200){
+        _msg.toast_msg({title:'ไม่อนุญาตให้อัปโหลดไฟล์ที่มีขนาดเกินกว่า 200 MB',icon:'error',timer:20,progressbar:true})
+        return false
+    }else{
+        return true
+    }
+}
+
 </script>
 
 <template>
@@ -384,7 +408,7 @@ function getFileCheck(){
                             <v-icon  icon="mdi-file-plus"></v-icon> เพิ่มไฟล์  
                         </p>
                     </v-btn>
-                    <div class="h-full less:w-1/2 sm:w-auto flex justify-end items-center" >
+                    <!-- <div class="h-full less:w-1/2 sm:w-auto flex justify-end items-center" >
                         <v-btn-toggle   
                             color="pink" 
                             v-model="viewData" 
@@ -399,7 +423,7 @@ function getFileCheck(){
                                 <v-icon>mdi-table</v-icon>
                             </v-btn>
                         </v-btn-toggle>
-                    </div>
+                    </div> -->
                  </div>
                 <div class="md:w-1/2 less:w-full p-1 flex flex-wrap justify-end">
                     <div class="less:w-full md:w-1/2 p-1">
@@ -580,16 +604,14 @@ function getFileCheck(){
                     <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
                 </div>
             </div>
-            <div class="w-full flex justify-end">
+            <div class="w-full flex justify-end pr-12">
                 <div class="w-[100px]">
-                    <v-selection>
-                        <v-select
-                            :items="size"
-                            variant="outlined"
-                            v-model="sizeSelected"
-                            hide-details="auto"
-                        ></v-select>
-                    </v-selection>
+                    <v-select
+                        :items="size"
+                        variant="outlined"
+                        v-model="sizeSelected"
+                        hide-details="auto"
+                    ></v-select>
                 </div>
                 <div class="sm:w-fit">
                     <v-pagination 
@@ -732,6 +754,7 @@ function getFileCheck(){
                 </div>
                 <div class="w-full px-6 mt-3">
                     <div class="flex flex-col gap-2 w-full">
+                       
                         <v-form @submit.prevent="addNewFile">
                             <v-file-input
                                 accept=".docx , .doc , .pdf , .xlsx , .xls , .csv "
@@ -768,6 +791,7 @@ function getFileCheck(){
                                 variant="outlined"
                             >
                             </v-select>
+
                             <div class="w-full mt-6 flex justify-center items-center gap-2">
                                 <v-btn color="red"
                                     @click="fileUploadDialog = !fileUploadDialog , fileUpload = null , fileName = '' , fileSelected_DD = 1" >

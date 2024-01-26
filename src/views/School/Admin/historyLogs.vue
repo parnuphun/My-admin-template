@@ -1,17 +1,22 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
+import pageDataStatus from '../../../components/layout/School/pageDataStatus.vue'
 import { ref, onMounted ,watch ,reactive} from 'vue'
 import apiNamphong from '../../../services/api/api_namphong';
-import { historyLogsResponse } from '../../../store/Interface'
+import { historyLogsResponse , dataStatus} from '../../../store/Interface'
+import { off } from 'process';
 
 
 const _api = new apiNamphong()
  
 onMounted(()=>{
+    document.title = 'ประวัติการใช้งาน'
+
     getHistoryLength()
     getHistory()
 })
 
+const dataStatus = ref<dataStatus>('no_data')
 const historyLogs = ref<Array<historyLogsResponse>>()
 const totalHistoryLogs = ref()
 
@@ -22,9 +27,22 @@ function getHistoryLength(){
     })
 }
 function getHistory(){
-    _api.getHistory({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
-        historyLogs.value = res.data.history_data  
-        console.log(historyLogs.value);
+    dataStatus.value = 'loading_data'
+    _api.getHistory({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{        
+        if(res.data.status_code === 200){
+            historyLogs.value = res.data.history_data
+            if(historyLogs.value!.length >= 1){
+                dataStatus.value = 'load_data_succ'
+            }else if(historyLogs.value!.length === 0){
+                dataStatus.value = 'no_data'
+            }else{
+                dataStatus.value = 'err_data'
+            }
+        }else{
+            dataStatus.value = 'err_data'
+        }
+    }).catch(()=>{
+        dataStatus.value = 'network_err'
     })
 }
 
@@ -50,7 +68,6 @@ watch(pagination,()=>{
 // detect sizeSelected
 watch(sizeSelected,()=>{
     pagination.value = 1 // reset
-
     changePage()
     getHistoryAndLength()
 })
@@ -75,17 +92,21 @@ const searchValue = reactive({
     searchTriger:false // triger 
 })
 
+const timeoutId = ref()
 watch(searchValue , ()=>{
-    if(searchValue.searchText.trim() === ''){
+    clearTimeout(timeoutId.value);
+    timeoutId.value = setTimeout(() => {
+        if(searchValue.searchText.trim() === ''){
         getHistoryLength();
         getHistory();
-    }else{
-        _api.searchHistory({search_keyword:searchValue.searchText,start_item:startItem.value,limit:sizeSelected.value}).then((res)=>{
-            totalHistoryLogs.value = res.data.history_data_search_length
-            historyLogs.value = res.data.history_data_search
-            totalPage.value = Math.ceil(totalHistoryLogs.value / sizeSelected.value)        
-        })
-    }
+        }else{
+            _api.searchHistory({search_keyword:searchValue.searchText,start_item:startItem.value,limit:sizeSelected.value}).then((res)=>{
+                totalHistoryLogs.value = res.data.history_data_search_length
+                historyLogs.value = res.data.history_data_search
+                totalPage.value = Math.ceil(totalHistoryLogs.value / sizeSelected.value)        
+            })
+        }
+    },500)
 })
 
 </script>
@@ -115,7 +136,7 @@ watch(searchValue , ()=>{
             </div>
             <v-divider class="border-opacity-75"></v-divider>
 
-            <div clsas="w-full sm:hidden md:block ">
+            <div clsas="w-full" v-if="dataStatus === 'load_data_succ'">
                 <v-table>
                     <thead>
                         <tr>
@@ -131,7 +152,7 @@ watch(searchValue , ()=>{
                         <tr v-for="(item , i ) in historyLogs" :key="item.history_logs_id" >
                             <td class="text-center">{{ (startItem+i)+1 }}</td>
                             <!-- <td>{{ item.history_logs_username }}</td> -->
-                            <td class="py-2">{{ item.history_logs_text }}</td>
+                            <td class="py-2 min-w-[500px]">{{ item.history_logs_text }}</td>
                             <td class="text-center w-fit">{{ item.history_logs_date }}</td>
                             <td>
                                 <div class="flex justify-center items-center">
@@ -143,6 +164,33 @@ watch(searchValue , ()=>{
                                     </v-chip>
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'person_directory'">
                                         <v-icon icon="mdi-account-box-multiple-outline" class="mr-2"></v-icon> บุคลากร
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'admin'">
+                                        <v-icon icon="mdi-account-outline" class="mr-2"></v-icon> ผู้ดูแลระบบ
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'news'">
+                                        <v-icon icon="mdi-newspaper" class="mr-2"></v-icon> ผู้ดูแลระบบ
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'activity_image'">
+                                        <v-icon icon="mdi-image-outline" class="mr-2"></v-icon> ภาพกิจกรรม
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'school_setting'">
+                                        <v-icon icon="mdi-cog-outline" class="mr-2"></v-icon> ตั้งค่า
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'annocement'">
+                                        <v-icon icon="mdi-bullhorn-variant-outline" class="mr-2"></v-icon> ประกาศ
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'teaching_schedule'">
+                                        <v-icon icon="mdi-table-clock" class="mr-2"></v-icon> ตารางสอน
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'student_schedule'">
+                                        <v-icon icon="mdi-table" class="mr-2"></v-icon> ตารางเรียน
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'syllabus'">
+                                        <v-icon icon="mdi-book-outline" class="mr-2"></v-icon> หลักสูตร
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'email'">
+                                        <v-icon icon="mdi-email-outline" class="mr-2"></v-icon> อีเมล
                                     </v-chip>
                                 </div>
                             </td>
@@ -160,31 +208,34 @@ watch(searchValue , ()=>{
                                     <v-chip class="w-full" color="red" v-else-if="item.history_logs_type === 'delete'">
                                         <v-icon icon="mdi-delete" class="mr-2"></v-icon> ลบข้อมูล
                                     </v-chip>
+                                    <v-chip class="w-full" color="pink" v-else-if="item.history_logs_type === 'email'">
+                                        <v-icon icon="mdi-email-arrow-right-outline" class="mr-2"></v-icon> ส่งอีเมล
+                                    </v-chip>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                 </v-table>
             </div>
+            <pageDataStatus v-else :data-status="dataStatus"></pageDataStatus>
 
             <v-divider class="border-opacity-75"></v-divider>
             
-            <div class="w-full flex justify-end mt-3">
+            <div class="w-full flex justify-end mt-3 pr-12">
                 <div class="w-[100px]">
-                    <v-selection>
-                        <v-select
-                            :items="size"
-                            variant="outlined"
-                            v-model="sizeSelected"
-                            hide-details="auto"
-                        ></v-select>
-                    </v-selection>
+                    <v-select
+                        :items="size"
+                        variant="outlined"
+                        v-model="sizeSelected"
+                        hide-details="auto"
+                    ></v-select>
                 </div>
                 <div class="sm:w-fit">
                     <v-pagination 
                         :length="totalPage"
                         v-model="pagination"
-                        :total-visible="3">
+                        :total-visible="3"
+                        >
                     </v-pagination>
                 </div>
             </div>

@@ -1,14 +1,27 @@
 <script setup lang="ts">
 import NampongNavBar from '../../../components/layout/School/NampongNavBar.vue';
 import NampongFooter from '../../../components/layout/School/NampongFooter.vue';
+import { ref , onMounted , watch } from 'vue';
+import { fileClientResponse} from '../../../store/Interface'
+import apiNamphong from '../../../services/api/api_namphong'
+import MsgAlert from '../../../services/msgAlert';
 
-import { ref } from 'vue';
-
-
+const _api = new apiNamphong()
+const _msg = new MsgAlert()
 interface BreadcrumbItem {
     title: string;
     disabled: boolean;
     href: string;
+}
+
+// preview file 
+function previewsFile(file_id:number , file_name_upload:string, ){
+    _api.previewFileClient({file_id:file_id,file_name_upload:file_name_upload}).then((res)=>{
+        console.log(res.data,'<=== res data');
+                
+        if(res.data.status) window.open(res.data.file_url, '_blank')
+        else _msg.toast_msg({title:res.data.msg,timer:3,icon:'error'})
+    })
 }
 
 const breadcrumb = ref<BreadcrumbItem[]>([
@@ -24,71 +37,19 @@ const breadcrumb = ref<BreadcrumbItem[]>([
     },
 ])
 
-const files = ref<Array<Object>>([
-    {
-        topicFiles:'สำหรับคุณครู',
-        files:[
-            {
-                fileName:'แต่งตั้งคุณครู...',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-        ]
-    },
-    {
-        topicFiles:'สำหรับคุณครู',
-        files:[
-            {
-                fileName:'ใบขัดซื้อจัดจ้าง',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-        ]
-    },
-    {
-        topicFiles:'สำหรับนักเรียน',
-        files:[
-            {
-                fileName:'ตารางเรียน ป.6',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-            {
-                fileName:'ตารางเรียน ป.5',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-            {
-                fileName:'ตารางเรียน ป.4',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-            {
-                fileName:'ตารางเรียน ป.3',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-            {
-                fileName:'ตารางเรียน ป.2',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-            {
-                fileName:'ตารางเรียน ป.1',
-                filePath:'',
-                fileExtend:'pdf',
-                fileDate:'12/22/2566'
-            },
-        ]
-    }
-]) 
+onMounted(()=>{
+    document.title = 'เอกสาร'
+    getAllfilsClient()
+})
+
+const fileList = ref<Array<fileClientResponse>>()
+function getAllfilsClient(){
+    _api.getAllfilsClient().then((res)=>{
+        if(res.data.status_code === 200){
+            fileList.value = res.data.data_list
+        }
+    })
+}
 
 </script>
 
@@ -100,7 +61,7 @@ const files = ref<Array<Object>>([
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
                     <div class="w-[1000px] h-full bg-white">
-                        <p class="text-xl py-4 border-l-8 border-pink-500 ">  
+                        <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
                                     <div v-if="item.disabled === true">
@@ -116,26 +77,41 @@ const files = ref<Array<Object>>([
                                 </template>
                             </v-breadcrumbs>
                         </p>
-                        <v-divider></v-divider>
+                        <v-divider class="border-opacity-100"></v-divider>
                         <div class="w-full min-h-screen">
-                             <div class="w-full">
-                                <div class="w-full flex flex-col pb-5">
-                                    <div v-for="file of files" class="w-full ">
-                                        <div class="text-2xl pl-5 text-white bg-pink-500 py-5">
-                                        {{ (file as any).topicFiles }}
-                                        </div>
-                                        <div v-for="item of (file as any).files"
-                                         class="w-full text-xl cursor-pointer flex justify-between items-end px-3 py-1" >
-                                            <div class="w-full bg-gray-200 py-5 pl-10 px-5 hover:text-pink-600 duration-200
-                                                ">
-                                                <p class="line-clamp-1">
-                                                    {{ item.fileName }}
-                                                </p>
+                            <div class="w-full flex flex-col gap-2">
+                                <div class="w-full"  v-for="category in fileList">
+                                    <div class="w-full"  v-if="category.files_list.length > 0">
+                                        <v-divider class="border-opacity-100"></v-divider>
+                                        <p class="text-xl py-4 border-l-8 border-pink-500 px-12">  
+                                            หมวดหมู่ : {{category.category_name}}
+                                        </p>
+                                        <v-divider class="border-opacity-100"></v-divider>
+                                        <div class="w-full flex flex-col px-2  pt-2">
+                                            <div v-for="(file, i) in category.files_list"
+                                            class="w-full flex flex-row justify-between text-[16px]
+                                            hover:underline hover:text-pink-400 cursor-pointer pl-12" 
+                                            @click="previewsFile(file.file_id,file.file_name_upload)">
+                                                <div class="w-full line-clamp-1 pr-2">
+                                                   {{ i+1 }}. {{ file.file_name }}
+                                                </div>
+                                                <div class="w-fit min-w-max">
+                                                    {{ file.file_size }} {{ file.file_date }}
+                                                </div>
                                             </div>
+                                            <!-- <div class=" border-2 rounded-md w-full p-4 cursor-pointer
+                                            hover:border-pink-400 hover:text-pink-400 hover:bg-gray-50"  
+                                            v-for="file in category.files_list">
+                                                <p class="text-sm ">{{ file.file_name }}</p>
+                                                <p class="text-gray-600 text-[14px]">
+                                                    วันที่ : {{ file.file_date }} ,
+                                                    ชนิด : {{ file.file_type }} ,
+                                                    ขนาด : {{ file.file_size }}</p>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
-                             </div>
+                            </div>
                         </div>
                     </div>
                 </div>

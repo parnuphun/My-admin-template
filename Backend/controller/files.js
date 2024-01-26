@@ -4,138 +4,103 @@ const delete_file = require('../services/delete_file')
 const date_convert = require('../services/date_convert');
 const rename_file = require('../services/rename_file')
 const timeStamp = require('../services/timeStamp')
+const return_err =require('../services/return_err');
 const bytes = require('bytes');
 const fs = require('fs') 
-const path = require('path')
+const path = require('path');
+const { dbQuery } = require('../services/query');
 require('dotenv').config();
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// category
+// file category
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// add file category
+// add file category (not use on cllient now)
 module.exports.addFileCategory = async (req,res) =>{
-    const file_category_name = req.body.file_category_name
- 
-    try{
-        db.query('SELECT * FROM file_category WHERE file_category_name = ? ', [file_category_name], (err, result) => {
-            if (err) console.log(err);
-            if (result.length >= 1){
-                res.json({
-                    status:false,
-                    msg:`มีชื่อ '${file_category_name}' อยู่ในระบบแล้ว`
-                })
-            }
-            try{
-                db.query('INSERT INTO file_category(file_category_name) VALUES(?)',[file_category_name], async(err,result)=>{
-                    if(err) console.log(err);
-                    res.json({
-                        status:true,
-                        msg:`เพิ่ม${file_category_name}สำเร็จ`
-                    })
-                })
-            }catch(err){
-                console.log(err);
-                res.json({
-                    status:false,
-                    err:err,
-                    msg:'err'
-                })
-            }
-        });
-    }catch(err){
-        console.log(err);
-        res.json({
+    try {
+        const file_category_name = req.body.file_category_name
+        const qr_check_username = `SELECT * FROM file_category WHERE file_category_name = ?`
+        const qr_add = `INSERT INTO file_category(file_category_name) VALUES(?)`
+
+        const result_check_username = await dbQuery(qr_check_username,[qr_check_username])
+        if(result_check_username.length >= 1) return res.json({
+            status_code: 200 ,
             status:false,
-            err:err,
-            msg:'err'
+            msg:`มีชื่อ '${file_category_name}' อยู่ในระบบแล้ว`
         })
-    } 
 
-
-}
-
-// rename file category
-module.exports.renameFileCategory = async (req,res) =>{
-    const file_category_name = req.body.file_category_name
-    const file_category_id = req.body.file_category_id
-
-    try{
-        db.query('SELECT * FROM file_category WHERE file_category_name = ? ', [file_category_name], (err, result) => {
-            if(err) console.log(err);
-            if (result.length >= 1){
-                res.json({
-                    status:false,
-                    msg:`มีชื่อ '${file_category_name}' อยู่ในระบบแล้ว`
-                })
-            }
-            try{
-                db.query(`
-                UPDATE file_category
-                SET file_category_name = ? 
-                WHERE file_category_id = ?`,
-                [file_category_name,file_category_id] , (err,result)=>{
-                    if(err) console.log(err);
-                    res.json({
-                        status:true,
-                        msg:'เปลี่ยนชื่อสำเร็จ'
-                    })
-                })
-            }catch(err){
-                console.log(err);
-                res.json({
-                    status:false,
-                    err:err,
-                    msg:'err',
-                })
-            }    
-        }) 
-    }catch(err){
-        console.log(err);
-        res.json({
-            status:false,
-            err:err,
-            msg:'err',
+        await dbQuery(qr_add,[file_category_name])
+        res.status(200).json({
+            status_code: 200,
+            status:true ,
+            msg:`เพิ่ม${file_category_name}สำเร็จ`
         })
+        
+    } catch (err) {
+        return return_err(res,'TRY CATCH','ADD CATEGORY FILE',err,500)
     }
 }
 
-// delete file catefgory
-module.exports.deleteFileCategory = async (req,res) =>{
-    const file_category_id = req.body.file_category_id
-    try{
-        db.query('DELETE FROm file_category WHERE file_category_id = ? ',[file_category_id],(err,result)=>{
-          if(err) console.log('DELETE ERR');
-          res.json({
-            status:true,
-            msg:'ลบสำเร็จ'
-          })  
+// rename file category (not use on cllient now)
+module.exports.renameFileCategory = async (req,res) =>{
+    try {
+        const file_category_name = req.body.file_category_name
+        const file_category_id = req.body.file_category_id
+
+        const qr_check_username = `SELECT * FROM file_category WHERE file_category_name = ?`
+        const qr_rename = `UPDATE file_category
+        SET file_category_name = ? 
+        WHERE file_category_id = ?`
+
+        const result_check_username = await dbQuery(qr_check_username , [file_category_name])
+        if(result_check_username.length >= 1) return res.status(200).json({
+            status_code: 200 ,
+            status: false,
+            msg:`มีชื่อ '${file_category_name}' อยู่ในระบบแล้ว`
         })
-    }catch(err){
-        console.log(err);
-        res.json({
-            status:false,
-            err:err,
-            msg:'cant delete ...'
-        }) 
+
+        await dbQuery(qr_rename,[file_category_name,file_category_id])
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'เปลี่ยนชื่อสำเร็จ'
+        })
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH','RENAME FILE',err,500)
+    }
+}
+
+// delete file catefgory (not use on cllient now)
+module.exports.deleteFileCategory = async (req,res) =>{
+
+    try {
+        const file_category_id = req.body.file_category_id
+        const qr_delete = `DELETE FROM file_category WHERE file_category_id = ? `
+
+        await dbQuery(qr_delete,[qr_delete])
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'ลบหมวดหมู่ไฟล์สำเร็จ'
+          })  
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH','GET CATEGORY FILE',err,500)
     }
 }
 
 // get all file category
 module.exports.getAllCategoryFile = async (req,res)=> {
     try{
-        db.query(`SELECT * FROM file_category`,(err,result)=>{
-            if(err) console.log(err);
-            res.json({
-                status:true,
-                file_catefory_data:result
-            })
+        const result = await dbQuery(`SELECT * FROM file_category`)
+        res.status(200).json({
+            status_code: 200 ,
+            status:true ,
+            file_catefory_data:result
         })
+       
     }catch(err){
-        console.log(err);
-        res.json({
-            status:false,
-            err:err
-        })
+        return return_err(res,'TRY CATCH','GET CATEGORY FILE',err,500)
     }
 }
 
@@ -144,118 +109,78 @@ module.exports.getAllCategoryFile = async (req,res)=> {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // get all file length
 module.exports.getFileLength = async (req,res) =>{
-    const selected_category = req.body.selected_category
-    let query = 'SELECT COUNT(file_id) AS total_file FROM file'
-    if(selected_category !== 0){
-        query += ` WHERE file_category_id = ${selected_category}`
-    }
-    try{
-        db.query(query,async (err,result) => {
-            if(err){
-                console.log('ERR QUERY BLOCK , CANT GET TOTAL FILES ');
-                console.log('ERR : ' ,err);
-                res.status(500).json({
-                    status:false,
-                    status_code:200,
-                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถดึงจำนวนไฟล์ได้ !!',
-                })
-            }
-            if(result.length === 0) {
-                res.status(200).json({
-                    status:true,
-                    status_code:200,
-                    msg:'ดึงข้อมูลสำเร็จ',
-                    file_length: 0
-                })
-            }
-            else if(result.length >= 1) {
-                res.status(200).json({
-                    status:true,
-                    status_code:200,
-                    msg:'ดึงข้อมูลสำเร็จ',
-                    file_length:result[0].total_file
-                })
-            }
-        })
-    }catch(err){
-        console.log('ERR TRY CATCH BLOCK , CANT TOTAL FILES');
-        console.log('ERR : ' ,err);
-        res.status(500).json({
-            status:false,
+    try {
+        const selected_category = req.body.selected_category
+        let qr_length = 'SELECT COUNT(*) AS length FROM file'
+        if(selected_category !== 0) qr_length += ` WHERE file_category_id = ${selected_category}`
+
+        const result_length = await dbQuery(qr_length)
+        const length = result_length[0].length
+
+        res.status(200).json({
             status_code:200,
-            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถดึงจำนวนไฟล์ได้ !!',
+            status:true,
+            msg:'ดึงข้อมูลสำเร็จ',
+            file_length: length
         })
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH','GET FILE LENGTH',err,500)
     }
 }
 
 // get all file 
 module.exports.getAllFiles = async (req,res) => {
-    const selected_category = req.body.selected_category
-    const limit = req.body.limit
-    const start_item = req.body.start_item
-    let query_select = `SELECT * FROM file`
-    let query_where = ` WHERE file_category_id = ${selected_category}`
-    let query_limit = ` ORDER BY file_id DESC LIMIT ${limit} OFFSET ${start_item}`
+    try {
+        const selected_category = req.body.selected_category
+        const limit = req.body.limit
+        const start_item = req.body.start_item
+        let query_select = `SELECT * FROM file`
+        let query_where = ` WHERE file_category_id = ${selected_category}`
+        let query_limit = ` ORDER BY file_id DESC LIMIT ${limit} OFFSET ${start_item}`
+        
+        if(selected_category !== 0 )query_select += query_where + query_limit
+        else query_select += query_limit
+        
+        const result_data = await dbQuery(query_select)
 
-    if(selected_category !== 0 ){
-        query_select = query_select + query_where + query_limit
-    }else{
-        query_select = query_select + query_limit
-    }
-    try{
-        db.query(query_select,async (err,result) => {
-            if(err){
-                console.log('ERR IN QUERY BLOCK , CANT GET FILES DATA !!');
-                console.log('ERR : ',err);
-                return res.status(200).json({
-                    status_code: 500,
-                    status:false,
-                    msg:'ดึงข้อมูลไม่สำเร็จ !!',
-                })
+        // format data
+        if(result_data.length != 0){
+            for(let i=0 ; i<result_data.length ;i++){
+                if(result_data[i].file_pin == 0) result_data[i].file_pin = false
+                else result_data[i].file_pin = true
+                
+                await date_convert(result_data[i].file_date).then((date_converted)=>{
+                    result_data[i].file_date = date_converted
+                }) 
             }
+        }
 
-            if(result.length != 0){
-                for(let i=0 ; i<result.length ;i++){
-                    if(result[i].file_pin == 0) result[i].file_pin = false
-                    else result[i].file_pin = true
-                    
-                    await date_convert(result[i].file_date).then((date_converted)=>{
-                        result[i].file_date = date_converted
-                    }) 
-                }
-            }
-
-            res.status(200).json({
-                status_code:200,
-                status:true,
-                msg:'ดึงข้อมูลสำเร็จ',
-                files_data:result
-            })
-        })
-    }catch(err){
-        console.log('ERR IN TRY CATCH BLOCK , CANT GET FILES DATA !!');
-        console.log('ERR : ',err);
         res.status(200).json({
-            status_code: 500,
-            status:false,
-            msg:'เกิดข้อผิดพลาดในระบบ ดึงข้อมูลไม่สำเร็จ !!',
+            status_code:200,
+            status:true,
+            msg:'ดึงข้อมูลสำเร็จ',
+            files_data:result_data
         })
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH','GET FILE ',err,500)
     }
 }
 
 // add new file 
 module.exports.addNewFile = async (req,res)=> {
-    const file_name = req.body.file_name
-    const file_category_id = req.body.file_category_id
-    const file_type = req.body.file_type
-    const file_date = new Date() 
-    const file_name_upload = `${file_name}_${Date.now()}.${file_type}`
-    const file_size = bytes(req.file.size)
-    const credential_admin_fullname = req.body.credential_admin_fullname
+    try {
+        const file_name = req.body.file_name
+        const file_category_id = req.body.file_category_id
+        const file_type = req.body.file_type
+        const file_date = new Date() 
+        const file_name_upload = `${file_name}_${Date.now()}.${file_type}`
+        const file_size = bytes(req.file.size)
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
 
-    await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
-    try{
-        db.query(`
+        const qr_add = `
             INSERT INTO file (
                 file_name,
                 file_name_upload,
@@ -264,351 +189,237 @@ module.exports.addNewFile = async (req,res)=> {
                 file_type,
                 file_size,
                 file_category_id)
-            VALUES (?,?,?,1,?,?,?)
-        `,[file_name,file_name_upload,file_date,file_type,file_size,file_category_id],(err,result)=>{
-            if(err){
-                console.log('ERR CANT ADD NEW FILE !');
-                return res.status(200).json({
-                    status:false,
-                    statusCode:500,
-                    msg:'ไม่สามารถเพิ่มไฟล์เข้าไปในระบบได้',
-                    err:err
-                })
-            }
+            VALUES (?,?,?,1,?,?,?)`
+        const qr_add_params = [
+            file_name,
+            file_name_upload,
+            file_date,
+            file_type,
+            file_size,
+            file_category_id]
 
-            timeStamp(
-                credential_admin_fullname,
-                'add',
-                'file', 
-                `${credential_admin_fullname} เพิ่มไฟล์เอกสาร '${file_name}'`
-            )
-            res.status(200).json({
-                status:true,
-                statusCode:200,
-                msg:'เพิ่มไฟล์สำเร็จ',
-            })
-        })
-    }catch(err){
-        console.log('ERR TRY CaTCH BLOCK ,CANT ADD NEW FILES , CHECK ERR PLS !!');
-        console.log('ERR : ',err);
+        await dbQuery(qr_add,qr_add_params)
+        await timeStamp(
+            credential_admin_fullname,
+            'add',
+            'file', 
+            `${credential_admin_fullname} เพิ่มไฟล์เอกสาร '${file_name}'`
+        )
+        
         res.status(200).json({
-            status:false,
+            status:true,
             statusCode:200,
-            msg:'ไม่สามารถเพิ่มไฟล์ลงระบบได้ กรุณาติดต่อผู้ดูแลระบบ',
-            err: err
+            msg:'เพิ่มไฟล์สำเร็จ',
         })
+    
+        
+        
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH','ADD FILE ',err,500)
     }
- 
 }
 
 // delete file 
 module.exports.deleteFile = async (req,res) => {
-    const file_id = req.body.file_id
-    const file_name_upload = req.body.file_name_upload
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    const file_name = req.body.file_name
-    try{
-        db.query('DELETE FROM file WHERE file_id = ?',[file_id],async (err,result)=>{
-            await delete_file(file_name_upload,'file')
-            console.log(`DELETE FILE ID ${file_id} SUCCESS !!!`)
-            timeStamp(
-                credential_admin_fullname,
-                'delete',
-                'file',
-                `${credential_admin_fullname} ลบไฟล์เอกสาร ' ${file_name} '`
-            )
-            res.json({
-                status:true,
-                msg:'ลบไฟล์สำเร็จแล้ว'
-            })
+    try {
+        const file_id = req.body.file_id
+        const file_name_upload = req.body.file_name_upload
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const file_name = req.body.file_name
+
+        const qr_delete = `DELETE FROM file WHERE file_id = ?`
+        await dbQuery(qr_delete,[file_id])
+        await delete_file(file_name_upload,'file')
+        await timeStamp(
+            credential_admin_fullname,
+            'delete',
+            'file',
+            `${credential_admin_fullname} ลบไฟล์เอกสาร ' ${file_name} '`
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'ลบไฟล์สำเร็จแล้ว'
         })
 
-    }catch(err){
-        console.log('CANT DELETE FILE, SOMETHINF ERR PLS CHECK !!!');
-        res.json({
-            status:false,
-            msg:'ไม่สามารถลบไฟล์ได้ กรุณษติดต่อผู้ดูแลระบบ'
-        })
+
+    } catch (error) {
+        return_err(res,'TRY CATCH','DELETE FILE ',err,500)
     }
+ 
 }
 
 // file switch pin
 module.exports.fileSwitchPin = async (req,res) => {
-    const file_id = req.body.file_id
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    const file_name = req.body.file_name
-    let status 
-    let succ_msg 
+    try {
+        const file_id = req.body.file_id
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const file_name = req.body.file_name
+        
+        let status = (req.body.file_pin_status === false)? 1 : 0
 
-    // set opposit value 
-    if(req.body.file_pin_status == false) {
-        status = 1
-        succ_msg = `เปิดการมองเห็น`
-    }else{
-        status = 0
-        succ_msg = `ปิดการมองเห็น`
-    }
+        const qr_update = `UPDATE file SET file_pin = ? WHERE file_id = ?`
+        await dbQuery(qr_update,[status,file_id])
+        await timeStamp(
+            credential_admin_fullname,
+            'update',
+            'file',
+            `${credential_admin_fullname} เปลี่ยนการมองเห็นไฟล์เอกสาร ' ${file_name} '`
+        )
 
-     try{
-        db.query('UPDATE file SET file_pin = ? WHERE file_id = ?' ,[status , file_id] ,(err,result)=>{ 
-            if(err){
-                console.log('CANT SWITCH STATUS FILE');
-                console.log('ERR : ',err);
-                res.status(200).json({
-                    status:false,
-                    statusCode:500,
-                    err:err
-                })
-            }
-            
-            timeStamp(
-                credential_admin_fullname,
-                'update',
-                'file',
-                `${credential_admin_fullname} ${succ_msg} ไฟล์เอกสาร ' ${file_name} '`
-            )
-
-            res.status(200).json({
-                status:true,
-                statusCode:200,
-                msg: succ_msg
-            })
-        })
-    }catch(err){
-        console.log('ERR TRY CATCH BLOCK , CANT CHANGE PIN STARTUS CHECK ERR PLS !!');
-        console.log('ERR : ',err);
         res.status(200).json({
-            status:false,
-            statusCode:500,
-            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถเปลี่ยนสถานะได้',
-            err:err
+            status:true,
+            statusCode:200,
+            msg: 'ปักหมุดเรียบร้อย'
         })
+
+    } catch (err) {
+        return_err(res,'TRY CATCH','SWITCH FILE PIN ',err,500)
     }
 }
 
 // file download 
 module.exports.downloadFile = async(req,res) =>{
-    const file_name_upload = req.body.file_name_upload
-    const filePath = path.join(__dirname, `../public/file/${file_name_upload}`)
-    // console.log('file existsSync => ',fs.existsSync(filePath));
-     res.download(filePath ,(err)=>{
-        if (err) {
-            console.error(err);
-            res.send({
-                status:false,
-                msg:'มีบางอย่างผิดพลาดขณะดาวน์โหลดไฟล์'
-            });
-        }
-    })
- 
+    try {
+        const file_name_upload = req.body.file_name_upload
+        const filePath = path.join(__dirname, `../public/file/${file_name_upload}`)
+
+        res.download(filePath ,(err)=>{
+            if (err) return_err(res,'TRY CATCH','DOWNLOAD FILE ',err,500)
+        })
+    } catch (err) {
+        return_err(res,'TRY CATCH','DOWNLOAD FILE ',err,500)
+    }
 }
 
 // preview file 
 module.exports.previewFile = async(req,res) => {
-    console.log(req.body);
-    const file_name_upload = req.body.file_name_upload
-    const filePath = path.join(__dirname, `../public/file/${file_name_upload}`)
-    // console.log('file existsSync => ',fs.existsSync(filePath));
-    if(fs.existsSync(filePath)){
-        res.json({
-            status:true,
-            file_url:process.env.FILE_PATH+file_name_upload
-        })
-    }else{
-        res.send({
-            status:false,
-            msg:'ไม่มีไฟล์นี้ในระบบ'
-        })
+    try {        
+        const file_name_upload = req.body.file_name_upload
+        const filePath = path.join(__dirname, `../public/file/${file_name_upload}`)
+        // console.log('file existsSync => ',fs.existsSync(filePath));
+        if(fs.existsSync(filePath)){
+            res.json({
+                status: true,
+                status_code: 200 ,
+                file_url:process.env.FILE_PATH+file_name_upload
+            })
+        }else{
+            res.send({
+                status: false,
+                status_code: 200 ,
+                msg:'ไม่มีไฟล์นี้ในระบบ'
+            })
+        }
+    } catch (err) {
+        return_err(res,'TRY CATCH','PREVIEW FILE ',err,500)
     }
 }
 
 // update file 
 module.exports.editFile = async(req,res) => {
-    const file_id = req.body.file_id
-    const file_name = req.body.file_name 
-    const file_old_name = req.body.file_old_name // old file anme not upload 
-    const file_type = req.body.file_type
-    const file_category_id = req.body.file_category_id
-    const credential_admin_fullname = req.body.credential_admin_fullname
-    let file_name_upload 
-    if(req.body.file_upload === 'no_file_upload'){ // case no file upload 
-        file_name_upload = req.body.file_name_upload // use old name 
-    }else{
-        file_name_upload = `${file_name}_${Date.now()}.${file_type}`// use new name file uploaded
-        await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`),req.file.path)
-    }
-    try{
-        // get old file name first after add new file name 
-        db.query('SELECT * FROM file WHERE file_id = ? ',[file_id],(err,result)=>{
-            if(err){
-                console.log('ERR QEURY BLOCK ,CANNOT UPDATE FILE ERR AT GET OLD FILE NAME ,');
-                console.log('ERR : ',err);
-                return res.status(200).json({
-                    status_code: 500,
-                    status:false ,
-                    msg:'ไม่สามารถบันทึกไฟล์ลงในระบบได้',
-                    err:err
-                })
-            }
-            let old_file_name = result[0].file_name_upload // old file name upload
-            try{
-                db.query(`UPDATE file 
-                        SET file_name = ? ,
-                        file_name_upload = ?,
-                        file_type = ? ,
-                        file_category_id = ? 
-                        WHERE file_id = ?`,
-                [file_name,file_name_upload,file_type,file_category_id,file_id],    
-                async(err,result)=>{
-                    if(err){
-                        console.log('ERR QEURY BLOCK 2 ,CANNOT UPDATE FILE  ,');
-                        console.log('ERR : ',err);
-                        return res.status(200).json({
-                            status_code: 500,
-                            status:false ,
-                            msg:'ไม่สามารถบันทึกไฟล์ลงในระบบได้',
-                            err:err
-                        })
-                    }
-                    // check file before delete
-                    if(req.body.file_upload === 'no_file_upload'){
-                        console.log('UPDATE FILE CASE:NO UPLOAD FILE ');
-                    }else{
-                        console.log('UPDATE FILE CASE: UPLOAD FILE ');
-                        await delete_file(old_file_name,'file') // after update remove old file
-                    }
+    try {
+        const file_id = req.body.file_id
+        const file_name = req.body.file_name 
+        const file_old_name = req.body.file_old_name // old file name case not upload 
+        const file_type = req.body.file_type
+        const file_category_id = req.body.file_category_id
+        const credential_admin_fullname = req.body.credential_admin_fullname
 
-                    let msg_time_stamp = `${credential_admin_fullname} แก้ไขไฟล์ ' ${file_old_name} '`
-                    if(file_name !== file_old_name){
-                        msg_time_stamp = msg_time_stamp + ` และได้มีการเปลี่ยนชื่อไฟล์เป็น ' ${file_name} '`
-                    }
-                    timeStamp(
-                        credential_admin_fullname,
-                        'update',
-                        'file',
-                        msg_time_stamp
-                    )
-                    res.status(200).json({
-                        status:true,
-                        status_code: 200 ,
-                        msg:'บันทึกข้อมูลเรียบร้อย',
-                        new_file_name : file_name_upload
-                    })
-                })
-            }catch{
-                console.log('ERR TRY CATCH BLOCK 2,CANNOT UPDATE FILE');
-                console.log('ERR : ',err);
-                res.status(200).json({
-                    status_code: 500,
-                    status:false ,
-                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถบันทึกไฟล์ลงในระบบได้',
-                    err:err
-                })
-            }
-        })
+        let file_name_upload = (req.body.file_upload === 'no_file_upload') ? req.body.file_name_upload : `${file_name}_${Date.now()}.${file_type}`;
+        if (req.body.file_upload !== 'no_file_upload') await rename_file(path.join(__dirname, `../public/file/${file_name_upload}`), req.file.path);
 
-    }catch(err){
-        console.log('ERR TRY CATCH BLOCK ,CANNOT UPDATE FILE ');
-        console.log('ERR : ',err);
+
+        const qr_old_filename = `SELECT * FROM file WHERE file_id = ?`
+        const qr_update = `UPDATE file 
+            SET file_name = ? ,
+            file_name_upload = ?,
+            file_type = ? ,
+            file_category_id = ? 
+            WHERE file_id = ?`
+        const qr_update_params = [file_name,file_name_upload,file_type,file_category_id,file_id]
+
+        const result_old_file_name = await dbQuery(qr_old_filename,[file_id])
+        const old_file_name = result_old_file_name[0].file_name_upload // old file name 
+        await dbQuery(qr_update,qr_update_params)
+
+        // check file before delete
+        if(req.body.file_upload !== 'no_file_upload') await delete_file(old_file_name,'file') // after update remove old file
+
+        let msg_time_stamp = `${credential_admin_fullname} แก้ไขไฟล์ ' ${file_old_name} '`
+        if(file_name !== file_old_name) msg_time_stamp += ` และได้มีการเปลี่ยนชื่อไฟล์เป็น ' ${file_name} '`
+        
+        
+        await timeStamp(
+            credential_admin_fullname,
+            'update',
+            'file',
+            msg_time_stamp
+        )
+
         res.status(200).json({
-            status_code: 500,
-            status:false ,
-            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถบันทึกไฟล์ลงในระบบได้',
-            err:err
+            status:true,
+            status_code: 200 ,
+            msg:'บันทึกข้อมูลเรียบร้อย',
+            new_file_name : file_name_upload
         })
+
+    } catch (err) {
+        return_err(res,'TRY CATCH','UPDATE FILE ',err,500)
     }
 
 }
 
 // search file 
 module.exports.searchFile = async(req,res) =>{
-    const search_keyword = req.body.search_keyword
-    const selected_category = req.body.selected_category
-    const limit = req.body.limit
-    const start_item = req.body.start_item
 
-    let query_select = `SELECT * FROM file WHERE file_name LIKE ?` 
-    let query_and_condition = ` AND file_category_id = ${selected_category}`
-    let query_limit = ` LIMIT ${limit} OFFSET ${start_item}`
+    try {
+        const search_keyword = req.body.search_keyword
+        const selected_category = req.body.selected_category
+        const limit = req.body.limit
+        const start_item = req.body.start_item
+    
+        // search query with category id
+        let query_select = `SELECT * FROM file WHERE file_name LIKE ?` 
+        let query_and_condition = ` AND file_category_id = ${selected_category}`
+        let query_limit = ` LIMIT ${limit} OFFSET ${start_item}`
 
-    if(selected_category === 0) {
-        query_select = query_select + query_limit
-    }else{
-        query_select = query_select + query_and_condition + query_limit
-    }
+        let query_length = `SELECT COUNT(*) AS length FROM file WHERE file_name LIKE ?`
 
-    try{
-        db.query(query_select, ['%'+search_keyword+'%'], async (err,result)=>{
-            if(err) {
-                console.log('ERR CANT SEARCH FILES');
-                console.log('ERR :',err);
-                return res.status(200).json({
-                    status:false,
-                    statusCode:500,
-                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
-                    err:err
-                })
+        // query data
+        if(selected_category === 0) query_select += query_limit // search all without category id 
+        else query_select += query_and_condition + query_limit // search all with category id
+
+        // query length
+        if(selected_category !== 0) query_length += query_and_condition 
+
+        const result_search = await dbQuery(query_select , ['%'+search_keyword+'%'])
+        const result_length = await dbQuery(query_length , ['%'+search_keyword+'%'])
+        const length = result_length[0].length
+
+        // format pin and date 
+        if(result_search.length != 0){
+            for(let i=0 ; i<result_search.length ;i++){
+                if(result_search[i].file_pin == 0) result_search[i].file_pin = false
+                else result_search[i].file_pin = true
+
+                await date_convert(result_search[i].file_date).then((date_converted)=>{
+                    result_search[i].file_date = date_converted
+                }) 
             }
-            
-            if(result.length != 0){
-                for(let i=0 ; i<result.length ;i++){
-                    if(result[i].file_pin == 0) result[i].file_pin = false
-                    else result[i].file_pin = true
-                    
-                    await date_convert(result[i].file_date).then((date_converted)=>{
-                        result[i].file_date = date_converted
-                    }) 
-                }
-            }
-            let search_file_data = result 
-            
-            try {
-                if(selected_category === 0) {
-                    query_select = `SELECT * FROM file WHERE file_name LIKE ?` 
-                }else{
-                    query_select = `SELECT * FROM file WHERE file_name LIKE ?` + query_and_condition 
-                }
-                db.query(query_select ,['%'+search_keyword+'%'], async (err ,result)=>{
-                    if(err) {
-                        console.log('ERR CANT SEARCH FILES');
-                        console.log('ERR :',err);
-                        return res.status(200).json({
-                            status:false,
-                            statusCode:500,
-                            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
-                            err:err
-                        })
-                    }
-                    res.status(200).json({
-                        status:true,
-                        statusCode:200,
-                        msg:'ค้นหาข้อมูลสำเร็จ',
-                        search_data:search_file_data ,
-                        data_length: result.length 
-                    })
-                })
+        }
 
-            } catch (err) {
-                console.log('ERR TRY CATCH BLOCK 2 , CANT SEARCH FILES');
-                console.log('ERR :',err);
-                res.status(200).json({
-                    status:false,
-                    statusCode:500,
-                    msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
-                    err:err
-                })
-            }
-        })
-    }catch(err){
-        console.log('ERR TRY CATCH BLOCK , CANT SEARCH FILES');
-        console.log('ERR :',err);
         res.status(200).json({
-            status:false,
-            statusCode:500,
-            msg:'เกิดข้อผิดพลาดในระบบ ไม่สามารถค้นหาข้อมูลได้',
-            err:err
+            statusCode: 200,
+            status: true,
+            search_data: result_search ,
+            data_length: length 
         })
+
+
+    } catch (err) {
+        return_err(res,'TRY CATCH','SEARCH FILE ',err,500)
     }
-
-
 }
