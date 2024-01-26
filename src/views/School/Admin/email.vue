@@ -25,7 +25,7 @@ onMounted(()=>{
 const emailListDrawer = ref(true)
 const addNewEmailDialog = ref(false)
 const aleadyEmailDialog = ref(false)
-const drawerStatus = ref<'add_new' | 'detail'>()
+const drawerStatus = ref<'add_new' | 'detail'>('add_new')
 const topic = ref()
 const content = ref()
 const emailSelected = ref<Array<string>>([])
@@ -342,7 +342,7 @@ watch(searchValue , ()=>{
                             </v-btn>
                             <v-btn class="w-1/2" color="pink" size="large"
                             @click="aleadyEmailDialog=true" prepend-icon="mdi-account-multiple-check-outline">
-                                เลือกอีเมลที่มี
+                                เลือกอีเมลที่มีในระบบ
                             </v-btn>
                         </div>
                         <div class="w-full p-1">
