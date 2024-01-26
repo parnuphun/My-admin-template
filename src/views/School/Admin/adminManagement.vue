@@ -66,8 +66,8 @@ function getAllAdmin(){
     dataStatus.value = 'loading_data'
     _api.getAllAdmin({limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
         if(res.data.status_code === 200){
-            users.value = res.data.adminData
             imagePath.value = res.data.image_path
+            users.value = res.data.adminData
             if(users.value!.length >= 1){
                 dataStatus.value = 'load_data_succ'
             }else if(users.value!.length <=0 ){
@@ -685,7 +685,7 @@ watch(searchValue , ()=>{
                 <div class="w-full flex items-ceter justify-center">
                     <div class="border-2 rounded-md p-2 w-full h-[300px] flex items-ceter justify-center">
                         <img class="rounded-md object-cover h-full" 
-                        v-if="userDetail?.user_image !== 'no_image_upload'"
+                        v-if="userDetail?.user_image !== 'no_image_upload' && userDetail?.user_image !== undefined"
                         :src="imagePath+userDetail?.user_image" alt="">
                         <img class="rounded-md object-cover h-full" 
                         v-else src="/images/avartars/default_avatar.png" alt="">

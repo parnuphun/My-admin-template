@@ -65,9 +65,7 @@ function getTeachingS(){
                 teachListStatus.value = 'no_data'
             }else{
                 teachListStatus.value = 'err_data'
-            }
-            console.log(teachList.value);
-            
+            }            
         }else{
             teachListStatus.value = 'err_data'
         }

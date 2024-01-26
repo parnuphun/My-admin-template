@@ -21,9 +21,9 @@ onMounted(()=>{
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
     getAllPersonCategoryList()
     getAllPersonPositionList()
+    getAllpersonList()
     getPersonDirectoryTableTree()
     getAllpersonListLength()
-    getAllpersonList()
 })
 
 function getAllData(){
@@ -116,6 +116,7 @@ function getAllpersonList(){
     dataPersonListStatus.value = 'loading_data'
     _api.getAllpersonList({limit:sizeSelected.value,start_item:startItem.value,person_category_id:selectedPersonCategory.value}).then((res)=>{         
         if(res.data.status_code === 200){
+            personBaseImageUrl.value = res.data.img_url            
             if(res.data.person_data.length === 0){
                 dataPersonListStatus.value = 'no_data'
             }else if(res.data.person_data.length >= 1){
@@ -123,11 +124,9 @@ function getAllpersonList(){
                 personList.value = res.data.person_data
                 for(let i = 0 ; i < personList.value!.length ; i++){
                     personList.value![i].pd_position_name = findIndexPosition(personList.value![i].pd_position_id)
-                }
-                console.log(personList.value);
-                
+                }                
             }            
-            personBaseImageUrl.value = res.data.img_url
+            
         }else{
             dataPersonListStatus.value = 'err_data'
         }
@@ -489,16 +488,11 @@ watch(searchValue , ()=>{
  
 const personsList = ref<personDirectoryTableTree>()
 const personsDataTable = ref()
-const personsBaseImageurl = ref()
 function getPersonDirectoryTableTree(){
-    // console.log('check current tabs or category => ',categoryNo.value);
     _api.getPersonDirectoryTableTree({category_id:selectedPersonCategory.value}).then((res)=>{        
         personsList.value = res.data.person_data  
         personsDataTable.value = res.data.person_data_table 
-        
-        // console.log('person list on previws data => ',personsList.value);
-        // console.log('person data table list => ',personsDataTable.value);
-        // console.log('persons Base Image url=> ',personsBaseImageurl.value);
+ 
     })
 }
 
@@ -721,10 +715,12 @@ function getPersonDirectoryTableTree(){
                                     @click="updatePersonSetData(item)"
                                     v-for="item in (position as any).persons">
                                         <div class="w-[120px] h-[150px] border-2 rounded-md">
-                                            <img v-if="item.pd_person_image !== 'no_image_upload'" class="object-cover  w-full  h-full rounded-md " 
-                                            :src="personBaseImageUrl+item.pd_person_image" alt="">
-                                            <img v-else class="object-cover  w-full  h-full rounded-md " 
+                                            <img v-if="item.pd_person_image === 'no_image_upload'" 
+                                            class="object-cover  w-full  h-full rounded-md " 
                                             src="/images/avartars/default_avatar.png" alt="">
+                                            
+                                            <img v-else class="object-cover  w-full  h-full rounded-md " 
+                                            :src="personBaseImageUrl+item.pd_person_image" alt="">
                                         </div>
                                         <div class="w-full text-center text-sm mt-2">
                                             <p class="text-md">{{ item.pd_person_name }}</p>
