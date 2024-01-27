@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
+import pageDataStatus from '../../../components/layout/School/pageDataStatus.vue';
 import { ref, reactive, onMounted ,watch } from 'vue'
 import { adminResponse, dataStatus } from '../../../store/Interface' 
 import apiNamphong from '../../../services/api/api_namphong';
@@ -8,7 +9,7 @@ import {credential} from '../../../store/Interface'
 
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
-const dataStatus = ref<dataStatus>()
+const dataStatus = ref<dataStatus>('no_data')
 const admin_role = ref<Array<{title:string,value:string}>>([
     {
         title:'ผู้ใช้งาน',
@@ -590,7 +591,8 @@ watch(searchValue , ()=>{
                         </tr>
                     </tbody>
                 </v-table>
-                <div v-else-if="dataStatus === 'loading_data'" class="w-full h-full flex justify-center items-center">
+                <pageDataStatus v-else :data-status="dataStatus"></pageDataStatus>
+                <!-- <div v-else-if="dataStatus === 'loading_data'" class="w-full h-full flex justify-center items-center">
                     <div class=" flex flex-col items-center">
                         <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
                         <p class="text-xl mt-2 text-pink-600"> กำลังโหลดข้อมูลกรุณารอสักครู่...</p>
@@ -622,7 +624,7 @@ watch(searchValue , ()=>{
                         </div>
                         <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
                     </div>
-                </div>
+                </div> -->
                 <v-divider class="border-opacity-75"></v-divider>
             
                 <div class="w-full flex justify-end mt-3 pr-12">
@@ -1149,7 +1151,7 @@ watch(searchValue , ()=>{
                         required
                     ></v-text-field>
                     <v-checkbox hide-details color="pink" v-model="defaultPassword"
-                    label="ใช้รหัสผ่านเริ่มต้น ">
+                    label="ใช้รหัสผ่านเริ่มต้น " v-if="credential_rule === 'admin'">
                         <v-tooltip location="top" activator="parent">
                             {{defaultAdminPassword}}
                         </v-tooltip>
