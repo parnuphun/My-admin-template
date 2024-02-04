@@ -112,12 +112,12 @@ watch(sizeSelected,()=>{
                             </v-breadcrumbs>
                         </p>
                         <v-divider class="border-opacity-100"></v-divider>
-                        <div class="w-full h-auto flex flex-wrap justify-start items-start">
-                            <div class="xl:w-1/3 lg:w-1/3 md:w-1/3 sm:w-1/2 less:w-1/2 h-auto xl:p-4 flex flex-col 
+                        <div class="w-full h-auto flex flex-wrap justify-start items-start pb-4">
+                            <div class="xl:w-1/3 lg:w-1/3 md:w-1/3 sm:w-1/2 less:w-1/2 h-auto xl:px-2 flex flex-col 
                             group  cursor-pointer less:px-2" 
                             v-for="item in newsList"  @click="getCurrentPath(`/news/${item.news_id}`)">
                                 <div class="w-full flex flex-col bg-gray-50 border-2 rounded-md shadow-md
-                                hover:shadow-lg duration-200 hover:shadow-pink-200  cursor-pointer">
+                                hover:shadow-lg duration-200 hover:shadow-pink-200  cursor-pointer mt-2">
                                     <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col rounded-t-md group overflow-hidden">
                                         <img v-if="item.news_cover_image !== 'no_image_upload'"
                                         class="group-hover:scale-[1.05] group-hover:brightness-75 w-full h-full object-cover duration-500 rounded-t-md" 

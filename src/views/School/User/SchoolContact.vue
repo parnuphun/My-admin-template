@@ -60,14 +60,14 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                             </div>
                         </div>
                         <div class="w-full h-auto ">
-                            <v-divider class="border-opacity-100"></v-divider>
+                            <!-- <v-divider class="border-opacity-100"></v-divider>
                             <div class="py-4 text-2xl pl-4 border-l-8 border-pink-500 ">
                                 แผนผังโรงเรียน
                             </div>
-                            <v-divider class="border-opacity-100"></v-divider>
+                            <v-divider class="border-opacity-100"></v-divider> -->
                             <div class="text-2xl text-center flex justify-center items-center w-full h-auto p-6">
                                 <div class="flex flex-col justify-center items-center w-full">
-                                    <img src="/images/namphon_mockup/namphong_school_map.png" alt="" class="rounded-sm">
+                                    <img src="/images/menu/contactBanner.png" alt="" class="rounded-sm">
                                 </div>
                             </div>
                         </div>

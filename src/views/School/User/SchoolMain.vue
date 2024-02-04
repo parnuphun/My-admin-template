@@ -204,11 +204,11 @@ function animateOff(e:Event){
 <template>
 
     <div class="w-full flex flex-col relative">
-        <div ref="annoElement"
+        <div ref="annoElement" 
         @click="dialog = true "
         @mouseover="e => animateOn('anno',e)"
         @mouseout="animateOff"
-        class="mb-8 mr-8 fixed h-[75px] w-[75px] rounded-full bg-pink-50 bottom-[90px] right-0  
+        class="mb-8 mr-8 fixed h-[75px] w-[75px] rounded-full bg-pink-50 less:bottom-0 sm:bottom-[90px] right-0  
         hover:bg-pink-500 text-3xl cursor-pointer flex justify-center items-center duration-500 z-20">
             📢
         </div>
@@ -218,14 +218,14 @@ function animateOff(e:Event){
         @mouseover="e => animateOn('facebook',e)"
         @mouseout="animateOff"
         class="mb-8 mr-8 fixed h-[75px] w-[75px] rounded-full bottom-[180px] right-0 hover:brightness-75
-        text-3xl cursor-pointer flex justify-center items-center duration-500 z-20 
+        text-3xl cursor-pointer less:hidden sm:flex justify-center items-center duration-500 z-20 
         animate__animated">
             <img src="/images/logo/log_facebook.png" alt="">
         </div>
 
         <div @click="scrollToTop()"
         class="mb-8 mr-8 fixed h-[75px] w-[75px] rounded-full bg-white bottom-0 right-0 bg 
-        cursor-pointer flex justify-center items-center z-20 group duration-200">
+        cursor-pointer less:hidden sm:flex justify-center items-center z-20 group duration-200">
             <v-progress-circular 
             :model-value="scrollPercentage" 
             value
@@ -256,8 +256,12 @@ function animateOff(e:Event){
                 </v-parallax>
                 
                 <div class="w-full flex flex-col mt-4">
-                    <div class="w-full border-b-4 border-pink-500">
-                        <p class="text-white text-2xl text-center less:w-full sm:w-fit bg-pink-500 py-2 px-4">ข่าวประชาสัมพันธ์</p>
+                    <div class="w-full border-b-4 border-pink-500 flex less:justify-center sm:justify-start">
+                        <p class="text-white text-2xl text-center sm:w-fit bg-pink-500 py-2 px-4">ข่าวประชาสัมพันธ์</p>
+                        <p class=" duration-200 cursor-pointer text-center sm:w-fit 
+                        bg-pink-500 flex items-center pr-4"  @click="nextPage(`/news`)">
+                            <v-icon class="text-white hover:scale-[1.15] duration-200">mdi-open-in-new</v-icon>
+                        </p>
                     </div>
                     <div class="w-full flex flex-wrap py-2 animate__animated animate__fadeInRight animate__delay">
                         <div v-for="item of main_data?.news" class="less:w-1/2 md:w-1/4 h-auto p-1 ">
@@ -292,7 +296,7 @@ function animateOff(e:Event){
                     <div 
                     @click="nextPage('/studentSchedule')"
                     class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200">
-                        <img class="w-full h-[200px] rounded-md  
+                        <img class="w-full h-auto rounded-md  
                         group-hover:scale-[1.01] cursor-pointer  duration-200" 
                         src="/images/menu/studentSchedule.png" alt="">
                     </div>
@@ -300,14 +304,14 @@ function animateOff(e:Event){
                     @click="nextPage('/teachingSchedule')"
                     class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200 
                     less:mt-2 md:mt-0">
-                        <img class="w-full h-[200px] rounded-md 
+                        <img class="w-full h-auto rounded-md 
                         group-hover:scale-[1.01] cursor-pointer  duration-200" 
                         src="/images/menu/teachingSchedule.png" alt="">
                     </div>
                     <div 
                     @click="nextPage('/syllabus')"
                     class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200">
-                        <img class="w-full h-[200px] rounded-md 
+                        <img class="w-full h-auto rounded-md 
                         group-hover:scale-[1.01] cursor-pointer  duration-200" 
                         src="/images/menu/syllabusMenu.png" alt="">
                     </div>
@@ -315,16 +319,18 @@ function animateOff(e:Event){
                     @click="nextPage('/files')"
                     class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200 
                     less:mt-2 md:mt-0">
-                        <img class="w-full h-[200px] rounded-md 
+                        <img class="w-full h-auto rounded-md 
                         group-hover:scale-[1.01] cursor-pointer  duration-200" 
                         src="/images/menu/filesMenu.png" alt="">
                     </div>
                 </div>
       
                 <div ref="aImgElement" class="w-full flex flex-col mt-4 less:opacity-1 md:opacity-0 ">
-                    <div class="w-full border-b-4 border-pink-500">
-                        <p class="text-white text-2xl text-center less:w-full sm:w-fit bg-pink-500 py-2 px-4">
-                            ภาพกิจกรรม
+                    <div class="w-full border-b-4 border-pink-500 flex less:justify-center sm:justify-start">
+                        <p class="text-white text-2xl text-center sm:w-fit bg-pink-500 py-2 px-4">ภาพกิจกรรม</p>
+                        <p class=" duration-200 cursor-pointer text-center sm:w-fit 
+                        bg-pink-500 flex items-center pr-4"  @click="nextPage(`/gallery`)">
+                            <v-icon class="text-white hover:scale-[1.15] duration-200">mdi-open-in-new</v-icon>
                         </p>
                     </div>
                     <div class="w-full mt-2 rounded-md flex flex-col">
