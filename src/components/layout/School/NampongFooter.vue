@@ -83,9 +83,9 @@ const router_s = useRouter();
             <iframe class="w-full h-auto" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15283.8701330741!2d102.8032608!3d16.7284717!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x312257d8d3dac247%3A0xa51a22cdfef48f19!2z4LmC4Lij4LiH4LmA4Lij4Li14Lii4LiZ4LmA4LiX4Lio4Lia4Liy4Lil4LiZ4LmJ4Liz4Lie4Lit4LiH4Lig4Li54Lij4Li04Lie4Lix4LiS4LiZ4LmM!5e0!3m2!1sth!2sth!4v1700965260491!5m2!1sth!2sth" style="border:0;" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
     </div> -->
-    <div class="w-full flex flex-col  justify-center items-center bg-pink-900 pt-4">
+    <div class="w-full flex flex-col  justify-center items-center bg-pink-900 ">
         <div class="w-[1000px]">
-            <div class="flex flex-wrap gap-2 justify-center ">
+            <!-- <div class="flex flex-wrap gap-2 justify-center ">
                 <div  v-for="item of menu"
                     @click="nextPage((item as any).path,(item as any).type)"
                     class="p-4 border-2 border-white rounded-lg flex justify-center items-center cursor-pointer text-white
@@ -93,7 +93,7 @@ const router_s = useRouter();
                     <v-icon :icon="(item as any).icon" class="group-hover:text-pink-700"></v-icon> 
                     <v-tooltip activator="parent" location="top"> {{(item as any).title }}</v-tooltip>
                 </div>
-            </div>
+            </div> -->
             <div class="w-full py-2  flex justify-center items-center text-white text-sm">
                 © 2024 NAMPHONG PHURIPHAT MUNICIPLE SCHOOL
             </div>

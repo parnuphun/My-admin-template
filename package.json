@@ -12,6 +12,7 @@
     "@mdi/font": "^7.0.96",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@vueup/vue-quill": "^1.2.0",
+    "animate.css": "^4.1.1",
     "axios": "^1.6.4",
     "echarts": "^5.4.0",
     "moment": "^2.29.4",

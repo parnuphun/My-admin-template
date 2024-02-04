@@ -31,6 +31,9 @@ moment.locale('th')
 // marquee slide
 import Vue3Marquee from 'vue3-marquee'
 
+// animate css
+import 'animate.css';
+
 createApp(App)
     .use(vuetify)
     .use(routes)

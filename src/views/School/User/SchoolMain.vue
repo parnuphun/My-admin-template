@@ -1,21 +1,36 @@
 <script setup lang="ts">
 import { ref , onMounted , watch } from 'vue';
 import NampongNavBar from '../../../components/layout/School/NampongNavBar.vue'
-import {imageGalleryType , mainPageResponse} from '../../../store/Interface'
+import {activityImageResonse, imageGalleryType , mainPageResponse} from '../../../store/Interface'
 import NampongFooter from './../../../components/layout/School/NampongFooter.vue'
 import { useRouter , useRoute} from 'vue-router';
 import apiNamphong from '../../../services/api/api_namphong'
+import MsgAlert from '../../../services/msgAlert';
+import { onUnmounted } from 'vue';
 
 const _api = new apiNamphong()
+const _msg = new MsgAlert()
+
 const main_data = ref<mainPageResponse>()
-const base_img_path = ref<{
+interface base_img_path {
     base_banner_img : string 
     base_anno_img : string 
     base_activity_img : string 
     base_news_img : string
-}>()
+}
+
+const base_img_path = ref<base_img_path>()
 const banner_img = ref()
 const banner_slogan = ref()
+
+// elemente ref
+const scheduleElement = ref<any>()
+const aImgElement = ref<any>()
+const facebookMenuElement =ref<any>()
+const annoElement = ref<any>()
+const scrollPercentage =ref()
+const oldScrollPercentage =ref()
+const crrImgSlide = ref()
 
 //route
 const router = useRouter()
@@ -25,26 +40,50 @@ const dialog = ref<boolean>(false)
 const readit = ref<boolean>(false)
 
 onMounted(async ()=>{
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', calculateScrollPercentage);
     document.title = 'โรงเรียนเทศบาลน้ำพองภูริพัฒน์'
     await clientMainPage();
-    await checkNewsBanner();
     
 })
 
-async function checkNewsBanner() {
-    
+onUnmounted(()=>{
+    window.addEventListener('scroll', calculateScrollPercentage);
+})
+const handleScroll = () => {
+
+    if (scheduleElement.value) {
+        const elementRect = scheduleElement.value.getBoundingClientRect();
+        if (window.scrollY > elementRect.top) {
+            scheduleElement.value.classList.add('animate__animated','animate__fadeInRight','opacity-1');
+        }
+    }
+
+    if(aImgElement.value){
+        const elementRect = aImgElement.value.getBoundingClientRect();
+        if (window.scrollY > elementRect.top) {
+                aImgElement.value.classList.add('animate__animated','animate__fadeInRight','opacity-1');
+            }
+        }
+};
+
+function nextPage(url:string , other?:boolean){
+    if(other){
+        window.open(url,'_blank')
+    }else{
+        router.push(url)
+    }
 }
 
-function getCurrentPath(url:string){
-    router.push(url)
-}
-
+const aImgList = ref<Array<activityImageResonse>>()
+const aImgLioaded = ref(false)
 async function clientMainPage(){
     _api.clientMainPage().then((res)=>{
         if(res.data.status_code = 200){
             main_data.value = res.data.main_data
             base_img_path.value = res.data.base_image_path
-            
+            aImgList.value = main_data.value?.activity_img
+            aImgLioaded.value = true
             banner_img.value = main_data.value?.banner[0].banner_img
             banner_slogan.value = main_data.value?.banner[0].banner_slogan
 
@@ -54,7 +93,6 @@ async function clientMainPage(){
                 // compare 
                 // old data != new data
                 if(JSON.stringify(annoCheckState.anno_data ) === JSON.stringify(main_data.value!.anno)){
-                    console.log('your data is currently !!');
                     dialog.value = false
                   
                 }else{
@@ -79,7 +117,22 @@ function openLink(url:string){
     window.open(url, '_blank')
 }
 
-const menu = ref<Array<Object>>([
+// สร้างฟังก์ชันเพื่อคำนวณเปอร์เซ็นต์ของการเลื่อน
+function calculateScrollPercentage() {
+  const totalHeight = document.body.scrollHeight - window.innerHeight;
+  const currentScroll = window.scrollY || document.documentElement.scrollTop;
+  scrollPercentage.value = (currentScroll / totalHeight) * 100;
+  oldScrollPercentage.value = scrollPercentage.value
+}
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+const menu = ref<Array<{title:string,path:string,icon:string}>>([
     {
         title:'ข่าวประชาสัมพันธ์',
         path:'/news',
@@ -125,136 +178,230 @@ const menu = ref<Array<Object>>([
         path:'/contact',
         icon:'mdi-phone-outline'
     },
+    {
+        title:'ผู้ดูแลระบบ',
+        path:'/login',
+        icon:'mdi-phone-outline'
+    },
 ])
+
+
+function animateOn(element:'facebook' | 'anno',e:Event){
+    if(element === 'facebook' && e.isTrusted === true){
+        facebookMenuElement.value.classList.add('animate__animated','animate__swing');
+    }else if(element === 'anno' && e.isTrusted === true){
+        annoElement.value.classList.add('animate__animated','animate__swing');
+    }
+}
+
+function animateOff(e:Event){
+    facebookMenuElement.value.classList.remove('animate__animated','animate__swing');
+    annoElement.value.classList.remove('animate__animated','animate__swing');
+}
+ 
 </script>
 
 <template>
 
-    <div class="flex flex-col w-full relative">
-        <div @click="dialog = true "
-        class="mb-8 mr-8 fixed h-20 w-20 rounded-full bg-pink-50 bottom-0 right-0 bg border-4 border-pink-500
-         hover:bg-pink-500 text-3xl cursor-pointer flex justify-center items-center duration-500 z-20">
+    <div class="w-full flex flex-col relative">
+        <div ref="annoElement"
+        @click="dialog = true "
+        @mouseover="e => animateOn('anno',e)"
+        @mouseout="animateOff"
+        class="mb-8 mr-8 fixed h-[75px] w-[75px] rounded-full bg-pink-50 bottom-[90px] right-0  
+        hover:bg-pink-500 text-3xl cursor-pointer flex justify-center items-center duration-500 z-20">
             📢
-            <!-- <span v-if="readit === false" 
-             class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-300 opacity-75"></span> -->
         </div>
+
+        <div @click="nextPage('https://www.facebook.com/puripatschool2560' , true)"
+        ref="facebookMenuElement" 
+        @mouseover="e => animateOn('facebook',e)"
+        @mouseout="animateOff"
+        class="mb-8 mr-8 fixed h-[75px] w-[75px] rounded-full bottom-[180px] right-0 hover:brightness-75
+        text-3xl cursor-pointer flex justify-center items-center duration-500 z-20 
+        animate__animated">
+            <img src="/images/logo/log_facebook.png" alt="">
+        </div>
+
+        <div @click="scrollToTop()"
+        class="mb-8 mr-8 fixed h-[75px] w-[75px] rounded-full bg-white bottom-0 right-0 bg 
+        cursor-pointer flex justify-center items-center z-20 group duration-200">
+            <v-progress-circular 
+            :model-value="scrollPercentage" 
+            value
+            class="text-pink-500 group-hover:text-pink-600"
+            :size="100" 
+            :width="4">
+                <p class="text-3xl text-pink-500 
+                group-hover:text-4xl group-hover:text-pink-600 duration-200">
+                    <v-icon >mdi-arrow-up-thin</v-icon>
+                </p>
+            </v-progress-circular>
+        </div>
+
         <NampongNavBar class=""></NampongNavBar>
 
-        <!-- Banner -->
-        <div class="w-full h-[auto] max-h-[600px] bg-gradient-to-tr flex justify-center items-start z-10" >
-            <v-parallax class="less:h-[300px] xl:h-[500px]"
-                :src="base_img_path?.base_banner_img + banner_img">
-                    <div class="relative w-full h-full flex justify-center items-center bg-black opacity-40"></div>
-                    <div class="absolute w-full h-full flex justify-center items-center top-0">
-                        <p class=" less:text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white">
-                            {{ banner_slogan }}
-                        </p>
-                    </div>
-            </v-parallax>
-        </div>
-
-        <!-- news relese -->
-        <div class="w-full h-auto px-10 pt-10 flex justify-center items-center">
-            <div class="w-[1200px] h-auto flex flex-col">
-                <div class="xl:p-4 less:p-2 flex flex-row justify-between items-center">
-                    <div class="text-pink-500 border-l-8 border-pink-500 less:text-xl xl:text-2xl py-4 pl-4">
-                        ข่าวประชาสัมพันธ์
-                    </div>
-                    <div class="text-pink-500 less:sm xl:text-lg hover:text-pink-300 cursor-pointer" @click="getCurrentPath('/news')">
-                        อ่านข่าวทั้งหมด
-                    </div>
-                </div>
-                <div class="w-full h-auto flex flex-wrap justify-start items-start">
-                    <div class="xl:w-1/4 lg:w-1/4 md:w-1/4 sm:w-1/2 less:w-1/2 h-auto xl:p-4 flex flex-col 
-                    group  cursor-pointer less:px-2" 
-                    v-for="item of main_data?.news"  @click="getCurrentPath(`/news/${item.news_id}`)">
-                        <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col">
-                            <img class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
-                            v-if="item.news_cover_image !== 'no_image_upload'"
-                            :src="base_img_path?.base_news_img+ item.news_cover_image" alt=""> 
-                            <img v-else class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
-                            src="/images/namphong_default_cover_image.jpg" alt=""> 
-                        </div>
-                        <div class="w-full flex flex-col justify-start items-start min-h-[100px] max-h-[100px]">
-                            <p class="px-2 text-xl line-clamp-3 mt-3 group-hover:text-pink-500 duration-500">
-                                {{ item.news_topic }}
+        <div class="w-full flex flex-col justify-center items-center mb-10">
+            <div class="less:w-full xl:w-[1200px] flex flex-col ">
+                <!-- banner -->
+                <v-parallax class="less:h-[300px] xl:h-[400px] less:rounded-none md:rounded-md 
+                animate__animated animate__fadeIn"  
+                    :src="base_img_path?.base_banner_img && banner_img ? base_img_path.base_banner_img + banner_img : ''">
+                        <div class="relative w-full h-full flex justify-center items-center bg-black opacity-40"></div>
+                        <div class="absolute w-full h-full flex justify-center items-center top-0">
+                            <p class=" less:text-xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl text-white">
+                                {{ banner_slogan }}
                             </p>
                         </div>
-                        <div class="w-full h-full flex justify-start">
-                            <p class="px-2 text-sm line-clamp-1 text-gray-400  group-hover:text-pink-500 duration-500">
-                                {{ item.news_date }}
-                            </p>
-                        </div>
-                        <div class="px-2 w-full mb-4 text-white bg-pink-400 hover:bg-pink-500 p-3 text-center mt-3 cursor-pointer duration-500">
-                            อ่านเพิ่มเติม
-                        </div>
+                </v-parallax>
+                
+                <!-- news -->
+                <div class="w-full flex flex-col mt-4">
+                    <div class="w-full border-b-4 border-pink-500">
+                        <p class="text-white text-2xl text-center less:w-full sm:w-fit bg-pink-500 py-2 px-4">ข่าวประชาสัมพันธ์</p>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- main menu -->
-        <div class="w-full h-auto flex justify-center py-10">
-            <div class="w-[1200px] h-auto flex flex-col bg-white">
-                <div class="flex flex-wrap justify-center items-center">
-
-                    <div v-for="item of menu"
-                    class="w-1/3 min-w-[300px] h-[100px] bg-white group p-2" 
-                    @click="getCurrentPath((item as any).path)">
-                        <div class="w-full h-full text-pink-500 flex md:justify-center items-center text-2xl
-                        less:justify-start less:pl-10 md:pl-0  border-2 border-pink-200 rounded-md
-                        group-hover:bg-gray-100 duration-500 cursor-pointer">
-                            <v-icon :icon="(item as any).icon" class="mr-3"></v-icon> {{ (item as any).title}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- image gallery -->
-        <div v-if="main_data?.activity_img.length !== 0" class="w-full h-auto bg-white pb-4 flex justify-center">
-            <div class="w-[1200px] h-auto flex flex-col justify-center items-center ">
-                <div class="w-max bg-white h-auto pt-6 pb-4 mb-4 less:text-2xl 
-                xl:text-3xl text-center text-pink-500">
-                    <div class="text-center text-pink-500 w-max h-full">
-                        <!-- <v-icon end icon="mdi-image"></v-icon> ภาพกิจกรรม -->
-                        ภาพกิจกรรมของทางโรงเรียน
-                    </div>
-                </div>
-
-                <div class="w-full">
-                    <div class="w-full h-auto flex flex-wrap justify-between items-center">
-                        <div class="w-full h-full flex flex-wrap justify-center items-center pb-4 
-                        xl:flex md:flex less:hidden">
-                            <div v-for="item of main_data?.activity_img" class="relative group 
-                            lg:w-1/4 md:w-1/3 sm:w-1/3 less:w-1/2 xl:w-1/4 
-                            lg:h-[250px] md:h-[200px] less:h-[200px] xl:h-[250px] 
-                            cursur-pointer px-1 mt-2"
-                            @click="openLink(item.activity_image_link)">
-                                <img class="object-cover w-full h-full scale-100 group-hover:scale-[1.01] duration-500
-                                            group-hover:brightness-50 cursor-pointer rounded-lg" 
-                                :src="base_img_path?.base_activity_img+item.activity_image_cover" alt="">
-                                <div class="absolute w-full h-full p-3 text-white  top-0 flex justify-start items-end cursor-pointer
-                                            scale-100 group-hover:scale-[1.01] duration-500 opacity-0 group-hover:opacity-100">
-                                    <p class="line-clamp-3 text-lg">
-                                    {{ item.activity_image_name }} 
+                    <div class="w-full flex flex-wrap py-2 animate__animated animate__fadeInRight animate__delay">
+                        <div v-for="item of main_data?.news" class="less:w-1/2 md:w-1/4 h-auto p-1 ">
+                            <div @click="nextPage(`/news/${item.news_id}`)"
+                            class="w-full flex flex-col bg-gray-50 border-2 rounded-md shadow-md
+                            hover:shadow-lg duration-200 hover:shadow-pink-200  cursor-pointer">
+                                <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col rounded-t-md group overflow-hidden">
+                                    <img v-if="item.news_cover_image !== 'no_image_upload'"
+                                    class="group-hover:scale-[1.05] group-hover:brightness-75 w-full h-full object-cover duration-500 rounded-t-md" 
+                                    :src="base_img_path?.base_news_img+ item.news_cover_image" alt=""> 
+                                    <img v-else 
+                                    class="group-hover:scale-[1.05] group-hover:brightness-75 w-full h-full object-cover duration-500 rounded-t-md" 
+                                    src="/images/namphong_default_cover_image.jpg" alt=""> 
+                                </div>
+                                <div class="w-full flex flex-col justify-start items-start min-h-[100px] max-h-[100px]">
+                                    <p class="px-2 text-xl line-clamp-3 mt-3 group-hover:text-pink-500 duration-500">
+                                        {{ item.news_topic }}
+                                    </p>
+                                </div>
+                                <div class="w-full flex justify-end mt-4">
+                                    <p @click="nextPage(`/news/${item.news_id}`)"
+                                    class="text-md text-pink-500 cursor-pointer hover:text-pink-600 py-2 px-4" >
+                                        อ่านเพิ่มเติม
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <div class="w-full h-auto flex flex-wrap justify-center items-center pb-4 
-                        xl:hidden md:hidden less:flex px-6">
-                            <v-carousel 
-                                cycle 
-                                height="300"
-                                color="pink">
-                                <v-carousel-item
-                                    v-for="item of main_data?.activity_img" 
-                                    :src="base_img_path?.base_activity_img+item.activity_image_cover"
-                                    cover
-                                    @click="openLink(item.activity_image_link)"
-                                ></v-carousel-item>
-                            </v-carousel>
+                    </div>
+                </div>
+                
+                <!-- teach student schedule and syllabus -->
+                <div ref="scheduleElement" class="w-full flex flex-wrap mt-4 less:opacity-1 md:opacity-0 ">
+                    <div 
+                    @click="nextPage('/studentSchedule')"
+                    class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200">
+                        <img class="w-full h-[200px] rounded-md  
+                        group-hover:scale-[1.01] cursor-pointer  duration-200" 
+                        src="/images/menu/studentSchedule.png" alt="">
+                    </div>
+                    <div 
+                    @click="nextPage('/teachingSchedule')"
+                    class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200 
+                    less:mt-2 md:mt-0">
+                        <img class="w-full h-[200px] rounded-md 
+                        group-hover:scale-[1.01] cursor-pointer  duration-200" 
+                        src="/images/menu/teachingSchedule.png" alt="">
+                    </div>
+                    <div 
+                    @click="nextPage('/syllabus')"
+                    class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200">
+                        <img class="w-full h-[200px] rounded-md 
+                        group-hover:scale-[1.01] cursor-pointer  duration-200" 
+                        src="/images/menu/syllabusMenu.png" alt="">
+                    </div>
+                    <div 
+                    @click="nextPage('/files')"
+                    class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200 
+                    less:mt-2 md:mt-0">
+                        <img class="w-full h-[200px] rounded-md 
+                        group-hover:scale-[1.01] cursor-pointer  duration-200" 
+                        src="/images/menu/filesMenu.png" alt="">
+                    </div>
+                </div>
+      
+                <!-- img add -->
+                <div ref="aImgElement" class="w-full flex flex-col mt-4 less:opacity-1 md:opacity-0 ">
+                    <div class="w-full border-b-4 border-pink-500">
+                        <p class="text-white text-2xl text-center less:w-full sm:w-fit bg-pink-500 py-2 px-4">
+                            ภาพกิจกรรม
+                        </p>
+                    </div>
+                    <div class="w-full mt-2 rounded-md flex flex-col">
+                        <v-carousel 
+                            v-if="aImgLioaded"
+                            v-model="crrImgSlide"
+                            cycle 
+                            class="rounded-md"
+                            height="500"
+                            color="pink"
+                            :hide-delimiters="true"
+                        >
+                            <template v-slot:prev="{ props }">
+                                <div  @click="props.onClick" 
+                                class="text-pink-500 text-7xl cursor-pointer hover:text-pink-600">
+                                    <v-icon class="" end icon="mdi-chevron-left"></v-icon>
+                                </div>
+                            </template>
+                            <template v-slot:next="{ props }">
+                                <div  @click="props.onClick" 
+                                class="text-pink-500 text-7xl cursor-pointer hover:text-pink-600">
+                                    <v-icon class="" end icon="mdi-chevron-right"></v-icon>
+                                </div>
+                            </template>
+                            <v-carousel-item
+                                v-for="(item , i) in aImgList" 
+                                :key="i"
+                                @click="openLink(item.activity_image_link)"
+                                class="relative"
+                            >
+                                <div class="w-full h-full overflow-hidden group cursor-pointer">
+                                    <img 
+                                    class="object-cover w-full h-full group-hover:brightness-75 duration-200" 
+                                    :src="base_img_path?.base_activity_img+item.activity_image_cover" 
+                                    alt="activityImg">
+                                    
+                                </div>
+                                <div class="absolute bottom-0 opacity-0 w-full h-20">
+                                    <div class="w-full h-full relative bg-red-500 opacity-10">
+
+                                        <p class="absolute top-0 text-3xl text-pink-500 line-clamp-2 z-[999] ">
+                                            {{ item.activity_image_name }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </v-carousel-item>
+                        </v-carousel>
+                        <div class="w-full flex flex-wrap mt-2">
+                            <div v-for="(item , i) in aImgList" :key="i"
+                            class="less:w-1/3 sm:w-1/5 md:w-1/6 h-[130px] p-1 border-2 cursor-pointer " @click="crrImgSlide = i"
+                            :class="{'bg-pink-500 border-pink-500 brightness-75' : i === crrImgSlide}">
+                                <div class="w-full h-full group overflow-hidden">
+                                    <img class="w-full h-full group-hover:scale-[1.02] duration-200 object-cover"
+                                        :src="base_img_path?.base_activity_img+item.activity_image_cover" 
+                                        alt="activityImg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- info Contact -->
+                <div class="w-full flex flex-wrap mt-4 justify-center">
+                    <div class="w-full flex flex-col border-2 shadow-md rounded-md">
+                        <div class="w-full py-2 flex justify-center items-center text-xl">
+                            เมนูด่วน
+                        </div>
+                        <v-divider class="border-opacity-100"></v-divider>
+                        <div class="w-full p-2 flex flex-wrap gap-2 justify-center items-start">
+                            <p class="py-2 px-4 hover:text-pink-500 cursor-pointer"
+                            v-for="(item , i) in menu" :key="i"
+                            @click="nextPage(item.path)">
+                                {{ item.title }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -266,40 +413,41 @@ const menu = ref<Array<Object>>([
     <!-- footer -->
     <nampong-footer></nampong-footer>
 
-    <v-row justify="center">
-        <v-dialog
-            v-model="dialog"
-            width="800"
-            transition="dialog-bottom-transition"
-        >
-            <v-card class="pb-2">
-                <div class="relative w-full h-auto">
-                    <div class="sticky w-full h-full top-0 right-0 z-20 bg-white">
-                        <div class="relative w-full text-center py-6 text-2xl text-pink-500 flex justify-center items-center">
-                            <div class="less:text-lg md:text-3xl xl:text-4xl">
-                                📢 ประกาศจากทางโรงเรียน
-                            </div>
-                            <div class="absolute top-0 right-0 h-20 w-20 text-pink-500 text-3xl flex 
-                            justify-center items-center cursor-pointer hover:text-pink-300"
-                            @click="dialog = !dialog ; readit = true">
-                                <v-icon icon="mdi-close"></v-icon>
-                            </div>
+    <v-dialog
+        v-model="dialog"
+        width="800"
+    >
+        <v-card class="pb-2">
+            <div class="relative w-full h-auto">
+                <div class="sticky w-full h-full top-0 right-0 z-20 bg-white">
+                    <div class="relative w-full text-center py-6 text-2xl text-pink-500 flex justify-center items-center border-b-4 border-pink-500">
+                        <div class="less:text-lg md:text-3xl xl:text-4xl">
+                            ประชาสัมพันธ์
                         </div>
-
-                        <v-divider></v-divider>
-                    </div>
-                    <div class="w-full flex flex-col px-2">
-                        <div class="w-full " v-for="item of main_data?.anno">
-                            <div class=" w-full h-full">
-                                <img :src="base_img_path?.base_anno_img+item.anno_image" alt="" 
-                                class="my-2 px-2 rounded-lg w-full scale-100 hover:scale-[1.01] duration-500">
-                            </div>
-                        <v-divider></v-divider>
+                        <div class="absolute top-0 mt-2 right-0 h-20 w-20 text-pink-500 text-3xl flex 
+                        justify-center items-center cursor-pointer hover:text-pink-300"
+                        @click="dialog = !dialog ; readit = true">
+                            <v-icon icon="mdi-close"></v-icon>
                         </div>
-
                     </div>
+
+                    <v-divider></v-divider>
                 </div>
-            </v-card>
-            </v-dialog>
-    </v-row>
+                <div class="w-full flex flex-col px-2">
+                    <div class="w-full " v-for="item of main_data?.anno" :key="item.anno_id">
+                        <div class=" w-full h-full">
+                            <img :src="base_img_path?.base_anno_img+item.anno_image" alt="" 
+                            class="my-2 px-2 rounded-lg w-full scale-100 hover:scale-[1.01] duration-500">
+                        </div>
+                    <v-divider></v-divider>
+                    </div>
+
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
 </template>
+
+<style>
+    
+</style>

@@ -85,7 +85,7 @@ export const navigationMenu:NavigationItem[] = [
     },
     {
         id: 'person_management' ,
-        title : 'ผู้ดูแลระบบ' ,
+        title : 'ผู้ใช้งาน' ,
         icon : 'mdi-account-outline' ,
         link : '/admin/adminManagement' ,
         permission : 'user' ,
