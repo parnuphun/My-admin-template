@@ -240,10 +240,10 @@ function animateOff(e:Event){
         </div>
 
         <NampongNavBar class=""></NampongNavBar>
-
-        <div class="w-full flex flex-col justify-center items-center mb-10">
+        <v-divider class="border-opacity-100"></v-divider>
+        
+        <div class="w-full flex flex-col justify-center items-center mb-10 mt-2">
             <div class="less:w-full xl:w-[1200px] flex flex-col ">
-                <!-- banner -->
                 <v-parallax class="less:h-[300px] xl:h-[400px] less:rounded-none md:rounded-md 
                 animate__animated animate__fadeIn"  
                     :src="base_img_path?.base_banner_img && banner_img ? base_img_path.base_banner_img + banner_img : ''">
@@ -255,7 +255,6 @@ function animateOff(e:Event){
                         </div>
                 </v-parallax>
                 
-                <!-- news -->
                 <div class="w-full flex flex-col mt-4">
                     <div class="w-full border-b-4 border-pink-500">
                         <p class="text-white text-2xl text-center less:w-full sm:w-fit bg-pink-500 py-2 px-4">ข่าวประชาสัมพันธ์</p>
@@ -289,7 +288,6 @@ function animateOff(e:Event){
                     </div>
                 </div>
                 
-                <!-- teach student schedule and syllabus -->
                 <div ref="scheduleElement" class="w-full flex flex-wrap mt-4 less:opacity-1 md:opacity-0 ">
                     <div 
                     @click="nextPage('/studentSchedule')"
@@ -323,7 +321,6 @@ function animateOff(e:Event){
                     </div>
                 </div>
       
-                <!-- img add -->
                 <div ref="aImgElement" class="w-full flex flex-col mt-4 less:opacity-1 md:opacity-0 ">
                     <div class="w-full border-b-4 border-pink-500">
                         <p class="text-white text-2xl text-center less:w-full sm:w-fit bg-pink-500 py-2 px-4">
@@ -389,7 +386,6 @@ function animateOff(e:Event){
                     </div>
                 </div>
 
-                <!-- info Contact -->
                 <div class="w-full flex flex-wrap mt-4 justify-center">
                     <div class="w-full flex flex-col border-2 shadow-md rounded-md">
                         <div class="w-full py-2 flex justify-center items-center text-xl">
@@ -410,7 +406,6 @@ function animateOff(e:Event){
 
     </div>
 
-    <!-- footer -->
     <nampong-footer></nampong-footer>
 
     <v-dialog
