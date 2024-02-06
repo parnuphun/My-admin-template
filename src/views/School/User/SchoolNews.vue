@@ -94,8 +94,8 @@ watch(sizeSelected,()=>{
         <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
-                    <div class="w-[1000px] h-full bg-white">
-                        <p class="text-xl py-2 border-l-8 border-pink-500 ">  
+                    <div class="w-[1200px] h-full bg-white">
+                        <p class="text-xl h-full py-2 border-l-8 border-pink-500 flex items-center ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
                                     <div v-if="item.disabled === true">
@@ -113,7 +113,7 @@ watch(sizeSelected,()=>{
                         </p>
                         <v-divider class="border-opacity-100"></v-divider>
                         <div class="w-full h-auto flex flex-wrap justify-start items-start pb-4">
-                            <div class="xl:w-1/3 lg:w-1/3 md:w-1/3 sm:w-1/2 less:w-1/2 h-auto xl:px-2 flex flex-col 
+                            <div class="xl:w-1/4 lg:w-1/4 md:w-1/4 sm:w-1/3 less:w-1/2 h-auto xl:px-2 flex flex-col 
                             group  cursor-pointer less:px-2" 
                             v-for="item in newsList"  @click="getCurrentPath(`/news/${item.news_id}`)">
                                 <div class="w-full flex flex-col bg-gray-50 border-2 rounded-md shadow-md

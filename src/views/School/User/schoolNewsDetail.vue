@@ -44,7 +44,7 @@ onMounted(()=>{
                 {
                     title: 'ข่าวสาร',
                     disabled: false,
-                    href: '/about',
+                    href: '/news',
                 },
                 {
                     title: `${title.value}`,
@@ -67,26 +67,43 @@ onMounted(()=>{
     <div class="h-full">
         <div class="flex flex-col w-full h-full relative ">        
             <NampongNavBar></NampongNavBar>
-            <v-divider></v-divider>
+            <v-divider class="border-opacity-100"></v-divider>
             <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
                 <div class="w-full h-full">
                     <div class="w-full h-full flex justify-center items-center  text-xl">
-                        <div class="w-[1000px] h-full bg-white ">
-                   
+                        <div class="w-[1200px] h-full bg-white ">
+                            <p class="text-xl h-full py-2 border-l-8 border-pink-500 flex items-center ">  
+                                <v-breadcrumbs :items="breadcrumb">
+                                    <template v-slot:title="{ item }">
+                                        <div v-if="item.disabled === true">
+                                            <p class="line-clamp-1  text-gray-500">
+                                                {{ item.title }}
+                                            </p>
+                                        </div>
+                                        <div v-else>
+                                            <p class="min-w-max">
+                                                {{ item.title }}
+                                            </p>
+                                        </div>
+                                    </template>
+                                </v-breadcrumbs>
+                            </p>
                             <v-divider class="border-opacity-100"></v-divider>
                             <div class="w-full min-h-screen h-full flex flex-column justify-start items-start">
-                                <div class="w-full bg- -600">
-                                    <div class="w-full text-3xl flex justify-center items-center pt-12 px-4  -white">
+                                <div class="w-full bg-pink-900 text-white">
+                                    <div class="w-full text-3xl flex justify-center items-center py-6 px-4  -white">
                                         {{ title }}
                                     </div>
-                                    <div class="flex flex-wrap gap-2 px-4  -gray-100 mt-4 text-sm" >
-                                        วันที่ : {{ date }} โดย : {{ author }} หมวดหมู่ : {{ category }}
+                                    <div class="flex flex-wrap less:justify-start sm:justify-end mb-1 gap-2 px-4  -gray-100 mt-4 text-sm" >
+                                        <v-icon>mdi-calendar</v-icon> วันที่ : {{ date }} 
+                                        <v-icon>mdi-account</v-icon> โดย : {{ author }} 
+                                        <v-icon>mdi-tag</v-icon>หมวดหมู่ : {{ category }}
                                     </div>
                                     <div class="w-full border-[1.5px] border-gray-300"> 
                                     </div>
                                 </div>
     
-                                <div class="ql-container mt-4 pb-6">
+                                <div class="ql-container mt-4 pb-6 px-4 w-full flex justify-center ">
                                     <div class="ql-editor">
                                         <div v-html="content"></div>
                                     </div>

@@ -9,6 +9,7 @@ import MsgAlert from '../../../services/msgAlert';
 const _api = new apiNamphong()
 const _msg = new MsgAlert
 const  baseImagePaht = ref()
+const show = ref(false)
 
 onMounted(()=>{
     document.title = 'ทำเนียบบุคลากร'
@@ -226,7 +227,7 @@ const persons_position = ref<Array<object>>([
         <div class="flex flex-col w-full h-full min-h-screen bg-pink-50 justify-start items-center">
             <div class="w-full h-full min-h-screen">
                 <div class="w-full h-full flex justify-center items-center text-xl">
-                    <div class="w-[1000px] h-full min-h-screen bg-white">
+                    <div class="w-[1200px] h-full min-h-screen bg-white">
                         <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
@@ -263,16 +264,33 @@ const persons_position = ref<Array<object>>([
                                 {{position.position_name}}
                             </div>
     
-                            <div class="w-full h-full flex flex-wrap justify-center items-center gap-10
+                            <div class="w-full h-full flex flex-wrap justify-center items-start gap-10
                                  border-pink-300 pb-2 pt-2">                        
-                                <div class="w-[200px] h-[330px] flex flex-wrap mt-2 " v-for="person of position.persons">
-                                    <div class="border-2 w-[200px] h-[250px] rounded-lg ">
-                                        <img class="object-cover rounded-lg w-[200px] h-[250px]" 
-                                        :src="baseImagePaht+person.pd_person_image" alt="">
+                                <div class="w-[200px] max-h-min flex flex-col mt-2" v-for="person of position.persons">
+                                    <div class="w-[200px] h-full ">
+                                        <div class="border-2 w-[200px] h-[250px] rounded-lg relative">
+                                            <img class="object-cover rounded-lg w-[200px] h-[250px]" 
+                                            :src="baseImagePaht+person.pd_person_image" alt="">
+                                            <div class="absolute rounded-md bg-white p-1 bottom-1 right-2">
+                                                <v-icon class="text-pink-500">
+                                                    mdi-magnify
+                                                </v-icon>
+                                                <v-tooltip activator="parent" location="bottom end">
+                                                    <div v-if="person.pd_person_descript || person.pd_person_phone || person.pd_person_email"
+                                                    class="text-left">
+                                                        <p class="text-md">อีเมล : {{ person.pd_person_email }}</p>
+                                                        <p class="text-md">เบอร์โทร : {{ person.pd_person_phone }}</p>
+                                                        <p class="text-md">เพิ่มเติม : {{ person.pd_person_descript }}</p>
+                                                    </div>
+                                                    <div v-else>
+                                                        <p class="text-md">ไม่มีข้อมูล</p>
+                                                    </div>
+                                                </v-tooltip>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="w-full text-center text-md mt-2">
-                                        <p>{{ person.pd_person_name }}</p>
-                                        <p class="text-lg">{{ person.pd_person_phone }}</p>
+                                    <div class="w-full text-center mt-2">
+                                        <p class="text-md">{{ person.pd_person_name }}</p>
                                     </div>
                                 </div>
                             </div>
