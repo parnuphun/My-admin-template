@@ -13,10 +13,10 @@ require('dotenv').config()
 // })
 
 const conn = mysql.createPool({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'namphong_school',
+    host:'https://thsv79.hostatom.com:8443/phpMyAdmin/index.php?db=puripats_db',
+    user:'puripats_dev',
+    password:'+dev_1598',
+    database:'puripats_db',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,

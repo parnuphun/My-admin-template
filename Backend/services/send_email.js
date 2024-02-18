@@ -13,8 +13,8 @@ const mail_transport = nodemailer.createTransport({
 
 module.exports.sendMail = async(topic,content,email) => {
     try {
-        const logo = `https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/274163263_3242059516076711_1703657668431146348_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeEQXYf8yryMOiBHMmrwPVhztwzbZRTykJ63DNtlFPKQngRL_1sLqaexOBQIhKEFTreXlbhFCr1ANB0hBJdtEGky&_nc_ohc=ut7WRmT5WpMAX8QI1jO&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAtbA_0Ayzjml-SfcKM1KW2vbCou3g2oi5ZhOjx_B1Nyg&oe=65B3CD4C`
-        // const logo = process.env.LOGO
+        // const logo = `https://scontent.fkkc3-1.fna.fbcdn.net/v/t39.30808-6/274163263_3242059516076711_1703657668431146348_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=efb6e6&_nc_eui2=AeEQXYf8yryMOiBHMmrwPVhztwzbZRTykJ63DNtlFPKQngRL_1sLqaexOBQIhKEFTreXlbhFCr1ANB0hBJdtEGky&_nc_ohc=ut7WRmT5WpMAX8QI1jO&_nc_ht=scontent.fkkc3-1.fna&oh=00_AfAtbA_0Ayzjml-SfcKM1KW2vbCou3g2oi5ZhOjx_B1Nyg&oe=65B3CD4C`
+        const logo = process.env.LOGO
         const html = `
         <!DOCTYPE html>
         <html lang="en">

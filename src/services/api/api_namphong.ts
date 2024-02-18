@@ -2,7 +2,7 @@ import axios from 'axios'
 import axiosAuth from '../auth'
 // const url = process.env.API_NAMPHONG_SCHOOL
 // const url = 'http://45.154.25.137:3001'
-const url = 'http://localhost:3001'
+const url = 'https://www.puripatschool.ac.th/'
 
 
 
