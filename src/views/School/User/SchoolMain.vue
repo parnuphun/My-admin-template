@@ -298,7 +298,7 @@ function animateOff(e:Event){
                     class="less:w-full md:w-1/2 group less:px-2 md:px-1 hover:shadow-md hover:shadow-pink-200 rounded-md duration-200">
                         <img class="w-full h-auto rounded-md  
                         group-hover:scale-[1.01] cursor-pointer  duration-200" 
-                        src="/images/menu/studentSchedule.png" alt="">
+                        src="/images/menu/studentMenu.png" alt="">
                     </div>
                     <div 
                     @click="nextPage('/teachingSchedule')"
@@ -306,7 +306,7 @@ function animateOff(e:Event){
                     less:mt-2 md:mt-0">
                         <img class="w-full h-auto rounded-md 
                         group-hover:scale-[1.01] cursor-pointer  duration-200" 
-                        src="/images/menu/teachingSchedule.png" alt="">
+                        src="/images/menu/teachMenu.png" alt="">
                     </div>
                     <div 
                     @click="nextPage('/syllabus')"

@@ -88,13 +88,13 @@ watch(sizeSelected,()=>{
 </script>
 
 <template>
-    <div class="flex flex-col w-full relative">        
+    <div class="flex flex-col w-full h-full relative min-h-screen">        
         <NampongNavBar></NampongNavBar>
         <v-divider class="border-opacity-100"></v-divider>
-        <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
+        <div class="flex flex-col w-full h-full min-h-screen bg-pink-50 justify-start">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
-                    <div class="w-[1200px] h-full bg-white">
+                    <div class="w-[1200px] min-h-screen h-full bg-white">
                         <p class="text-xl h-full py-2 border-l-8 border-pink-500 flex items-center ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
