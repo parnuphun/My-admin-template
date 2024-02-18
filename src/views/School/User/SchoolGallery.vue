@@ -92,7 +92,7 @@ watch(sizeSelected,()=>{
         <div class="flex flex-col w-full h-full min-h-screen bg-pink-50 justify-start items-center">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
-                    <div class="w-[1000px] h-full bg-white">
+                    <div class="w-[1200px] h-full bg-white">
                         <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
@@ -113,10 +113,10 @@ watch(sizeSelected,()=>{
                         <div class="flex flex-wrap">
                             <div class="w-full h-full flex flex-wrap justify-start items-center p-4">
                                 <div v-for="item in activityImageList" class="relative group p-1
-                                xl:w-1/3 lg:w-1/2 md:w-1/2 sm:w-full less:w-full 
+                                xl:w-1/3 lg:w-1/2 md:w-1/2 sm:w-full less:w-full rounded-md
                                 xl:h-[300px] lg:h-[250px] md:h-[250px] less:h-[250px] 
                                 cursur-pointer" @click="openLink(item.activity_image_link)">
-                                    <img class="object-cover w-full h-full duration-500
+                                    <img class="object-cover w-full h-full duration-500 rounded-md
                                                 group-hover:brightness-50 cursor-pointer" 
                                     :src="baseImagePath+item.activity_image_cover" alt="">
                                     <div class="absolute w-full h-full p-3 text-white  top-0 flex justify-start items-end cursor-pointer

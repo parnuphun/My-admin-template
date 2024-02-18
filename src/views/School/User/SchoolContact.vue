@@ -31,7 +31,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
         <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
-                    <div class="w-[1000px] h-full bg-white">
+                    <div class="w-[1200px] h-full bg-white">
                         <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
@@ -60,14 +60,14 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                             </div>
                         </div>
                         <div class="w-full h-auto ">
-                            <v-divider class="border-opacity-100"></v-divider>
+                            <!-- <v-divider class="border-opacity-100"></v-divider>
                             <div class="py-4 text-2xl pl-4 border-l-8 border-pink-500 ">
                                 แผนผังโรงเรียน
                             </div>
-                            <v-divider class="border-opacity-100"></v-divider>
+                            <v-divider class="border-opacity-100"></v-divider> -->
                             <div class="text-2xl text-center flex justify-center items-center w-full h-auto p-6">
                                 <div class="flex flex-col justify-center items-center w-full">
-                                    <img src="/images/namphon_mockup/namphong_school_map.png" alt="" class="rounded-sm">
+                                    <img src="/images/menu/contactBanner.png" alt="" class="rounded-sm">
                                 </div>
                             </div>
                         </div>

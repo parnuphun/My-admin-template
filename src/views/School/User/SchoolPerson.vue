@@ -9,6 +9,8 @@ import MsgAlert from '../../../services/msgAlert';
 const _api = new apiNamphong()
 const _msg = new MsgAlert
 const  baseImagePaht = ref()
+const show = ref(false)
+const dialog = ref(false)
 
 onMounted(()=>{
     document.title = 'ทำเนียบบุคลากร'
@@ -18,7 +20,6 @@ onMounted(()=>{
 const selectedCategory =ref()
 const dataTree = ref<Array<personDirectoryTableTree>>()
 const categorList = ref<Array<personCategory>>()
-
 
 
 function getPersonTreeclient(){
@@ -216,7 +217,16 @@ const persons_position = ref<Array<object>>([
     },
 ])
 
- 
+const desDetail = ref<string>('')
+const phoneDetail = ref<string>('')
+const emailDetail = ref<string>('')
+
+function openDetail(descript:string,phone:string,email:string){
+    desDetail.value = descript
+    phoneDetail.value = phone
+    emailDetail.value = email
+    dialog.value = true
+}
 
 </script>
 <template>
@@ -226,7 +236,7 @@ const persons_position = ref<Array<object>>([
         <div class="flex flex-col w-full h-full min-h-screen bg-pink-50 justify-start items-center">
             <div class="w-full h-full min-h-screen">
                 <div class="w-full h-full flex justify-center items-center text-xl">
-                    <div class="w-[1000px] h-full min-h-screen bg-white">
+                    <div class="w-[1200px] h-full min-h-screen bg-white">
                         <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
@@ -263,16 +273,37 @@ const persons_position = ref<Array<object>>([
                                 {{position.position_name}}
                             </div>
     
-                            <div class="w-full h-full flex flex-wrap justify-center items-center gap-10
+                            <div class="w-full h-full flex flex-wrap justify-center items-start gap-10
                                  border-pink-300 pb-2 pt-2">                        
-                                <div class="w-[200px] h-[330px] flex flex-wrap mt-2 " v-for="person of position.persons">
-                                    <div class="border-2 w-[200px] h-[250px] rounded-lg ">
-                                        <img class="object-cover rounded-lg w-[200px] h-[250px]" 
-                                        :src="baseImagePaht+person.pd_person_image" alt="">
+                                <div class="w-[200px] max-h-min flex flex-col mt-2" v-for="person of position.persons">
+                                    <div class="w-[200px] h-full ">
+                                        <div class="border-2 w-[200px] h-[250px] rounded-lg relative">
+                                            <img class="object-cover rounded-lg w-[200px] h-[250px]" 
+                                            :src="baseImagePaht+person.pd_person_image" alt="">
+                                            <div class="absolute rounded-md p-1 bottom-1 right-2 text-pink-600">
+                                                <v-icon class="cursor-pointer" 
+                                                @click="openDetail(person.pd_person_descript,person.pd_person_phone,person.pd_person_email)">
+                                                    mdi-magnify
+                                                </v-icon>
+                                                <v-tooltip activator="parent" location="bottom end">
+                                                    ข้อมูล
+                                                </v-tooltip>
+                                                <!-- <v-tooltip activator="parent" location="bottom end">
+                                                    <div v-if="person.pd_person_descript || person.pd_person_phone || person.pd_person_email"
+                                                    class="text-left">
+                                                        <p class="text-md">อีเมล : {{ person.pd_person_email }}</p>
+                                                        <p class="text-md">เบอร์โทร : {{ person.pd_person_phone }}</p>
+                                                        <p class="text-md">เพิ่มเติม : {{ person.pd_person_descript }}</p>
+                                                    </div>
+                                                    <div v-else>
+                                                        <p class="text-md">ไม่มีข้อมูล</p>
+                                                    </div>
+                                                </v-tooltip> -->
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="w-full text-center text-md mt-2">
-                                        <p>{{ person.pd_person_name }}</p>
-                                        <p class="text-lg">{{ person.pd_person_phone }}</p>
+                                    <div class="w-full text-center mt-2">
+                                        <p class="text-md">{{ person.pd_person_name }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -283,4 +314,32 @@ const persons_position = ref<Array<object>>([
         </div>
     </div>
     <NampongFooter class="mt-auto"></NampongFooter>
+
+    <v-dialog
+        v-model="dialog"
+        width="400"
+    >
+        <v-card class="pb-2">
+            <div class="relative w-full h-auto">
+                <div class="sticky w-full h-full top-0 right-0 z-20 bg-white">
+                    <div class="relative w-full text-center py-6 text-2xl text-pink-500 flex justify-center items-center">
+                        <div class="text-xl">
+                            ข้อมูล
+                        </div>
+                        <div class="absolute top-0 mt-2 right-0 h-16 w-16 text-pink-500 text-3xl flex 
+                        justify-center items-center cursor-pointer hover:text-pink-300"
+                        @click="dialog = false">
+                            <v-icon icon="mdi-close"></v-icon>
+                        </div>
+                    </div>
+                    <v-divider></v-divider>
+                </div>
+                <div class="flex flex-col w-full px-10 pb-4 text-md">
+                    <p class="text-md"><b>อีเมล : </b> {{ emailDetail }}</p>
+                    <p class="text-md"><b>เบอร์โทร : </b> {{ phoneDetail }}</p>
+                    <p class="text-md"><b>เพิ่มเติม : </b> {{ desDetail }}</p>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
 </template>

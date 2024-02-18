@@ -9,7 +9,7 @@ module.exports.mainPage =  async(req,res) => {
         const qr_school_banner = `SELECT banner_img , banner_slogan , anno_limit FROM school_setting WHERE id = 1`
         const qr_anno_image = `SELECT * FROM announment WHERE anno_pin = 1 ORDER BY anno_date DESC LIMIT ?`
         const qr_news = `SELECT * FROM news ORDER BY news_date DESC LIMIT 4`
-        const qr_activity_image = `SELECT * FROM activity_image ORDER BY activity_image_date DESC LIMIT 8`
+        const qr_activity_image = `SELECT * FROM activity_image ORDER BY activity_image_date DESC LIMIT 12`
     
         const result_banner = await dbQuery(qr_school_banner)
         const limit = result_banner[0].anno_limit

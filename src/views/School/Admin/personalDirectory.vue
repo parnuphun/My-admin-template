@@ -4,6 +4,7 @@ import {ref , reactive, onMounted , watch} from 'vue';
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
 import {personCategory,personPosition ,personDirectoryResponse ,dataStatus , credential , personDirectoryTableTree} from '../../../store/Interface'
+import pageDataStatusVue from '../../../components/layout/School/pageDataStatus.vue';
 
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
@@ -19,21 +20,15 @@ onMounted(()=>{
     document.title = 'ทำเนียบบุคลากร'
 
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
-    getAllPersonCategoryList()
-    getAllPersonPositionList()
-    getAllpersonList()
-    getPersonDirectoryTableTree()
-    getAllpersonListLength()
+    getAllData()
 })
 
-function getAllData(){
+async function getAllData(){
     if(searchValue.searchText === ''){
         // no value in seachValue the get common data
-        getAllpersonListLength()
-        getAllPersonCategoryList()
-        getPersonDirectoryTableTree()
-        getAllPersonPositionList()
-        getAllpersonList()
+        await getAllPersonCategoryList()
+        await getAllPersonPositionList()
+       
     }else{
         // triger seachValue for seaching next after change category id       
         searchValue.searchTriger = !searchValue.searchTriger
@@ -47,15 +42,20 @@ function findIndexCategory(){
     return categoryName
 }
 
-function findIndexPosition(position_id?:number){
+function findIndexPosition(position_id?:number){   
+ 
     let positionIndex
     if(position_id){
         positionIndex = personPosition.value!.findIndex(obj => obj.pd_position_id === position_id);
     }else{
         positionIndex = personPosition.value!.findIndex(obj => obj.pd_position_id === selectedAddNewPersonPosition.value);
     }
+ 
+
     let positionName = personPosition.value![positionIndex].pd_position_name
     return positionName
+
+      
 }
 
 const errMessageAddPosition = ref<'no_action' | 'name_exist'>('no_action')
@@ -64,11 +64,11 @@ const selectedPersonCategory = ref<any>(1)
 const personPosition = ref<Array<personPosition>>([])
 const personDirectoryResponse = ref<Array<personDirectoryResponse>>()
 
-function getAllPersonCategoryList(){
+async function getAllPersonCategoryList(){
     dataCategoryStatus.value = 'loading_data'
     _api.getAllPersonCategoryList().then((res)=>{
         if(res.data.status_code === 200){
-            if(res.data.position_category.length <= 0 ){
+            if(res.data.position_category.length === 0 ){
                 dataCategoryStatus.value = 'no_data'
                 personCategory.value = []
             }else{
@@ -83,20 +83,24 @@ function getAllPersonCategoryList(){
     })
 }
 
-function getAllPersonPositionList(){
+async function getAllPersonPositionList(){
     dataPositionStatus.value = 'loading_data'
-    _api.getAllPersonPositionList({category_id:selectedPersonCategory.value}).then((res) => {
+    _api.getAllPersonPositionList({category_id:selectedPersonCategory.value}).then(async (res) => {
         if(res.data.status_code === 200){
-            if(res.data.person_position.length <= 0){
+            personPosition.value = res.data.person_position
+            if(personPosition.value!.length === 0){
                 dataPositionStatus.value = 'no_data'
-                personPosition.value = []
-            }else{
+            }else if(personPosition.value!.length >= 1){
                 dataPositionStatus.value = 'load_data_succ'
-                personPosition.value = res.data.person_position
+            }else{
+                dataPositionStatus.value = 'err_data'
             }
         }else{
             dataPositionStatus.value = 'err_data'
         }
+        await getAllpersonListLength()
+        await getAllpersonList()
+        await getPersonDirectoryTableTree()
     }).catch(()=>{
         dataPositionStatus.value = 'network_err'
     })
@@ -105,14 +109,14 @@ function getAllPersonPositionList(){
 const personList = ref<Array<personDirectoryResponse>>()
 const personBaseImageUrl = ref()
 
-function getAllpersonListLength(){
+async function getAllpersonListLength(){
     _api.getAllpersonListLength({person_category_id:selectedPersonCategory.value}).then((res)=>{
         totalPerson.value = res.data.data_length
         totalPage.value = Math.ceil(totalPerson.value / sizeSelected.value)      
     })
 }
 
-function getAllpersonList(){
+async function getAllpersonList(){
     dataPersonListStatus.value = 'loading_data'
     _api.getAllpersonList({limit:sizeSelected.value,start_item:startItem.value,person_category_id:selectedPersonCategory.value}).then((res)=>{         
         if(res.data.status_code === 200){
@@ -125,7 +129,9 @@ function getAllpersonList(){
                 for(let i = 0 ; i < personList.value!.length ; i++){
                     personList.value![i].pd_position_name = findIndexPosition(personList.value![i].pd_position_id)
                 }                
-            }            
+            }else{
+                dataPersonListStatus.value = 'err_data'
+            }           
             
         }else{
             dataPersonListStatus.value = 'err_data'
@@ -470,6 +476,9 @@ watch(searchValue , ()=>{
                 if(res.data.status_code === 200){
                     if(personList.value!.length >= 1){
                         dataPersonListStatus.value = 'load_data_succ'
+                        for(let i = 0 ; i < personList.value!.length ; i++){
+                            personList.value![i].pd_position_name = findIndexPosition(personList.value![i].pd_position_id)
+                        } 
                     }else if(personList.value!.length <= 0){
                         dataPersonListStatus.value = 'no_data'
                     }else{
@@ -488,7 +497,7 @@ watch(searchValue , ()=>{
  
 const personsList = ref<personDirectoryTableTree>()
 const personsDataTable = ref()
-function getPersonDirectoryTableTree(){
+async function getPersonDirectoryTableTree(){
     _api.getPersonDirectoryTableTree({category_id:selectedPersonCategory.value}).then((res)=>{        
         personsList.value = res.data.person_data  
         personsDataTable.value = res.data.person_data_table 
@@ -568,7 +577,7 @@ function getPersonDirectoryTableTree(){
             <v-divider class="border-opacity-75"></v-divider>
 
             <div clsas="w-full flex flex-col" v-if="dataPersonListStatus === 'load_data_succ'">
-                <div v-if="dataPersonListStatus === 'load_data_succ'" class="w-full flex flex-col ">
+                <div class="w-full flex flex-col ">
                     <div v-for="(item,i) in personList" :key="item.pd_person_id"
                     class="w-full h-full p-2" >
                         <div class="w-full h-full p-2 border-2 flex flex-row items-center justify-start
@@ -611,7 +620,8 @@ function getPersonDirectoryTableTree(){
                     </div>
                 </div>
             </div>
-            <div class="w-full h-full flex flex-col justify-center items-center" v-else-if="dataPersonListStatus === 'no_data'">
+            <pageDataStatusVue v-else :data-status="dataPersonListStatus"></pageDataStatusVue>
+            <!-- <div class="w-full h-full flex flex-col justify-center items-center" v-else-if="dataPersonListStatus === 'no_data'">
                 <div class="less:w-[250px] less:h-[250px] md:w-[400px] md:h-[400px]">
                     <img src="/images/illustrations/No data.svg" 
                     class="h-full w-full" alt="">
@@ -636,8 +646,8 @@ function getPersonDirectoryTableTree(){
                     <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
                     class="h-full w-full" alt="">
                 </div>
-                <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้</p>
-            </div>
+                <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกับเซิร์ฟเวอร์ได้</p>
+            </div> -->
 
             <v-divider class="border-opacity-75"></v-divider>
             

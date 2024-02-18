@@ -74,7 +74,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
         <div class="flex flex-col w-full h-full min-h-screen bg-pink-50 justify-start items-center">
             <div class="w-full h-full min-h-screen">
                 <div class="w-full h-full flex justify-center items-center text-xl">
-                    <div class="w-[1000px] h-full min-h-screen bg-white">
+                    <div class="w-[1200px] h-full min-h-screen bg-white">
                         <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
@@ -107,7 +107,7 @@ const breadcrumb = ref<BreadcrumbItem[]>([
                         </div>
                         <v-divider class="border-opacity-100"></v-divider>
                         <div class="w-full h-full p-2">
-                            <div class="w-full h-full border-2">
+                            <div class="w-full h-full border-2 flex justify-center">
                                 <img :src="baseImagePaht+crrImg" alt="">
                             </div>
                         </div>

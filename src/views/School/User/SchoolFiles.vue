@@ -56,11 +56,11 @@ function getAllfilsClient(){
 <template>
     <div class="flex flex-col w-full relative min-h-screen">
         <NampongNavBar></NampongNavBar>
-        <v-divider></v-divider>
+        <v-divider class="border-opacity-100"></v-divider>
         <div class="flex flex-col w-full h-full min-h-screen bg-pink-50 justify-start items-center">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
-                    <div class="w-[1000px] h-full bg-white">
+                    <div class="w-[1200px] h-full bg-white">
                         <p class="text-xl py-2 border-l-8 border-pink-500 ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
@@ -79,24 +79,22 @@ function getAllfilsClient(){
                         </p>
                         <v-divider class="border-opacity-100"></v-divider>
                         <div class="w-full min-h-screen">
-                            <div class="w-full flex flex-col gap-2">
+                            <div class="w-full flex flex-col gap-2 pb-4">
                                 <div class="w-full"  v-for="category in fileList">
                                     <div class="w-full"  v-if="category.files_list.length > 0">
-                                        <v-divider class="border-opacity-100"></v-divider>
-                                        <p class="text-xl py-4 border-l-8 border-pink-500 px-12">  
-                                            หมวดหมู่ : {{category.category_name}}
+                                        <p class="text-xl pt-4 less:px-1 md:px-4">  
+                                            {{category.category_name}}
                                         </p>
-                                        <v-divider class="border-opacity-100"></v-divider>
-                                        <div class="w-full flex flex-col px-2  pt-2">
+                                        <div class="w-full flex flex-col gap-1 px-2 pt-2">
                                             <div v-for="(file, i) in category.files_list"
-                                            class="w-full flex flex-row justify-between text-[16px]
-                                            hover:underline hover:text-pink-400 cursor-pointer pl-12" 
+                                            class="w-full flex flex-row justify-between text-[16px] border-2 border-gray-300 py-3
+                                            hover:border-pink-400 hover:text-pink-400 cursor-pointer less:px-1 md:px-4 rounded-md" 
                                             @click="previewsFile(file.file_id,file.file_name_upload)">
                                                 <div class="w-full line-clamp-1 pr-2">
                                                    {{ i+1 }}. {{ file.file_name }}
                                                 </div>
                                                 <div class="w-fit min-w-max">
-                                                    {{ file.file_size }} {{ file.file_date }}
+                                                    {{ file.file_size }}
                                                 </div>
                                             </div>
                                             <!-- <div class=" border-2 rounded-md w-full p-4 cursor-pointer

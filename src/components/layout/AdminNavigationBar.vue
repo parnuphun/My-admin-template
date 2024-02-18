@@ -144,12 +144,14 @@ function isGroupOpen() {
 
                     <!-- content in nav -->
                     <div class="w-full mr-6 flex flex-row items-center">
-                        <v-app-bar-title color=""> ระบบหลังบ้านโรงเรียนเทศบาลน้ำพองภูริพัฒน์ </v-app-bar-title>
+                        <v-app-bar-title color=""> 
+                            <p class="w-[150px]">โรงเรียนเทศบาลน้ำพองภูริพัฒน์</p> 
+                        </v-app-bar-title>
 
-                        <v-btn icon class="" @click="fullscreen">
+                        <!-- <v-btn icon class="" @click="fullscreen">
                             <v-icon size="x-large" v-if="isFullScreen">mdi-fullscreen-exit</v-icon>
                             <v-icon size="x-large" v-else="isFullScreen">mdi-fullscreen</v-icon>
-                        </v-btn>
+                        </v-btn> -->
 
                         <!-- user profile -->
                         <v-menu :close-on-content-click="false" location="bottom">

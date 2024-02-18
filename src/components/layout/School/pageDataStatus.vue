@@ -36,7 +36,7 @@ const props = defineProps<{
                 <img src="/images/illustrations/500 Internal Server Error-amico.svg" 
                 class="h-full w-full" alt="">
             </div>
-            <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกันเซิร์ฟเวอร์ได้ </p>
+            <p class="text-xl text-pink-600"> ไม่สามารถติดต่อกับเซิร์ฟเวอร์ได้ </p>
         </div>
     </div>
 </template>

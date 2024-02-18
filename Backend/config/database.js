@@ -1,27 +1,29 @@
 const mysql = require('mysql2')
 require('dotenv').config()
 
-// const conn = mysql.createPool({
-//     host: process.env.DB_HOST,
-//     user: process.env.DB_USER,
-//     password: process.env.DB_PASS,
-//     database: process.env.DATABASE,
-//     waitForConnections: true,
-//     connectionLimit: 10,
-//     queueLimit: 0,
-//     multipleStatements: true,
-// })
-
 const conn = mysql.createPool({
-    host:'localhost',
-    user:'root',
-    password:'',
-    database:'namphong_school',
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DATABASE,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
     multipleStatements: true,
 })
+
+// const conn = mysql.createPool({
+//     host:'localhost',
+//     port:3306,
+//     user:'puripats_dev',
+//     password:'+dev_1598',
+//     database:'puripats_db',
+//     waitForConnections: true,
+//     connectionLimit: 10,
+//     queueLimit: 0,
+//     multipleStatements: true,
+// })
 
 conn.getConnection((err) => {
     if (err) {

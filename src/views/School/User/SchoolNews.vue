@@ -88,14 +88,14 @@ watch(sizeSelected,()=>{
 </script>
 
 <template>
-    <div class="flex flex-col w-full relative">        
+    <div class="flex flex-col w-full h-full relative min-h-screen">        
         <NampongNavBar></NampongNavBar>
         <v-divider class="border-opacity-100"></v-divider>
-        <div class="flex flex-col w-full h-full bg-pink-50 justify-center items-center">
+        <div class="flex flex-col w-full h-full min-h-screen bg-pink-50 justify-start">
             <div class="w-full h-full">
                 <div class="w-full h-full flex justify-center items-center  text-xl">
-                    <div class="w-[1000px] h-full bg-white">
-                        <p class="text-xl py-2 border-l-8 border-pink-500 ">  
+                    <div class="w-[1200px] min-h-screen h-full bg-white">
+                        <p class="text-xl h-full py-2 border-l-8 border-pink-500 flex items-center ">  
                             <v-breadcrumbs :items="breadcrumb">
                                 <template v-slot:title="{ item }">
                                     <div v-if="item.disabled === true">
@@ -112,29 +112,31 @@ watch(sizeSelected,()=>{
                             </v-breadcrumbs>
                         </p>
                         <v-divider class="border-opacity-100"></v-divider>
-                        <div class="w-full h-auto flex flex-wrap justify-start items-start">
-                            <div class="xl:w-1/3 lg:w-1/3 md:w-1/3 sm:w-1/2 less:w-1/2 h-auto xl:p-4 flex flex-col 
+                        <div class="w-full h-auto flex flex-wrap justify-start items-start pb-4">
+                            <div class="xl:w-1/4 lg:w-1/4 md:w-1/4 sm:w-1/3 less:w-1/2 h-auto xl:px-2 flex flex-col 
                             group  cursor-pointer less:px-2" 
                             v-for="item in newsList"  @click="getCurrentPath(`/news/${item.news_id}`)">
-                                <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col">
-                                    <img class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
-                                    v-if="item.news_cover_image !== 'no_image_upload'"
-                                    :src="baseImagePath + item.news_cover_image" alt=""> 
-                                    <img v-else class="w-full h-full object-cover group-hover:brightness-50 duration-500" 
-                                    src="/images/namphong_default_cover_image.jpg" alt=""> 
-                                </div>
-                                <div class="w-full flex flex-col justify-start items-start min-h-[100px] max-h-[100px]">
-                                    <p class="px-2 text-xl line-clamp-3 mt-3 group-hover:text-pink-500 duration-500">
-                                        {{ item.news_topic }}
-                                    </p>
-                                </div>
-                                <div class="w-full h-full flex justify-start">
-                                    <p class="px-2 text-sm line-clamp-1 text-gray-400  group-hover:text-pink-500 duration-500">
-                                        {{ item.news_date }}
-                                    </p>
-                                </div>
-                                <div class="px-2 w-full mb-4 text-white bg-pink-400 hover:bg-pink-500 p-3 text-center mt-3 cursor-pointer duration-500">
-                                    อ่านเพิ่มเติม
+                                <div class="w-full flex flex-col bg-gray-50 border-2 rounded-md shadow-md
+                                hover:shadow-lg duration-200 hover:shadow-pink-200  cursor-pointer mt-2">
+                                    <div class="w-full less:w-full less:h-[200px] xl:h-[200px] flex flex-col rounded-t-md group overflow-hidden">
+                                        <img v-if="item.news_cover_image !== 'no_image_upload'"
+                                        class="group-hover:scale-[1.05] group-hover:brightness-75 w-full h-full object-cover duration-500 rounded-t-md" 
+                                        :src="baseImagePath + item.news_cover_image" alt=""> 
+                                        <img v-else 
+                                        class="group-hover:scale-[1.05] group-hover:brightness-75 w-full h-full object-cover duration-500 rounded-t-md" 
+                                        src="/images/namphong_default_cover_image.jpg" alt=""> 
+                                    </div>
+                                    <div class="w-full flex flex-col justify-start items-start min-h-[100px] max-h-[100px]">
+                                        <p class="px-2 text-xl line-clamp-3 mt-3 group-hover:text-pink-500 duration-500">
+                                            {{ item.news_topic }}
+                                        </p>
+                                    </div>
+                                    <div class="w-full flex justify-end mt-4">
+                                        <p @click="getCurrentPath(`/news/${item.news_id}`)"
+                                        class="text-md text-pink-500 cursor-pointer hover:text-pink-600 py-2 px-4" >
+                                            อ่านเพิ่มเติม
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

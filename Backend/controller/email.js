@@ -9,7 +9,6 @@ require('dotenv').config();
 // send email
 module.exports.sendEmail = async(req,res) => {
     try {
-        console.log(typeof req.body.content);
         const topic = req.body.topic
         const content = (req.body.content === null || req.body.content === undefined || req.body.content === 'undefined' || req.body.content === 'null')?'':req.body.content
         const email = req.body.email
