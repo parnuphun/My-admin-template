@@ -360,7 +360,7 @@ watch(searchValue , ()=>{
                             <v-divider class="border-opacity-100 "></v-divider>
                         </div>
                         <div class="w-full p-1 pb-4">
-                            <v-btn class="w-full" color="green" size="large"
+                            <v-btn class="w-full" color="green" size="large" :disabled="!!!topic || (emailSelected.length === 0)"
                             @click="sendEmail()" :loading="btnLoading" v-if="drawerStatus === 'add_new'">
                                 ส่งอีเมล
                             </v-btn>
@@ -373,7 +373,7 @@ watch(searchValue , ()=>{
          
     </AdminNavigationBar>
    
-    <!-- add email -->
+    <!-- add new email -->
     <v-dialog
         persistent
         v-model="addNewEmailDialog"
@@ -409,7 +409,7 @@ watch(searchValue , ()=>{
         </v-card>
     </v-dialog>
 
-    <!-- add email -->
+    <!-- aready email -->
     <v-dialog
         persistent
         v-model="aleadyEmailDialog"

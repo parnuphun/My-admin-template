@@ -69,7 +69,7 @@ module.exports.addPosition = async (req,res) => {
         
         res.status(200).json({
             status_code:200,
-            status:false ,
+            status:true ,
             msg: 'เพิ่มตำแหน่งสำเร็จ'
         })
         
@@ -169,7 +169,7 @@ module.exports.renamePosition = async (req,res) => {
         res.status(200).json({
             status_code:200,
             status: true ,
-            msg:'เพิ่มตำแหน่งสำเร็จ' 
+            msg:'บันทึกข้อมูลเสร็จสิ้น' 
         })
 
     } catch (err) {

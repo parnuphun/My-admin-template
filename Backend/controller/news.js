@@ -231,7 +231,7 @@ module.exports.updateNews = async(req,res) =>{
         res.status(200).json({
             status:true,
             status_code:200,
-            msg:'บัยทึกข้อมูลเสร็จสิ้น'
+            msg:'บันทึกข้อมูลเสร็จสิ้น'
         })
 
     } catch (err) {
