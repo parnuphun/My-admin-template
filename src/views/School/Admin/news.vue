@@ -79,7 +79,7 @@ const newsCategoryName = ref()
 const errMsgNewsCategory = ref<'name_exist' | 'no_action'>('no_action')
 const newsCategoryList = ref<Array<newsCategoryResponse>>()
 const newsCategoryListStatus = ref<dataStatus>()
-
+const newsCateSelected = ref<number>(0)
 // get category
 async function getAllNewsCategory(){
     newsCategoryListStatus.value = 'loading_data'
@@ -88,11 +88,16 @@ async function getAllNewsCategory(){
             newsCategoryList.value = res.data.news_category_data
             if(newsCategoryList.value!.length >= 1){
                 newsCategoryListStatus.value = 'load_data_succ'
+
             }else if(newsCategoryList.value!.length <= 0){
                 newsCategoryListStatus.value = 'no_data'
             }else{
                 newsCategoryListStatus.value = 'err_data'
             }
+            newsCategoryList.value!.unshift({
+                news_category_id : 0,
+                news_category_name : 'ทั้งหมด'
+            })
         }else{
             newsCategoryListStatus.value = 'err_data'
         }
@@ -388,14 +393,19 @@ const searchValue = reactive({
 })
 
 const timeoutId = ref() // deboucing
-watch(searchValue , ()=>{
+watch(searchValue , ()=>{    
     clearTimeout(timeoutId.value);
     timeoutId.value = setTimeout(() => {
-        if(searchValue.searchText.trim() === ''){
+        if(searchValue.searchText.trim() === '' && newsCateSelected.value === 0){
             getAllData()
         }else{
             newsListStatus.value = 'loading_data'
-            _api.searchNews({search_keyword:searchValue.searchText,limit:sizeSelected.value,start_item:startItem.value}).then((res)=>{
+            _api.searchNews(
+                {search_keyword:searchValue.searchText,
+                limit:sizeSelected.value,
+                start_item:startItem.value,
+                category_id:newsCateSelected.value})
+            .then((res)=>{
                 if(res.data.status_code === 200){
                     totalNews.value = res.data.news_data_length
                     totalPage.value = Math.ceil(totalNews.value / sizeSelected.value)
@@ -418,6 +428,38 @@ watch(searchValue , ()=>{
     },500)
 })
 
+watch(newsCateSelected ,()=>{
+    console.log(newsCateSelected.value);
+    if(searchValue.searchText.trim() === '' && newsCateSelected.value === 0){
+        getAllData()
+    }else{
+        newsListStatus.value = 'loading_data'
+        _api.searchNews(
+            {search_keyword:searchValue.searchText,
+            limit:sizeSelected.value,
+            start_item:startItem.value,
+            category_id:newsCateSelected.value})
+        .then((res)=>{
+            if(res.data.status_code === 200){
+                totalNews.value = res.data.news_data_length
+                totalPage.value = Math.ceil(totalNews.value / sizeSelected.value)
+                newsList.value = res.data.news_data
+                    
+                if(newsList.value!.length >= 1){
+                    newsListStatus.value = 'load_data_succ'                
+                }else if(newsList.value!.length <= 0){
+                    newsListStatus.value = 'no_data'
+                }else{
+                    newsListStatus.value = 'err_data'
+                }
+            }else{
+                newsListStatus.value = 'err_data'
+            }
+        }).catch((err)=>{
+            newsListStatus.value = 'network_err'
+        })
+    }
+})
 
 </script>
 
@@ -426,11 +468,11 @@ watch(searchValue , ()=>{
         <div class="flex flex-col h-full ">
             <div class="w-full flex flex-wrap">
                 <div class="w-full p-1 flex flex-col justify-start items-center gap-2">
-                    <div class="w-full p-1">
+                    <div class="w-full flex flex-row gap-2 p-1">
                         <v-text-field
                             label="ค้นหา"
                             v-model="searchValue.searchText"
-                            class=""
+                            class="w-full"
                             hide-details
                             variant="outlined"
                             prepend-inner-icon="mdi-magnify"
@@ -438,6 +480,18 @@ watch(searchValue , ()=>{
                             density="comfortable"
                             required
                         ></v-text-field>
+                        <v-select 
+                            v-model="newsCateSelected"
+                            label="หมวดหมู่"
+                            :items="newsCategoryList"
+                            class="w-[400px]"
+                            item-title="news_category_name"
+                            item-value="news_category_id"
+                            hide-details
+                            density="comfortable"
+                            variant="outlined"
+                        >
+                        </v-select>
                     </div>
                     <div class="w-full flex less:flex-wrap md:flex-row gap-2">
                         <v-btn
@@ -501,11 +555,14 @@ watch(searchValue , ()=>{
                             <p class="text-gray-600 text-lg">
                                 โดย : {{ item.news_author }}
                             </p>  
-                            <v-chip class="text-xl mt-2">
+                            <div 
+                            @click.stop="newsCateSelected = item.news_category "
+                            class="rounded-full text-sm bg-pink-200 w-fit px-4 py-1
+                            cursor-pointer mt-2 hover:bg-pink-500 hover:text-white duration-50 ">
                                 <p class="text-md text-black"> 
-                                    {{ item.news_category_name }}
+                                    {{ item.news_category_name }} 
                                 </p> 
-                            </v-chip>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -541,19 +598,20 @@ watch(searchValue , ()=>{
                     <v-btn  @click="addNewsCategoryDialog = true" color="green" class="w-full" size="large">
                         <v-icon icon="mdi-plus"></v-icon> เพิ่มหมวดหมู่ข่าวสาร 
                     </v-btn>
-
                 </div>
                 <div class="w-full flex flex-col mt-2 gap-2 px-2 pb-2" v-if="newsCategoryListStatus === 'load_data_succ'">
-                    <div v-for="item in newsCategoryList" :key="item.news_category_id"
-                    @click="setupUpdateNewsCategory(item.news_category_name,item.news_category_id)"
-                        class="w-full flex flex-row gap-1 border-2 border-pink-200 p-3 rounded-md
-                        hover:bg-[#EC407A] hover:text-white cursor-pointer duration-100 hover:border-pink-50">
-                        <div class="w-full flex items-center"  >
-                            <p> {{ item.news_category_name }}</p>
+                    <div  v-for="item in newsCategoryList" :key="item.news_category_id"
+                    @click="setupUpdateNewsCategory(item.news_category_name,item.news_category_id)">
+                        <div v-if="item.news_category_id !== 0"
+                            class="w-full flex flex-row gap-1 border-2 border-pink-200 p-3 rounded-md
+                            hover:bg-[#EC407A] hover:text-white cursor-pointer duration-100 hover:border-pink-50">
+                            <div class="w-full flex items-center"  >
+                                <p> {{ item.news_category_name }}</p>
+                            </div>
+                            <v-tooltip activator="parent" location="bottom end" >
+                                แก้ไข
+                            </v-tooltip>
                         </div>
-                        <v-tooltip activator="parent" location="bottom end" >
-                            แก้ไข
-                        </v-tooltip>
                     </div>
                 </div>
                 <div class="w-full h-full flex justify-center items-center" v-else-if="newsCategoryListStatus === 'no_data'">

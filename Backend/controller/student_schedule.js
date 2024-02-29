@@ -43,9 +43,12 @@ module.exports.getStudentS = async (req,res) => {
                         break;
                     }
                 }
+
+                result[i].ss_teacher_name = await getTeacherName(result[i].ss_teacher)
+                result[i].ss_year_name = await getYearsName(result[i].ss_year)
+
             }
         }
-        
         // console.log(result);
         res.status(200).json({
             status:true,
@@ -67,10 +70,11 @@ module.exports.addStudentS = async (req,res) => {
         const ss_image = req.file.filename
         const ss_semester = req.body.ss_semester
         const ss_teacher = req.body.ss_teacher
+        const ss_year = req.body.ss_year
 
-        const qr_add = `INSERT INTO student_schedule(ss_name,ss_img,ss_pin,ss_semester,ss_teacher,class_id) VALUES(?,?,1,?,?,?)`
+        const qr_add = `INSERT INTO student_schedule(ss_name,ss_img,ss_pin,ss_semester,ss_teacher,ss_year,class_id) VALUES(?,?,1,?,?,?,?)`
          
-        await dbQuery(qr_add,[ss_name,ss_image,ss_semester,ss_teacher,class_id])
+        await dbQuery(qr_add,[ss_name,ss_image,ss_semester,ss_teacher,ss_year,class_id])
 
         await timeStamp(
             credential_admin_fullname,
@@ -98,6 +102,7 @@ module.exports.updateStudentS = async (req,res) =>{
         const ss_old_name = req.body.ss_old_name
         const ss_old_image = req.body.ss_old_image
         const ss_teacher = req.body.ss_teacher
+        const ss_year = req.body.ss_year
         const ss_semester = req.body.ss_semester
         const class_id = req.body.class_id
 
@@ -108,6 +113,7 @@ module.exports.updateStudentS = async (req,res) =>{
                 ss_img = ? ,
                 ss_semester = ? ,
                 ss_teacher = ? ,
+                ss_year = ? ,
                 class_id = ?
             WHERE ss_id = ? 
              `
@@ -117,6 +123,7 @@ module.exports.updateStudentS = async (req,res) =>{
             teaching_schedule_image,
             ss_semester,
             ss_teacher,
+            ss_year,
             class_id,
             ss_id
         ]
@@ -146,7 +153,6 @@ module.exports.updateStudentS = async (req,res) =>{
 
 module.exports.deleteStudentS = async (req,res) => {
     try {
-        console.table(req.body);
         const credential_admin_fullname = req.body.credential_admin_fullname
         const ss_id = req.body.ss_id
         const ss_name = req.body.ss_name
@@ -172,4 +178,14 @@ module.exports.deleteStudentS = async (req,res) => {
     } catch (err) {
         return return_err(res,'TRY CATCH BLOCK','DELETE STUDENT SCHEDULE ',err,500)
     }
+}
+
+async function getTeacherName(id){
+    let name = await dbQuery('SELECT * FROM teachers WHERE teacher_id = ? ',[id])
+    return name[0].teacher_name
+}
+
+async function getYearsName(id){
+    let name = await dbQuery('SELECT * FROM years WHERE years_id = ? ',[id])
+    return name[0].years_name
 }

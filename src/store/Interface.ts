@@ -84,7 +84,7 @@ export interface personDirectoryTableTree {
 export type historyType = 'update' | 'add' | 'delete' | 'login' | 'email'
 export type historyFunction = 'person_directory' | 'admin' | 'schedule' | 'activity_image' | 
                                 'news' | 'file' | 'login' | 'school_setting' | 'annocement' |
-                                'teaching_schedule' | 'student_schedule' | 'syllabus' | 'email'
+                                'teaching_schedule' | 'student_schedule' | 'syllabus' | 'email' | 'teacher'
 export interface historyLogsResponse {
     history_logs_id : number ,
     history_logs_username : string,
@@ -192,6 +192,16 @@ export interface classListResponse {
     class_name : string
 }
 
+export interface teacherListResponse{
+    teacher_id : number 
+    teacher_name : string
+}
+
+export interface yearsListResponse {
+    years_id : number 
+    years_name : string
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 // anno data 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,6 +224,9 @@ export interface teachingSResponse {
     ts_pin:boolean
     ts_semester:string
     ts_teacher:string
+    ts_teacher_name:string
+    ts_year_name:string
+    ts_years:number
     class_id:number
     class_name:string
 }
@@ -228,6 +241,9 @@ export interface StudentSResponse {
     ss_pin:boolean
     ss_semester:string
     ss_teacher:string
+    ss_teacher_name:string
+    ss_year:number
+    ss_year_name:string
     class_id:number
     class_name:string
 }

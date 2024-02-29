@@ -300,8 +300,23 @@ module.exports.resetPassword = async(req,res) =>{
     }catch(err){
         return return_err(res,'TRY CATCH BLOCK','RESET PASSWORD ',err,500)
     }
+}
 
+// get account detail
+module.exports.getAccountDetail = async(req,res) => {
+    try {
+        const user_id = req.body.user_id
+        const qr_get = `SELECT * FROM user WHERE user_id = ?`
+        const result = await dbQuery(qr_get,[user_id])
 
-    
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            account_data: result
+        })
+
+    } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','GET ACCOUNT DETAIL ',err,500)
+    }
 }
 

@@ -2,7 +2,10 @@ import axios from 'axios'
 import axiosAuth from '../auth'
 // const url = process.env.API_NAMPHONG_SCHOOL
 // const url = 'http://45.154.25.137:3001'
-const url = 'https://www.puripatschool.ac.th/'
+// const url = 'https://www.puripatschool.ac.th/'
+// const url = 'https://www.puripatschool.ac.th/'
+const url = 'http://localhost:3001'
+ 
 
 
 
@@ -316,7 +319,7 @@ export default class namphong_api {
     }
 
     // search news 
-    searchNews(data:{search_keyword:string,start_item:number,limit:number}){
+    searchNews(data:{search_keyword:string,start_item:number,limit:number,category_id:number}){
         return axiosAuth.post(url+'/searchNews',data)
     }
 
@@ -540,6 +543,46 @@ export default class namphong_api {
     // update syllabus
     updateSyllabus(data:FormData){
         return axiosAuth.post(url+'/updateSyllabus',data)
+    }
+
+
+    
+    getTeachersList(){
+        return axiosAuth.post(url+'/getTeachersList')
+    }
+
+    addNewTeacher(data:{teacher_name:string,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/addNewTeacher',data)
+    }
+
+    renameTeacher(data:{teacher_name:string,teacher_old_name:string,teacher_id:number,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/renameTeacher',data)
+    }
+
+    deleteTeacher(data:{teacher_name:string,teacher_id:number,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/deleteTeacher',data)
+    }
+
+    // years
+    getYears(){
+        return axiosAuth.post(url+'/getYears')
+    }
+
+    addNewYear(data:{years_name:string ,credential_admin_fullname:string }){
+        return axiosAuth.post(url+'/addNewYear',data)
+    }
+
+    deleteYear(data:{years_id:number,years_name:string ,credential_admin_fullname:string }){
+        return axiosAuth.post(url+'/deleteYear',data)
+    }
+
+    updateYear(data:{years_name:string,years_old_name:string,years_id:number,credential_admin_fullname:string}){
+        return axiosAuth.post(url+'/updateYear',data)
+    }
+
+    //account 
+    getAccountDetail(data:{user_id:number}){
+        return axiosAuth.post(url+'/getAccountDetail',data)
     }
 }
 

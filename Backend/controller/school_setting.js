@@ -270,3 +270,252 @@ module.exports.updateClass = async(req,res)=>{
     }
 }
  
+// teacher
+// add teacher 
+module.exports.addNewTeacher = async(req,res) => {
+   try {
+        const teacher_name = req.body.teacher_name
+        const credential_admin_fullname = req.body.credential_admin_fullname
+
+        const qr_check_name = `SELECT * FROM teachers WHERE teacher_name = ? `
+        const qr_add = `INSERT INTO teachers(teacher_name) VALUES(?)`
+
+        const result_check_name = await dbQuery(qr_check_name,[teacher_name])
+        if(result_check_name.length >= 1) return res.status(200).json({
+            status_code:409,
+            status:false ,
+            msg:'มีชื่อผู้ครูผู้สอนนี้อยู่แล้ว'
+        })
+
+        await dbQuery(qr_add,[teacher_name])
+        await timeStamp(
+            credential_admin_fullname,
+            'add',
+            'teacher',
+            `${credential_admin_fullname} ได้เพิ่มครูผู้สอนใหม่ ' ${teacher_name} ' `
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'เพิ่มครูผู้สอนเรียบร้อย'
+        })
+
+   } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','RENAME TEACHER ',err,500)
+   }
+}
+
+// update teacher 
+module.exports.renameTeacher = async(req,res) => {
+    try {
+        const teacher_name = req.body.teacher_name
+        const teacher_old_name = req.body.teacher_old_name
+        const teacher_id = req.body.teacher_id
+        const credential_admin_fullname = req.body.credential_admin_fullname
+
+        const qr_check_name = `SELECT * FROM teachers WHERE teacher_name = ? `
+        const qr_update = `UPDATE teachers SET teacher_name = ? WHERE teacher_id = ?`
+
+        const result_check_name = await dbQuery(qr_check_name,[teacher_name])
+        if(result_check_name.length >= 1) return res.status(200).json({
+            status_code:409,
+            status:false ,
+            msg:'มีชื่อผู้ครูผู้สอนนี้อยู่แล้ว'
+        })
+
+        await dbQuery(qr_update,[teacher_name,teacher_id])
+        await timeStamp(
+            credential_admin_fullname,
+            'update',
+            'teacher',
+            `${credential_admin_fullname} ได้แก้ไขชื่อครูผู้สอนใหม้จาก ' ${teacher_old_name} ' เป็น ${teacher_name} `
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'บันทึกข้อมูลเรียบร้อย'
+        })
+
+   } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','ADD NEWS TEACHER ',err,500)
+   }
+}
+
+// delete teacher
+module.exports.deleteTeacher = async(req,res) => {
+    try {
+        const teacher_name = req.body.teacher_name
+        const teacher_id = req.body.teacher_id
+        const credential_admin_fullname = req.body.credential_admin_fullname
+    
+        const qr_delete = `DELETE FROM teachers WHERE teacher_id = ?`
+        
+        await dbQuery(qr_delete,[teacher_id])
+
+        await timeStamp(
+            credential_admin_fullname,
+            'delete',
+            'teacher',
+            `${credential_admin_fullname} ลบครูผู้สอน ' ${teacher_name} '`
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'ลบข้อมูลเสร็จสิ้น'
+        })
+
+    } catch (err) {
+        // check category used aready
+        if(err.code === 'ER_ROW_IS_REFERENCED_2'){
+            return res.status(200).json({
+                status_code:500,
+                status:true,
+                msg:'ไม่สามารถลบครูผู้สอนได้ เนื่องจากมีตารางสอนของครูคนนี้อยู่ในระบบ'
+            })
+        }else {
+            return return_err(res,'TRY CATCH BLOCK','DELETE TEACHER  ',err,500)
+        }
+    }
+}
+
+// get teacher list
+module.exports.getTeacherList = async(req,res) => {
+    try {
+        const qr_get_data = `SELECT * FROM teachers`
+        const result = await dbQuery(qr_get_data)
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            teachers_data:result
+        })
+    } catch (err) {
+        if(err) return return_err(res,'TRY CATCH BLOCK','GET TEACHER DATA ',err,500)
+    }
+}
+
+//years
+// get years
+module.exports.getYears = async(req,res) => {
+    try {
+        const qr_get_data = `SELECT * FROM years`
+        const result = await dbQuery(qr_get_data)
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            years_data:result
+        })
+    } catch (err) {
+        if(err) return return_err(res,'TRY CATCH BLOCK','GET YEARS DATA ',err,500)
+    }
+}
+
+// add years
+module.exports.addNewYear = async(req,res) => {
+    try {
+         const years_name = req.body.years_name
+         const credential_admin_fullname = req.body.credential_admin_fullname
+ 
+         const qr_check_name = `SELECT * FROM years WHERE years_name = ? `
+         const qr_add = `INSERT INTO years(years_name) VALUES(?)`
+ 
+         const result_check_name = await dbQuery(qr_check_name,[years_name])
+         if(result_check_name.length >= 1) return res.status(200).json({
+             status_code:409,
+             status:false ,
+             msg:'มีปีการศึกษานี้อยู่แล้ว'
+         })
+ 
+         await dbQuery(qr_add,[years_name])
+         await timeStamp(
+             credential_admin_fullname,
+             'add',
+             'school_setting',
+             `${credential_admin_fullname} ได้เพิ่มปีการศึกษาใหม่ ' ${years_name} ' `
+         )
+ 
+         res.status(200).json({
+             status_code:200,
+             status:true,
+             msg:'เพิ่มปีการศึกษาใหม่เรียบร้อย'
+         })
+ 
+    } catch (err) {
+         return return_err(res,'TRY CATCH BLOCK','ADD YEARS ',err,500)
+    }
+}
+
+// update year
+module.exports.updateYear = async(req,res) => {
+    try {
+        const years_name = req.body.years_name
+        const years_old_name = req.body.years_old_name
+        const years_id = req.body.years_id
+        const credential_admin_fullname = req.body.credential_admin_fullname
+
+        const qr_check_name = `SELECT * FROM years WHERE years_name = ? `
+        const qr_update = `UPDATE years SET years_name = ? WHERE years_id = ?`
+
+        const result_check_name = await dbQuery(qr_check_name,[years_name])
+        if(result_check_name.length >= 1) return res.status(200).json({
+            status_code:409,
+            status:false ,
+            msg:'มีปีการศึกษานี้อยู่แล้ว'
+        })
+
+        await dbQuery(qr_update,[years_name,years_id])
+        await timeStamp(
+            credential_admin_fullname,
+            'update',
+            'school_setting',
+            `${credential_admin_fullname} ได้แก้ไขปีการศึกษา ' ${years_old_name} ' เป็น ${years_name} `
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'บันทึกข้อมูลเรียบร้อย'
+        })
+
+   } catch (err) {
+        return return_err(res,'TRY CATCH BLOCK','UPDATE YEARS ',err,500)
+   }
+}
+
+// delete teacher
+module.exports.deleteYear = async(req,res) => {
+    try {
+        const years_name = req.body.years_name
+        const years_id = req.body.years_id
+        const credential_admin_fullname = req.body.credential_admin_fullname
+        const qr_delete = `DELETE FROM years WHERE years_id = ?`
+        await dbQuery(qr_delete,[years_id])
+
+        await timeStamp(
+            credential_admin_fullname,
+            'delete',
+            'teachschool_settinger',
+            `${credential_admin_fullname} ลบปีการศึกษา ' ${years_name} '`
+        )
+
+        res.status(200).json({
+            status_code:200,
+            status:true,
+            msg:'ลบข้อมูลเสร็จสิ้น'
+        })
+
+    } catch (err) {
+        // check category used aready
+        if(err.code === 'ER_ROW_IS_REFERENCED_2'){
+            return res.status(200).json({
+                status_code:500,
+                status:true,
+                msg:'ไม่สามารถลบปีการศึกษานี้ได้ เนื่องจากมีปีการศึกษานี้ถูกใช้งานอยู่'
+            })
+        }else {
+            return return_err(res,'TRY CATCH BLOCK','DELETE TEACHER  ',err,500)
+        }
+    }
+}

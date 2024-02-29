@@ -39,8 +39,6 @@ const email_ct = require('../controller/email')
 route.post('/login',login_c.login) // เข้าสู่ระบบ - 1
 route.post('/adminRegister',login_c.adminRegister) //*** สำหรับแอดมินเท่านั้น
 
- 
-
 ////////////////////////////////////////////////////////////////////////////
 // users
 ////////////////////////////////////////////////////////////////////////////
@@ -134,6 +132,7 @@ route.post('/addClass',authorization,school_setting_ct.addClass) // เพิ่
 route.post('/updateClass',authorization,school_setting_ct.updateClass) // เปลี่ยนชื่อชั้นเรียน -58
 route.post('/deleteClass',authorization,school_setting_ct.deleteClass) // ลบชั้นเรียน -59
 
+
 ////////////////////////////////////////////////////////////////////////////
 // annoicement  
 ////////////////////////////////////////////////////////////////////////////
@@ -183,6 +182,22 @@ route.post('/getEmailList',authorization,email_ct.getEmailList) // ดึงร�
 route.post('/getemailSendedList',email_ct.getemailSendedList) // ดึงรายการอีเมลที่ส่งไปแล้ว -86
 route.post('/getEmailSendedLength',email_ct.getEmailSendedLength) // ดึงจำนวนอีเมลที่ส่งไปแล้ว -87
 route.post('/searchEmailSended',email_ct.searchEmailSended) // ค้นหาอีเมล -88
+
+
+
+
+route.post('/getTeachersList',authorization,school_setting_ct.getTeacherList) // *** แก้ไขใหม่เพิ้มเติม ดึงรายชื่อครูผู้สอน -89
+route.post('/addNewTeacher',authorization,school_setting_ct.addNewTeacher) // *** แก้ไขใหม่เพิ้มเติม เพิ่มรายชื่อครูผู้สอน -90
+route.post('/renameTeacher',authorization,school_setting_ct.renameTeacher) // *** แก้ไขใหม่เพิ้มเติม เปลี่ยนชื่อครูผู้สอน -91
+route.post('/deleteTeacher',authorization,school_setting_ct.deleteTeacher) // *** แก้ไขใหม่เพิ้มเติม เปลี่ยนชื่อครูผู้สอน -92
+
+route.post('/getYears',authorization,school_setting_ct.getYears) // *** แก้ไขใหม่เพิ้มเติม ดึงรายชื่อปีการศึกษา -93
+route.post('/addNewYear',authorization,school_setting_ct.addNewYear) // *** แก้ไขใหม่เพิ้มเติม เพิ่มปีการศึกษา -94
+route.post('/updateYear',authorization,school_setting_ct.updateYear) // *** แก้ไขใหม่เพิ้มเติม แก้ไขปีการศึกษา -95
+route.post('/deleteYear',authorization,school_setting_ct.deleteYear) // *** แก้ไขใหม่เพิ้มเติม เปลี่ยนชื่อครูผู้สอน -96
+
+
+route.post('/getAccountDetail',authorization,admin_c.getAccountDetail) // *** แก้ไขใหม่เพิ้มเติม ดึงข้อมูลผู้ใช้งาน -97
 
 ////////////////////////////////////////////////////////////////////////////
 // test

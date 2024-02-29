@@ -7,7 +7,9 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import apiNamphong from '../../../services/api/api_namphong'
 import MsgAlert from '../../../services/msgAlert';
 import {credential , userEmailResponse , emailListResponse , dataStatus} from '../../../store/Interface' 
+import { useRouter } from 'vue-router' ;
 
+const router_s = useRouter();
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
 const btnLoading = ref(false)
@@ -16,6 +18,9 @@ const credential = ref<credential>()
 onMounted(()=>{
     document.title = 'อีเมล'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
+    if(credential.value!.user_rule !== 'admin') {
+        router_s.push('/admin/annoucement')
+    }
     getAll();
     
     getEmailList();
