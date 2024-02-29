@@ -1,16 +1,22 @@
 <script setup lang="ts">
 import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vue';
 import pageDataStatus from '../../../components/layout/School/pageDataStatus.vue'
-import { ref, onMounted ,watch ,reactive} from 'vue'
+import { ref, onMounted ,watch ,reactive } from 'vue'
 import apiNamphong from '../../../services/api/api_namphong';
-import { historyLogsResponse , dataStatus} from '../../../store/Interface'
-import { off } from 'process';
+import { historyLogsResponse , dataStatus , credential} from '../../../store/Interface'
+import { useRouter } from 'vue-router' ;
 
+const router_s = useRouter();
 
 const _api = new apiNamphong()
- 
+const credential = ref<credential>()
+
 onMounted(()=>{
     document.title = 'ประวัติการใช้งาน'
+    credential.value = JSON.parse(localStorage.getItem('Credential')||'')
+    if(credential.value!.user_rule !== 'admin') {
+        router_s.push('/admin/annoucement')
+    }
 
     getHistoryLength()
     getHistory()
@@ -191,6 +197,9 @@ watch(searchValue , ()=>{
                                     </v-chip>
                                     <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'email'">
                                         <v-icon icon="mdi-email-outline" class="mr-2"></v-icon> อีเมล
+                                    </v-chip>
+                                    <v-chip class="w-full" color="" v-else-if="item.history_logs_fucntion === 'teacher'">
+                                        <v-icon icon="mdi-account-tie-outline" class="mr-2"></v-icon> ครูผู้สอน
                                     </v-chip>
                                 </div>
                             </td>

@@ -4,7 +4,7 @@ import pageDataStatus from '../../../components/layout/School/pageDataStatus.vue
 import {ref , watch , onMounted , reactive} from 'vue'; 
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
-import { teachingSResponse , dataStatus , credential , classListResponse} from '../../../store/Interface'
+import { teachingSResponse , dataStatus , credential , classListResponse , yearsListResponse ,teacherListResponse} from '../../../store/Interface'
 
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
@@ -26,6 +26,8 @@ const credential = ref<credential>()
 onMounted(()=>{
     document.title = 'ตารางสอน'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
+    getYearList()
+    getTeacherList()
     getAll()
 })
 
@@ -90,10 +92,12 @@ function addTeachingS(){
     const formData = new FormData()
     formData.append('teaching_schedule_image',tsImg.value[0]!)
     formData.append('credential_admin_fullname',credential.value!.user_fullname)
-    formData.append('ts_name',tsName.value)
-    formData.append('ts_teacher',tsTeacher.value)
+    // formData.append('ts_name',tsName.value)
+    formData.append('ts_teacher',String(teacherSelected.value))    
+    formData.append('ts_year',String(yearSelected.value))
     formData.append('ts_semester',tsSemester.value)
     btnLoading.value = true
+
     _api.addTeachingS(formData).then((res)=>{
         if(res.data.status_code === 200){
             _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
@@ -113,7 +117,8 @@ const tsDetail = ref<teachingSResponse>()
 function setDataBfUpdate(item:teachingSResponse){
     tsDetail.value = item
     tsName.value = item.ts_name
-    tsTeacher.value = item.ts_teacher
+    teacherSelected.value = item.ts_teacher
+    yearSelected.value = item.ts_years
     tsSemester.value = item.ts_semester
     tsClassSelected.value = item.class_id
     updateTeachSDialog.value = true
@@ -130,10 +135,11 @@ function updateTeachS(){
             }
             formData.append('credential_admin_fullname',credential.value!.user_fullname)
             formData.append('ts_id',String(tsDetail.value!.ts_id))
-            formData.append('ts_name',tsName.value)
-            formData.append('ts_old_name',tsDetail.value!.ts_name)
+            // formData.append('ts_name',tsName.value)
+            // formData.append('ts_old_name',tsDetail.value!.ts_name)
             formData.append('ts_old_image',tsDetail.value!.ts_img)
-            formData.append('ts_teacher',tsTeacher.value)
+            formData.append('ts_teacher',String(teacherSelected.value))    
+            formData.append('ts_year',String(yearSelected.value))
             formData.append('ts_semester',tsSemester.value)
             formData.append('class_id',tsClassSelected.value)
             _api.updateTeachS(formData).then((res)=>{
@@ -208,9 +214,111 @@ const searchValue = reactive({
     searchTriger:false // triger 
 })
 
+const tacherListDrawer = ref(false)
+const addNewTeacherDialog = ref(false)
+const renameTeacherDialog = ref(false)
+const teacherName = ref()
+const teacherOldName = ref()
+const teacherList = ref<Array<teacherListResponse>>()
+const teacherId = ref()
+const teacherListStatus = ref<dataStatus>()
+const teacherSelected = ref<any>(null) 
+const yearSelected = ref<any>(null)
+
+function addNewTeacher(){
+    btnLoading.value = true
+    _api.addNewTeacher({teacher_name:teacherName.value,credential_admin_fullname:credential.value!.user_fullname})
+    .then((res)=>{
+        if(res.data.status_code === 200){
+            _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
+            teacherName.value = ''
+            getTeacherList()
+        }else{
+            _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
+        }
+        btnLoading.value = false
+    }).catch((err)=>{
+        btnLoading.value = false
+        _msg.toast_msg({title:'เกิดความผิดพลาด ไม่สามารถดำเนินการได้',icon:'error',progressbar:true,timer:20})
+    })
+}
+
+function getTeacherList(){
+    _api.getTeachersList().then((res)=>{
+        if(res.data.status_code === 200){
+            teacherList.value = res.data.teachers_data
+            
+            if(teacherList.value!.length >= 1){
+                teacherListStatus.value = 'load_data_succ'
+
+            }else if(teacherList.value!.length <= 0){
+                teacherListStatus.value = 'no_data'
+            }else{
+                teacherListStatus.value = 'err_data'
+            }
+        }else{
+            teacherListStatus.value = 'err_data'
+        }
+    }).catch((err)=>{
+        teacherListStatus.value = 'network_err'
+    })
+}
+
+function setTeacherName(name:string,id:number){
+    teacherId.value = id 
+    teacherOldName.value = name
+    teacherName.value = name 
+
+    renameTeacherDialog.value = true
+}
+
+function renameTeacher(){
+    _msg.confirm('ต้องการเปลี่ยนชื่อครูใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.renameTeacher({teacher_id:teacherId.value , teacher_old_name:teacherOldName.value , 
+                teacher_name:teacherName.value , credential_admin_fullname:credential.value!.user_fullname })
+            .then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
+                    teacherOldName.value = ''
+                    getTeacherList()
+                }else{
+                    _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
+                }
+            })
+        }
+    })
+}
+
+function deleteTeacher(){
+    _msg.confirm('ต้องการลบครูผู้สอนใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.deleteTeacher({teacher_name: teacherName.value ,teacher_id:teacherId.value  ,credential_admin_fullname:credential.value!.user_fullname} )
+            .then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:3})
+                    teacherOldName.value = ''
+                    getTeacherList()
+                }else{
+                    _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
+                }
+            })
+        }
+    })
+}
+
+const yearsList = ref<Array<yearsListResponse>>()
+
+function getYearList() {
+    _api.getYears().then((res)=>{
+        if(res.data.status_code === 200){
+            yearsList.value = res.data.years_data
+        }
+    })
+}
+ 
 
 </script>
-
 <template>
     <AdminNavigationBar>
         <div class="flex flex-col h-full">
@@ -222,6 +330,14 @@ const searchValue = reactive({
                         color="pink" size="large" >
                         <p class="text-md" >
                             <v-icon icon="mdi-table-plus" class=""></v-icon> เพิ่มตารางสอน  
+                        </p>
+                    </v-btn>
+                    <v-btn 
+                        @click="tacherListDrawer = !tacherListDrawer"
+                        class="h-full less:w-full sm:w-full md:w-auto" 
+                        color="pink" size="large" >
+                        <p class="text-md" >
+                            <v-icon icon="mdi-account-tie" class=""></v-icon> เพิ่มรายชื่อครูผู้สอน  
                         </p>
                     </v-btn>
                 </div>
@@ -247,10 +363,13 @@ const searchValue = reactive({
                                     <b>ชื่อ :</b> {{ item.ts_name }}
                                 </p>
                                 <p>
-                                    <b>ภาคการศึกษา :</b> {{ item.ts_semester }}
+                                    <b>ครูผู้สอน :</b> {{ item.ts_teacher_name }}
                                 </p>
                                 <p>
-                                    <b>ครูผู้สอน :</b> {{ item.ts_teacher }}
+                                    <b>ปีการศึกษา :</b> {{ item.ts_year_name }}
+                                </p>
+                                <p>
+                                    <b>ภาคการศึกษา :</b> {{ item.ts_semester }}
                                 </p>
                             </div>
                             <div class="w-full h-full flex flex-row gap-2 justify-end items-end mt-2  ">
@@ -299,8 +418,136 @@ const searchValue = reactive({
                 </div>
             </div>
         </div>
+
+        <v-navigation-drawer  :disable-resize-watcher="true" 
+        :width="350" location="right" v-model="tacherListDrawer">
+            <div class="w-full h-full flex flex-col px-2 pt-6">
+                <div class="w-full px-2 flex flex-row gap-1">
+                    <v-btn  @click="addNewTeacherDialog = true" color="green" class="w-full" size="large">
+                        <v-icon icon="mdi-plus"></v-icon> เพิ่มครูผู้สอนใหม่ 
+                    </v-btn>
+                </div>
+                <div class="w-full flex flex-col mt-2 gap-2 px-2 pb-2" v-if="teacherListStatus === 'load_data_succ'">
+                    <div  v-for="item in teacherList" :key="item.teacher_id"
+                    @click="setTeacherName(item.teacher_name,item.teacher_id)">
+                        <div 
+                            class="w-full flex flex-row gap-1 border-2 border-pink-200 p-3 rounded-md
+                            hover:bg-[#EC407A] hover:text-white cursor-pointer duration-100 hover:border-pink-50">
+                            <div class="w-full flex items-center"  >
+                                <p> {{ item.teacher_name }}</p>
+                            </div>
+                            <v-tooltip activator="parent" location="bottom end" >
+                                แก้ไข
+                            </v-tooltip>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="teacherListStatus === 'no_data'">
+                    <img src="/images/illustrations/No data.svg" alt="">
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="teacherListStatus === 'err_data'">
+                    <img src="/images/illustrations/No data-amico.svg" alt="">
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="teacherListStatus === 'network_err'">
+                    <img src="/images/illustrations/500 Internal Server Error-amico.svg" alt="">
+                </div>
+                <div class="w-full h-full flex justify-center items-center" v-else-if="teacherListStatus === 'loading_data'">
+                    <v-progress-circular indeterminate color="pink" :size="90" :width="12"></v-progress-circular>
+                </div>
+            </div>
+        </v-navigation-drawer>
+
+        
     </AdminNavigationBar>
 
+    <!-- add teacher dialog -->
+    <v-dialog
+        persistent
+        v-model="addNewTeacherDialog"
+        width="600"
+        transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
+                    เพิ่มครูผู้สอนใหม่
+                    <div @click="addNewTeacherDialog = false , teacherName = ''" 
+                    class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
+                        <v-icon icon="mdi-close"></v-icon>
+                    </div>
+                </div>
+
+                <!-- <div class="w-full pl-7 mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
+                    <p class="text-red-500 text-[13px]"> มีชื่อหมวดหมู่นี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
+                </div> -->
+                <div class="w-full px-6 pb-4">
+                    <div class="flex flex-row gap-2 w-full">
+                        <v-text-field
+                            v-model="teacherName"
+                            label="ป้อนชื่อครูผู้สอน"
+                            variant="outlined"
+                            density="comfortable"
+                            hide-details="auto"
+                        ></v-text-field>
+                        <v-btn color="green" size="xl" tex 
+                            :disabled="!!!teacherName"
+                            :loading="btnLoading"
+                            @click="addNewTeacher()" 
+                            class="้px-3 w-[100px]">
+                                <p class="text-xl">เพิ่ม</p>
+                        </v-btn>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
+
+    <!-- rename teacher -->
+    <v-dialog
+        persistent
+        v-model="renameTeacherDialog"
+        width="600"
+        transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
+                    แก้ไข
+                    <div @click="renameTeacherDialog = false , teacherName = ''" 
+                    class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
+                        <v-icon icon="mdi-close"></v-icon>
+                    </div>
+                </div>
+
+                    <div class="w-full px-6 pb-4 ">
+                        <!-- <div class="w-full mb-1 mt-3" v-if="errMsgNewsCategory === 'name_exist'">
+                            <p class="text-red-500 text-[13px]"> มีชื่อหมวดหมู่นี้แล้ว กรุณาป้อนชื่อที่ไม่ซ้ำกัน </p>
+                        </div> -->
+                    <div class="flex flex-row gap-2 w-full">
+                        <v-text-field
+                            v-model="teacherName"
+                            label="ป้อนชื่อครูผู้สอน"
+                            variant="outlined"
+                            density="comfortable"
+                            hide-details="auto"
+                        ></v-text-field>
+                        <v-btn color="primary" size="xl" tex 
+                            :disabled="!!!teacherName"
+                            :loading="btnLoading"
+                            @click="renameTeacher()" 
+                            class="้px-3 w-[80px]">
+                                <p class="text-xl">แก้ไข</p>
+                        </v-btn>
+                        <v-btn color="red" size="xl" tex 
+                            @click="deleteTeacher()"
+                            class="้px-3 w-[80px]">
+                                <p class="text-xl">ลบ</p>
+                        </v-btn>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
 
     <!-- add dialog  -->
     <v-dialog
@@ -330,22 +577,28 @@ const searchValue = reactive({
                             ></v-file-input>
                         </div>
                         <div class="w-full">
-                            <v-text-field
-                                label="ชื่อตารางสอน"
-                                v-model="tsName"
-                                class="mt-3"
+                            <v-select
+                                label="ครูผู้สอน"
+                                :items="teacherList"
+                                v-model="teacherSelected"
+                                item-title="teacher_name"
+                                item-value="teacher_id"
+                                hide-details
                                 variant="outlined"
-                                hide-details="auto"
-                            ></v-text-field>
+                                class="mt-3"
+                            ></v-select>
                         </div>
                         <div class="w-full">
-                            <v-text-field
-                                label="ชื่อผู้สอน"
-                                v-model="tsTeacher"
-                                class="mt-3"
+                            <v-select
+                                label="ปีการศึกษา"
+                                :items="yearsList"
+                                v-model="yearSelected"
+                                item-title="years_name"
+                                item-value="years_id"
+                                hide-details
                                 variant="outlined"
-                                hide-details="auto"
-                            ></v-text-field>
+                                class="mt-3"
+                            ></v-select>
                         </div>
                         <div class="w-full">
                             <v-select
@@ -367,7 +620,7 @@ const searchValue = reactive({
                 <v-btn color="green" 
                     :loading="btnLoading"
                     :disabled="
-                    !!!tsName || !!!tsTeacher || !!!tsSemester || !!!tsImg
+                     !!!tsSemester || !!!tsImg || !!!yearSelected || !!!teacherSelected
                     "
                     @click="addTeachingS()"
                 >
@@ -407,22 +660,28 @@ const searchValue = reactive({
                             ></v-file-input>
                         </div>
                         <div class="w-full">
-                            <v-text-field
-                                label="ชื่อตารางสอน"
-                                v-model="tsName"
-                                class="mt-3"
+                            <v-select
+                                label="ครูผู้สอน"
+                                :items="teacherList"
+                                v-model="teacherSelected"
+                                item-title="teacher_name"
+                                item-value="teacher_id"
+                                hide-details
                                 variant="outlined"
-                                hide-details="auto"
-                            ></v-text-field>
+                                class="mt-3"
+                            ></v-select>
                         </div>
                         <div class="w-full">
-                            <v-text-field
-                                label="ชื่อผู้สอน"
-                                v-model="tsTeacher"
-                                class="mt-3"
+                            <v-select
+                                label="ปีการศึกษา"
+                                :items="yearsList"
+                                v-model="yearSelected"
+                                item-title="years_name"
+                                item-value="years_id"
+                                hide-details
                                 variant="outlined"
-                                hide-details="auto"
-                            ></v-text-field>
+                                class="mt-3"
+                            ></v-select>
                         </div>
                         <div class="w-full">
                             <v-select
@@ -444,7 +703,7 @@ const searchValue = reactive({
                 <v-btn color="green" 
                     :loading="btnLoading"
                     :disabled="
-                    !!!tsName || !!!tsTeacher || !!!tsSemester  
+                    !!!tsSemester || !!!yearSelected || !!!teacherSelected
                     "
                     @click="updateTeachS()"
                 >

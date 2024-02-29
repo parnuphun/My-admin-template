@@ -37,15 +37,18 @@ module.exports.getTeachingS = async (req,res) => {
         // add class name 
         if(result_class.length >= 1){
             for (let i = 0; i < result.length; i++) {
-                for (let j = 0; j < result_class.length; j++) {
-                    if(result[i].class_id === result_class[j].class_id){
-                        result[i].class_name = result_class[j].class_name
-                        break;
-                    }
-                }
+                // for (let j = 0; j < result_class.length; j++) {
+                //     if(result[i].class_id === result_class[j].class_id){
+                //         result[i].class_name = result_class[j].class_name
+                //         break;
+                //     }
+                // }
+                result[i].ts_teacher_name = await getTeacherName(result[i].ts_teacher)
+                result[i].ts_year_name = await getYearsName(result[i].ts_years)
+                result[i].ts_name = `ตารางสอน ${result[i].ts_teacher_name} ปีการศึกษา ${result[i].ts_year_name} ภาคเรียนที่ ${result[i].ts_semester}`
             }
         }
-        // console.log(result);
+
         res.status(200).json({
             status:true,
             status_code:200,
@@ -53,7 +56,7 @@ module.exports.getTeachingS = async (req,res) => {
             base_image_path:process.env.TEACHING_SCHEDULE
         })
     } catch (err) {
-        return return_err(res,'TRY CATCH BLOCK','DELETE NEWS CATEGORY ',err,500)
+        return return_err(res,'TRY CATCH BLOCK','GET TEACHING SCHEDULE ',err,500)
     }
 }
 
@@ -61,20 +64,27 @@ module.exports.getTeachingS = async (req,res) => {
 module.exports.addTeachingS = async (req,res) => {
     try {
         const credential_admin_fullname = req.body.credential_admin_fullname
-        const ts_name = req.body.ts_name
         const ts_image = req.file.filename
         const ts_semester = req.body.ts_semester
         const ts_teacher = req.body.ts_teacher
+        const ts_teacher_name = await getTeacherName(ts_teacher)
+        const ts_year = req.body.ts_year
+        const ts_year_name = await getYearsName(ts_year)
 
-        const qr_add = `INSERT INTO teaching_schedule(ts_name,ts_img,ts_pin,ts_semester,ts_teacher) VALUES(?,?,1,?,?)`
+        const qr_add = `INSERT INTO teaching_schedule(
+            ts_img,
+            ts_pin,
+            ts_semester,
+            ts_teacher,
+            ts_years) VALUES(?,1,?,?,?)`
          
-        await dbQuery(qr_add,[ts_name,ts_image,ts_semester,ts_teacher])
+        await dbQuery(qr_add,[ts_image,ts_semester,ts_teacher,ts_year])
 
         await timeStamp(
             credential_admin_fullname,
             'add',
             'teaching_schedule',
-            `${credential_admin_fullname} เพิ่มตารางสอน ' ${ts_name} '`
+            `${credential_admin_fullname} เพิ่มตารางสอนใหม้ '`
         )
         
         res.status(200).json({
@@ -91,36 +101,35 @@ module.exports.updateTeachS = async (req,res) =>{
     try {
         const teaching_schedule_image = (req.body.teaching_schedule_image === 'no_image_upload')? req.body.ts_old_image : req.file.filename
         const credential_admin_fullname = req.body.credential_admin_fullname
+        const ts_year = req.body.ts_year
         const ts_id = req.body.ts_id
-        const ts_name = req.body.ts_name
+        const ts_teacher = req.body.ts_teacher
         const ts_old_name = req.body.ts_old_name
         const ts_old_image = req.body.ts_old_image
-        const ts_teacher = req.body.ts_teacher
         const ts_semester = req.body.ts_semester
 
         const qr_update = `
-            update teaching_schedule 
+            UPDATE teaching_schedule 
             SET 
-                ts_name = ? ,
                 ts_img = ? ,
                 ts_semester = ? ,
-                ts_teacher = ?
-            WHERE ts_id = ? 
-             `
+                ts_teacher = ? ,
+                ts_years = ?
+            WHERE ts_id = ? `
 
         const qr_params = [
-            ts_name,
             teaching_schedule_image,
             ts_semester,
             ts_teacher,
+            ts_year,
             ts_id
         ]
 
         await dbQuery(qr_update,qr_params)
         if(teaching_schedule_image !== ts_old_image) await delete_image(ts_old_image,'teaching_schedule_image')
 
-        let msgTimestamp = `${credential_admin_fullname} แก้ไขตารางสอน ${ts_name}`
-        if(ts_name !== ts_old_name) msgTimestamp += `และได้เปลี่ยนชื่อตารางสอนจาก ${ts_old_name} เป็น ${ts_name}`
+        let msgTimestamp = `${credential_admin_fullname} แก้ไขตารางสอน `
+        
         await timeStamp(
             credential_admin_fullname,
             'update',
@@ -166,4 +175,15 @@ module.exports.deleteTeachignS = async (req,res) => {
     } catch (err) {
         return return_err(res,'TRY CATCH BLOCK','DELETE NEWS CATEGORY ',err,500)
     }
+}
+
+
+async function getTeacherName(id){
+    let name = await dbQuery('SELECT * FROM teachers WHERE teacher_id = ? ',[id])
+    return name[0].teacher_name
+}
+
+async function getYearsName(id){
+    let name = await dbQuery('SELECT * FROM years WHERE years_id = ? ',[id])
+    return name[0].years_name
 }

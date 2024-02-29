@@ -231,7 +231,7 @@ module.exports.updateNews = async(req,res) =>{
         res.status(200).json({
             status:true,
             status_code:200,
-            msg:'บัยทึกข้อมูลเสร็จสิ้น'
+            msg:'บันทึกข้อมูลเสร็จสิ้น'
         })
 
     } catch (err) {
@@ -327,17 +327,19 @@ async function setCategoryName(user_data){
 
 // search news 
 module.exports.searchNews = async (req,res) => {
-
     try {
         const search_keyword = req.body.search_keyword
-        const selected_category = req.body.selected_category
+        const category_id = req.body.category_id
         const limit = req.body.limit
         const start_item = req.body.start_item
 
         let qr_search = `SELECT * FROM news WHERE news_topic LIKE ?` 
-        // let query_and_condition = ` AND file_category_id = ${selected_category}`
+        let query_and_condition = ` AND news_category = ${category_id}`
         let qr_limit = ` LIMIT ${limit} OFFSET ${start_item}`
         let qr_length = `SELECT COUNT(*) AS length FROM news WHERE news_topic LIKE ?`
+
+        // search category
+        if(category_id != 0) qr_search += query_and_condition 
 
         const result_length = await dbQuery(qr_length,['%'+search_keyword+'%'])
         const length = result_length[0].length

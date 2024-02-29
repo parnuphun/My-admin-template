@@ -3,17 +3,25 @@ import AdminNavigationBar from '../../../components/layout/AdminNavigationBar.vu
 import {ref , watch , onMounted} from 'vue'; 
 import apiNamphong from '../../../services/api/api_namphong';
 import MsgAlert from '../../../services/msgAlert';
-import { classListResponse, credential , schoolDataResonse} from '../../../store/Interface'
+import { classListResponse, credential , schoolDataResonse , yearsListResponse} from '../../../store/Interface'
+import { useRouter } from 'vue-router' ;
 
+const router_s = useRouter();
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
 const btnLoading = ref()
 const credential = ref<credential>()
 
+
 onMounted(()=>{
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
+    if(credential.value!.user_rule !== 'admin') {
+        router_s.push('/admin/annoucement')
+    }
+    
     getSchoolDataSetting();
     getClass();
+    getYearList();
 })
 
 const bannerImage = ref(undefined || '/images/namphon_mockup/banner01.jpg')
@@ -214,6 +222,82 @@ function deleteClass(item:classListResponse){
         }
     })
 }
+
+const addYearsDialog = ref(false)
+const updateYearDialog = ref(false)
+const yearsList = ref<Array<yearsListResponse>>()
+const yearDetail = ref<yearsListResponse>()
+const yearName = ref()
+
+function getYearList() {
+    _api.getYears().then((res)=>{
+        if(res.data.status_code === 200){
+            yearsList.value = res.data.years_data
+        }
+    })
+}
+
+function addYear(){
+    _api.addNewYear({years_name:yearName.value ,credential_admin_fullname:credential.value!.user_fullname}).then((res)=>{
+        if(res.data.status_code === 200){
+            _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+            className.value =''
+            getYearList()
+        }else{
+            _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
+        }
+        btnLoading.value = false
+    }).catch((err)=>{
+        btnLoading.value = false
+        _msg.toast_msg({title:'เกิดความผิดพลาด ไม่สามารถดำเนินการได้',icon:'error',progressbar:true,timer:20})
+    })
+}
+
+function deleteYear(item:yearsListResponse){
+    _msg.confirm('คุณต้องการลบปีการศึกษาใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.deleteYear({years_name:item.years_name,years_id:item.years_id,credential_admin_fullname:credential.value!.user_fullname})
+            .then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    getYearList()
+                }else{
+                    _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
+                }
+            }).catch((err)=>{
+                _msg.toast_msg({title:'เกิดความผิดพลาด ไม่สามารถดำเนินการได้',icon:'error',progressbar:true,timer:20})
+            })
+        }
+    })
+}
+
+function setDatabeforUpdateYear(item:yearsListResponse){
+    yearDetail.value = item
+    yearName.value = yearDetail.value.years_name
+    updateYearDialog.value = true
+}
+
+function updateYear(){
+    _msg.confirm('คุณต้องการลบปีการศึกษาใช่ไหม').then((isConfirmed)=>{
+        if(isConfirmed){
+            _api.updateYear({years_id:yearDetail.value!.years_id,years_name:yearName.value , years_old_name:yearDetail.value!.years_name,
+            credential_admin_fullname:credential.value!.user_fullname})
+            .then((res)=>{
+                if(res.data.status_code === 200){
+                    _msg.toast_msg({title:res.data.msg,icon:'success',progressbar:true,timer:1.5})
+                    getYearList()
+                }else{
+                    _msg.toast_msg({title:res.data.msg,icon:'error',progressbar:true,timer:20})
+                }
+            }).catch((err)=>{
+                _msg.toast_msg({title:'เกิดความผิดพลาด ไม่สามารถดำเนินการได้',icon:'error',progressbar:true,timer:20})
+            })
+        }
+    })
+}
+
+
+
 </script>
 
 <template>
@@ -325,6 +409,31 @@ function deleteClass(item:classListResponse){
                     </div>
                     <div class="w-full  p-1 mt-4">
                         <p class="text-2xl">
+                            ปีการศึกษา
+                        </p>
+                        <p class="text-md text-gray-600">
+                            จัดการปีการศึกษาสำหรับฟังก์ชัน หลักสูตรและตารางเรียนนักเรียนและตารางสอนขอคุณครู
+                        </p>
+                        <v-divider class="border-opacity-75 mt-2"></v-divider>
+                        <div class="mt-2 flex justify-end">
+                            <v-btn class="w-[157px]" color="green" @click="addYearsDialog = true"> เพิ่มปีการศึกษา </v-btn>
+                        </div>
+                        <div class="w-full flex flex-wrap max-h-[200px] overflow-auto mt-2">
+                            <div v-for="item in yearsList"
+                            class="rounded-md border-2 h-full w-full py-2 px-2 flex flex-row mt-2 justify-between items-center" >
+                                <div class="w-auto h-full flex justify-center items-center">
+                                    {{ item.years_name }}
+                                </div>
+                                <div class="w-fit flex flex-row gap-2">
+                                    <v-btn color="primary" @click="setDatabeforUpdateYear(item)">แก้ไข</v-btn>
+                                    <v-btn color="red" @click="deleteYear(item)">ลบ</v-btn>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="w-full  p-1 mt-4">
+                        <p class="text-2xl">
                             ชั้นปี
                         </p>
                         <p class="text-md text-gray-600">
@@ -354,8 +463,85 @@ function deleteClass(item:classListResponse){
         </div>
     </AdminNavigationBar>
 
-        <!-- add position -->
-        <v-dialog
+    <!-- add year -->
+    <v-dialog
+        persistent
+        v-model="addYearsDialog"
+        width="600"
+        transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
+                    เพิ่มปีการศึกษา
+                    <div @click="addYearsDialog = false , className = ''" 
+                    class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
+                        <v-icon icon="mdi-close"></v-icon>
+                    </div>
+                </div>
+
+                <div class="w-full px-6 pb-4">
+                    <div class="flex flex-row gap-2 w-full">
+                        <v-text-field
+                            v-model="yearName"
+                            label="ปีการศึกษา"
+                            variant="outlined"
+                            density="comfortable"
+                            hide-details="auto"
+                        ></v-text-field>
+                        <v-btn color="green" size="xl" tex 
+                            :disabled="!!!yearName"
+                            :loading="btnLoading"
+                            @click="addYear()" 
+                            class="้px-3 w-[100px]">
+                                <p class="text-xl">เพิ่ม</p>
+                        </v-btn>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
+
+    <!-- rename year  -->
+    <v-dialog
+    persistent
+    v-model="updateYearDialog"
+    width="600"
+    transition="dialog-bottom-transition"
+    >
+        <v-card class="pb-2">
+            <div class="flex flex-col w-full ">
+                <div class="w-full py-3 flex justify-center text-2xl mt-3 relative">
+                    แก้ไขปีการศึกษา
+                    <div @click="updateYearDialog = false , yearName = ''" 
+                    class="top-2 right-2 absolute h-10 w-10 text-red-500 hover:text-red-600 cursor-pointer text-2xl">
+                        <v-icon icon="mdi-close"></v-icon>
+                    </div>
+                </div>
+                <div class="w-full px-6 pb-4 ">     
+                    <div class="flex flex-row gap-2 w-full">
+                        <v-text-field
+                            v-model="yearName"
+                            label="ป้อนปีการศึกษา"
+                            variant="outlined"
+                            density="comfortable"
+                            hide-details="auto"
+                        ></v-text-field>
+                        <v-btn color="primary" size="xl" tex 
+                            :disabled="!!!yearName"
+                            :loading="btnLoading"
+                            @click="updateYear()" 
+                            class="้px-3 w-[80px]">
+                                <p class="text-xl">แก้ไข</p>
+                        </v-btn>
+                    </div>
+                </div>
+            </div>
+        </v-card>
+    </v-dialog>
+
+    <!-- add class -->
+    <v-dialog
         persistent
         v-model="addClassDialog"
         width="600"
@@ -393,13 +579,12 @@ function deleteClass(item:classListResponse){
         </v-card>
     </v-dialog>
 
-
-        <!-- rename position  -->
-        <v-dialog
-        persistent
-        v-model="updateClassDialog"
-        width="600"
-        transition="dialog-bottom-transition"
+    <!-- rename class  -->
+    <v-dialog
+    persistent
+    v-model="updateClassDialog"
+    width="600"
+    transition="dialog-bottom-transition"
     >
         <v-card class="pb-2">
             <div class="flex flex-col w-full ">

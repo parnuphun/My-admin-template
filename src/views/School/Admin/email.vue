@@ -7,7 +7,9 @@ import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import apiNamphong from '../../../services/api/api_namphong'
 import MsgAlert from '../../../services/msgAlert';
 import {credential , userEmailResponse , emailListResponse , dataStatus} from '../../../store/Interface' 
+import { useRouter } from 'vue-router' ;
 
+const router_s = useRouter();
 const _api = new apiNamphong()
 const _msg = new MsgAlert()
 const btnLoading = ref(false)
@@ -16,6 +18,9 @@ const credential = ref<credential>()
 onMounted(()=>{
     document.title = 'อีเมล'
     credential.value = JSON.parse(localStorage.getItem('Credential')||'')
+    if(credential.value!.user_rule !== 'admin') {
+        router_s.push('/admin/annoucement')
+    }
     getAll();
     
     getEmailList();
@@ -360,7 +365,7 @@ watch(searchValue , ()=>{
                             <v-divider class="border-opacity-100 "></v-divider>
                         </div>
                         <div class="w-full p-1 pb-4">
-                            <v-btn class="w-full" color="green" size="large"
+                            <v-btn class="w-full" color="green" size="large" :disabled="!!!topic || (emailSelected.length === 0)"
                             @click="sendEmail()" :loading="btnLoading" v-if="drawerStatus === 'add_new'">
                                 ส่งอีเมล
                             </v-btn>
@@ -373,7 +378,7 @@ watch(searchValue , ()=>{
          
     </AdminNavigationBar>
    
-    <!-- add email -->
+    <!-- add new email -->
     <v-dialog
         persistent
         v-model="addNewEmailDialog"
@@ -409,7 +414,7 @@ watch(searchValue , ()=>{
         </v-card>
     </v-dialog>
 
-    <!-- add email -->
+    <!-- aready email -->
     <v-dialog
         persistent
         v-model="aleadyEmailDialog"

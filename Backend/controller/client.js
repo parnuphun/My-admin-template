@@ -296,6 +296,11 @@ module.exports.getTeachingSClient = async (req,res) => {
                         break;
                     }
                 }
+
+                result[i].ts_teacher_name = await getTeacherName(result[i].ts_teacher)
+                result[i].ts_year_name = await getYearsName(result[i].ts_years)
+                result[i].ts_name = `ตารางสอน ${result[i].ts_teacher_name} ปีการศึกษา ${result[i].ts_year_name} ภาคเรียนที่ ${result[i].ts_semester}`
+                
             }
         }
         res.status(200).json({
@@ -318,7 +323,6 @@ module.exports.getStudentSClient = async (req,res) => {
 
         const result_class = await dbQuery(qr_get_class)
         const result = await dbQuery(qr_get_data,[class_id])
-       
         // add class name 
         if(result_class.length >= 1){
             for (let i = 0; i < result.length; i++) {
@@ -328,6 +332,10 @@ module.exports.getStudentSClient = async (req,res) => {
                         break;
                     }
                 }
+
+                result[i].ss_teacher_name = await getTeacherName(result[i].ss_teacher)
+                result[i].ss_year_name = await getYearsName(result[i].ss_year)
+
             }
         }
         
@@ -393,3 +401,13 @@ module.exports.getSyllabusClient = async(req,res)=>{
     }
 }
 
+
+async function getTeacherName(id){
+    let name = await dbQuery('SELECT * FROM teachers WHERE teacher_id = ? ',[id])
+    return name[0].teacher_name
+}
+
+async function getYearsName(id){
+    let name = await dbQuery('SELECT * FROM years WHERE years_id = ? ',[id])
+    return name[0].years_name
+}

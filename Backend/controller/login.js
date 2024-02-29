@@ -118,7 +118,6 @@ module.exports.login = async (req,res) => {
         )
 
         // format credential data before login 
-        
         user.user_token = await createToken(user,false);
         user.user_login_date = await date_convert(current_date)
         user.user_expire_date = await date_convert(current_date.getTime() + (8 * 60 * 60 * 1000)) // +8hr

@@ -14,14 +14,14 @@ require('dotenv').config();
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // file category
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// add file category (not use on cllient now)
+// add file category (not use on cllient)
 module.exports.addFileCategory = async (req,res) =>{
     try {
         const file_category_name = req.body.file_category_name
         const qr_check_username = `SELECT * FROM file_category WHERE file_category_name = ?`
         const qr_add = `INSERT INTO file_category(file_category_name) VALUES(?)`
 
-        const result_check_username = await dbQuery(qr_check_username,[qr_check_username])
+        const result_check_username = await dbQuery(qr_check_username,[file_category_name])
         if(result_check_username.length >= 1) return res.json({
             status_code: 200 ,
             status:false,
@@ -40,7 +40,7 @@ module.exports.addFileCategory = async (req,res) =>{
     }
 }
 
-// rename file category (not use on cllient now)
+// rename file category (not use on cllient)
 module.exports.renameFileCategory = async (req,res) =>{
     try {
         const file_category_name = req.body.file_category_name
@@ -70,7 +70,7 @@ module.exports.renameFileCategory = async (req,res) =>{
     }
 }
 
-// delete file catefgory (not use on cllient now)
+// delete file catefgory (not use on cllient)
 module.exports.deleteFileCategory = async (req,res) =>{
 
     try {

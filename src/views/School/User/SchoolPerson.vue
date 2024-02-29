@@ -278,8 +278,11 @@ function openDetail(descript:string,phone:string,email:string){
                                 <div class="w-[200px] max-h-min flex flex-col mt-2" v-for="person of position.persons">
                                     <div class="w-[200px] h-full ">
                                         <div class="border-2 w-[200px] h-[250px] rounded-lg relative">
-                                            <img class="object-cover rounded-lg w-[200px] h-[250px]" 
+                                            
+                                            <img v-if="person.pd_person_image !== 'no_image_upload'" class="object-cover rounded-lg w-[200px] h-[250px]" 
                                             :src="baseImagePaht+person.pd_person_image" alt="">
+                                            <img v-else class="object-cover rounded-lg w-[200px] h-[250px]" 
+                                            src="/images/avartars/default_avatar.png" alt="">
                                             <div class="absolute rounded-md p-1 bottom-1 right-2 text-pink-600">
                                                 <v-icon class="cursor-pointer" 
                                                 @click="openDetail(person.pd_person_descript,person.pd_person_phone,person.pd_person_email)">
