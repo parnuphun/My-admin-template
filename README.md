@@ -1,4 +1,8 @@
 ## Namphong Phuriphat School Website
+โปรเจ็คนี้เป็นโปรเจ็คจบปริญญาตรี คณะวิศวกรรมศาสตร์ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยเทคโนโลยีราชมงคลวิทยาเขตขอนแก่น
+- [ลิงค์เว็บไซต์โรงเรียนl](https://puripatschool.ac.th/)
+- [วิดีโอสาธิตการใช้งานเว็บไซต์](https://www.youtube.com/watch?v=AMlU6jO2IZk&t=3s&ab_channel=PhanuphunNamwong)
+- [รูปเล่มวิทยานิพนธ์](https://drive.google.com/file/d/151-n2aoW7zpZeQjs_Gh8NYTsSZlkoJXU/view?usp=sharing)
 
 ## Tech Stack
 <div align="center">
@@ -15,8 +19,8 @@
 <div align="center">
 	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/117448124-a2da9800-af3e-11eb-85d2-bd1b69b65603.png" alt="Vue.js" title="Vue.js"/></code>
 	<code><img width="80" src="https://github.com/marwin1991/profile-technology-icons/assets/136815194/50c63e54-074f-494b-b786-01eb7870c927" alt="Vuetify.js" title="Vuetify.js"/></code>
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" alt="TypeScript" title="TypeScript"/></code>
 	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/202896760-337261ed-ee92-4979-84c4-d4b829c7355d.png" alt="Tailwind CSS" title="Tailwind CSS"/></code>
+	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" alt="TypeScript" title="TypeScript"/></code>
 </div>
             </td>
             <td>
