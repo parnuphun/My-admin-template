@@ -13,18 +13,6 @@ const conn = mysql.createPool({
     multipleStatements: true,
 })
 
-// const conn = mysql.createPool({
-//     host:'localhost',
-//     port:3306,
-//     user:'puripats_dev',
-//     password:'+dev_1598',
-//     database:'puripats_db',
-//     waitForConnections: true,
-//     connectionLimit: 10,
-//     queueLimit: 0,
-//     multipleStatements: true,
-// })
-
 conn.getConnection((err) => {
     if (err) {
         console.log(err);
