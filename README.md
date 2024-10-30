@@ -1,6 +1,7 @@
 ## Namphong Phuriphat School Website
-โปรเจ็คนี้เป็นโปรเจ็คจบปริญญาตรี คณะวิศวกรรมศาสตร์ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยเทคโนโลยีราชมงคลวิทยาเขตขอนแก่น
-- [ลิงค์เว็บไซต์โรงเรียนl](https://puripatschool.ac.th/)
+โปรเจ็คจบปริญญาตรี คณะวิศวกรรมศาสตร์ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยเทคโนโลยีราชมงคลวิทยาเขตขอนแก่น โดยแบ่งออกเป็น 2 ส่วนก็คือฝั่งผู้ใช้งานทั่วไป และผู้ดูแลระบบ(ครู)
+
+- [ลิงค์เว็บไซต์โรงเรียน](https://puripatschool.ac.th/)
 - [วิดีโอสาธิตการใช้งานเว็บไซต์](https://www.youtube.com/watch?v=AMlU6jO2IZk&t=3s&ab_channel=PhanuphunNamwong)
 - [รูปเล่มวิทยานิพนธ์](https://drive.google.com/file/d/151-n2aoW7zpZeQjs_Gh8NYTsSZlkoJXU/view?usp=sharing)
 
