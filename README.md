@@ -1,41 +1,36 @@
 ## Namphong Phuriphat School Website
-โปรเจ็คจบปริญญาตรี คณะวิศวกรรมศาสตร์ สาขาวิศวกรรมคอมพิวเตอร์ มหาวิทยาลัยเทคโนโลยีราชมงคลวิทยาเขตขอนแก่น โดยแบ่งออกเป็น 2 ส่วนก็คือฝั่งผู้ใช้งานทั่วไป และผู้ดูแลระบบ(ครู)
+![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
+![Vuetify](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=AEDDFF)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
 
-- [ลิงค์เว็บไซต์โรงเรียน](https://puripatschool.ac.th/)
-- [วิดีโอสาธิตการใช้งานเว็บไซต์](https://www.youtube.com/watch?v=AMlU6jO2IZk&t=3s&ab_channel=PhanuphunNamwong)
-- [รูปเล่มวิทยานิพนธ์](https://drive.google.com/file/d/151-n2aoW7zpZeQjs_Gh8NYTsSZlkoJXU/view?usp=sharing)
+Bachelor's degree project, Faculty of Engineering, Department of Computer Engineering, Rajamangala University of Technology Khon Kaen Campus <br>
+The website have two portals 1. Admin(Teacher) 2.User <br>
 
-## Tech Stack
-<div align="center">
-<table style = "width:80%">
-    <thead>
-        <tr>
-            <th>Front-End</th>
-             <th>Back-End</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-<div align="center">
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/117448124-a2da9800-af3e-11eb-85d2-bd1b69b65603.png" alt="Vue.js" title="Vue.js"/></code>
-	<code><img width="80" src="https://github.com/marwin1991/profile-technology-icons/assets/136815194/50c63e54-074f-494b-b786-01eb7870c927" alt="Vuetify.js" title="Vuetify.js"/></code>
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/202896760-337261ed-ee92-4979-84c4-d4b829c7355d.png" alt="Tailwind CSS" title="Tailwind CSS"/></code>
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/183890598-19a0ac2d-e88a-4005-a8df-1ee36782fde1.png" alt="TypeScript" title="TypeScript"/></code>
-</div>
-            </td>
-            <td>
-<div align="center">
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/183568594-85e280a7-0d7e-4d1a-9028-c8c2209e073c.png" alt="Node.js" title="Node.js"/></code>
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/183859966-a3462d8d-1bc7-4880-b353-e2cbed900ed6.png" alt="Express" title="Express"/></code>
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/183896128-ec99105a-ec1a-4d85-b08b-1aa1620b2046.png" alt="MySQL" title="MySQL"/></code>
-	<code><img width="80" src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png" alt="JavaScript" title="JavaScript"/></code>
-</div>
-            </td>
-        </tr>
-    </tbody>
-</table>
-</div>
+- [Link Website](https://puripatschool.ac.th/)
+- [Video demonstrating](https://www.youtube.com/watch?v=AMlU6jO2IZk&t=3s&ab_channel=PhanuphunNamwong)
+- [Document](https://drive.google.com/file/d/151-n2aoW7zpZeQjs_Gh8NYTsSZlkoJXU/view?usp=sharing)
+
+## Features
+✔️ Register / Login <br>
+🔑 Change / Reset Password <br>
+🙎🏻‍♂️ Account user <br>
+🖼️ Activities Images <br>
+📰 News <br>
+📢 Annoucement <br>
+👥 Personnel Directory <br>
+📂 Upload Files (PDF,XML,CSV,DOCS) <br>
+📅 Class Schedule / Course outline <br>
+📧 Send Email <br> 
+🛠️ Website settings <br>
+
+
+
 
 ## Previews Client
 <table>
