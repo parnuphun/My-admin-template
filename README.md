@@ -17,17 +17,17 @@ The website have two portals 1. Admin(Teacher) 2.User <br>
 - [Document](https://drive.google.com/file/d/151-n2aoW7zpZeQjs_Gh8NYTsSZlkoJXU/view?usp=sharing)
 
 ## Features
-✔️ Register / Login <br>
-🔑 Change / Reset Password <br>
-🙎🏻‍♂️ Account user <br>
-🖼️ Activities Images <br>
-📰 News <br>
-📢 Annoucement <br>
-👥 Personnel Directory <br>
-📂 Upload Files (PDF,XML,CSV,DOCS) <br>
-📅 Class Schedule / Course outline <br>
-📧 Send Email <br> 
-🛠️ Website settings <br>
+- Register / Login / Authorization (JWT)<br>
+- Change / Reset Password <br>
+- Account user <br>
+- Activities Images <br>
+- News (vue-quill)<br>
+- Annoucement <br>
+- Personnel Directory <br>
+- Upload Files (PDF,XML,CSV,DOCS) <br>
+- Class Schedule / Course outline <br>
+- Send Email (Nodemailer) <br> 
+- Website settings <br>
 
 
 
