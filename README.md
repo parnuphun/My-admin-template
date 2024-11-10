@@ -28,9 +28,7 @@ The website have two portals 1. Admin(Teacher) 2.User <br>
 - Class Schedule / Course outline <br>
 - Send Email (Nodemailer) <br> 
 - Website settings <br>
-
-
-
+- Logging <br>
 
 ## Previews Client
 <table>
