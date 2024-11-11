@@ -21,12 +21,12 @@ The website have two portals 1. Admin(Teacher) 2.User <br>
 - Change / Reset Password <br>
 - Account user <br>
 - Activities Images <br>
-- News (vue-quill)<br>
+- News <br>
 - Annoucement <br>
 - Personnel Directory <br>
-- Upload Files (PDF,XML,CSV,DOCS) <br>
+- Upload Files <br>
 - Class Schedule / Course outline <br>
-- Send Email (Nodemailer) <br> 
+- Send Email <br> 
 - Website settings <br>
 - Logging <br>
 
